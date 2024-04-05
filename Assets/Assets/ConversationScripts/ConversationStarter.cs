@@ -6,10 +6,12 @@ using DialogueEditor;
 public class ConversationStarter : MonoBehaviour
 {
     [SerializeField] public NPCConversation myConversation;
-
     public void StartDialog()
     {
+        DataPlayer playerData = FindObjectOfType<DataPlayer>();
         ConversationManager.Instance.StartConversation(myConversation);
-        Debug.Log("Dialog Started");
+            Debug.Log("Dialog Started");
+            ConversationManager.Instance.SetBool("TestOneSuccess", playerData.playerData.testSuccess);
+        
     }
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8756647812339660682}
   - component: {fileID: 4786609674801258769}
   - component: {fileID: 4387009009627075927}
+  - component: {fileID: 7755048319991277195}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -68,8 +69,8 @@ MonoBehaviour:
     id: 0
     health: 0
     isAlive: 0
-    sceneToLoad: 0
-    additionalArray: 0000000000
+    sceneToLoad: 1
+    testSuccess: 0
 --- !u!114 &4786609674801258769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,6 +96,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 485fa95d3141c4253ba19dc54f8c2450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7755048319991277195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078131722903570006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f855a56f33124e8c8baf64687dd1c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  urlToOpen: https://wikids.ru/story/detsimetr#/4
 --- !u!1001 &2078131722907292221
 PrefabInstance:
   m_ObjectHideFlags: 0

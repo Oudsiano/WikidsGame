@@ -1030,6 +1030,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1325209382106325704, guid: 37bc44cce0831404eb1918df3847c8d7,
         type: 3}
+      propertyPath: clickEffect
+      value: 
+      objectReference: {fileID: 2381720613524554390}
+    - target: {fileID: 1325209382106325704, guid: 37bc44cce0831404eb1918df3847c8d7,
+        type: 3}
       propertyPath: effectPrefab
       value: 
       objectReference: {fileID: 428852817160778579, guid: 281e0a2c5c68e4ac289a1f324c62747e,
@@ -1171,6 +1176,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 9040928548955586838}
+    - targetCorrespondingSourceObject: {fileID: 7503963754105802358, guid: 37bc44cce0831404eb1918df3847c8d7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2381720613524554390}
   m_SourcePrefab: {fileID: 100100000, guid: 37bc44cce0831404eb1918df3847c8d7, type: 3}
 --- !u!4 &5956290306365898299 stripped
 Transform:
@@ -1278,3 +1287,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 1977176692237885867}
+--- !u!114 &2381720613524554390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133158828745458021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 519af89390db447aeba4c2ee889b1817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrefab: {fileID: 428852817160778579, guid: 281e0a2c5c68e4ac289a1f324c62747e,
+    type: 3}

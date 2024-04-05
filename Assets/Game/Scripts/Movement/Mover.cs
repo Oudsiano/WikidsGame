@@ -7,8 +7,7 @@ namespace RPG.Movement
     // Класс, отвечающий за перемещение персонажа и взаимодействие с ним
     public class Mover : MonoBehaviour, IAction
     {
-        public ParticleSystem effectPrefab; // Префаб эффекта частиц
-
+        public ClickEffect clickEffect; // Ссылка на скрипт для создания эффекта при нажатии на точку
         private Animator animator; // Ссылка на компонент аниматора
         private NavMeshAgent thisNavAgent; // Ссылка на компонент навигации
         private ActionScheduler actionScheduler; // Ссылка на планировщик действий
@@ -86,9 +85,6 @@ namespace RPG.Movement
             return Vector3.Distance(thisNavAgent.destination, transform.position) < tolerance;
         }
 
-        // Метод для захвата состояния персонажа для сохранения
-       
-
         // Метод для восстановления состояния персонажа после загрузки сохранения
         public void RestoreState(object state)
         {
@@ -96,12 +92,6 @@ namespace RPG.Movement
             thisNavAgent = GetComponent<NavMeshAgent>(); // Получаем навигационного агента
             thisNavAgent.enabled = false; // Отключаем навигационный агент
             thisNavAgent.enabled = true; // Включаем навигационный агент обратно
-        }
-
-        // Метод для создания эффекта в указанной позиции
-        private void CreateEffect(Vector3 position)
-        {
-            Instantiate(effectPrefab, position, Quaternion.identity); // Создаем эффект в указанной позиции
         }
 
         // Метод для создания эффекта на поверхности в позиции указателя мыши
@@ -112,7 +102,7 @@ namespace RPG.Movement
             // Проверяем, попал ли луч в какой-либо объект
             if (Physics.Raycast(ray, out hit))
             {
-                CreateEffect(hit.point + new Vector3(0, 0.1f, 0)); // Создаем эффект в точке столкновения луча
+                clickEffect.CreateEffect(hit.point + new Vector3(0, 0.2f, 0)); // Создаем эффект в точке столкновения луча
 
                 // Если объект, в который попал луч, имеет тег "Interactable", устанавливаем его как цель взаимодействия
                 if (hit.transform.CompareTag("Interactable"))

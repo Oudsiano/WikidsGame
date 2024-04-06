@@ -12,7 +12,7 @@ public class GameAPI : MonoBehaviour
 
     public void Awake()
     {
-        StartCoroutine(SaveGameData(dataPlayer.playerData));
+        StartCoroutine(GetGameData());
     }
 
     public void Update()
@@ -23,14 +23,6 @@ public class GameAPI : MonoBehaviour
         {
             StartCoroutine(SaveGameData(dataPlayer.playerData));
         }
-    }
-
-    public void UpdateConfigJson(string json)
-    {
-       PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
-        playerID = playerData.id.ToString();
-       dataPlayer.playerData = playerData;
-        Debug.Log("Data downloaded successfully");
     }
 
     IEnumerator GetGameData()

@@ -325,6 +325,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e0c8a3c575a4088b6b4235e266a39f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &206006256 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8741352597439031700, guid: c8da927f5d50e254fbcfb8be5ac5c110,
+    type: 3}
+  m_PrefabInstance: {fileID: 206006254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &206006257 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8741352597439031699, guid: c8da927f5d50e254fbcfb8be5ac5c110,
+    type: 3}
+  m_PrefabInstance: {fileID: 206006254}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &369286288 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 479558, guid: 2f8bac6b7bae5254bbf64855f6613f5e,
@@ -530,6 +542,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1371083129343095732, guid: 8be59665cb1820b438b93b5ef6b4d56c,
+        type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 206006256}
     - target: {fileID: 3455975096683736932, guid: 8be59665cb1820b438b93b5ef6b4d56c,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -610,6 +627,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6725345875172481899, guid: 8be59665cb1820b438b93b5ef6b4d56c,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 206006257}
     - target: {fileID: 6916854950030640452, guid: 8be59665cb1820b438b93b5ef6b4d56c,
         type: 3}
       propertyPath: m_Name
@@ -757,6 +779,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1564219108335716300, guid: ed711a317c351354982d7d16ccc18b17,
+        type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 206006256}
     - target: {fileID: 2973571062711846884, guid: ed711a317c351354982d7d16ccc18b17,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -842,6 +869,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Soldier 1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6622281957587250963, guid: ed711a317c351354982d7d16ccc18b17,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 206006257}
     - target: {fileID: 7328951964609392530, guid: ed711a317c351354982d7d16ccc18b17,
         type: 3}
       propertyPath: m_AnchorMax.y

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.16788329, g: 0.21073541, b: 0.2899403, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -476,6 +476,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1336131941458341993}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &173425429 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8741352597439031700, guid: c8da927f5d50e254fbcfb8be5ac5c110,
+    type: 3}
+  m_PrefabInstance: {fileID: 206006254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &173425431 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8741352597439031699, guid: c8da927f5d50e254fbcfb8be5ac5c110,
+    type: 3}
+  m_PrefabInstance: {fileID: 206006254}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &175659578 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4166626955074130, guid: 6e3a7267ef25d464f9529e4f61b6a025,
@@ -612,11 +624,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8756647812339660682, guid: c8da927f5d50e254fbcfb8be5ac5c110,
-        type: 3}
-      propertyPath: playerData.sceneToLoad
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -1364,6 +1371,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1612291659094591580, guid: 7e5812406ae3246439ea2daa1ce31d5d,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 2361062979683876304, guid: 7e5812406ae3246439ea2daa1ce31d5d,
         type: 3}
       propertyPath: healthBar
@@ -1458,6 +1470,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200173909307905172, guid: 7e5812406ae3246439ea2daa1ce31d5d,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200173909307905172, guid: 7e5812406ae3246439ea2daa1ce31d5d,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200173909307905172, guid: 7e5812406ae3246439ea2daa1ce31d5d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6036681358350094232, guid: 7e5812406ae3246439ea2daa1ce31d5d, type: 3}
@@ -4469,6 +4496,21 @@ PrefabInstance:
     - target: {fileID: 4939805754032154, guid: 12bdcfaa062a44ecbb71b00a0fa45681, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 845595873424675595, guid: 12bdcfaa062a44ecbb71b00a0fa45681,
+        type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 173425429}
+    - target: {fileID: 5038967575968381908, guid: 12bdcfaa062a44ecbb71b00a0fa45681,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 173425431}
+    - target: {fileID: 5048864874473600318, guid: 12bdcfaa062a44ecbb71b00a0fa45681,
+        type: 3}
+      propertyPath: m_MaxValue
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 8916206908923755349, guid: 12bdcfaa062a44ecbb71b00a0fa45681,
         type: 3}
@@ -9830,10 +9872,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -12754,19 +12796,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentIDCounter: 16
-  json: "{\"Options\":[],\"Parameters\":[{\"__type\":\"EditableBoolParameter:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"BoolValue\":false}],\"SpeechNodes\":[{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":2}],\"EditorInfo\":{\"isRoot\":true,\"xPos\":184.75,\"yPos\":22},\"ID\":0,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0415\u0441\u043B\u0438
+  json: "{\"Options\":[],\"Parameters\":[{\"__type\":\"EditableBoolParameter:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"BoolValue\":false}],\"SpeechNodes\":[{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":2}],\"EditorInfo\":{\"isRoot\":true,\"xPos\":182.75,\"yPos\":-195},\"ID\":0,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0415\u0441\u043B\u0438
     \u0442\u044B \u043E\u0442\u0432\u0435\u0442\u0438\u0448\u044C \u043D\u0430 \u043C\u043E\u0438
     \u0432\u043E\u043F\u0440\u043E\u0441 \u0442\u044B \u0441\u043C\u043E\u0436\u0435\u0448\u044C
     \u043F\u0440\u043E\u0439\u0442\u0438 \u0434\u0430\u043B\u044C\u0448\u0435 \u0438
-    \u0437\u0430\u0447\u0438\u0441\u0442\u0438\u0442\u044C \u043B\u043E\u043A\u0430\u0446\u0438\u044E.\",\"parentUIDs\":[],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Npc\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":true}],\"NodeUID\":13},{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":false}],\"NodeUID\":15}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":159,\"yPos\":150},\"ID\":2,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0415\u0441\u043B\u0438
+    \u0437\u0430\u0447\u0438\u0441\u0442\u0438\u0442\u044C \u043B\u043E\u043A\u0430\u0446\u0438\u044E.\",\"parentUIDs\":[],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Npc\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":true}],\"NodeUID\":13},{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":false}],\"NodeUID\":15}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":157,\"yPos\":-67},\"ID\":2,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0415\u0441\u043B\u0438
     \u0442\u044B \u043E\u0442\u0432\u0435\u0442\u0438\u0448\u044C \u043D\u0430 \u043C\u043E\u0438
     \u0442\u0435\u0441\u0442\u044B \u0441\u043C\u043E\u0436\u0435\u0448\u044C \u0437\u0430\u0447\u0438\u0441\u0442\u0438\u0442\u044C
-    \u043B\u043E\u043A\u0430\u0446\u0438\u044E\",\"parentUIDs\":[0],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Npc\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":14}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":161.75,\"yPos\":375},\"ID\":13,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
-    \u0432\u0435\u0440\u043D\u044B\u0439\",\"parentUIDs\":[2],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"NPC\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":151.75,\"yPos\":478},\"ID\":14,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u043E\u0441\u043C\u043E\u0442\u0440\u0438
+    \u043B\u043E\u043A\u0430\u0446\u0438\u044E\",\"parentUIDs\":[0],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Npc\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":14}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":159.75,\"yPos\":158},\"ID\":13,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
+    \u0432\u0435\u0440\u043D\u044B\u0439\",\"parentUIDs\":[2],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"NPC\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":149.75,\"yPos\":261},\"ID\":14,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u043E\u0441\u043C\u043E\u0442\u0440\u0438
     \u0440\u044F\u0434\u043E\u043C \u0441\u043E \u043C\u043D\u043E\u0439 \u0442\u044B
     \u043D\u0430\u0439\u0434\u0435\u0448\u044C \u0446\u0432\u0435\u0442\u043E\u043A
     \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0434\u0430\u0441\u0442 \u0441\u0438\u043B\u0443
-    \u0434\u043B\u044F \u043F\u043E\u0431\u0435\u0434\u044B \u043D\u0430\u0434 \u043D\u0435\u0432\u0435\u0436\u0435\u0441\u0442\u0432\u043E\u043C\",\"parentUIDs\":[13],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"NPC\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":379.75,\"yPos\":371},\"ID\":15,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
+    \u0434\u043B\u044F \u043F\u043E\u0431\u0435\u0434\u044B \u043D\u0430\u0434 \u043D\u0435\u0432\u0435\u0436\u0435\u0441\u0442\u0432\u043E\u043C\",\"parentUIDs\":[13],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"NPC\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":377.75,\"yPos\":154},\"ID\":15,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
     \u043D\u0435\u0432\u0435\u0440\u043D\u044B\u0439\",\"parentUIDs\":[2],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"NPC\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0}]}"
   saveVersion: 110
   DefaultName: 
@@ -12786,7 +12828,43 @@ MonoBehaviour:
   EndConversationFont: {fileID: 0}
   Event:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1872507166}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 486580395}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5685130510790934634}
+        m_TargetAssemblyTypeName: ConversationStarter, Assembly-CSharp
+        m_MethodName: DialogEnded
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1127133623830830077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13517,8 +13595,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -66.921}
-  m_SizeDelta: {x: 0, y: -133.84}
+  m_AnchoredPosition: {x: -0.000061035156, y: -130.787}
+  m_SizeDelta: {x: 380, y: -124.088}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1249721981604264358
 PrefabInstance:
@@ -14608,7 +14686,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -68}
-  m_SizeDelta: {x: 592.70496, y: 131.685}
+  m_SizeDelta: {x: 1000, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1311736882771353398
 MonoBehaviour:
@@ -14741,12 +14819,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 41.85
   m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 12
-  m_fontSizeMax: 18
+  m_fontSizeMax: 100
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -39674,6 +39752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50819cb55449f408d9c78af8a777936e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DialogStarted: 0
   myConversation: {fileID: 1125764371194242145}
 --- !u!137 &5693326339666029040
 SkinnedMeshRenderer:
@@ -51344,6 +51423,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5685130510790934634}
+        m_TargetAssemblyTypeName: ConversationStarter, Assembly-CSharp
+        m_MethodName: DialogEnded
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   NodeID: 14
   TMPFont: {fileID: 0}
   Icon: {fileID: 0}
@@ -55824,12 +55915,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 26.6
   m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 12
-  m_fontSizeMax: 24
+  m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512

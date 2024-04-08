@@ -15,8 +15,8 @@ public class DisplayPlayerData : MonoBehaviour
         if (dataPlayer != null)
         {
             // Получаем доступ к экземпляру PlayerData из DataPlayer и отображаем данные в текстовом поле
-            dataText.text = "Scene to load: " + dataPlayer.playerData.sceneToLoad.ToString() + dataPlayer.playerData.isAlive.ToString() + dataPlayer.playerData.testSuccess.ToString()
-               + dataPlayer.playerData.id.ToString()+ dataPlayer.playerData.health.ToString();
+            string displayString = $"ID: {dataPlayer.playerData.id}\nHealth: {dataPlayer.playerData.health}\nIsAlive: {dataPlayer.playerData.health}\nSceneToLoad: {dataPlayer.playerData.sceneToLoad} \ntestSuccess: {dataPlayer.playerData.testSuccess}";
+            dataText.text = displayString;
         }
         else
         {

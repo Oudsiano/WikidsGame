@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using RPG.Core;
 
 public class JavaScriptHook : MonoBehaviour
 {
+    public SceneLoader sceneLoader;
     public TMP_Text dataText; // Ссылка на текстовый объект
     public DataPlayer dataPlayer; // Ссылка на экземпляр DataPlayer
 
@@ -29,6 +31,9 @@ public class JavaScriptHook : MonoBehaviour
         dataPlayer.playerData.isAlive = configData.isAlive;
         dataPlayer.playerData.sceneToLoad = configData.sceneToLoad;
         dataPlayer.playerData.testSuccess = configData.testSuccess;
+        //TODO Если загрузка не произошла убери комменты и запусти из этого метода загрузку сцены.
+        //sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
+
     }
 
     // Метод для отображения данных в текстовом объекте

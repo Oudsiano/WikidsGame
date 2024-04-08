@@ -3,17 +3,48 @@ using UnityEngine.Networking;
 using RPG.Core;
 using System.Collections;
 using System.Text;
+using TMPro;
 
 public class GameAPI : MonoBehaviour
 {
     public DataPlayer dataPlayer;
     public SceneLoader sceneLoader;
-    public string playerID = "111";
+    public string playerID;
+    public TMP_Text textForOtl;
+    public bool idUpdate = false;
+    public bool gameSave = false;
+    public bool gameGet = false;
 
-    public void Awake()
+    public void Start()
+    {
+        IDUpdater();
+        SaveUpdater();
+        UpdateData();
+        textForOtl.text = $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
+    }
+    public void FixedUpdate()
+    {
+        textForOtl.text = $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
+    }
+
+    public void IDUpdater()
+    {
+        playerID = dataPlayer.playerData.id.ToString();
+        idUpdate = true;
+    }
+    public void SaveUpdater()
+    {
+        StartCoroutine(SaveGameData(dataPlayer.playerData));
+        gameSave = true;
+    }
+    public void UpdateData()
     {
         StartCoroutine(GetGameData());
+        gameGet = true;
+        sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
     }
+
+
 
     public void Update()
     {

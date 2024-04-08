@@ -17,6 +17,7 @@ namespace RPG.SceneManagement
         [SerializeField] private float fadeInTime = 2f; // Время появления после загрузки новой сцены
         [SerializeField] private float betweenFadeTime = 2f; // Время ожидания между затуханием и появлением
         [SerializeField] public DataPlayer dataPlayer;
+        
         // Статическая переменная, определяющая, идет ли в данный момент переход между сценами
         private static bool isTransitioning = false;
 
@@ -53,6 +54,7 @@ namespace RPG.SceneManagement
             {
                 int newSceneNumber = sceneToLoad; // Новое значение номера локации
                 dataPlayer.SetSceneToLoad(newSceneNumber); // Устанавливает новое значение номера локации
+
             }
             else
             {

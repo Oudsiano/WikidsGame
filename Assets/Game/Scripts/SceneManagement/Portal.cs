@@ -47,12 +47,12 @@ namespace RPG.SceneManagement
             yield return SceneManager.LoadSceneAsync(sceneToLoad); // Загружаем новую сцену
 
 
-            
+            dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
+
             if (dataPlayer != null)
             {
                 int newSceneNumber = sceneToLoad; // Новое значение номера локации
-                dataPlayer.SetSceneToLoad(newSceneNumber); // Устанавливает новое значение номера локациb
-
+                dataPlayer.SetSceneToLoad(newSceneNumber); // Устанавливает новое значение номера локации
             }
             else
             {
@@ -61,8 +61,8 @@ namespace RPG.SceneManagement
             Portal otherPortal = GetOtherPortal(); // Получаем портал, соответствующий месту назначения текущего портала
             UpdatePlayerLocation(otherPortal); // Обновляем местоположение игрока
             yield return new WaitForSeconds(betweenFadeTime); // Ждем некоторое время после загрузки сцены
+
             isTransitioning = false; // Устанавливаем флаг перехода в состояние "переход завершен"
-            dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
             Destroy(this.gameObject); // Уничтожаем портал
         }
 

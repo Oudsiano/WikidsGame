@@ -10,6 +10,17 @@ public class DataPlayer : MonoBehaviour
         playerData.sceneToLoad = sceneNumber;
     }
 
+    // Метод для сохранения позиции объекта
+    public void SavePlayerPosition(int spawn)
+    {
+        playerData.spawnPoint = spawn;
+    }
+
+    // Метод для загрузки сохраненной позиции объекта
+    public int LoadPlayerPosition()
+    {
+        return playerData.spawnPoint;
+    }
 
     // Вспомогательный метод для изменения размера массива
     private bool[] ResizeArray(bool[] array, int newSize)
@@ -31,4 +42,5 @@ public class PlayerData
     public bool isAlive;
     public int sceneToLoad;
     public bool testSuccess;
+    public int spawnPoint; // Новое поле для хранения позиции объекта
 }

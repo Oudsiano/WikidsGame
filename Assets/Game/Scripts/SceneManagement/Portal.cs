@@ -19,6 +19,8 @@ namespace RPG.SceneManagement
         [SerializeField] public DataPlayer dataPlayer;
         // Статическая переменная, определяющая, идет ли в данный момент переход между сценами
         private static bool isTransitioning = false;
+        [SerializeField] private GameAPI gameAPI;
+
 
         // Перечисление для идентификации места назначения портала
         enum DestinationIdentifier
@@ -53,6 +55,20 @@ namespace RPG.SceneManagement
             {
                 int newSceneNumber = sceneToLoad; // Новое значение номера локации
                 dataPlayer.SetSceneToLoad(newSceneNumber); // Устанавливает новое значение номера локации
+                                                           // Вызываем метод SaveGameData() из объекта GameAPI
+                Debug.Log("изменили значение scene to load в playerdata из portal");
+                gameAPI = FindObjectOfType<GameAPI>(); // Попытка найти объект DataPlayer в сцене
+
+                if (dataPlayer != null)
+                {
+                    // Если объект найден, продолжаем с сохранением игры
+                    StartCoroutine(gameAPI.SaveGameData(dataPlayer.playerData));
+                }
+                else
+                {
+                    // Если объект не найден, выводим ошибку
+                    Debug.LogError("DataPlayer object not found!");
+                }
             }
             else
             {

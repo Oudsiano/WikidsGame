@@ -17,7 +17,6 @@ namespace RPG.SceneManagement
         [SerializeField] private float fadeInTime = 2f; // Время появления после загрузки новой сцены
         [SerializeField] private float betweenFadeTime = 2f; // Время ожидания между затуханием и появлением
         [SerializeField] public DataPlayer dataPlayer;
-        
         // Статическая переменная, определяющая, идет ли в данный момент переход между сценами
         private static bool isTransitioning = false;
 
@@ -48,12 +47,11 @@ namespace RPG.SceneManagement
             yield return SceneManager.LoadSceneAsync(sceneToLoad); // Загружаем новую сцену
 
 
-            dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
-
+            
             if (dataPlayer != null)
             {
                 int newSceneNumber = sceneToLoad; // Новое значение номера локации
-                dataPlayer.SetSceneToLoad(newSceneNumber); // Устанавливает новое значение номера локации
+                dataPlayer.SetSceneToLoad(newSceneNumber); // Устанавливает новое значение номера локациb
 
             }
             else
@@ -63,8 +61,8 @@ namespace RPG.SceneManagement
             Portal otherPortal = GetOtherPortal(); // Получаем портал, соответствующий месту назначения текущего портала
             UpdatePlayerLocation(otherPortal); // Обновляем местоположение игрока
             yield return new WaitForSeconds(betweenFadeTime); // Ждем некоторое время после загрузки сцены
-
             isTransitioning = false; // Устанавливаем флаг перехода в состояние "переход завершен"
+            dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
             Destroy(this.gameObject); // Уничтожаем портал
         }
 

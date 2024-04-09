@@ -75,7 +75,7 @@ public class GameAPI : MonoBehaviour
         }
     }
 
-    IEnumerator SaveGameData(PlayerData playerData)
+    public IEnumerator SaveGameData(PlayerData playerData)
     {
         string json = JsonUtility.ToJson(playerData);
         Debug.Log("JSON to send: " + json);

@@ -8,12 +8,10 @@ namespace RPG.Core
     {
         // Определите делегат для события изменения уровня загрузки.
         public delegate void LevelChangedEventHandler(int newLevel);
-
         // Событие, возникающее при изменении уровня загрузки.
         public static event LevelChangedEventHandler LevelChanged;
 
         [SerializeField] private int levelToLoad = -1;
-
         private static SceneLoader _instance;
 
         public static SceneLoader Instance
@@ -39,6 +37,7 @@ namespace RPG.Core
             this.levelToLoad = levelToLoad;
             // При изменении уровня загрузки вызываем событие.
             OnLevelChanged(levelToLoad);
+
         }
 
         // Вызываем событие при изменении уровня загрузки.

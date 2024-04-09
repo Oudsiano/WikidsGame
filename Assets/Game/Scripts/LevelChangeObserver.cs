@@ -14,7 +14,6 @@ public class LevelChangeObserver : MonoBehaviour
         new Vector3(196.570007f,-23.9200001f,36.7700005f),
         new Vector3(210.96077f,-9.77070045f,148.226288f)
     };
-    [SerializeField] GameAPI gameApi;
 
     private void Start()
     {
@@ -29,7 +28,6 @@ public class LevelChangeObserver : MonoBehaviour
         // Загружаем сцену с измененным номером.
         SceneManager.LoadScene(newLevel);
         UpdatePlayerLocation(spawnPoints[newLevel]);
-        gameApi.UpdateData();
     }
 
     private void OnDestroy()

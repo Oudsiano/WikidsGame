@@ -44,6 +44,11 @@ public class GameAPI : MonoBehaviour
         sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
     }
 
+    public void UpdataDataTest()
+    {
+        StartCoroutine(GetGameDataTest());
+    }
+
 
 
     public void Update()
@@ -69,6 +74,22 @@ public class GameAPI : MonoBehaviour
             Debug.Log("Data downloaded successfully");
             sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
         }
+        else
+        {
+            Debug.LogError("Error downloading data: " + request.error);
+        }
+    }
+    IEnumerator GetGameDataTest()
+    {
+        UnityWebRequest request = UnityWebRequest.Get("https://wikids.ru/api/v1/game/" + playerID);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string json = request.downloadHandler.text;
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
+            dataPlayer.playerData = playerData;
+            Debug.Log("Data downloaded successfully");        }
         else
         {
             Debug.LogError("Error downloading data: " + request.error);

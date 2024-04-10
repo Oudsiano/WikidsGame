@@ -41,15 +41,24 @@ namespace RPG.Core
             isDead = true; // Устанавливаем флаг "мертв"
             GetComponent<ActionScheduler>().CancelAction(); // Отменяем действие, выполняемое действенным планировщиком
             RemoveProjectiles(); // Удаляем снаряды
-
-            // Разрушаем/деактивируем объект
-            if (!removed) // Если объект еще не был удален
+            if (gameObject.GetComponent("MainPlayer")){}
+            else
             {
-                GetComponent<NavMeshAgent>().enabled = false; // Отключаем компонент навигации
-                removed = true; // Устанавливаем флаг "удален"
-            }
+                // Разрушаем/деактивируем объект
+                if (!removed) // Если объект еще не был удален
+                {
+                    GetComponent<NavMeshAgent>().enabled = false; // Отключаем компонент навигации
+                    removed = true; // Устанавливаем флаг "удален"
+                }
 
-            Destroy(this.gameObject, 5f); // Уничтожаем объект через 5 секунд после смерти
+                Destroy(this.gameObject, 5f); // Уничтожаем объект через 5 секунд после смерти
+            }
+        }
+
+        public void Restore()
+        {
+            currentHealth = maxHealth;
+            isDead = false;
         }
 
         // Метод для проверки, мертво ли существо

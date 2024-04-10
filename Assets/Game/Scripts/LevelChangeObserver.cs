@@ -63,6 +63,13 @@ public class LevelChangeObserver : MonoBehaviour
         // Устанавливаем позицию игрока в соответствии с порталом назначения
         MainPlayer.Instance.transform.position = spawnPoint;
 
+        Animator anim = 
+            MainPlayer.Instance.gameObject.GetComponent<Animator>();
+        anim.Rebind();
+        anim.Update(0f);
+
+        MainPlayer.Instance.gameObject.GetComponent<Health>().Restore();
+
         // Включаем навигацию для игрока
         MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = true;
     }

@@ -11,12 +11,15 @@ namespace RPG.Movement
         private Animator animator; // Ссылка на компонент аниматора
         private NavMeshAgent thisNavAgent; // Ссылка на компонент навигации
         private ActionScheduler actionScheduler; // Ссылка на планировщик действий
+        private bool isPlayer;
 
         NPCInteractable target; // Цель для взаимодействия
 
         // Метод, вызываемый при старте
         void Start()
         {
+            isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false; //Мувер должен знать на игроке он или нет
+
             // Получаем компоненты, если они не были получены ранее
             if (!thisNavAgent)
                 thisNavAgent = GetComponent<NavMeshAgent>();
@@ -31,7 +34,8 @@ namespace RPG.Movement
         {
             UpdateAnimator(); // Обновляем состояние аниматора
 
-            // Проверяем, была ли нажата кнопка мыши
+            // Проверяем, была ли нажата кнопка мыши            
+            if (isPlayer)
             if (Input.GetMouseButtonDown(0))
             {
                 CreateEffectAtMousePosition(); // Создаем эффект в позиции указателя мыши

@@ -21,23 +21,23 @@ public class LocationChange : MonoBehaviour
 
     public void ChangeButtonBattle()
     {
+        dataPlayer.SetSceneToLoad(5);
         Loading.gameObject.SetActive(true);
         // Устанавливаем значение sceneToLoad в DataPlayer и вызываем метод UpdateData через 2 секунды
-        dataPlayer.SetSceneToLoad(5);
         Debug.Log("Изменили значение scene to load в playerdata из LocationChange");
         gameAPI.SaveUpdater();
-        Invoke("LoadSceneAfterDelay", 5f);
+        Invoke("LoadSceneAfterDelay", 2f);
 
     }
 
     public void ChangeButtonTown()
     {
+        dataPlayer.SetSceneToLoad(6);
         Loading.gameObject.SetActive(true);
         // Устанавливаем значение sceneToLoad в DataPlayer и вызываем метод UpdateData через 2 секунды
-        dataPlayer.SetSceneToLoad(6);
         Debug.Log("Изменили значение scene to load в playerdata из LocationChange");
         gameAPI.SaveUpdater();
-        Invoke("LoadSceneAfterDelay", 5f);
+        Invoke("LoadSceneAfterDelay", 2f);
     }
 
     private void LoadSceneAfterDelay()

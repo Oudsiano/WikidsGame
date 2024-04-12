@@ -2,6 +2,7 @@
 using RPG.Movement;
 using RPG.Combat;
 using RPG.Core;
+using UnityEngine.EventSystems;
 
 namespace RPG.Controller
 {
@@ -100,7 +101,7 @@ namespace RPG.Controller
                 return false;
 
             // Если игрок кликнул мышью, перемещаемся к указанной точке
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 mover.StartMoveAction(hit.point);
             }

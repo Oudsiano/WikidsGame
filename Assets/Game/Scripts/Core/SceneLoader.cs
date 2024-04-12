@@ -11,7 +11,7 @@ namespace RPG.Core
         // Событие, возникающее при изменении уровня загрузки.
         public static event LevelChangedEventHandler LevelChanged;
 
-        [SerializeField] private int levelToLoad = -1;
+        [SerializeField] private int levelToLoad = 0;
         private static SceneLoader _instance;
 
         public static SceneLoader Instance

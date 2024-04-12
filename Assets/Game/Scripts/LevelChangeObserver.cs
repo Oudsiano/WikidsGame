@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class LevelChangeObserver : MonoBehaviour
 {
     Vector3[] spawnPoints = new Vector3[]
-    {
+    {new Vector3(0, 0, 0),
         new Vector3(-15.1000004f, 0f, -7.69999981f),   // Первая точка спауна
         new Vector3(-37.5600014f,-0.0500000007f,51.6399994f),   // Вторая точка спауна
         new Vector3(2.68000007f,-1f,23.5499992f),
@@ -38,10 +38,10 @@ public class LevelChangeObserver : MonoBehaviour
         // Загружаем сцену с измененным номером.
         SceneManager.LoadScene(newLevel);
         data = FindObjectOfType<DataPlayer>();
-        if(newLevel == 4 )
+        if(newLevel == 5 )
         {
             UpdatePlayerLocation(spawnPointsSavePoint[data.playerData.spawnPoint]);
-            Debug.Log("Загружена 4 сцена сюда можно добавить условие");
+            Debug.Log("Загружена 5 сцена сюда можно добавить условие");
         } else
         {
             UpdatePlayerLocation(spawnPoints[newLevel]);

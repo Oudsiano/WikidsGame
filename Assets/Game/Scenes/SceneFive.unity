@@ -881,7 +881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f855a56f33124e8c8baf64687dd1c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  urlToOpen: https://wikids.ru
+  urlToOpen: https://wikids.ru/story/zapis-i-chtenie-chisel-vtorogo-desyatka#/
 --- !u!114 &316440283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2870,7 +2870,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 369286288}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3154274580982465842, guid: 95b0fe5a6b46aff49bba9985420bf36f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2009282307}
   m_SourcePrefab: {fileID: 100100000, guid: 95b0fe5a6b46aff49bba9985420bf36f, type: 3}
 --- !u!4 &1102321199 stripped
 Transform:
@@ -4889,6 +4893,39 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6073488415347679978}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2009282304 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3154274580982465842, guid: 95b0fe5a6b46aff49bba9985420bf36f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1101785472}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &2009282307
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009282304}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &2011571371 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4803003020443780, guid: aed71a26f6deb4948906a74ef02072e8,

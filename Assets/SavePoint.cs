@@ -23,15 +23,20 @@ namespace RPG.SceneManagement
 
         public static void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer)
         {
-            for (int i = 0; i < dataPlayer.playerData.stateSpawnPoints.Count - 1; i++)
+            for (int i = 0; i < dataPlayer.playerData.stateSpawnPoints.Count; i++)
             {
-                allSavePoints[i].AlreadyEnabled = dataPlayer.playerData.stateSpawnPoints[i];
+                bool thisLast = i == dataPlayer.playerData.spawnPoint;
+                allSavePoints[i].SetAlreadyEnabled(dataPlayer.playerData.stateSpawnPoints[i], thisLast);
             }
         }
     }
 
     public class SavePoint : MonoBehaviour
     {
+        [SerializeField] public GameObject ChekedSprite;
+        [SerializeField] public GameObject LastSprite;
+        [SerializeField] public GameObject NotActiveSprite;
+
         [SerializeField] public DataPlayer dataPlayer;
         [SerializeField] public int spawnPoint;
         [SerializeField] public GameAPI api;
@@ -39,20 +44,26 @@ namespace RPG.SceneManagement
         // Переменная для хранения позиции игрока
         private Vector3 playerPosition;
 
-        public bool AlreadyEnabled
+        public void SetAlreadyEnabled(bool state, bool thisLast)
         {
-            get => alreadyEnabled;
-            set
-            {
+            alreadyEnabled = true;
 
+            ChekedSprite.SetActive(false);
+            LastSprite.SetActive(false); 
+            NotActiveSprite.SetActive(false);
 
-                alreadyEnabled = value;
-            }
+            if (thisLast)
+                LastSprite.SetActive(true);
+            else if (state)
+                ChekedSprite.SetActive(true);
+            else
+                NotActiveSprite.SetActive(true);
         }
 
         private void Awake()
         {
             SavePointsManager.AllSavePoints[spawnPoint] = this;
+            NotActiveSprite.SetActive(true);
         }
 
 
@@ -71,12 +82,13 @@ namespace RPG.SceneManagement
 
                 if (dataPlayer != null)
                 {
-                    AlreadyEnabled = true;
-                    while (dataPlayer.playerData.stateSpawnPoints.Count < spawnPoint) dataPlayer.playerData.stateSpawnPoints.Add(false);
+                    while (dataPlayer.playerData.stateSpawnPoints.Count < spawnPoint + 1) dataPlayer.playerData.stateSpawnPoints.Add(false);
                     dataPlayer.playerData.stateSpawnPoints[spawnPoint] = true;
 
                     // Если объект найден, продолжаем с сохранением игры
                     StartCoroutine(api.SaveGameData(dataPlayer.playerData));
+
+                    SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
                 }
                 else
                 {

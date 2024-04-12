@@ -4,16 +4,21 @@ using UnityEngine.SceneManagement;
 
 public class ImageSetter : MonoBehaviour
 {
-    public Image imageComponent; // Ссылка на компонент Image в вашем объекте
-    public Sprite[] imageArray; // Массив изображений, которые вы хотите использовать
+    public RawImage imageComponent; // Ссылка на компонент Image в вашем объекте
+    public Texture2D[] imageArray; // Массив изображений, которые вы хотите использовать
+    public RenderTexture[] renderTexturesArray;
 
     void Start()
     {
         // Проверка наличия компонента Image
         if (imageComponent == null)
         {
-            Debug.LogError("Image component is not assigned!");
-            return;
+            imageComponent = gameObject.GetComponent<RawImage>();
+            if (imageComponent == null)
+            {
+                Debug.LogError("Image component is not assigned!");
+                return;
+            }
         }
 
         // Добавляем метод UpdateImage как слушатель события перехода на новую сцену
@@ -33,7 +38,10 @@ public class ImageSetter : MonoBehaviour
         if (sceneIndex >= 0 && sceneIndex < imageArray.Length)
         {
             // Устанавливаем изображение из массива, соответствующее номеру сцены
-            imageComponent.sprite = imageArray[sceneIndex];
+            if (imageArray[sceneIndex] != null)
+                imageComponent.texture = imageArray[sceneIndex];
+            else
+                imageComponent.texture = renderTexturesArray[sceneIndex];
         }
         else
         {

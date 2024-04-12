@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DataPlayer : MonoBehaviour
@@ -43,4 +44,5 @@ public class PlayerData
     public int sceneToLoad;
     public bool testSuccess;
     public int spawnPoint; // Новое поле для хранения позиции объекта
+    public List<bool> stateSpawnPoints;
 }

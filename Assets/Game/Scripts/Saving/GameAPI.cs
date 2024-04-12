@@ -72,7 +72,7 @@ public class GameAPI : MonoBehaviour
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
             dataPlayer.playerData = playerData;
             Debug.Log("Data downloaded successfully");
-            //sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
+            sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
         }
         else
         {

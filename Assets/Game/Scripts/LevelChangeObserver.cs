@@ -28,7 +28,7 @@ public class LevelChangeObserver : MonoBehaviour
     private void Start()
     {
         // Подписываемся на событие изменения уровня загрузки.
-        RPG.Core.SceneLoader.LevelChanged += OnLevelChanged;
+        RPG.Core.SceneLoader.AddEventListenerLevelChange ( OnLevelChanged);
     }
 
     // Метод, вызываемый при изменении уровня загрузки.
@@ -46,12 +46,14 @@ public class LevelChangeObserver : MonoBehaviour
         {
             UpdatePlayerLocation(spawnPoints[newLevel]);
         }
+
+        RPG.SceneManagement.SavePointsManager.UpdateStateSpawnPointsAfterLoad(data);
     }
 
     private void OnDestroy()
     {
         // Не забудьте отписаться при уничтожении объекта.
-        RPG.Core.SceneLoader.LevelChanged -= OnLevelChanged;
+        RPG.Core.SceneLoader.RemoveEventListenerLevelChange ( OnLevelChanged);
     }
 
     // Метод для обновления местоположения игрока
@@ -73,4 +75,5 @@ public class LevelChangeObserver : MonoBehaviour
         // Включаем навигацию для игрока
         MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = true;
     }
+
 }

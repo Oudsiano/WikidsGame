@@ -78,6 +78,7 @@ MonoBehaviour:
     isAlive: 0
     sceneToLoad: 1
     testSuccess: 0
+    spawnPoint: 0
 --- !u!114 &4786609674801258769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 485fa95d3141c4253ba19dc54f8c2450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  api: {fileID: 6291210132810660748}
+  data: {fileID: 0}
 --- !u!114 &7755048319991277195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,6 +795,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2078131722903570005}
     m_Modifications:
+    - target: {fileID: 7320746420264680366, guid: d0f47446b13fa54478078f07bbf824b4,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 831
+      objectReference: {fileID: 0}
     - target: {fileID: 7320746421202048296, guid: d0f47446b13fa54478078f07bbf824b4,
         type: 3}
       propertyPath: m_Name

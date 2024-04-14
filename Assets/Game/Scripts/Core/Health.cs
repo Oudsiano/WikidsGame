@@ -1,4 +1,6 @@
 using RPG.Combat;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -11,6 +13,8 @@ namespace RPG.Core
         public float currentHealth; // Текущее здоровье существа
         private bool isDead = false; // Флаг, указывающий, что существо мертво
         private bool removed = false; // Флаг, указывающий, что существо было удалено
+        private int isAtackedInlast5sec = 0;
+        private bool isPlayer = false;
         public Slider healthBar; // Ссылка на полосу здоровья в пользовательском интерфейсе
 
         // Примечание: в настоящее время значение здоровья при загрузке новой сцены перезаписывается этим методом
@@ -19,18 +23,51 @@ namespace RPG.Core
         {
             currentHealth = maxHealth; // Устанавливаем текущее здоровье в максимальное значение при старте
             healthBar.value = currentHealth; // Устанавливаем значение полосы здоровья в текущее здоровье
+
+            isPlayer = gameObject.GetComponent("MainPlayer");
+
+            if (isPlayer)
+            StartCoroutine(HeallUpPLayer());
         }
 
+
+
+        private IEnumerator HeallUpPLayer()
+        {
+            while (true)
+            {
+                if (!isDead)
+                {
+                    if (isAtackedInlast5sec > 0) isAtackedInlast5sec--;
+
+                    if (isAtackedInlast5sec == 0)
+                        Heal(3);
+                    else
+                        Heal(1);
+                }
+                yield return new WaitForSeconds(1);
+            }
+        }
+
+        public void Heal(float heal)
+        {
+            currentHealth = Mathf.Min(currentHealth + heal, maxHealth);
+            Debug.Log("heal " + heal);
+        }
         // Метод для нанесения урона существу
         public void TakeDamage(float damage)
         {
             currentHealth = Mathf.Max(currentHealth - damage, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0
             print("Health of " + currentHealth); // Выводим текущее здоровье в консоль
-            healthBar.value = currentHealth; // Обновляем значение полосы здоровья
+
             if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти
-            {
                 Die();
-            }
+
+            
+            if (isPlayer)
+                isAtackedInlast5sec = 5;
+            else
+                healthBar.value = currentHealth; // хил бар только у других. У пользователя свой отдельный скрипт
         }
 
 
@@ -41,8 +78,7 @@ namespace RPG.Core
             isDead = true; // Устанавливаем флаг "мертв"
             GetComponent<ActionScheduler>().CancelAction(); // Отменяем действие, выполняемое действенным планировщиком
             RemoveProjectiles(); // Удаляем снаряды
-            if (gameObject.GetComponent("MainPlayer")){}
-            else
+            if (!isPlayer)
             {
                 // Разрушаем/деактивируем объект
                 if (!removed) // Если объект еще не был удален

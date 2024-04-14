@@ -15,9 +15,14 @@ public class UIManager : MonoBehaviour
     public Button button1Goto5;
     public Button button1Goto6;
 
+    public DeathUI DeathUI;
+
+    [SerializeField] private GameObject _againUI;
+    [SerializeField] private Button _buttonAgain;
+
 
     public SceneLoader sceneLoader;
-    void Start()
+    public void Init()
     {
         sceneLoader = FindObjectOfType<SceneLoader>();
 
@@ -27,14 +32,23 @@ public class UIManager : MonoBehaviour
         button1Goto4.onClick.AddListener(() => Click(4));
         button1Goto5.onClick.AddListener(() => Click(5));
         button1Goto6.onClick.AddListener(() => Click(6));
+
+        _buttonAgain.onClick.AddListener(OnClickAgain);
     }
 
     private void Click(int i) => sceneLoader.LoadScene(i);
 
+    public void ShowAgainUi() => _againUI.SetActive(true);
 
-    // Update is called once per frame
-    void Update()
+
+    private void OnClickAgain()
     {
-
+        var dataPlayer = FindObjectOfType<DataPlayer>();
+        sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
+        _againUI.SetActive(false);
     }
+
+
+
+
 }

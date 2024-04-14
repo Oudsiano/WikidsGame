@@ -89,6 +89,10 @@ namespace RPG.Core
 
                 Destroy(this.gameObject, 5f); // Уничтожаем объект через 5 секунд после смерти
             }
+            else
+            {
+                IGame.Instance.UIManager.DeathUI.ShowDeathScreen();
+            }
         }
 
         public void Restore()

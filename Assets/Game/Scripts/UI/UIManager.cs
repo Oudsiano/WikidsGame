@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject _againUI;
     [SerializeField] private Button _buttonAgain;
+    [SerializeField] private TMPro.TextMeshProUGUI textCoin;
+
 
 
     public SceneLoader sceneLoader;
@@ -48,7 +50,10 @@ public class UIManager : MonoBehaviour
         _againUI.SetActive(false);
     }
 
-
+    public void setCoinCount(string c)
+    {
+        textCoin.text = "монет: " +c;
+    }
 
 
 }

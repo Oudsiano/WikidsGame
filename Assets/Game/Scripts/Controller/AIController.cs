@@ -47,7 +47,7 @@ namespace RPG.Controller
             if (health.IsDead())
                 return;
 
-            if (DistanceToPlayer() < 25)
+            if (DistanceToPlayer() < 40)
             {
                 InteractWithCombat(); // Взаимодействие с боем (игроком)
             }

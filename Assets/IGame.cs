@@ -10,6 +10,7 @@ public class IGame : MonoBehaviour
     public DataPlayer dataPLayer;
 
     [SerializeField] public UIManager UIManager;
+    [SerializeField] public CoinManager CoinManager;
 
 
     private void Awake()

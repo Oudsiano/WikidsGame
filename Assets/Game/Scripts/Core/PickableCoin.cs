@@ -14,6 +14,11 @@ public class PickableCoin : MonoBehaviour
         textCount.text = count.ToString();
     }
 
+    public void MakeCoint(float count)
+    {
+
+    }
+
     // Метод, вызываемый при взаимодействии с коллайдером
     private void OnTriggerEnter(Collider other)
     {

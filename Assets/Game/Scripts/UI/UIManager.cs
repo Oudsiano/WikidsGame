@@ -62,9 +62,9 @@ public class UIManager : MonoBehaviour
             _buttonCancelAgain.gameObject.SetActive(false);
     }
 
-    private void closeAgainUI()
+    private void closeAgainUI(bool force=false)
     {
-        if (IGame.Instance.dataPLayer.playerData.health > 0)
+        if ((IGame.Instance.dataPLayer.playerData.health > 0) || (force))
         {
             _againUI.SetActive(false);
             KeyBoardsEvents.escState = KeyBoardsEvents.EscState.none;
@@ -75,7 +75,7 @@ public class UIManager : MonoBehaviour
     
     public void OnClickGoToSceneZero()
     {
-        closeAgainUI();
+        closeAgainUI(true);
         IGame.Instance.gameAPI.SaveUpdater();
 
 

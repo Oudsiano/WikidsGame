@@ -937,6 +937,8 @@ MonoBehaviour:
   DeathUI: {fileID: 0}
   _againUI: {fileID: 0}
   _buttonAgain: {fileID: 0}
+  _buttonGoToSceneZero: {fileID: 0}
+  _buttonCancelAgain: {fileID: 0}
   textCoin: {fileID: 0}
   sceneLoader: {fileID: 0}
 --- !u!1 &2810324688132480570
@@ -1396,6 +1398,57 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &3363321234057354150
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4915233362586667249}
+  - component: {fileID: 5481778844905311135}
+  m_Layer: 0
+  m_Name: PlayerArmorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4915233362586667249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3363321234057354150}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7778397225930648714}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5481778844905311135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3363321234057354150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d84a9fb92a84e0499e14d7826712480, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllChests:
+  - armorType: 0
+    armorID: 1
+    armorGO: {fileID: 2916036385292444398}
+  - armorType: 0
+    armorID: 2
+    armorGO: {fileID: 2915570540339368838}
 --- !u!1 &3413329399014056009
 GameObject:
   m_ObjectHideFlags: 0
@@ -4307,6 +4360,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 5530618405099810195}
+    - targetCorrespondingSourceObject: {fileID: 9038297596120032153, guid: 37bc44cce0831404eb1918df3847c8d7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4915233362586667249}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7503963754105802358, guid: 37bc44cce0831404eb1918df3847c8d7,
         type: 3}
@@ -4384,6 +4441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 082b53598d0679448be7bad5dffe459d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerArmorManager: {fileID: 0}
 --- !u!114 &1822817757280586756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4458,6 +4516,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1676377238109560, guid: ddc4cd0622acc4847817cc15268b4a19, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4005077195242232, guid: ddc4cd0622acc4847817cc15268b4a19, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4523,6 +4585,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddc4cd0622acc4847817cc15268b4a19, type: 3}
+--- !u!1 &2915570540339368838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1140154806078480, guid: ddc4cd0622acc4847817cc15268b4a19,
+    type: 3}
+  m_PrefabInstance: {fileID: 2914430406745989014}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2916036385292444398 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1676377238109560, guid: ddc4cd0622acc4847817cc15268b4a19,
+    type: 3}
+  m_PrefabInstance: {fileID: 2914430406745989014}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2917234815616165230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4005077195242232, guid: ddc4cd0622acc4847817cc15268b4a19,

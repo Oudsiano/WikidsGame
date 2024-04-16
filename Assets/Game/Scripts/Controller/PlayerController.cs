@@ -15,6 +15,8 @@ namespace RPG.Controller
         private Mover mover; // Компонент, отвечающий за перемещение игрока
         private Health health; // Компонент, отвечающий за здоровье игрока
 
+        public  PlayerArmorManager playerArmorManager;
+
         private int enemyLayer = 9; // Номер слоя для врагов
 
         // Метод Start вызывается перед первым обновлением кадра
@@ -24,6 +26,7 @@ namespace RPG.Controller
             mover = GetComponent<Mover>();
             fighter = GetComponent<Fighter>();
             health = GetComponent<Health>();
+            playerArmorManager = FindObjectOfType<PlayerArmorManager>();
         }
 
         // Метод Update вызывается один раз за кадр

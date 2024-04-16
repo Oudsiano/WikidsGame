@@ -10,6 +10,7 @@ public class DeathUI : MonoBehaviour
 
     public void ShowDeathScreen()
     {
+
         gameObject.SetActive(true);
         _deathText.fontSize = 42;
         _deathText.transform.DOKill();

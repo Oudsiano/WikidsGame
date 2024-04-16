@@ -8,6 +8,7 @@ public class IGame : MonoBehaviour
 
     public LevelChangeObserver LChanger;
     public DataPlayer dataPLayer;
+    public GameAPI gameAPI;
 
     [SerializeField] public UIManager UIManager;
     [SerializeField] public CoinManager CoinManager;
@@ -19,6 +20,7 @@ public class IGame : MonoBehaviour
             Instance = this;
 
         dataPLayer = FindObjectOfType<DataPlayer>();
+        gameAPI = FindObjectOfType<GameAPI>();
 
         UIManager.Init();
     }

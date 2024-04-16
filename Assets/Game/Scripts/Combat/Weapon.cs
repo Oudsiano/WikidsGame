@@ -30,6 +30,7 @@ namespace RPG.Combat
             {
                 Transform handPos = FindTransformOfHand(rightHandPos, lefthandPos);
                 GameObject wepInScene = Instantiate(weaponPrefab, handPos);
+                wepInScene.transform.localScale = Vector3.one*  1/ wepInScene.transform.lossyScale.x;
                 wepInScene.name = weaponName;
             }
 

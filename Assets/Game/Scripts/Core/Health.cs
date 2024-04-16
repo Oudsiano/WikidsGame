@@ -88,6 +88,7 @@ namespace RPG.Core
                 }
 
                 Destroy(this.gameObject, 5f); // Уничтожаем объект через 5 секунд после смерти
+                IGame.Instance.CoinManager.MakeGoldOnSceneWithCount(25, this.gameObject.transform.position);
             }
             else
             {

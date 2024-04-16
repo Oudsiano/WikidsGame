@@ -47,7 +47,11 @@ namespace RPG.Controller
             if (health.IsDead())
                 return;
 
-            InteractWithCombat(); // Взаимодействие с боем (игроком)
+            if (DistanceToPlayer() < 40)
+            {
+                InteractWithCombat(); // Взаимодействие с боем (игроком)
+            }
+
             timeSinceLastSawPlayer += Time.deltaTime; // Обновляем время с момента последней видимости игрока
         }
 

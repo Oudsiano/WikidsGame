@@ -52,7 +52,6 @@ namespace RPG.Core
         public void Heal(float heal)
         {
             currentHealth = Mathf.Min(currentHealth + heal, maxHealth);
-            Debug.Log("heal " + heal);
         }
         // Метод для нанесения урона существу
         public void TakeDamage(float damage)

@@ -7,7 +7,7 @@ using TMPro;
 
 public class GameAPI : MonoBehaviour
 {
-    public DataPlayer dataPlayer;
+    private DataPlayer dataPlayer;
     public SceneLoader sceneLoader;
     public string playerID;
     public TMP_Text textForOtl;
@@ -17,6 +17,8 @@ public class GameAPI : MonoBehaviour
 
     public void Start()
     {
+        dataPlayer = IGame.Instance.dataPLayer;
+
         IDUpdater();
         SaveUpdater();
         UpdateData();

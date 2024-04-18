@@ -19,10 +19,8 @@ public class ConversationStarter : MonoBehaviour
         DataPlayer playerData = FindObjectOfType<DataPlayer>();
         ConversationManager.Instance.StartConversation(myConversation);
         DialogStarted = true;
-            Debug.Log("Dialog Started");
-            ConversationManager.Instance.SetBool("TestSuccess", playerData.playerData.testSuccess);
-            //ConversationManager.Instance.SetBool("TestSuccess", true);
-        
+        Debug.Log("Dialog Started");
+
     }
 
     public void DialogEnded()

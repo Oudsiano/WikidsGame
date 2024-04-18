@@ -10,7 +10,6 @@ namespace RPG.SceneManagement
     public class SavePointsManager
     {
         private static Dictionary<int, SavePoint> allSavePoints;
-
         public static Dictionary<int, SavePoint> AllSavePoints
         {
             get
@@ -33,10 +32,11 @@ namespace RPG.SceneManagement
 
     public class SavePoint : MonoBehaviour
     {
+        [SerializeField] ParticleSystem savePointUpdated;
         [SerializeField] public GameObject ChekedSprite;
         [SerializeField] public GameObject LastSprite;
         [SerializeField] public GameObject NotActiveSprite;
-
+        [SerializeField] public Health health;
         [SerializeField] public DataPlayer dataPlayer;
         [SerializeField] public int spawnPoint;
         [SerializeField] public GameAPI api;
@@ -64,6 +64,7 @@ namespace RPG.SceneManagement
         {
             SavePointsManager.AllSavePoints[spawnPoint] = this;
             NotActiveSprite.SetActive(true);
+            health = FindObjectOfType<Health>();
         }
 
 
@@ -76,7 +77,9 @@ namespace RPG.SceneManagement
                 playerPosition = other.transform.position;
                 dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
                                                              // Сохраняем позицию игрока
-
+                savePointUpdated.gameObject.SetActive(true);
+                Debug.Log("включили партикл при сохранении");
+                health.Restore();
                 dataPlayer.SavePlayerPosition(spawnPoint);
                 api = FindObjectOfType<GameAPI>(); // Попытка найти объект DataPlayer в сцене
 

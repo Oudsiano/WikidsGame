@@ -85,7 +85,7 @@ namespace RPG.Core
                     GetComponent<NavMeshAgent>().enabled = false; // Отключаем компонент навигации
                     removed = true; // Устанавливаем флаг "удален"
                 }
-
+                Destroy(healthBar.gameObject);
                 Destroy(this.gameObject, 5f); // Уничтожаем объект через 5 секунд после смерти
                 IGame.Instance.CoinManager.MakeGoldOnSceneWithCount(25, this.gameObject.transform.position);
             }

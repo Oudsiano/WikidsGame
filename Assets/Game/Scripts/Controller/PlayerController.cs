@@ -4,6 +4,7 @@ using RPG.Movement;
 using RPG.Combat;
 using RPG.Core;
 using UnityEngine.EventSystems;
+using DialogueEditor;
 
 namespace RPG.Controller
 {
@@ -107,7 +108,15 @@ namespace RPG.Controller
             // Если игрок кликнул мышью, перемещаемся к указанной точке
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                mover.StartMoveAction(hit.point);
+                bool readyToGo = true;
+
+                if (ConversationManager.Instance!=null)
+                    if (ConversationManager.Instance.IsConversationActive)
+                        readyToGo = false;
+
+                if (readyToGo)
+
+                    mover.StartMoveAction(hit.point);
             }
 
             return true;

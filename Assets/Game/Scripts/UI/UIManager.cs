@@ -92,7 +92,7 @@ public class UIManager : MonoBehaviour
 
     public void setCoinCount(string c)
     {
-        textCoin.text = "монет: " + c;
+        textCoin.text = c;
     }
 
 

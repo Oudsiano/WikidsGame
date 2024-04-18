@@ -9,7 +9,7 @@ public class CoinManager : MonoBehaviour
     public void MakeGoldOnSceneWithCount(float count, Vector3 pos)
     {
         double countCoins = count;
-        Instantiate(_Coin, pos, Quaternion.identity)
+        Instantiate(_Coin, pos, Quaternion.Euler(0, 0, 0))
             .GetComponent<PickableCoin>()
             .Init(count);
     }

@@ -10,12 +10,17 @@ public class ConversationStarter : MonoBehaviour
     [SerializeField] public NPCConversation myConversation;
     public void StartDialog()
     {
+        if (ConversationManager.Instance.IsConversationActive)
+        {
+            Debug.LogError("Попытка запустить диалог при уже запущенном диалоге. Некритичная ошибка, но косячок");
+            return;
+        }
+
         DataPlayer playerData = FindObjectOfType<DataPlayer>();
         ConversationManager.Instance.StartConversation(myConversation);
         DialogStarted = true;
-            Debug.Log("Dialog Started");
-            ConversationManager.Instance.SetBool("TestSuccess", playerData.playerData.testSuccess);
-        
+        Debug.Log("Dialog Started");
+
     }
 
     public void DialogEnded()

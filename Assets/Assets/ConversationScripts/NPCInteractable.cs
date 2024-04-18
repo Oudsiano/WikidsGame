@@ -14,12 +14,29 @@ public class NPCInteractable : MonoBehaviour
     private ConversationStarter conversationStarter;
 
 
+    RaycastHit hit;
 
     void Awake()
     {
         conversationStarter = GetComponentInParent<ConversationStarter>();
 
     }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                if (hit.transform.gameObject == gameObject)
+                    if (!ConversationManager.Instance.IsConversationActive)
+                        InteractWithNPC();
+            }
+        }
+    }
+
+
 
     public void InteractWithNPC()
     {

@@ -87,7 +87,7 @@ public class UIManager : MonoBehaviour
     {
         var dataPlayer = FindObjectOfType<DataPlayer>();
         sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
-        closeAgainUI();
+        closeAgainUI(true);
     }
 
     public void setCoinCount(string c)

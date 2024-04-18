@@ -49,23 +49,6 @@ namespace RPG.Core
             cameraMovement(); // Вызываем метод для управления камерой
         }
 
-        private bool rotationDirectLeft(float rstart, float rtarget)
-        {
-            rstart = rstart % 360;
-            rtarget = rtarget % 360;
-
-            float delta = 0;
-
-            if (rstart < 0) delta = Math.Abs(rstart); else delta = rstart;
-            if (rtarget < 0) delta += Math.Abs(rtarget); else delta = rtarget;
-
-            delta = delta % 360;
-
-
-            if (delta > 180)
-                return true;
-            else return false;
-        }
 
         // Метод для управления камерой
         private void cameraMovement()
@@ -77,14 +60,14 @@ namespace RPG.Core
             if (trackPlayer)
                 transform.position = target.position; // Позиционируем камеру на цели
 
-            float newCameraRY = 0;
+            //float newCameraRY = 0;
             // Обрабатываем вращение камеры при нажатии правой кнопки мыши
             if (canRotate && Input.GetMouseButton(1))
             {
                 RotationMovement(); // Вызываем метод для вращения
-                newCameraRY = IGame.Instance.playerController.transform.localEulerAngles.y;
+                //newCameraRY = IGame.Instance.playerController.transform.localEulerAngles.y;
             }
-            else
+            /*else
             {
                 targetCamYRotationPLayer = IGame.Instance.playerController.transform.localEulerAngles.y;
                 currentCamYRPLayer = transform.localEulerAngles.y;
@@ -106,7 +89,7 @@ namespace RPG.Core
                 camYRotation = 0;
             }
             // Применяем вращение к камере
-            transform.localEulerAngles = new Vector3(camXRotation, newCameraRY + camYRotation, 0);
+            transform.localEulerAngles = new Vector3(camXRotation, newCameraRY + camYRotation, 0);*/
 
             if (canZoom)
             {
@@ -125,6 +108,9 @@ namespace RPG.Core
             camXRotation = Mathf.Clamp(camXRotation, -10, 10);
             // Ограничиваем вращение по оси Y
             camYRotation = Mathf.Clamp(camYRotation, -90, 90);
+
+
+            transform.localEulerAngles = new Vector3(camXRotation, camYRotation, 0);
         }
 
         // Метод для масштабирования камеры

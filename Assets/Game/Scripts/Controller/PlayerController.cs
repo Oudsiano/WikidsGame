@@ -30,6 +30,8 @@ namespace RPG.Controller
             playerArmorManager = FindObjectOfType<PlayerArmorManager>();
         }
 
+        public Health getHealth () => health;
+
         // Метод Update вызывается один раз за кадр
         void Update()
         {

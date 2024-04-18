@@ -3,15 +3,15 @@ using RPG.Combat;
 using RPG.Controller;
 using UnityEngine;
 
-public class PickableCoin : MonoBehaviour
+public class PickableHPBottle : MonoBehaviour
 {
-    [SerializeField] private float count; 
-    [SerializeField] private TMPro.TextMeshPro textCount;
+    [SerializeField] private float countHPRestore; 
+    //[SerializeField] private TMPro.TextMeshPro textCount;
 
     public void Init(float c)
     {
-        count = c;
-        textCount.text = count.ToString();
+        countHPRestore = c;
+        //textCount.text = count.ToString();
     }
 
     // Метод, вызываемый при взаимодействии с коллайдером
@@ -19,8 +19,7 @@ public class PickableCoin : MonoBehaviour
     {
         if (other.GetComponent<PlayerController>())
         {
-            IGame.Instance.dataPLayer.playerData.coins += count;
-            IGame.Instance.UIManager.setCoinCount(IGame.Instance.dataPLayer.playerData.coins.ToString());
+            IGame.Instance.playerController.getHealth().Heal(countHPRestore);
             Destroy(gameObject);
         }
     }

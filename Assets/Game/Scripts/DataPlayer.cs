@@ -36,6 +36,25 @@ public class DataPlayer : MonoBehaviour
 }
 
 [System.Serializable]
+public class OneLeson
+{
+    public int id;
+    public string title;
+    public bool completed;
+    public OneTestQuestion[] tests;
+}
+
+
+[System.Serializable]
+public class OneTestQuestion
+{
+    public int id;
+    public string title;
+    public bool completed;
+}
+
+
+[System.Serializable]
 public class PlayerData
 {
     public int id;
@@ -46,4 +65,5 @@ public class PlayerData
     public bool testSuccess;
     public int spawnPoint; // Новое поле для хранения позиции объекта
     public List<bool> stateSpawnPoints;
+    public OneLeson[] progress;
 }

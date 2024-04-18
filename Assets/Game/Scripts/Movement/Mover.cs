@@ -36,19 +36,23 @@ namespace RPG.Movement
 
             // Проверяем, была ли нажата кнопка мыши            
             if (isPlayer)
-            if (Input.GetMouseButtonDown(0))
-            {
-                CreateEffectAtMousePosition(); // Создаем эффект в позиции указателя мыши
-            }
-
-            // Если есть цель для взаимодействия и мы достигли ее, выполняем взаимодействие
-            if (target != null)
-            {
-                if ((transform.position - target.transform.position).magnitude < 1f)
+                if (Input.GetMouseButtonDown(0))
                 {
-                    target.InteractWithNPC(); // Вызываем метод взаимодействия с NPC
+                    CreateEffectAtMousePosition(); // Создаем эффект в позиции указателя мыши
                 }
-            }
+
+
+                //Вынес вызов диалогового окна в сам скрипт NPCInteractable
+                /*
+                // Если есть цель для взаимодействия и мы достигли ее, выполняем взаимодействие
+                if (target != null)
+                {
+                    if (!ConversationManager.Instance.IsConversationActive)
+                        if ((transform.position - target.transform.position).magnitude < 2f)
+                        {
+                            target.InteractWithNPC(); // Вызываем метод взаимодействия с NPC
+                        }
+                }*/
         }
 
         // Метод для начала действия перемещения к определенной точке
@@ -56,7 +60,7 @@ namespace RPG.Movement
         {
             actionScheduler.StartAction(this); // Устанавливаем текущее действие как перемещение
             MoveTo(pos); // Вызываем метод перемещения к заданной точке
-             
+
         }
 
         // Метод для перемещения к указанной точке

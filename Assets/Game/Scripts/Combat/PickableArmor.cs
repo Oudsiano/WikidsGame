@@ -47,7 +47,7 @@ public class PickableArmor : MonoBehaviour
     private void ShowPickup(bool shouldShow)
     {
         // Включаем или выключаем коллайдер сферы пикапа
-        GetComponent<SphereCollider>().enabled = shouldShow;
+        GetComponent<MeshCollider>().enabled = shouldShow;
 
         // Для каждого дочернего объекта пикапа включаем или выключаем его активность
         foreach (Transform child in transform)

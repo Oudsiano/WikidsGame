@@ -11,6 +11,7 @@ public class PickableCoin : MonoBehaviour
     public void Init(float c)
     {
         count = c;
+        if (textCount!=null)
         textCount.text = count.ToString();
     }
 

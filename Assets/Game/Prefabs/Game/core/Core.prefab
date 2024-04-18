@@ -408,6 +408,7 @@ MonoBehaviour:
   LChanger: {fileID: 4387009009627075927}
   dataPLayer: {fileID: 0}
   gameAPI: {fileID: 0}
+  playerController: {fileID: 0}
   UIManager: {fileID: 1092365476529823417}
   CoinManager: {fileID: 7742220572861580248}
 --- !u!1 &2172091460164526445
@@ -2935,6 +2936,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2078131722903570005}
     m_Modifications:
+    - target: {fileID: 1874508559190565067, guid: d0f47446b13fa54478078f07bbf824b4,
+        type: 3}
+      propertyPath: speedRotationFollowPLayer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7320746420264680366, guid: d0f47446b13fa54478078f07bbf824b4,
         type: 3}
       propertyPath: m_ClearFlags

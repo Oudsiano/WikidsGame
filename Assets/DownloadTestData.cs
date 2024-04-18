@@ -6,7 +6,7 @@ using UnityEngine;
 public class DownloadTestData : MonoBehaviour
 {
     [SerializeField] private GameAPI gameAPI;
-
+    public int countSuccessAnswers;
     public void DownloadData()
     {
         gameAPI = FindObjectOfType<GameAPI>();
@@ -26,9 +26,11 @@ public class DownloadTestData : MonoBehaviour
                             countSuccessAnswer++;
                     }
             }
-        }
 
-        Debug.Log("Правильных ответов " + countSuccessAnswer);
+        }
+        countSuccessAnswers = countSuccessAnswer;
+
+        Debug.Log("?????????? ??????? " + countSuccessAnswer);
         ConversationManager.Instance.SetBool("TestSuccess", IGame.Instance.dataPLayer.playerData.testSuccess);
 
         //ConversationManager.Instance.SetBool("TestSuccess", true);

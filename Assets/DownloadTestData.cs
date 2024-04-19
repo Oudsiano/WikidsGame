@@ -29,9 +29,10 @@ public class DownloadTestData : MonoBehaviour
 
         }
         countSuccessAnswers = countSuccessAnswer;
+        IGame.Instance.dataPLayer.playerData.chargeEnergy = countSuccessAnswer;
+        IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPLayer.playerData.chargeEnergy.ToString());
 
         Debug.Log("?????????? ??????? " + countSuccessAnswer);
-        ConversationManager.Instance.SetBool("TestSuccess", IGame.Instance.dataPLayer.playerData.testSuccess);
 
         //ConversationManager.Instance.SetBool("TestSuccess", true);
     }

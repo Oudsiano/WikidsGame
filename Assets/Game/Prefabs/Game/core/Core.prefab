@@ -336,10 +336,31 @@ MonoBehaviour:
     coins: 0
     isAlive: 0
     sceneToLoad: 1
-    testSuccess: 0
+    testSuccess: 1
     spawnPoint: 0
     stateSpawnPoints: 
-    progress: []
+    progress:
+    - id: 0
+      title: 
+      completed: 1
+      tests:
+      - id: 0
+        title: 
+        completed: 1
+      - id: 0
+        title: 
+        completed: 1
+    - id: 0
+      title: 
+      completed: 1
+      tests:
+      - id: 0
+        title: 
+        completed: 1
+      - id: 0
+        title: 
+        completed: 1
+    chargeEnergy: 0
 --- !u!114 &4786609674801258769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -754,7 +775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5077005825972612267
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1124,7 +1145,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &263206911511911876
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1392,7 +1413,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1765328388717943172
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1604,6 +1625,7 @@ MonoBehaviour:
   _buttonGoToSceneZero: {fileID: 4534444170889273715}
   _buttonCancelAgain: {fileID: 6098970654170074271}
   textCoin: {fileID: 6130439632128597187}
+  energyCharger: {fileID: 534809655439311696}
   sceneLoader: {fileID: 0}
 --- !u!114 &7481068602050475842
 MonoBehaviour:
@@ -3344,10 +3366,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4031199688639447990}
     m_Modifications:
+    - target: {fileID: 4291849956296127756, guid: a7523899c5bf44993b0443c836d7040f,
+        type: 3}
+      propertyPath: m_text
+      value: 0/5
+      objectReference: {fileID: 0}
     - target: {fileID: 4481752481957786172, guid: a7523899c5bf44993b0443c836d7040f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5154177232689489513, guid: a7523899c5bf44993b0443c836d7040f,
         type: 3}
@@ -3469,6 +3496,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7523899c5bf44993b0443c836d7040f, type: 3}
+--- !u!114 &534809655439311696 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4291849956296127756, guid: a7523899c5bf44993b0443c836d7040f,
+    type: 3}
+  m_PrefabInstance: {fileID: 4387544283203679836}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &5916549544950188745 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7996279888496032917, guid: a7523899c5bf44993b0443c836d7040f,

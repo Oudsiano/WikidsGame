@@ -59,6 +59,7 @@ public class PlayerData
 {
     public int id;
     public int health;
+    public int fireballs;
     public float coins;
     public bool isAlive;
     public int sceneToLoad;

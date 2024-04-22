@@ -15,7 +15,9 @@ namespace RPG.Combat
         [SerializeField] private Transform leftHandPosition = null; // Позиция левой руки для прикрепления оружия
         [SerializeField] private Weapon defaultWeapon = null; // Базовое оружие
         [SerializeField] private Weapon equippedWeapon = null; // Текущее экипированное оружие
+        [SerializeField] private Weapon FireballWeapon = null;
         private bool isPlayer;
+        private bool isFirebalNow = false;
 
         [Header("")]
         public float timer = 20; // Таймер для определения времени между атаками
@@ -43,11 +45,31 @@ namespace RPG.Combat
                 EquipWeapon(defaultWeapon); // Экипируем базовое оружие при старте, если нет текущего оружия
         }
 
+        public void SetFirball()
+        {
+            isFirebalNow = true;
+            FireballWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
+        }
+        public void SetCommonWeapon()
+        {
+            isFirebalNow = false;
+            equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
+        }
+
+
         // Экипировка оружия
         public void EquipWeapon(Weapon weapon)
         {
-            equippedWeapon = weapon; // Устанавливаем текущее оружие
-            weapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim); // Создаем модель оружия на персонаже
+            if (weapon.IsFireball())
+            {
+                FireballWeapon = weapon;
+                return;
+            }
+            else
+            {
+                equippedWeapon = weapon; // Устанавливаем текущее оружие
+                SetCommonWeapon();
+            }
         }
 
         // Снятие оружия
@@ -94,28 +116,37 @@ namespace RPG.Combat
             }
             else if (timer > equippedWeapon.GetTimeBetweenAttacks()) // Проверяем, прошло ли время между атаками
             {
-                bool nextStep = true;
-                if (isPlayer && equippedWeapon.IsFireball() && (equippedWeapon.IsRanged()))
+                if (isPlayer && isFirebalNow)
                 {
 
                     if (IGame.Instance.dataPLayer.playerData.chargeEnergy > 0)
                     {
                         MainPlayer.Instance.ChangeCountEnegry(-1);
+                        shotFireball();
+                        timer = 0; // Сбрасываем таймер атаки
+                        return;
                     }
                     else
-                        nextStep = false;
+                    {
+                        IGame.Instance.playerController.WeaponPanelUI.ResetWeaponToDefault();
+                    }
                 }
 
-                if (nextStep)
-                {
-                    anim.ResetTrigger("stopAttack"); // Сбрасываем триггер остановки атаки
-                    anim.SetTrigger("attack"); // Запускаем анимацию атаки
+                anim.ResetTrigger("stopAttack"); // Сбрасываем триггер остановки атаки
+                anim.SetTrigger("attack"); // Запускаем анимацию атаки
 
-                    if (equippedWeapon.IsRanged()) // Если оружие дальнего боя
-                        equippedWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition); // Создаем снаряд
-                }
+                if (equippedWeapon.IsRanged()) // Если оружие дальнего боя
+                    equippedWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition); // Создаем снаряд
+
                 timer = 0; // Сбрасываем таймер атаки
             }
+        }
+
+        private void shotFireball()
+        {
+            anim.ResetTrigger("stopAttack"); // Сбрасываем триггер остановки атаки
+            anim.SetTrigger("attack"); // Запускаем анимацию атаки
+            FireballWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition); // Создаем снаряд
         }
 
         // Отмена действия

@@ -3,7 +3,6 @@ using UnityEngine.EventSystems;
 using RPG.Movement;
 using RPG.Combat;
 using RPG.Core;
-using UnityEngine.EventSystems;
 using DialogueEditor;
 
 namespace RPG.Controller
@@ -18,6 +17,8 @@ namespace RPG.Controller
 
         public  PlayerArmorManager playerArmorManager;
 
+        public WeaponPanelUI WeaponPanelUI;
+
         private int enemyLayer = 9; // Номер слоя для врагов
 
         // Метод Start вызывается перед первым обновлением кадра
@@ -28,9 +29,15 @@ namespace RPG.Controller
             fighter = GetComponent<Fighter>();
             health = GetComponent<Health>();
             playerArmorManager = FindObjectOfType<PlayerArmorManager>();
+
+
+            WeaponPanelUI = FindObjectOfType<WeaponPanelUI>();
+
+            WeaponPanelUI.Init();
         }
 
-        public Health getHealth () => health;
+        public Health GetHealth () => health;
+        public Fighter GetFighter () => fighter;
 
         // Метод Update вызывается один раз за кадр
         void Update()
@@ -100,8 +107,7 @@ namespace RPG.Controller
         {
             // Получаем луч из мыши
             Ray ray = GetMouseRay();
-            RaycastHit hit;
-            bool hasHit = Physics.Raycast(ray, out hit);
+            bool hasHit = Physics.Raycast(ray, out RaycastHit hit);
 
             // Если луч не попал ни в один объект, возвращаем false
             if (!hasHit)

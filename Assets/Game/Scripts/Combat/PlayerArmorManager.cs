@@ -6,6 +6,7 @@ using static PickableArmor;
 
 public enum armorType
 {
+    none,
     chest
 }
 
@@ -34,24 +35,4 @@ public class PlayerArmorManager : MonoBehaviour
     [SerializeField] public ArmorOne[] AllChests;
 
 
-    private void Awake()
-    {
-
-    }
-
-    public void EquipNewArmor(armorType type, armorID id)
-    {
-        foreach (var armor in AllChests)
-        {
-            if (type == armor.armorType)
-            {
-                if (id == armor.armorID)
-                    armor.armorGO.SetActive(true);
-                else
-                    armor.armorGO.SetActive(false);
-            }
-
-        }
-
-    }
 }

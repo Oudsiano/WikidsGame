@@ -19,7 +19,7 @@ public class PickableHPBottle : MonoBehaviour
     {
         if (other.GetComponent<PlayerController>())
         {
-            IGame.Instance.playerController.getHealth().Heal(countHPRestore);
+            IGame.Instance.playerController.GetHealth().Heal(countHPRestore);
             Destroy(gameObject);
         }
     }

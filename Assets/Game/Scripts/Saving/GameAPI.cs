@@ -4,6 +4,7 @@ using RPG.Core;
 using System.Collections;
 using System.Text;
 using TMPro;
+using DialogueEditor;
 
 public class GameAPI : MonoBehaviour
 {
@@ -81,6 +82,7 @@ public class GameAPI : MonoBehaviour
             Debug.LogError("Error downloading data: " + request.error);
         }
     }
+
     IEnumerator GetGameDataTest()
     {
         UnityWebRequest request = UnityWebRequest.Get("https://wikids.ru/api/v1/game/" + playerID);
@@ -91,6 +93,29 @@ public class GameAPI : MonoBehaviour
             string json = request.downloadHandler.text;
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
             dataPlayer.playerData = playerData;
+
+            int countSuccessAnswer = 0;
+
+            if (IGame.Instance.dataPLayer.playerData.progress != null)
+            {
+                foreach (OneLeson item in IGame.Instance.dataPLayer.playerData.progress)
+                {
+                    if (item != null)
+                        foreach (OneTestQuestion item2 in item.tests)
+                        {
+                            if (item2.completed)
+                                countSuccessAnswer++;
+                        }
+                }
+
+            }
+            int countSuccessAnswers = countSuccessAnswer + 1;
+            RPG.Core.MainPlayer.Instance.ChangeCountEnegry(countSuccessAnswers);
+
+            ConversationManager.Instance.SetBool("TestSuccess", countSuccessAnswers > 0);
+
+            Debug.Log("?????????? ??????? " + countSuccessAnswers);
+
             Debug.Log("Data downloaded successfully");        }
         else
         {

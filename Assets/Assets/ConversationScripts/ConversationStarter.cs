@@ -22,16 +22,12 @@ public class ConversationStarter : MonoBehaviour
         DialogStarted = true;
         Debug.Log("Dialog Started");
         //TODO: ??????? ?????? ? ???????? ?????? data.countSuccessAnswer ??? ????? ???????.
-        Debug.Log(data.countSuccessAnswers);
+        //Debug.Log(data.countSuccessAnswers);
     }
 
     public void DialogEnded()
     {
         DialogStarted = false;
 
-    }
-    public void SetTestSuccess()
-    {
-        ConversationManager.Instance.SetBool("TestSuccess", data.countSuccessAnswers > 0);
     }
 }

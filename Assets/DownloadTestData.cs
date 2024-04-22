@@ -30,8 +30,7 @@ public class DownloadTestData : MonoBehaviour
 
         }
         countSuccessAnswers = countSuccessAnswer;
-        IGame.Instance.dataPLayer.playerData.chargeEnergy = countSuccessAnswer;
-        IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPLayer.playerData.chargeEnergy.ToString());
+        RPG.Core.MainPlayer.Instance.ChangeCountEnegry(countSuccessAnswer);
         starterConversation.SetTestSuccess();
         Debug.Log("?????????? ??????? " + countSuccessAnswer);
 

@@ -11,6 +11,7 @@ namespace RPG.Combat
         [SerializeField] private GameObject weaponPrefab; // Префаб объекта оружия
         [SerializeField] private bool isRightHanded = true; // Определяет, используется ли правая рука по умолчанию
         [SerializeField] private Projectile projectile; // Ссылка на снаряд, если оружие дистанционное
+        [SerializeField] private bool IsFireballs = false;
 
         [Header("Stats")]
         [SerializeField] private float weaponDamage; // Урон, наносимый оружием
@@ -92,6 +93,12 @@ namespace RPG.Combat
             var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
             proj.SetTarget(target, weaponDamage);
         }
+
+        public bool IsFireball()
+        {
+            return IsFireballs;
+        }
+
 
         // Определяет, является ли оружие дистанционным
         public bool IsRanged()

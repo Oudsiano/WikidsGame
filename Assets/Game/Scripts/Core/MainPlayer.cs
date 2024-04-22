@@ -34,5 +34,11 @@ namespace RPG.Core
                 DontDestroyOnLoad(this.gameObject);
             }
         }
+
+        public void ChangeCountEnegry(int change)
+        {
+            IGame.Instance.dataPLayer.playerData.chargeEnergy += change;
+            IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPLayer.playerData.chargeEnergy.ToString());
+        }
     }
 }

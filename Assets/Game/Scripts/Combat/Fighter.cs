@@ -15,6 +15,7 @@ namespace RPG.Combat
         [SerializeField] private Transform leftHandPosition = null; // Позиция левой руки для прикрепления оружия
         [SerializeField] private Weapon defaultWeapon = null; // Базовое оружие
         [SerializeField] private Weapon equippedWeapon = null; // Текущее экипированное оружие
+        private bool isPlayer;
 
         [Header("")]
         public float timer = 20; // Таймер для определения времени между атаками
@@ -36,6 +37,8 @@ namespace RPG.Combat
 
         private void Start()
         {
+            isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
+
             if (!equippedWeapon)
                 EquipWeapon(defaultWeapon); // Экипируем базовое оружие при старте, если нет текущего оружия
         }
@@ -91,12 +94,26 @@ namespace RPG.Combat
             }
             else if (timer > equippedWeapon.GetTimeBetweenAttacks()) // Проверяем, прошло ли время между атаками
             {
-                anim.ResetTrigger("stopAttack"); // Сбрасываем триггер остановки атаки
-                anim.SetTrigger("attack"); // Запускаем анимацию атаки
+                bool nextStep = true;
+                if (isPlayer && equippedWeapon.IsFireball() && (equippedWeapon.IsRanged()))
+                {
 
-                if (equippedWeapon.IsRanged()) // Если оружие дальнего боя
-                    equippedWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition); // Создаем снаряд
+                    if (IGame.Instance.dataPLayer.playerData.chargeEnergy > 0)
+                    {
+                        MainPlayer.Instance.ChangeCountEnegry(-1);
+                    }
+                    else
+                        nextStep = false;
+                }
 
+                if (nextStep)
+                {
+                    anim.ResetTrigger("stopAttack"); // Сбрасываем триггер остановки атаки
+                    anim.SetTrigger("attack"); // Запускаем анимацию атаки
+
+                    if (equippedWeapon.IsRanged()) // Если оружие дальнего боя
+                        equippedWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition); // Создаем снаряд
+                }
                 timer = 0; // Сбрасываем таймер атаки
             }
         }

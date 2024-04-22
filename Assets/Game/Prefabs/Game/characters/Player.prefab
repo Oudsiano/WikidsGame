@@ -806,6 +806,7 @@ MonoBehaviour:
   _buttonGoToSceneZero: {fileID: 0}
   _buttonCancelAgain: {fileID: 0}
   textCoin: {fileID: 0}
+  energyCharger: {fileID: 0}
   sceneLoader: {fileID: 0}
 --- !u!1 &2810324688132480570
 GameObject:
@@ -3701,6 +3702,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 428852817160778579, guid: 281e0a2c5c68e4ac289a1f324c62747e,
         type: 3}
+    - target: {fileID: 1325209382106325704, guid: 37bc44cce0831404eb1918df3847c8d7,
+        type: 3}
+      propertyPath: strafeDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1807032939468998513, guid: 37bc44cce0831404eb1918df3847c8d7,
         type: 3}
       propertyPath: m_Height
@@ -4233,15 +4239,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: UserInfo
       objectReference: {fileID: 0}
-    - target: {fileID: 4077132226441849983, guid: 6555587bb8b2c4778ab1c1a4cdcbdc31,
+    - target: {fileID: 4072687523303613952, guid: 6555587bb8b2c4778ab1c1a4cdcbdc31,
         type: 3}
-      propertyPath: m_AnchorMax.x
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4077132226441849983, guid: 6555587bb8b2c4778ab1c1a4cdcbdc31,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.765
+      objectReference: {fileID: 0}
+    - target: {fileID: 4077132226441849983, guid: 6555587bb8b2c4778ab1c1a4cdcbdc31,
+        type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5423890655844366745, guid: 6555587bb8b2c4778ab1c1a4cdcbdc31,
         type: 3}

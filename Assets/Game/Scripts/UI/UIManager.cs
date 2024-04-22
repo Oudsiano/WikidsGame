@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
     [Header("CoinUI")]
 
     [SerializeField] private TMPro.TextMeshProUGUI textCoin;
+    [SerializeField] private TMPro.TextMeshProUGUI energyCharger;
 
 
 
@@ -94,6 +95,9 @@ public class UIManager : MonoBehaviour
     {
         textCoin.text = c;
     }
-
+    public void setEnergyCharger(string c)
+    {
+        energyCharger.text = c;
+    }
 
 }

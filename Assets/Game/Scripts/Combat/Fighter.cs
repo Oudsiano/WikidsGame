@@ -56,6 +56,10 @@ namespace RPG.Combat
             equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
 
+        public void EquipArmor(Armor armor)
+        {
+            armor.UseToPlayer();
+        }
 
         // Экипировка оружия
         public void EquipWeapon(Weapon weapon)

@@ -19,7 +19,10 @@ namespace RPG.SceneManagement
         [SerializeField] public DataPlayer dataPlayer;
         // Статическая переменная, определяющая, идет ли в данный момент переход между сценами
         private static bool isTransitioning = false;
-        [SerializeField] private GameAPI gameAPI;
+
+        [Header("Bonus")]
+        [SerializeField] private RPG.Combat.Weapon bonusWeapon;
+        [SerializeField] private Armor bonusArmor;
 
 
         // Перечисление для идентификации места назначения портала
@@ -57,12 +60,11 @@ namespace RPG.SceneManagement
                 dataPlayer.SetSceneToLoad(newSceneNumber); // Устанавливает новое значение номера локации
                                                            // Вызываем метод SaveGameData() из объекта GameAPI
                 Debug.Log("изменили значение scene to load в playerdata из portal");
-                gameAPI = FindObjectOfType<GameAPI>(); // Попытка найти объект DataPlayer в сцене
 
                 if (dataPlayer != null)
                 {
                     // Если объект найден, продолжаем с сохранением игры
-                    StartCoroutine(gameAPI.SaveGameData(dataPlayer.playerData));
+                    StartCoroutine(IGame.Instance.gameAPI.SaveGameData(dataPlayer.playerData));
                 }
                 else
                 {
@@ -76,6 +78,7 @@ namespace RPG.SceneManagement
             }
             Portal otherPortal = GetOtherPortal(); // Получаем портал, соответствующий месту назначения текущего портала
             UpdatePlayerLocation(otherPortal); // Обновляем местоположение игрока
+            SetBonusWeaponAndArmor();
             yield return new WaitForSeconds(betweenFadeTime); // Ждем некоторое время после загрузки сцены
 
             isTransitioning = false; // Устанавливаем флаг перехода в состояние "переход завершен"
@@ -115,6 +118,14 @@ namespace RPG.SceneManagement
             
         }
 
+        private void SetBonusWeaponAndArmor()
+        {
+            if (bonusWeapon!=null)
+                IGame.Instance.playerController.GetFighter().EquipWeapon(bonusWeapon);
+
+            if (bonusArmor!=null)
+                IGame.Instance.playerController.GetFighter().EquipArmor(bonusArmor);
+        }
        
         
     }

@@ -7,13 +7,38 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "Armor", menuName = "Armors", order = 0)]
-internal class Armor : ScriptableObject
+public class Armor : ScriptableObject
 {
 
     [Header("Core")]
+
+
+    [SerializeField] private armorType armorType;
+    [SerializeField] private armorID armorName;
+
+
     [SerializeField] private GameObject PlayerPosition; 
     [SerializeField] private GameObject ArmorPrefab; 
 
+    public void UseToPlayer()
+    {
+        if (armorName == armorID.none)
+            Debug.LogError("Not correct armor");
+        if (armorType == armorType.none)
+            Debug.LogError("Not correct armor");
+
+        foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllChests)
+        {
+            if (armorType == armor.armorType)
+            {
+                if (armorName == armor.armorID)
+                    armor.armorGO.SetActive(true);
+                else
+                    armor.armorGO.SetActive(false);
+            }
+
+        }
+    }
 
 
 }

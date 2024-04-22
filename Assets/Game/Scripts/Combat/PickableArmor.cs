@@ -7,8 +7,7 @@ public class PickableArmor : MonoBehaviour
 {
 
 
-    [SerializeField] private armorType armorType;
-    [SerializeField] private armorID armorName; 
+    [SerializeField] private Armor armor;
     [SerializeField] private float respawnTime = 5f; // Время до появления оружия снова
 
     // Метод, вызываемый при взаимодействии с коллайдером
@@ -23,7 +22,7 @@ public class PickableArmor : MonoBehaviour
         if (fighter && PlayerController)
         {
             //IGame.Instance.dataPLayer.
-            PlayerController.playerArmorManager.EquipNewArmor(armorType, armorName);
+            fighter.EquipArmor(armor);
 
             // Запускаем корутину для скрытия пикапа на некоторое время
             StartCoroutine(HideForSeconds(respawnTime));

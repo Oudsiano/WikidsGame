@@ -105,9 +105,9 @@ namespace RPG.Core
             camXRotation += (Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime);
 
             // Ограничиваем вращение по оси X
-            camXRotation = Mathf.Clamp(camXRotation, -10, 10);
+            camXRotation = Mathf.Clamp(camXRotation, 0, 0);
             // Ограничиваем вращение по оси Y
-            camYRotation = Mathf.Clamp(camYRotation, -90, 90);
+            //camYRotation = Mathf.Clamp(camYRotation, -90, 90);
 
 
             transform.localEulerAngles = new Vector3(camXRotation, camYRotation, 0);

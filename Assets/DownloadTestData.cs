@@ -6,11 +6,12 @@ using UnityEngine;
 public class DownloadTestData : MonoBehaviour
 {
     [SerializeField] private GameAPI gameAPI;
+    public ConversationStarter starterConversation;
     public int countSuccessAnswers;
     public void DownloadData()
     {
         gameAPI = FindObjectOfType<GameAPI>();
-
+        starterConversation = FindObjectOfType<ConversationStarter>();
         gameAPI.UpdataDataTest();
 
         int countSuccessAnswer = 0;
@@ -29,9 +30,10 @@ public class DownloadTestData : MonoBehaviour
 
         }
         countSuccessAnswers = countSuccessAnswer;
-
+        IGame.Instance.dataPLayer.playerData.chargeEnergy = countSuccessAnswer;
+        IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPLayer.playerData.chargeEnergy.ToString());
+        starterConversation.SetTestSuccess();
         Debug.Log("?????????? ??????? " + countSuccessAnswer);
-        ConversationManager.Instance.SetBool("TestSuccess", IGame.Instance.dataPLayer.playerData.testSuccess);
 
         //ConversationManager.Instance.SetBool("TestSuccess", true);
     }

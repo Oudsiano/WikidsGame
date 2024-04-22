@@ -100,7 +100,8 @@ namespace RPG.Combat
 
                     if (IGame.Instance.dataPLayer.playerData.fireballs > 0)
                     {
-
+                        IGame.Instance.dataPLayer.playerData.fireballs--;
+                        //TODO обновление отображения. И вообще потреблеие фаербола вынести в другой класс, возможно в класс персонажа
                     }
                     else
                         nextStep = false;

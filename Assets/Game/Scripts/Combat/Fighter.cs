@@ -98,10 +98,9 @@ namespace RPG.Combat
                 if (isPlayer && equippedWeapon.IsFireball() && (equippedWeapon.IsRanged()))
                 {
 
-                    if (IGame.Instance.dataPLayer.playerData.fireballs > 0)
+                    if (IGame.Instance.dataPLayer.playerData.chargeEnergy > 0)
                     {
-                        IGame.Instance.dataPLayer.playerData.fireballs--;
-                        //TODO обновление отображения. И вообще потреблеие фаербола вынести в другой класс, возможно в класс персонажа
+                        MainPlayer.Instance.ChangeCountEnegry(-1);
                     }
                     else
                         nextStep = false;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using RPG.Core;
+using System;
 
 namespace RPG.Movement
 {
@@ -12,7 +13,7 @@ namespace RPG.Movement
         private NavMeshAgent thisNavAgent; // Ссылка на компонент навигации
         private ActionScheduler actionScheduler; // Ссылка на планировщик действий
         private bool isPlayer;
-
+        public float strafeDistance = 3f;
         NPCInteractable target; // Цель для взаимодействия
 
         // Метод, вызываемый при старте
@@ -32,6 +33,10 @@ namespace RPG.Movement
         // Метод, вызываемый каждый кадр
         void Update()
         {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                Strafe(Vector3.back);
+            }
             UpdateAnimator(); // Обновляем состояние аниматора
 
             // Проверяем, была ли нажата кнопка мыши            
@@ -55,8 +60,16 @@ namespace RPG.Movement
                 }*/
         }
 
-        // Метод для начала действия перемещения к определенной точке
-        public void StartMoveAction(Vector3 pos)
+        private void Strafe(Vector3 direction)
+        {
+            // Выполняем уклонение, например, перемещая персонажа в сторону от направления снаряда
+            Vector3 strafeDirection = Vector3.Cross(Vector3.up, direction).normalized;
+            Vector3 targetPosition = transform.position + strafeDirection * strafeDistance; // strafeDistance - расстояние, на которое нужно уклониться
+
+            MoveTo(targetPosition); // Перемещаем персонажа к целевой позиции        }
+        }
+            // Метод для начала действия перемещения к определенной точке
+            public void StartMoveAction(Vector3 pos)
         {
             actionScheduler.StartAction(this); // Устанавливаем текущее действие как перемещение
             MoveTo(pos); // Вызываем метод перемещения к заданной точке
@@ -124,5 +137,6 @@ namespace RPG.Movement
                 }
             }
         }
+
     }
 }

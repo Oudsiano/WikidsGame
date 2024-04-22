@@ -121,6 +121,81 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1016105049230474061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 890524279794291204}
+  - component: {fileID: 234431530977468279}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &890524279794291204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016105049230474061}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 8.452196, y: 17.748724, z: -6.648157}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2078131722903570005}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &234431530977468279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016105049230474061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9129067796912496c9806e4133925fb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Walk
+    clip: {fileID: 8300000, guid: b6cef02786c0c481c96cf686908ec697, type: 3}
+    volume: 0.185
+    pitch: 1.18
+    loop: 0
+    source: {fileID: 0}
+  - name: Attack
+    clip: {fileID: 8300000, guid: bc38163991d5e4dd5b0caab83903f881, type: 3}
+    volume: 0.409
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: CoinPickup
+    clip: {fileID: 8300000, guid: ae8e2bd4e2c3f48c59b9d0fd7c4d0ccb, type: 3}
+    volume: 0.409
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: SceneFirstMusic
+    clip: {fileID: 8300000, guid: 38e76a909459b4da0bf359dc329aa027, type: 3}
+    volume: 0.409
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: ClickButton
+    clip: {fileID: 8300000, guid: 482ddac8b87e64f929c37354e44890e7, type: 3}
+    volume: 0.409
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
 --- !u!1 &1307722056946915466
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,6 +372,7 @@ Transform:
   - {fileID: 3608853503585792109}
   - {fileID: 843805563019123804}
   - {fileID: 7169750900257685959}
+  - {fileID: 890524279794291204}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6291210132810660748

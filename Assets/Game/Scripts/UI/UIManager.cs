@@ -79,7 +79,7 @@ public class UIManager : MonoBehaviour
         closeAgainUI(true);
         IGame.Instance.gameAPI.SaveUpdater();
 
-
+        AudioManager.instance.Play("ButtonClick");
         sceneLoader.LoadScene(0);
     }
 
@@ -89,6 +89,7 @@ public class UIManager : MonoBehaviour
         var dataPlayer = FindObjectOfType<DataPlayer>();
         sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
         closeAgainUI(true);
+        AudioManager.instance.Play("ButtonClick");
     }
 
     public void setCoinCount(string c)

@@ -507,6 +507,7 @@ MonoBehaviour:
   playerController: {fileID: 0}
   UIManager: {fileID: 1092365476529823417}
   CoinManager: {fileID: 7742220572861580248}
+  camera: {fileID: 8741352597439031699}
 --- !u!1 &2172091460164526445
 GameObject:
   m_ObjectHideFlags: 0
@@ -3060,6 +3061,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7320746420264680366, guid: d0f47446b13fa54478078f07bbf824b4,
         type: 3}
+      propertyPath: near clip plane
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320746420264680366, guid: d0f47446b13fa54478078f07bbf824b4,
+        type: 3}
       propertyPath: m_BackGroundColor.b
       value: 0.0754717
       objectReference: {fileID: 0}
@@ -3143,6 +3149,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0f47446b13fa54478078f07bbf824b4, type: 3}
+--- !u!20 &8741352597439031699 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 7320746420264680366, guid: d0f47446b13fa54478078f07bbf824b4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2078131722907292221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8741352598368012054 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7320746421202048299, guid: d0f47446b13fa54478078f07bbf824b4,

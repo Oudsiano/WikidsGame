@@ -2,6 +2,7 @@
 using UnityEngine.AI;
 using RPG.Core;
 using System;
+using UnityEngine.EventSystems;
 
 namespace RPG.Movement
 {
@@ -135,6 +136,14 @@ namespace RPG.Movement
                 {
                     target = null;
                 }
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    return; // Если да, то выходим из метода
+                } else
+                {
+                    AudioManager.instance.Play("Walk");
+                }
+
             }
         }
 

@@ -30,4 +30,8 @@ public class ConversationStarter : MonoBehaviour
         DialogStarted = false;
 
     }
+    public void SetTestSuccess()
+    {
+        ConversationManager.Instance.SetBool("TestSuccess", data.countSuccessAnswers > 0);
+    }
 }

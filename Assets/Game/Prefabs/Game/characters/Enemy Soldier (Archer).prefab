@@ -17,7 +17,17 @@ PrefabInstance:
         type: 3}
       propertyPath: clickEffect
       value: 
-      objectReference: {fileID: -2151257794089990790}
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973571062711856142, guid: ed711a317c351354982d7d16ccc18b17,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973571062714982642, guid: ed711a317c351354982d7d16ccc18b17,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300046, guid: b6ef2f4d0154b2747860a3332fa05f97, type: 3}
     - target: {fileID: 2973571062714982642, guid: ed711a317c351354982d7d16ccc18b17,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -104,11 +114,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 352134505719196741, guid: ed711a317c351354982d7d16ccc18b17, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6435558949000753468, guid: ed711a317c351354982d7d16ccc18b17,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -2151257794089990790}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed711a317c351354982d7d16ccc18b17, type: 3}
 --- !u!114 &6821286552366683521 stripped
 MonoBehaviour:
@@ -122,23 +128,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6916854950030640452 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6435558949000753468, guid: ed711a317c351354982d7d16ccc18b17,
-    type: 3}
-  m_PrefabInstance: {fileID: 482492272231593080}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &-2151257794089990790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6916854950030640452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 519af89390db447aeba4c2ee889b1817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectPrefab: {fileID: 428852817160778579, guid: 281e0a2c5c68e4ac289a1f324c62747e,
-    type: 3}

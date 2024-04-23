@@ -177,6 +177,7 @@ namespace RPG.Combat
         void Hit()
         {
             if (!target) return; // Если нет цели, выходим
+            AudioManager.instance.Play("Attack");
 
             target.TakeDamage(equippedWeapon.GetWeaponDamage()); // Наносим урон цели
         }

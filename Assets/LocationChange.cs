@@ -27,6 +27,8 @@ public class LocationChange : MonoBehaviour
         Debug.Log("Изменили значение scene to load в playerdata из LocationChange");
         gameAPI.SaveUpdater();
         Invoke("LoadSceneAfterDelay", 2f);
+        AudioManager.instance.Play("ClickButton");
+
 
     }
 
@@ -38,6 +40,8 @@ public class LocationChange : MonoBehaviour
         Debug.Log("Изменили значение scene to load в playerdata из LocationChange");
         gameAPI.SaveUpdater();
         Invoke("LoadSceneAfterDelay", 2f);
+        AudioManager.instance.Play("ClickButton");
+
     }
 
     private void LoadSceneAfterDelay()

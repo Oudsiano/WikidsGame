@@ -12,6 +12,8 @@ public class CoinManager : MonoBehaviour
         Instantiate(_Coin, pos, Quaternion.Euler(0, 0, 0))
             .GetComponent<PickableCoin>()
             .Init(count);
+        AudioManager.instance.Play("CoinPickup");
+
     }
 
 }

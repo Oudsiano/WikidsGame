@@ -43,6 +43,17 @@ public class LocationChange : MonoBehaviour
         AudioManager.instance.Play("ClickButton");
 
     }
+    public void ChangeButtonLibrary()
+    {
+        dataPlayer.SetSceneToLoad(7);
+        Loading.gameObject.SetActive(true);
+        // Устанавливаем значение sceneToLoad в DataPlayer и вызываем метод UpdateData через 2 секунды
+        Debug.Log("Изменили значение scene to load в playerdata из LocationChange");
+        gameAPI.SaveUpdater();
+        Invoke("LoadSceneAfterDelay", 2f);
+        AudioManager.instance.Play("ClickButton");
+
+    }
 
     private void LoadSceneAfterDelay()
     {

@@ -12,7 +12,8 @@ public class LevelChangeObserver : MonoBehaviour
         new Vector3(2.68000007f,-1f,23.5499992f),
         new Vector3(0.699999988f,-0.150000095f,1.39999998f),
         new Vector3(196.570007f,-23.9200001f,36.7700005f),
-        new Vector3(210.96077f,-9.77070045f,148.226288f)
+        new Vector3(210.96077f,-9.77070045f,148.226288f),
+        new Vector3(29.2999992f,-7f,-109f)
     };
     Vector3[] spawnPointsSavePoint = new Vector3[]
     {

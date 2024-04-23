@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 public class ImageSetter : MonoBehaviour
 {
     public RawImage imageComponent; // Ссылка на компонент Image в вашем объекте
-    public Texture2D[] imageArray; // Массив изображений, которые вы хотите использовать
-    public RenderTexture[] renderTexturesArray;
+    //public Texture2D[] imageArray; // Массив изображений, которые вы хотите использовать
+    public RenderTexture renderTexturesArray;
 
     void Start()
     {
@@ -35,19 +35,8 @@ public class ImageSetter : MonoBehaviour
         int sceneIndex = scene.buildIndex;
 
         // Проверяем, существует ли изображение для текущей сцены
-        if (sceneIndex >= 0 && sceneIndex < imageArray.Length)
-        {
             // Устанавливаем изображение из массива, соответствующее номеру сцены
-            if (imageArray[sceneIndex] != null)
-                imageComponent.texture = imageArray[sceneIndex];
-            else
-                imageComponent.texture = renderTexturesArray[sceneIndex];
-        }
-        else
-        {
-            // Если изображение для текущей сцены не найдено, выводим сообщение об ошибке
-            Debug.LogError("No image found for scene index: " + sceneIndex);
-        }
+                imageComponent.texture = renderTexturesArray;
     }
 
     // Отключаем слушатель события при уничтожении объекта

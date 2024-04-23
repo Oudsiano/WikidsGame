@@ -82,13 +82,13 @@ public class LevelChangeObserver : MonoBehaviour
         }
         else
         {
-            var objects = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "StartPoint"); ;
-
-
-            Vector3 position = GameObject.Find("StartPoint").transform.position;
-            UpdatePlayerLocation(position);
-
-            //UpdatePlayerLocation(spawnPoints[newLevel]);
+            //var objects = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "StartPoint"); ;
+            var obj = GameObject.Find("StartPoint");
+            if (obj!=null)
+            {
+                Vector3 position = obj.transform.position;
+                UpdatePlayerLocation(position);
+            }
         }
 
         RPG.SceneManagement.SavePointsManager.UpdateStateSpawnPointsAfterLoad(data);

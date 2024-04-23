@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static LevelChangeObserver;
 
 public class DataPlayer : MonoBehaviour
 {
     public PlayerData playerData = new PlayerData();
 
     // Метод для установки номера локации для загрузки
-    public void SetSceneToLoad(int sceneNumber)
+    public void SetSceneToLoad(allScenes sceneId)
     {
-        playerData.sceneToLoad = sceneNumber;
+        playerData.sceneToLoad = (int)sceneId;
     }
 
     // Метод для сохранения позиции объекта

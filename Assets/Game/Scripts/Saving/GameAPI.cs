@@ -44,7 +44,7 @@ public class GameAPI : MonoBehaviour
     {
         StartCoroutine(GetGameData());
         gameGet = true;
-        sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
+        sceneLoader.LoadScene((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
     }
 
     public void UpdataDataTest()
@@ -75,7 +75,7 @@ public class GameAPI : MonoBehaviour
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
             dataPlayer.playerData = playerData;
             Debug.Log("Data downloaded successfully");
-            sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
+            sceneLoader.LoadScene( (LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
         }
         else
         {

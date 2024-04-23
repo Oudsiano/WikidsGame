@@ -1,17 +1,18 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static LevelChangeObserver;
 
 namespace RPG.Core
 {
     public class SceneLoader : MonoBehaviour
     {
         // Определите делегат для события изменения уровня загрузки.
-        public delegate void LevelChangedEventHandler(int newLevel);
+        public delegate void LevelChangedEventHandler(allScenes IdNewLevel);
         // Событие, возникающее при изменении уровня загрузки.
         private static event LevelChangedEventHandler LevelChanged;
 
-        [SerializeField] private int levelToLoad = 0;
+        [SerializeField] private allScenes levelToLoad = 0;
         private static SceneLoader _instance;
 
         public static SceneLoader Instance
@@ -41,23 +42,28 @@ namespace RPG.Core
             }
         }
 
-        public void LoadScene(int levelToLoad, float timeToWait = 2f)
+        public void LoadScene(allScenes IdNewLevel, float timeToWait = 2f)
         {
-            this.levelToLoad = levelToLoad;
+            if (IdNewLevel == allScenes.emptyScene)
+            {
+                Debug.LogWarning("Forgotten add scene somewhere");
+            }
+
+            this.levelToLoad = IdNewLevel;
             // При изменении уровня загрузки вызываем событие.
-            OnLevelChanged(levelToLoad);
+            OnLevelChanged(IdNewLevel);
 
         }
 
         // Вызываем событие при изменении уровня загрузки.
-        private void OnLevelChanged(int newLevel)
+        private void OnLevelChanged(allScenes IdNewLevel)
         {
-            LevelChanged?.Invoke(newLevel);
+            LevelChanged?.Invoke(IdNewLevel);
         }
 
         public void OnFadeComplete()
         {
-            SceneManager.LoadScene(levelToLoad);
+            SceneManager.LoadScene(IGame.Instance.LevelChangeObserver.DAllScenes[levelToLoad].name);
         }
     }
 }

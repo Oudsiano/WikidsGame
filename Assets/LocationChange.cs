@@ -21,7 +21,7 @@ public class LocationChange : MonoBehaviour
 
     public void ChangeButtonBattle()
     {
-        dataPlayer.SetSceneToLoad(5);
+        dataPlayer.SetSceneToLoad(LevelChangeObserver.allScenes.battle1);
         Loading.gameObject.SetActive(true);
         // Устанавливаем значение sceneToLoad в DataPlayer и вызываем метод UpdateData через 2 секунды
         Debug.Log("Изменили значение scene to load в playerdata из LocationChange");
@@ -34,7 +34,7 @@ public class LocationChange : MonoBehaviour
 
     public void ChangeButtonTown()
     {
-        dataPlayer.SetSceneToLoad(6);
+        dataPlayer.SetSceneToLoad(LevelChangeObserver.allScenes.town1);
         Loading.gameObject.SetActive(true);
         // Устанавливаем значение sceneToLoad в DataPlayer и вызываем метод UpdateData через 2 секунды
         Debug.Log("Изменили значение scene to load в playerdata из LocationChange");
@@ -45,7 +45,7 @@ public class LocationChange : MonoBehaviour
     }
     public void ChangeButtonLibrary()
     {
-        dataPlayer.SetSceneToLoad(7);
+        dataPlayer.SetSceneToLoad(LevelChangeObserver.allScenes.town2);
         Loading.gameObject.SetActive(true);
         // Устанавливаем значение sceneToLoad в DataPlayer и вызываем метод UpdateData через 2 секунды
         Debug.Log("Изменили значение scene to load в playerdata из LocationChange");
@@ -57,7 +57,7 @@ public class LocationChange : MonoBehaviour
 
     private void LoadSceneAfterDelay()
     {
-        sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
+        sceneLoader.LoadScene((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
         Loading.gameObject.SetActive(false);
 
     }

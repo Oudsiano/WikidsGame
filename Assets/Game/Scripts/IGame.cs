@@ -12,6 +12,7 @@ public class IGame : MonoBehaviour
     public GameAPI gameAPI;
 
     public PlayerController playerController;
+    public LevelChangeObserver LevelChangeObserver;
 
     [SerializeField] public UIManager UIManager;
     [SerializeField] public CoinManager CoinManager;

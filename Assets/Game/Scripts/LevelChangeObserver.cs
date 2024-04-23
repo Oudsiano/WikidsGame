@@ -2,10 +2,32 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using RPG.Core;
 using UnityEngine.AI;
+using System.Collections.Generic;
+using System;
 
 public class LevelChangeObserver : MonoBehaviour
 {
-    Vector3[] spawnPoints = new Vector3[]
+    public enum allScenes
+    {
+        emptyScene,
+        regionSCene,
+        battle1,
+        town1,
+        town2
+    }
+
+    [Serializable]
+    public class OneScene
+    {
+        public allScenes IdScene;
+        public UnityEngine.Object fileScene;
+    }
+
+    [SerializeField] public List<OneScene> AllScenes=new List<OneScene>();
+    public Dictionary<allScenes, UnityEngine.Object> DAllScenes;
+
+
+    /*Vector3[] spawnPoints = new Vector3[]
     {new Vector3(0, 0, 0),
         new Vector3(-15.1000004f, 0f, -7.69999981f),   // Первая точка спауна
         new Vector3(-37.5600014f,-0.0500000007f,51.6399994f),   // Вторая точка спауна
@@ -14,7 +36,7 @@ public class LevelChangeObserver : MonoBehaviour
         new Vector3(196.570007f,-23.9200001f,36.7700005f),
         new Vector3(210.96077f,-9.77070045f,148.226288f),
         new Vector3(29.2999992f,-7f,-109f)
-    };
+    };*/
     Vector3[] spawnPointsSavePoint = new Vector3[]
     {
         new Vector3(196.570007f,-23.9200001f,36.7700005f),
@@ -24,28 +46,39 @@ public class LevelChangeObserver : MonoBehaviour
         new Vector3(27.9099998f,-24.5699997f,100.440002f)
     };
 
-    [SerializeField]DataPlayer data; 
+    [SerializeField] DataPlayer data;
 
     private void Start()
     {
+        DAllScenes = new Dictionary<allScenes, UnityEngine.Object>();
+        foreach (OneScene scene in AllScenes)
+        {
+            if (DAllScenes.ContainsKey(scene.IdScene))
+                Debug.LogError("scene already exist in manager");
+            DAllScenes[scene.IdScene] = scene.fileScene;
+        }
+
         // Подписываемся на событие изменения уровня загрузки.
-        RPG.Core.SceneLoader.AddEventListenerLevelChange ( OnLevelChanged);
+        RPG.Core.SceneLoader.AddEventListenerLevelChange(OnLevelChanged);
     }
 
     // Метод, вызываемый при изменении уровня загрузки.
-    private void OnLevelChanged(int newLevel)
+    private void OnLevelChanged(allScenes newLevel)
     {
         Debug.Log("Уровень загрузки изменен на " + newLevel);
         // Загружаем сцену с измененным номером.
-        SceneManager.LoadScene(newLevel);
+        SceneManager.LoadScene(DAllScenes[newLevel].name);
         data = FindObjectOfType<DataPlayer>();
-        if(newLevel == 5 )
+        if (newLevel ==  allScenes.battle1)
         {
             UpdatePlayerLocation(spawnPointsSavePoint[data.playerData.spawnPoint]);
             Debug.Log("Загружена 5 сцена сюда можно добавить условие");
-        } else
+        }
+        else
         {
-            UpdatePlayerLocation(spawnPoints[newLevel]);
+            UpdatePlayerLocation(GameObject.Find("StartPoint").transform.position);
+
+            //UpdatePlayerLocation(spawnPoints[newLevel]);
         }
 
         RPG.SceneManagement.SavePointsManager.UpdateStateSpawnPointsAfterLoad(data);
@@ -54,7 +87,7 @@ public class LevelChangeObserver : MonoBehaviour
     private void OnDestroy()
     {
         // Не забудьте отписаться при уничтожении объекта.
-        RPG.Core.SceneLoader.RemoveEventListenerLevelChange ( OnLevelChanged);
+        RPG.Core.SceneLoader.RemoveEventListenerLevelChange(OnLevelChanged);
     }
 
     // Метод для обновления местоположения игрока
@@ -66,7 +99,7 @@ public class LevelChangeObserver : MonoBehaviour
         // Устанавливаем позицию игрока в соответствии с порталом назначения
         MainPlayer.Instance.transform.position = spawnPoint;
 
-        Animator anim = 
+        Animator anim =
             MainPlayer.Instance.gameObject.GetComponent<Animator>();
         anim.Rebind();
         anim.Update(0f);

@@ -10,7 +10,7 @@ namespace RPG.SceneManagement
     // Класс для портала, переносящего игрока между сценами
     public class Portal : MonoBehaviour
     {
-        [SerializeField] int sceneToLoad = -1; // Индекс сцены для загрузки
+        [SerializeField] LevelChangeObserver.allScenes sceneToLoad = LevelChangeObserver.allScenes.emptyScene; // Индекс сцены для загрузки
         [SerializeField] private Transform spawnPoint; // Точка спавна в новой сцене
         [SerializeField] private DestinationIdentifier destination; // Идентификатор места назначения портала
         [SerializeField] private float fadeOutTime = 2f; // Время затухания перед загрузкой новой сцены
@@ -47,17 +47,20 @@ namespace RPG.SceneManagement
         {
             DontDestroyOnLoad(this.gameObject); // Не уничтожаем портал при загрузке новой сцены
 
+            if (sceneToLoad== LevelChangeObserver.allScenes.emptyScene)
+            {
+                Debug.LogError("Empty scene on portal. It's mistake");
+            }
 
 
-            yield return SceneManager.LoadSceneAsync(sceneToLoad); // Загружаем новую сцену
+            yield return SceneManager.LoadSceneAsync(IGame.Instance.LevelChangeObserver.DAllScenes[sceneToLoad].name); // Загружаем новую сцену
 
 
             dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
 
             if (dataPlayer != null)
             {
-                int newSceneNumber = sceneToLoad; // Новое значение номера локации
-                dataPlayer.SetSceneToLoad(newSceneNumber); // Устанавливает новое значение номера локации
+                dataPlayer.SetSceneToLoad(sceneToLoad); // Устанавливает новое значение номера локации
                                                            // Вызываем метод SaveGameData() из объекта GameAPI
                 Debug.Log("изменили значение scene to load в playerdata из portal");
 

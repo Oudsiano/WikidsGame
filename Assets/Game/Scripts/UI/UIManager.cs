@@ -8,13 +8,6 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public Button button1Goto1;
-    public Button button1Goto2;
-    public Button button1Goto3;
-    public Button button1Goto4;
-    public Button button1Goto5;
-    public Button button1Goto6;
-
     public DeathUI DeathUI;
 
     [Header("AgainUI")]
@@ -35,12 +28,6 @@ public class UIManager : MonoBehaviour
     {
         sceneLoader = FindObjectOfType<SceneLoader>();
 
-        button1Goto1.onClick.AddListener(() => Click(1));
-        button1Goto2.onClick.AddListener(() => Click(2));
-        button1Goto3.onClick.AddListener(() => Click(3));
-        button1Goto4.onClick.AddListener(() => Click(4));
-        button1Goto5.onClick.AddListener(() => Click(5));
-        button1Goto6.onClick.AddListener(() => Click(6));
 
         _buttonAgain.onClick.AddListener(OnClickAgainRegen);
         _buttonGoToSceneZero.onClick.AddListener(OnClickGoToSceneZero);
@@ -49,8 +36,6 @@ public class UIManager : MonoBehaviour
         DeathUI.gameObject.SetActive(false);
         _againUI.SetActive(false);
     }
-
-    private void Click(int i) => sceneLoader.LoadScene(i);
 
     public void ShowAgainUi()
     {
@@ -79,15 +64,15 @@ public class UIManager : MonoBehaviour
         closeAgainUI(true);
         IGame.Instance.gameAPI.SaveUpdater();
 
+        sceneLoader.LoadScene(LevelChangeObserver.allScenes.regionSCene);
         AudioManager.instance.Play("ButtonClick");
-        sceneLoader.LoadScene(0);
     }
 
 
     private void OnClickAgainRegen()
     {
         var dataPlayer = FindObjectOfType<DataPlayer>();
-        sceneLoader.LoadScene(dataPlayer.playerData.sceneToLoad);
+        sceneLoader.LoadScene((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
         closeAgainUI(true);
         AudioManager.instance.Play("ButtonClick");
     }

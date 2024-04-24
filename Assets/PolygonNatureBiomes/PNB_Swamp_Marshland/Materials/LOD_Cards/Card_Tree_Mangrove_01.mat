@@ -2,20 +2,25 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Card_Tree_Mangrove_01
   m_Shader: {fileID: 4800000, guid: 6697e1f185bc8b840a2f02567abf15b5, type: 3}
-  m_ShaderKeywords: 
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - LOD_FADE_CROSSFADE
+  m_InvalidKeywords: []
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -69,6 +74,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _LOD_DitheringMap:
         m_Texture: {fileID: 2800000, guid: 4199a601545ad164badaad1fe1733439, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LeafAmbientOcclusion:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LeafNormalMap:
@@ -143,6 +152,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TrunkAmbientOcclusion:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _TrunkEmissiveMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -159,6 +172,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Big_Wave: 10
     - _Big_WindAmount: 1.22
@@ -174,6 +188,9 @@ Material:
     - _FlatColourSwitch: 0
     - _Float0: 0.5
     - _Float1: 0.05
+    - _FrostingFalloff: 1
+    - _FrostingHeight: 1
+    - _FrostingSwitch: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -191,6 +208,7 @@ Material:
     - _LOD_FADE_CROSSFADE_out: 1
     - _LeafBigNoiseAmount: 0.159
     - _LeafBigNoiseScale: 1
+    - _LeafFlatColourSwitch: 0
     - _LeafMetallic: 0
     - _LeafNoiseAmount: 0.017
     - _LeafNoiseScale: 1
@@ -215,6 +233,7 @@ Material:
     - _Tiling: 1
     - _Tint_Tiling: 0.5
     - _TotalWindAmount: 0.5
+    - _TrunkFlatColourSwitch: 0
     - _TrunkMetallic: 0
     - _TrunkNormalAmount: 0.5
     - _TrunkSmoothness: 0.2
@@ -248,6 +267,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emissive2Colour: {r: 0, g: 0, b: 0, a: 0}
     - _EmissiveColour: {r: 0, g: 0, b: 0, a: 0}
+    - _FrostingColour: {r: 1, g: 1, b: 1, a: 0}
     - _GustHighlight: {r: 0.1132075, g: 0.1132075, b: 0.1132075, a: 0}
     - _GustSmoothing: {r: 0.5, g: 0.5, b: 0.5, a: 0}
     - _LeafBaseColour: {r: 0.26415092, g: 0.25649744, b: 0.068529725, a: 0}
@@ -260,3 +280,4 @@ Material:
     - _TrunkEmissiveColour: {r: 0, g: 0, b: 0, a: 0}
     - _TrunkNoiseColour: {r: 0, g: 0, b: 0, a: 0}
     - _TrunkTint: {r: 0.07843138, g: 0.02015968, b: 0, a: 0}
+  m_BuildTextureStacks: []

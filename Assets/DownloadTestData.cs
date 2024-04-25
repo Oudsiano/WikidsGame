@@ -7,11 +7,13 @@ public class DownloadTestData : MonoBehaviour
 {
     [SerializeField] private GameAPI gameAPI;
     public ConversationStarter starterConversation;
+
+    public int IDLesson;
     public void DownloadData()
     {
         gameAPI = FindObjectOfType<GameAPI>();
         starterConversation = FindObjectOfType<ConversationStarter>();
-        gameAPI.UpdataDataTest();
+        gameAPI.UpdataDataTest(IDLesson);
        
 
         //ConversationManager.Instance.SetBool("TestSuccess", true);

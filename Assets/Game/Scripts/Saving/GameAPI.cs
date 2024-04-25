@@ -47,9 +47,9 @@ public class GameAPI : MonoBehaviour
         sceneLoader.LoadScene((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
     }
 
-    public void UpdataDataTest()
+    public void UpdataDataTest(int IDLesson)
     {
-        StartCoroutine(GetGameDataTest());
+        StartCoroutine(GetGameDataTest(IDLesson));
     }
 
 
@@ -83,7 +83,7 @@ public class GameAPI : MonoBehaviour
         }
     }
 
-    IEnumerator GetGameDataTest()
+    IEnumerator GetGameDataTest(int IDLesson)
     {
         UnityWebRequest request = UnityWebRequest.Get("https://wikids.ru/api/v1/game/" + playerID);
         yield return request.SendWebRequest();
@@ -100,7 +100,7 @@ public class GameAPI : MonoBehaviour
             {
                 foreach (OneLeson item in IGame.Instance.dataPLayer.playerData.progress)
                 {
-                    if (item != null)
+                    if (item != null && item.id != IDLesson)
                         foreach (OneTestQuestion item2 in item.tests)
                         {
                             if (item2.completed)
@@ -109,7 +109,7 @@ public class GameAPI : MonoBehaviour
                 }
 
             }
-            int countSuccessAnswers = countSuccessAnswer+2;
+            int countSuccessAnswers = countSuccessAnswer;
             RPG.Core.MainPlayer.Instance.ChangeCountEnegry(countSuccessAnswers);
 
             ConversationManager.Instance.SetBool("TestSuccess", countSuccessAnswers > 0);

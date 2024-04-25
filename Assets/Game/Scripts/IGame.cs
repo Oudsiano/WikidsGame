@@ -26,7 +26,6 @@ public class IGame : MonoBehaviour
         dataPLayer = FindObjectOfType<DataPlayer>();
         gameAPI = FindObjectOfType<GameAPI>();
         playerController = FindObjectOfType<PlayerController>();
-        LevelChangeObserver = FindAnyObjectByType<LevelChangeObserver>();
 
         UIManager.Init();
     }

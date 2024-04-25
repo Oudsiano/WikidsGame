@@ -109,7 +109,7 @@ public class GameAPI : MonoBehaviour
                 }
 
             }
-            int countSuccessAnswers = countSuccessAnswer;
+            int countSuccessAnswers = countSuccessAnswer+2;
             RPG.Core.MainPlayer.Instance.ChangeCountEnegry(countSuccessAnswers);
 
             ConversationManager.Instance.SetBool("TestSuccess", countSuccessAnswers > 0);

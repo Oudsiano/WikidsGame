@@ -4,7 +4,6 @@ using RPG.Core;
 using UnityEngine.AI;
 using System.Collections.Generic;
 using System;
-using System.Linq;
 
 public class LevelChangeObserver : MonoBehaviour
 {
@@ -14,8 +13,7 @@ public class LevelChangeObserver : MonoBehaviour
         regionSCene,
         battle1,
         town1,
-        town2,
-        holl
+        town2
     }
 
     [Serializable]
@@ -62,37 +60,6 @@ public class LevelChangeObserver : MonoBehaviour
 
         // Подписываемся на событие изменения уровня загрузки.
         RPG.Core.SceneLoader.AddEventListenerLevelChange(OnLevelChanged);
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
-    {
-        allScenes newLevel= allScenes.emptyScene;
-        foreach (var item in IGame.Instance.LevelChangeObserver.DAllScenes)
-        {
-            if (item.Value.name == arg0.name)
-            {
-                newLevel = item.Key;
-            }
-        }
-        data = FindObjectOfType<DataPlayer>();
-        if (newLevel == allScenes.battle1)
-        {
-            UpdatePlayerLocation(spawnPointsSavePoint[data.playerData.spawnPoint]);
-            Debug.Log("Загружена 5 сцена сюда можно добавить условие");
-        }
-        else
-        {
-            //var objects = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "StartPoint"); ;
-            var obj = GameObject.Find("StartPoint");
-            if (obj!=null)
-            {
-                Vector3 position = obj.transform.position;
-                UpdatePlayerLocation(position);
-            }
-        }
-
-        RPG.SceneManagement.SavePointsManager.UpdateStateSpawnPointsAfterLoad(data);
     }
 
     // Метод, вызываемый при изменении уровня загрузки.
@@ -101,7 +68,20 @@ public class LevelChangeObserver : MonoBehaviour
         Debug.Log("Уровень загрузки изменен на " + newLevel);
         // Загружаем сцену с измененным номером.
         SceneManager.LoadScene(DAllScenes[newLevel].name);
-        
+        data = FindObjectOfType<DataPlayer>();
+        if (newLevel ==  allScenes.battle1)
+        {
+            UpdatePlayerLocation(spawnPointsSavePoint[data.playerData.spawnPoint]);
+            Debug.Log("Загружена 5 сцена сюда можно добавить условие");
+        }
+        else
+        {
+            UpdatePlayerLocation(GameObject.Find("StartPoint").transform.position);
+
+            //UpdatePlayerLocation(spawnPoints[newLevel]);
+        }
+
+        RPG.SceneManagement.SavePointsManager.UpdateStateSpawnPointsAfterLoad(data);
     }
 
     private void OnDestroy()

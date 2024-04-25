@@ -13,6 +13,7 @@ public class NPCInteractable : MonoBehaviour
 
     private ConversationStarter conversationStarter;
 
+    [SerializeField] private List<GameObject> InvisibleWhenCorrectAnswer= new List<GameObject>();
 
     RaycastHit hit;
 
@@ -33,6 +34,21 @@ public class NPCInteractable : MonoBehaviour
                     if (!ConversationManager.Instance.IsConversationActive)
                         InteractWithNPC();
             }
+        }
+    }
+
+    public void MakeInvisibleWhenCorrectAnswer()
+    {
+        if (InvisibleWhenCorrectAnswer.Count>0)
+        {
+            foreach (GameObject item in InvisibleWhenCorrectAnswer)
+            {
+                item.SetActive(false);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("error. expected some elements in list");
         }
     }
 

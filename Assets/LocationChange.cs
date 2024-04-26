@@ -41,21 +41,29 @@ public class LocationChange : MonoBehaviour
         gameAPI = FindObjectOfType<GameAPI>();
         sceneLoader = FindObjectOfType<SceneLoader>();
 
-        //setUpMaxRegion(dataPlayer.playerData.maxRegionAvaliable);
+        setUpMaxRegion(dataPlayer.playerData.IDmaxRegionAvaliable);
     }
 
     public void setUpMaxRegion(int n)
     {
+        int findedIndex = 0;
         for (int i = 0; i < regions.Count; i++)
         {
-            if (i<=n)
+            if ((int)regions[i].loadedScene == n)
             {
                 regions[i].Button.interactable = true;
 
+                if (findedIndex < i) findedIndex = i;
             }
-            else
-                regions[i].Button.interactable = false;
+                
         }
+
+        if (findedIndex< regions.Count)
+            for (int i = findedIndex+1; i < regions.Count; i++)
+            {
+                regions[i].Button.interactable = false;
+            }
+
     }
 
     private void OnClick(allScenes sceneId)

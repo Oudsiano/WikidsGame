@@ -40,13 +40,13 @@ namespace RPG.SceneManagement
         [SerializeField] public DataPlayer dataPlayer;
         [SerializeField] public int spawnPoint;
         [SerializeField] public GameAPI api;
-        [SerializeField] private bool alreadyEnabled;
+        //[SerializeField] private bool alreadyEnabled;
         // Переменная для хранения позиции игрока
         private Vector3 playerPosition;
 
         public void SetAlreadyEnabled(bool state, bool thisLast)
         {
-            alreadyEnabled = true;
+            //alreadyEnabled = true;
 
             ChekedSprite.SetActive(false);
             LastSprite.SetActive(false); 

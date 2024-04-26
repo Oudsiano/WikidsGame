@@ -20,6 +20,7 @@ namespace RPG.SceneManagement
         [SerializeField] public bool ItFinishPortal = true;
         // Статическая переменная, определяющая, идет ли в данный момент переход между сценами
         private static bool isTransitioning = false;
+        private SceneComponent sceneComponent;
 
         [Header("Bonus")]
         [SerializeField] private RPG.Combat.Weapon bonusWeapon;
@@ -34,7 +35,8 @@ namespace RPG.SceneManagement
 
         private void Awake()
         {
-            SceneComponent sceneComponent = FindObjectOfType<SceneComponent>();
+            dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
+            sceneComponent = FindObjectOfType<SceneComponent>();
 
             if (sceneComponent == null)
             {
@@ -42,7 +44,7 @@ namespace RPG.SceneManagement
             }
             else
             {
-
+                
             }
         }
 
@@ -71,12 +73,16 @@ namespace RPG.SceneManagement
             yield return SceneManager.LoadSceneAsync(IGame.Instance.LevelChangeObserver.DAllScenes[sceneToLoad].name); // Загружаем новую сцену
 
 
-            dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
+            
 
             if (dataPlayer != null)
             {
                 dataPlayer.SetSceneToLoad(sceneToLoad); // Устанавливает новое значение номера локации
-                                                           // Вызываем метод SaveGameData() из объекта GameAPI
+                                                        // Вызываем метод SaveGameData() из объекта GameAPI
+
+                if (dataPlayer.playerData.IDmaxRegionAvaliable< (int)sceneComponent.IdScene)
+                dataPlayer.playerData.IDmaxRegionAvaliable = (int)sceneComponent.IdScene;
+
                 Debug.Log("изменили значение scene to load в playerdata из portal");
 
                 if (dataPlayer != null)

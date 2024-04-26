@@ -85,11 +85,15 @@ public class LevelChangeObserver : MonoBehaviour
         }
         else
         {
-            var objects = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "StartPoint"); ;
+            //var objects = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "StartPoint"); ;
 
+            GameObject StartPos = GameObject.Find("StartPoint");
 
-            Vector3 position = GameObject.Find("StartPoint").transform.position;
-            UpdatePlayerLocation(position);
+            if (StartPos != null)
+            {
+                Vector3 position = StartPos.transform.position;
+                UpdatePlayerLocation(position);
+            }
 
             //UpdatePlayerLocation(spawnPoints[newLevel]);
         }

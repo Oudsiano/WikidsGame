@@ -68,5 +68,5 @@ public class PlayerData
     public List<bool> stateSpawnPoints;
     public OneLeson[] progress;
     public int chargeEnergy;
-    public int maxRegionAvaliable;
+    public int IDmaxRegionAvaliable;
 }

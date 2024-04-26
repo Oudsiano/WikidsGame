@@ -15,7 +15,9 @@ public class EventSystemChecker : MonoBehaviour
            //Instantiate(eventSystem);
             GameObject obj = new GameObject("EventSystem");
             obj.AddComponent<EventSystem>();
+#pragma warning disable CS0618 // Тип или член устарел
             obj.AddComponent<StandaloneInputModule>().forceModuleActive = true;
+#pragma warning restore CS0618 // Тип или член устарел
         }
 	}
 }

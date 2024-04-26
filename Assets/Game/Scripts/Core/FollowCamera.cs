@@ -10,7 +10,6 @@ namespace RPG.Core
         private Transform target; // Цель, за которой следует камера
         [SerializeField] private float rotationSpeed; // Скорость вращения камеры
         [SerializeField] private float zoomSpeed; // Скорость приближения/удаления камеры
-        [SerializeField] private float speedRotationFollowPLayer = 3;
         public bool trackPlayer = true; // Флаг для отслеживания игрока
 
         // Ссылки на камеру и начальное положение камеры
@@ -24,8 +23,6 @@ namespace RPG.Core
         // Переменные для вращения камеры
         private float camXRotation = 0;
         private float camYRotation = 0;
-        private float targetCamYRotationPLayer = 0;
-        private float currentCamYRPLayer = 0;
 
         // Пределы масштабирования
         [SerializeField] private float minZoom;
@@ -67,29 +64,7 @@ namespace RPG.Core
                 RotationMovement(); // Вызываем метод для вращения
                 //newCameraRY = IGame.Instance.playerController.transform.localEulerAngles.y;
             }
-            /*else
-            {
-                targetCamYRotationPLayer = IGame.Instance.playerController.transform.localEulerAngles.y;
-                currentCamYRPLayer = transform.localEulerAngles.y;
-
-
-                float deltaAngle = Mathf.DeltaAngle(currentCamYRPLayer, targetCamYRotationPLayer);
-
-
-
-
-                if (Math.Abs(deltaAngle) <= speedRotationFollowPLayer)
-                    newCameraRY = targetCamYRotationPLayer;
-                else
-                {
-                    if (deltaAngle <= 0) newCameraRY = currentCamYRPLayer - speedRotationFollowPLayer;
-                    else newCameraRY = currentCamYRPLayer + speedRotationFollowPLayer;
-                }
-
-                camYRotation = 0;
-            }
-            // Применяем вращение к камере
-            transform.localEulerAngles = new Vector3(camXRotation, newCameraRY + camYRotation, 0);*/
+           
 
             if (canZoom)
             {

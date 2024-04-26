@@ -10,7 +10,13 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] public Button ButtonShowMap;
     [SerializeField] public GameObject MapCanvas;
 
-    // Start is called before the first frame update
+    [SerializeField] private GameObject newWeaponScr;
+    [SerializeField] private GameObject newArmorScr;
+
+    public void ShowNewArmor() => newArmorScr.SetActive(true);
+    public void ShowNewWeapon() => newWeaponScr.SetActive(true);
+
+
     public void Init()
     {
         ButtonShowMap.onClick.AddListener(OnClickButtonMap);

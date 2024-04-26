@@ -12,6 +12,7 @@ namespace RPG.Combat
         [SerializeField] private bool isRightHanded = true; // Определяет, используется ли правая рука по умолчанию
         [SerializeField] private Projectile projectile; // Ссылка на снаряд, если оружие дистанционное
         [SerializeField] private bool IsFireballs = false;
+        [SerializeField] private string nameID;
 
         [Header("Stats")]
         [SerializeField] private float weaponDamage; // Урон, наносимый оружием
@@ -31,7 +32,7 @@ namespace RPG.Combat
             {
                 Transform handPos = FindTransformOfHand(rightHandPos, lefthandPos);
                 GameObject wepInScene = Instantiate(weaponPrefab, handPos);
-                wepInScene.transform.localScale = Vector3.one*  1/ wepInScene.transform.lossyScale.x;
+                wepInScene.transform.localScale = Vector3.one * 1 / wepInScene.transform.lossyScale.x;
                 wepInScene.name = weaponName;
             }
 
@@ -67,6 +68,14 @@ namespace RPG.Combat
                 handWep.name = "DESTROYING";
                 Destroy(handWep.gameObject);
             }
+        }
+
+        public string GetnameID()
+        {
+            if (nameID == null)
+                Debug.LogError("Forgoten add Name ID. Забыли добавить имя предмету");
+
+            return nameID; 
         }
 
         // Возвращает урон оружия

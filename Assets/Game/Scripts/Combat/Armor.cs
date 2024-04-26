@@ -16,9 +16,17 @@ public class Armor : ScriptableObject
     [SerializeField] private armorType armorType;
     [SerializeField] private armorID armorName;
 
+    [SerializeField] private string nameID;
 
     [SerializeField] private GameObject PlayerPosition; 
-    [SerializeField] private GameObject ArmorPrefab; 
+    [SerializeField] private GameObject ArmorPrefab;
+    [Header("Stats")]
+    [SerializeField] private float armor;
+
+    public string GetnameID()
+    {
+        return nameID;
+    }
 
     public void UseToPlayer()
     {

@@ -66,6 +66,7 @@ public class PlayerData
     public bool testSuccess;
     public int spawnPoint; // Новое поле для хранения позиции объекта
     public List<bool> stateSpawnPoints;
+    public List<string> alreadyExistWeapons;
     public OneLeson[] progress;
     public int chargeEnergy;
     public int IDmaxRegionAvaliable;

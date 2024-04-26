@@ -26,7 +26,8 @@ namespace RPG.SceneManagement
             for (int i = 0; i < dataPlayer.playerData.stateSpawnPoints.Count; i++)
             {
                 bool thisLast = i == dataPlayer.playerData.spawnPoint;
-                if (allSavePoints[i]!=null)
+                if (allSavePoints.Count> i) 
+                    if(allSavePoints[i]!=null)
                 allSavePoints[i].SetAlreadyEnabled(dataPlayer.playerData.stateSpawnPoints[i], thisLast);
             }
         }

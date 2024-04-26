@@ -1,8 +1,10 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using RPG.Core;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using static LevelChangeObserver;
 
 // Пространство имен для управления сценами игры
 namespace RPG.SceneManagement
@@ -76,8 +78,20 @@ namespace RPG.SceneManagement
 
             if (dataPlayer != null)
             {
-                if (dataPlayer.playerData.IDmaxRegionAvaliable < (int)sceneComponent.IdScene)
-                    dataPlayer.playerData.IDmaxRegionAvaliable = (int)sceneComponent.IdScene;
+                List<allScenes> posTempList = new List<allScenes>(IGame.Instance.LevelChangeObserver.DAllScenes.Keys);
+
+                int posNew = 0;
+                foreach (var item in posTempList)
+                {
+                    if (item== (allScenes)sceneComponent.IdScene )
+                    {
+                        posNew = (int)sceneComponent.IdScene;
+                    }
+                }
+
+
+                if (dataPlayer.playerData.IDmaxRegionAvaliable < posNew)
+                    dataPlayer.playerData.IDmaxRegionAvaliable = posNew;
             }
             else
                 Debug.LogError("DataPlayer object not found!"); // Выводит ошибку, если объект DataPlayer не найден в сцене
@@ -123,10 +137,26 @@ namespace RPG.SceneManagement
         private void SetBonusWeaponAndArmor()
         {
             if (bonusWeapon != null)
-                IGame.Instance.playerController.GetFighter().EquipWeapon(bonusWeapon);
+            {
+                if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusWeapon.GetnameID()))
+                {
+                    IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusWeapon.GetnameID());
+                    IGame.Instance.playerController.GetFighter().EquipWeapon(bonusWeapon);
+                    IGame.Instance.playerController.PlayerUIManager.ShowNewWeapon();
+                    IGame.Instance.gameAPI.SaveUpdater();
+                }
+            }
 
             if (bonusArmor != null)
-                IGame.Instance.playerController.GetFighter().EquipArmor(bonusArmor);
+            {
+                if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusArmor.GetnameID()))
+                {
+                    IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusArmor.GetnameID());
+                    IGame.Instance.playerController.GetFighter().EquipArmor(bonusArmor);
+                    IGame.Instance.playerController.PlayerUIManager.ShowNewArmor();
+                    IGame.Instance.gameAPI.SaveUpdater();
+                }
+            }
         }
 
 

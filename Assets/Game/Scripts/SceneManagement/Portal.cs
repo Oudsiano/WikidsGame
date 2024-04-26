@@ -17,6 +17,7 @@ namespace RPG.SceneManagement
         [SerializeField] private float fadeInTime = 2f; // Время появления после загрузки новой сцены
         [SerializeField] private float betweenFadeTime = 2f; // Время ожидания между затуханием и появлением
         [SerializeField] public DataPlayer dataPlayer;
+        [SerializeField] public bool ItFinishPortal = true;
         // Статическая переменная, определяющая, идет ли в данный момент переход между сценами
         private static bool isTransitioning = false;
 
@@ -29,6 +30,20 @@ namespace RPG.SceneManagement
         enum DestinationIdentifier
         {
             A, B, C, D, E
+        }
+
+        private void Awake()
+        {
+            SceneComponent sceneComponent = FindObjectOfType<SceneComponent>();
+
+            if (sceneComponent == null)
+            {
+                Debug.LogError("Errrorr! na scene net SceneComponent.");
+            }
+            else
+            {
+
+            }
         }
 
         // Обработчик события входа в область портала

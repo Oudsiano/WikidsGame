@@ -36,7 +36,6 @@ public class LocationChange : MonoBehaviour
     }
     private void Start()
     {
-        // Находим объекты DataPlayer и GameAPI в сцене
         dataPlayer = FindObjectOfType<DataPlayer>();
         gameAPI = FindObjectOfType<GameAPI>();
         sceneLoader = FindObjectOfType<SceneLoader>();
@@ -75,19 +74,6 @@ public class LocationChange : MonoBehaviour
         Invoke("LoadSceneAfterDelay", 2f);
         AudioManager.instance.Play("ClickButton");
     }
-    public void ChangeButtonBattleTwo()
-    {
-        dataPlayer.SetSceneToLoad(LevelChangeObserver.allScenes.battleScene2);
-        Loading.gameObject.SetActive(true);
-        // Устанавливаем значение sceneToLoad в DataPlayer и вызываем метод UpdateData через 2 секунды
-        Debug.Log("Изменили значение scene to load в playerdata из LocationChange");
-        gameAPI.SaveUpdater();
-        Invoke("LoadSceneAfterDelay", 2f);
-        AudioManager.instance.Play("ClickButton");
-
-
-    }
-
 
     private void LoadSceneAfterDelay()
     {

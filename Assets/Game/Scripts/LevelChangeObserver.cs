@@ -99,7 +99,7 @@ public class LevelChangeObserver : MonoBehaviour
         }
 
         RPG.SceneManagement.SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPLayer,true);
-
+        IGame.Instance.dataPLayer.playerData.chargeEnergy = 0;
 
         StartCoroutine(IGame.Instance.gameAPI.SaveGameData(IGame.Instance.dataPLayer.playerData));
     }

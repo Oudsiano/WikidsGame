@@ -21,7 +21,8 @@ public class KeyBoardsEvents : MonoBehaviour
 
     private void Awake()
     {
-        RPG.Core.SceneLoader.AddEventListenerLevelChange((e) => {
+        RPG.Core.SceneLoader.AddEventListenerLevelChange((e) =>
+        {
             if (e == 0)
                 KeyBoardsEvents.sceneState = SceneState.meny;
             else KeyBoardsEvents.sceneState = SceneState.battle;
@@ -33,16 +34,23 @@ public class KeyBoardsEvents : MonoBehaviour
     private void changeEscState()
     {
         if (sceneState == SceneState.battle)
-        switch (escState)
         {
-            case EscState.none:
-                IGame.Instance.UIManager.ShowAgainUi();
-                break;
-            case EscState.againScr:
-                IGame.Instance.UIManager.OnCLickCancelAgain();
-                break;
-            default:
-                break;
+            if (IGame.Instance.playerController.PlayerUIManager.MapCanvas.gameObject.activeSelf)
+            {
+                IGame.Instance.playerController.PlayerUIManager.MapCanvas.gameObject.SetActive(false);
+            }
+            else
+            switch (escState)
+            {
+                case EscState.none:
+                    IGame.Instance.UIManager.ShowAgainUi();
+                    break;
+                case EscState.againScr:
+                    IGame.Instance.UIManager.OnCLickCancelAgain();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

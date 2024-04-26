@@ -18,6 +18,7 @@ namespace RPG.Controller
         public  PlayerArmorManager playerArmorManager;
 
         public WeaponPanelUI WeaponPanelUI;
+        public PlayerUIManager PlayerUIManager;
 
         private int enemyLayer = 9; // Номер слоя для врагов
 
@@ -32,8 +33,10 @@ namespace RPG.Controller
 
 
             WeaponPanelUI = FindObjectOfType<WeaponPanelUI>();
+            PlayerUIManager = FindObjectOfType<PlayerUIManager>();
 
             WeaponPanelUI.Init();
+            PlayerUIManager.Init();
         }
 
         public Health GetHealth () => health;

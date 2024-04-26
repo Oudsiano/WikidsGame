@@ -19,10 +19,7 @@ public class LocationChange : MonoBehaviour
     [SerializeField]
     public List<OneBtnChangeRegion> regions = new List<OneBtnChangeRegion>();
 
-
-    private DataPlayer dataPlayer;
-    private GameAPI gameAPI;
-    private SceneLoader sceneLoader;
+    //private SceneLoader sceneLoader;
 
     [SerializeField] private TMP_Text Loading;
 
@@ -33,15 +30,8 @@ public class LocationChange : MonoBehaviour
         {
             item.Button.onClick.AddListener(() => OnClick(item.loadedScene));
         }
-    }
-    private void Start()
-    {
-        // Находим объекты DataPlayer и GameAPI в сцене
-        dataPlayer = FindObjectOfType<DataPlayer>();
-        gameAPI = FindObjectOfType<GameAPI>();
-        sceneLoader = FindObjectOfType<SceneLoader>();
 
-        setUpMaxRegion(dataPlayer.playerData.IDmaxRegionAvaliable);
+        setUpMaxRegion(IGame.Instance.dataPLayer.playerData.IDmaxRegionAvaliable);
     }
 
     public void setUpMaxRegion(int n)
@@ -49,7 +39,7 @@ public class LocationChange : MonoBehaviour
         int findedIndex = 0;
         for (int i = 0; i < regions.Count; i++)
         {
-            if ((int)regions[i].loadedScene == n)
+            if ((int)regions[i].loadedScene <= n)
             {
                 regions[i].Button.interactable = true;
 
@@ -68,30 +58,16 @@ public class LocationChange : MonoBehaviour
 
     private void OnClick(allScenes sceneId)
     {
-        dataPlayer.SetSceneToLoad(sceneId);
+        IGame.Instance.dataPLayer.SetSceneToLoad(sceneId);
         Loading.gameObject.SetActive(true);
-        // Устанавливаем значение sceneToLoad в DataPlayer и вызываем метод UpdateData через 2 секунды
-        gameAPI.SaveUpdater();
+        IGame.Instance.gameAPI.SaveUpdater();
         Invoke("LoadSceneAfterDelay", 2f);
         AudioManager.instance.Play("ClickButton");
     }
-    public void ChangeButtonBattleTwo()
-    {
-        dataPlayer.SetSceneToLoad(LevelChangeObserver.allScenes.battleScene2);
-        Loading.gameObject.SetActive(true);
-        // Устанавливаем значение sceneToLoad в DataPlayer и вызываем метод UpdateData через 2 секунды
-        Debug.Log("Изменили значение scene to load в playerdata из LocationChange");
-        gameAPI.SaveUpdater();
-        Invoke("LoadSceneAfterDelay", 2f);
-        AudioManager.instance.Play("ClickButton");
-
-
-    }
-
 
     private void LoadSceneAfterDelay()
     {
-        sceneLoader.LoadScene((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
+        SceneLoader.Instance.LoadScene((LevelChangeObserver.allScenes)IGame.Instance.dataPLayer.playerData.sceneToLoad);
         Loading.gameObject.SetActive(false);
 
     }

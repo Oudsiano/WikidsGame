@@ -5280,19 +5280,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1090987521}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1376654818}
-        m_TargetAssemblyTypeName: LocationChange, Assembly-CSharp
-        m_MethodName: ChangeButtonLibrary
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1090987521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5467,18 +5455,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1250745383}
   m_CullTransparentMesh: 1
---- !u!114 &1376654818 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5113628284928536448, guid: 4c4511454112f40d5adbee3480f847e6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1951388036}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e13ed0be09474160975e27adc578f5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1376654822 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4657274255964798467, guid: 4c4511454112f40d5adbee3480f847e6,
@@ -5691,8 +5667,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1839862258428106234, guid: 4c4511454112f40d5adbee3480f847e6,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: m_Interactable
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839862258428106234, guid: 4c4511454112f40d5adbee3480f847e6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1839862258428106234, guid: 4c4511454112f40d5adbee3480f847e6,
         type: 3}
@@ -5778,7 +5759,7 @@ PrefabInstance:
     - target: {fileID: 3290527255311635076, guid: 4c4511454112f40d5adbee3480f847e6,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3290527255311635076, guid: 4c4511454112f40d5adbee3480f847e6,
         type: 3}
@@ -5945,6 +5926,51 @@ PrefabInstance:
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 300008939}
+    - target: {fileID: 5113628284928536448, guid: 4c4511454112f40d5adbee3480f847e6,
+        type: 3}
+      propertyPath: regions.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113628284928536448, guid: 4c4511454112f40d5adbee3480f847e6,
+        type: 3}
+      propertyPath: regions.Array.data[0].Button
+      value: 
+      objectReference: {fileID: 1951388040}
+    - target: {fileID: 5113628284928536448, guid: 4c4511454112f40d5adbee3480f847e6,
+        type: 3}
+      propertyPath: regions.Array.data[1].Button
+      value: 
+      objectReference: {fileID: 1951388039}
+    - target: {fileID: 5113628284928536448, guid: 4c4511454112f40d5adbee3480f847e6,
+        type: 3}
+      propertyPath: regions.Array.data[2].Button
+      value: 
+      objectReference: {fileID: 1090987520}
+    - target: {fileID: 5113628284928536448, guid: 4c4511454112f40d5adbee3480f847e6,
+        type: 3}
+      propertyPath: regions.Array.data[3].Button
+      value: 
+      objectReference: {fileID: 2028636458}
+    - target: {fileID: 5113628284928536448, guid: 4c4511454112f40d5adbee3480f847e6,
+        type: 3}
+      propertyPath: regions.Array.data[0].loadedScene
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113628284928536448, guid: 4c4511454112f40d5adbee3480f847e6,
+        type: 3}
+      propertyPath: regions.Array.data[1].loadedScene
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113628284928536448, guid: 4c4511454112f40d5adbee3480f847e6,
+        type: 3}
+      propertyPath: regions.Array.data[2].loadedScene
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113628284928536448, guid: 4c4511454112f40d5adbee3480f847e6,
+        type: 3}
+      propertyPath: regions.Array.data[3].loadedScene
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5714822122482464952, guid: 4c4511454112f40d5adbee3480f847e6,
         type: 3}
       propertyPath: m_Name
@@ -5986,7 +6012,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3906691186750093020, guid: 4c4511454112f40d5adbee3480f847e6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4657274255964798467, guid: 4c4511454112f40d5adbee3480f847e6,
@@ -5999,6 +6026,30 @@ PrefabInstance:
       addedObject: {fileID: 2028636457}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c4511454112f40d5adbee3480f847e6, type: 3}
+--- !u!114 &1951388039 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3290527255311635076, guid: 4c4511454112f40d5adbee3480f847e6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1951388036}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1951388040 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1839862258428106234, guid: 4c4511454112f40d5adbee3480f847e6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1951388036}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2028636456
 GameObject:
   m_ObjectHideFlags: 0
@@ -6082,19 +6133,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2028636459}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1376654818}
-        m_TargetAssemblyTypeName: LocationChange, Assembly-CSharp
-        m_MethodName: ChangeButtonHoll
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2028636459
 MonoBehaviour:
   m_ObjectHideFlags: 0

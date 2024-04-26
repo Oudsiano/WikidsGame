@@ -13,9 +13,11 @@ public class LevelChangeObserver : MonoBehaviour
         emptyScene,
         regionSCene,
         battle1,
+        battleScene2,
         town1,
         town2,
         holl
+
     }
 
     [Serializable]

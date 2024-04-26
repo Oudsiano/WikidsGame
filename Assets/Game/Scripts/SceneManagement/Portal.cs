@@ -19,7 +19,6 @@ namespace RPG.SceneManagement
         [SerializeField] public DataPlayer dataPlayer;
         [SerializeField] public bool ItFinishPortal = true;
         // Статическая переменная, определяющая, идет ли в данный момент переход между сценами
-        private static bool isTransitioning = false;
         private SceneComponent sceneComponent;
 
         [Header("Bonus")]
@@ -44,7 +43,7 @@ namespace RPG.SceneManagement
             }
             else
             {
-                
+
             }
         }
 
@@ -52,61 +51,45 @@ namespace RPG.SceneManagement
         private void OnTriggerEnter(Collider other)
         {
             // Проверяем, что в область портала входит игрок и что переход между сценами не происходит в данный момент
-            if (other.gameObject == MainPlayer.Instance.gameObject && !isTransitioning)
+            if (other.gameObject == MainPlayer.Instance.gameObject)
             {
-                StartCoroutine(Transition()); // Запускаем переход между сценами
-                isTransitioning = true; // Устанавливаем флаг перехода в состояние "идет переход"
+                if ((int)sceneToLoad != IGame.Instance.dataPLayer.playerData.sceneToLoad)
+                    StartCoroutine(Transition()); // Запускаем переход между сценами
+                else
+                {
+                    TransitionInScene();
+                }
             }
         }
 
         // Метод для перехода между сценами
         private IEnumerator Transition()
         {
-            DontDestroyOnLoad(this.gameObject); // Не уничтожаем портал при загрузке новой сцены
-
-            if (sceneToLoad== LevelChangeObserver.allScenes.emptyScene)
-            {
+            if (sceneToLoad == LevelChangeObserver.allScenes.emptyScene)
                 Debug.LogError("Empty scene on portal. It's mistake");
-            }
 
+            dataPlayer.SetSceneToLoad(sceneToLoad);
+            SceneLoader.Instance.LoadScene(sceneToLoad);
 
-            yield return SceneManager.LoadSceneAsync(IGame.Instance.LevelChangeObserver.DAllScenes[sceneToLoad].name); // Загружаем новую сцену
+            //yield return SceneManager.LoadSceneAsync(IGame.Instance.LevelChangeObserver.DAllScenes[sceneToLoad].name); // Загружаем новую сцену
 
-
-            
 
             if (dataPlayer != null)
             {
-                dataPlayer.SetSceneToLoad(sceneToLoad); // Устанавливает новое значение номера локации
-                                                        // Вызываем метод SaveGameData() из объекта GameAPI
-
-                if (dataPlayer.playerData.IDmaxRegionAvaliable< (int)sceneComponent.IdScene)
-                dataPlayer.playerData.IDmaxRegionAvaliable = (int)sceneComponent.IdScene;
-
-                Debug.Log("изменили значение scene to load в playerdata из portal");
-
-                if (dataPlayer != null)
-                {
-                    // Если объект найден, продолжаем с сохранением игры
-                    StartCoroutine(IGame.Instance.gameAPI.SaveGameData(dataPlayer.playerData));
-                }
-                else
-                {
-                    // Если объект не найден, выводим ошибку
-                    Debug.LogError("DataPlayer object not found!");
-                }
+                if (dataPlayer.playerData.IDmaxRegionAvaliable < (int)sceneComponent.IdScene)
+                    dataPlayer.playerData.IDmaxRegionAvaliable = (int)sceneComponent.IdScene;
             }
             else
-            {
                 Debug.LogError("DataPlayer object not found!"); // Выводит ошибку, если объект DataPlayer не найден в сцене
-            }
-            Portal otherPortal = GetOtherPortal(); // Получаем портал, соответствующий месту назначения текущего портала
-            UpdatePlayerLocation(otherPortal); // Обновляем местоположение игрока
+
             SetBonusWeaponAndArmor();
             yield return new WaitForSeconds(betweenFadeTime); // Ждем некоторое время после загрузки сцены
+        }
 
-            isTransitioning = false; // Устанавливаем флаг перехода в состояние "переход завершен"
-            Destroy(this.gameObject); // Уничтожаем портал
+        private void TransitionInScene()
+        {
+            Portal otherPortal = GetOtherPortal(); // Получаем портал, соответствующий месту назначения текущего портала
+            UpdatePlayerLocation(otherPortal); // Обновляем местоположение игрока
         }
 
         // Метод для получения портала, соответствующего месту назначения текущего портала
@@ -116,13 +99,8 @@ namespace RPG.SceneManagement
 
             // Проходим по всем порталам
             foreach (var portal in portals)
-            {
-                // Если находим портал с таким же местом назначения, но не текущий портал, возвращаем его
                 if (portal != this && portal.destination == this.destination)
-                {
                     return portal;
-                }
-            }
 
             return null; // Если портал не найден, возвращаем null
         }
@@ -139,18 +117,18 @@ namespace RPG.SceneManagement
 
             // Включаем навигацию для игрока
             MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = true;
-            
+
         }
 
         private void SetBonusWeaponAndArmor()
         {
-            if (bonusWeapon!=null)
+            if (bonusWeapon != null)
                 IGame.Instance.playerController.GetFighter().EquipWeapon(bonusWeapon);
 
-            if (bonusArmor!=null)
+            if (bonusArmor != null)
                 IGame.Instance.playerController.GetFighter().EquipArmor(bonusArmor);
         }
-       
-        
+
+
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using RPG.SceneManagement;
 
 public class LevelChangeObserver : MonoBehaviour
 {
@@ -77,10 +78,9 @@ public class LevelChangeObserver : MonoBehaviour
                 newLevel = item.Key;
             }
         }
-        data = FindObjectOfType<DataPlayer>();
         if (newLevel == allScenes.battle1)
         {
-            UpdatePlayerLocation(spawnPointsSavePoint[data.playerData.spawnPoint]);
+            UpdatePlayerLocation(spawnPointsSavePoint[IGame.Instance.dataPLayer.playerData.spawnPoint]);
             Debug.Log("Загружена 5 сцена сюда можно добавить условие");
         }
         else
@@ -98,7 +98,10 @@ public class LevelChangeObserver : MonoBehaviour
             //UpdatePlayerLocation(spawnPoints[newLevel]);
         }
 
-        RPG.SceneManagement.SavePointsManager.UpdateStateSpawnPointsAfterLoad(data);
+        RPG.SceneManagement.SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPLayer,true);
+
+
+        StartCoroutine(IGame.Instance.gameAPI.SaveGameData(IGame.Instance.dataPLayer.playerData));
     }
 
     // Метод, вызываемый при изменении уровня загрузки.
@@ -106,6 +109,7 @@ public class LevelChangeObserver : MonoBehaviour
     {
         Debug.Log("Уровень загрузки изменен на " + newLevel);
         // Загружаем сцену с измененным номером.
+        SavePointsManager.ResetDict();
         SceneManager.LoadScene(DAllScenes[newLevel].name);
 
     }

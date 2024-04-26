@@ -20,14 +20,22 @@ namespace RPG.SceneManagement
             set => allSavePoints = value;
         }
 
-        public static void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer)
+        public static void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer, bool reset = false)
         {
+
             for (int i = 0; i < dataPlayer.playerData.stateSpawnPoints.Count; i++)
             {
                 bool thisLast = i == dataPlayer.playerData.spawnPoint;
+                if (allSavePoints[i]!=null)
                 allSavePoints[i].SetAlreadyEnabled(dataPlayer.playerData.stateSpawnPoints[i], thisLast);
             }
         }
+
+        public static void ResetDict()
+        {
+            allSavePoints = new Dictionary<int, SavePoint>();
+        }
+
     }
 
     public class SavePoint : MonoBehaviour
@@ -39,7 +47,6 @@ namespace RPG.SceneManagement
         [SerializeField] public Health health;
         [SerializeField] public DataPlayer dataPlayer;
         [SerializeField] public int spawnPoint;
-        [SerializeField] public GameAPI api;
         //[SerializeField] private bool alreadyEnabled;
         // Переменная для хранения позиции игрока
         private Vector3 playerPosition;
@@ -67,6 +74,11 @@ namespace RPG.SceneManagement
             health = FindObjectOfType<Health>();
         }
 
+        private void OnDestroy()
+        {
+            SavePointsManager.AllSavePoints[spawnPoint] = null;
+        }
+
 
         // Обработчик события входа в область портала
         private void OnTriggerEnter(Collider other)
@@ -81,7 +93,6 @@ namespace RPG.SceneManagement
                 Debug.Log("включили партикл при сохранении");
                 health.Restore();
                 dataPlayer.SavePlayerPosition(spawnPoint);
-                api = FindObjectOfType<GameAPI>(); // Попытка найти объект DataPlayer в сцене
 
                 if (dataPlayer != null)
                 {
@@ -89,7 +100,7 @@ namespace RPG.SceneManagement
                     dataPlayer.playerData.stateSpawnPoints[spawnPoint] = true;
 
                     // Если объект найден, продолжаем с сохранением игры
-                    StartCoroutine(api.SaveGameData(dataPlayer.playerData));
+                    StartCoroutine(IGame.Instance.gameAPI.SaveGameData(dataPlayer.playerData));
 
                     SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
                 }

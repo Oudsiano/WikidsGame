@@ -104,6 +104,8 @@ namespace RPG.SceneManagement
                     StartCoroutine(IGame.Instance.gameAPI.SaveGameData(dataPlayer.playerData));
 
                     SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
+
+                    IGame.Instance.playerController.GetHealth().Restore();
                 }
                 else
                 {

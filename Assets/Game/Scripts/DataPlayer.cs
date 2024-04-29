@@ -70,4 +70,7 @@ public class PlayerData
     public OneLeson[] progress;
     public int chargeEnergy;
     public int IDmaxRegionAvaliable;
+
+
+    public int helpIndex;
 }

@@ -7,6 +7,11 @@ namespace RPG.Core
     // Класс для управления камерой, следующей за целью
     public class FollowCamera : MonoBehaviour
     {
+
+        public static event Action OnCameraRotation; //Для обучения
+        public static event Action OnCameraScale; //Для обучения
+
+
         private Transform target; // Цель, за которой следует камера
         [SerializeField] private float rotationSpeed; // Скорость вращения камеры
         [SerializeField] private float zoomSpeed; // Скорость приближения/удаления камеры
@@ -75,9 +80,12 @@ namespace RPG.Core
         // Метод для вращения камеры
         private void RotationMovement()
         {
+            var MX = Input.GetAxis("Mouse X");
+            if (MX == 0) return;
+
             // Получаем значения вращения по осям X и Y
-            camYRotation += (Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime);
-            camXRotation += (Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime);
+            camYRotation += (MX * rotationSpeed * Time.deltaTime);
+            //camXRotation += (Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime);
 
             // Ограничиваем вращение по оси X
             camXRotation = Mathf.Clamp(camXRotation, 0, 0);
@@ -86,13 +94,18 @@ namespace RPG.Core
 
 
             transform.localEulerAngles = new Vector3(camXRotation, camYRotation, 0);
+            OnCameraRotation?.Invoke();
         }
 
         // Метод для масштабирования камеры
         private void zoomMovement()
         {
+            var MSW = Input.GetAxis("Mouse ScrollWheel");
+
+            if (MSW == 0) return;
+
             // Получаем количество изменения масштаба
-            zoomAmt = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed * Time.deltaTime;
+            zoomAmt = MSW * zoomSpeed * Time.deltaTime;
             // Прибавляем это изменение к общему изменению масштаба
             zoomTotal += zoomAmt;
             // Ограничиваем общее изменение масштаба
@@ -104,6 +117,8 @@ namespace RPG.Core
             // Масштабируем камеру, если она находится в пределах допустимого масштабирования
             if (zoomTotal > minZoom && zoomTotal < maxZoom)
                 mainCam.transform.position = newZoomPos;
+
+            OnCameraScale?.Invoke();
         }
     }
 }

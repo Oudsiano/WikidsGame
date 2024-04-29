@@ -117,7 +117,8 @@ namespace RPG.Controller
                 return false;
 
             // Если игрок кликнул мышью, перемещаемся к указанной точке
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButton(0))
+                if (!EventSystem.current.IsPointerOverGameObject())
             {
                 bool readyToGo = true;
 

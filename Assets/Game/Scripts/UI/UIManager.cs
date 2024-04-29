@@ -21,12 +21,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI textCoin;
     [SerializeField] private TMPro.TextMeshProUGUI energyCharger;
 
+    [Header("HelpUI")]
+    [SerializeField] public HelpInFirstScene HelpInFirstScene;
 
 
-    public SceneLoader sceneLoader;
+    private SceneLoader sceneLoader;
+
+    public SceneLoader SceneLoader { get => sceneLoader; set => sceneLoader = value; }
+
     public void Init()
     {
-        sceneLoader = FindObjectOfType<SceneLoader>();
+        SceneLoader = FindObjectOfType<SceneLoader>();
 
 
         _buttonAgain.onClick.AddListener(OnClickAgainRegen);
@@ -64,14 +69,14 @@ public class UIManager : MonoBehaviour
         closeAgainUI(true);
         IGame.Instance.gameAPI.SaveUpdater();
 
-        sceneLoader.TryChangeLevel(LevelChangeObserver.allScenes.regionSCene);
+        SceneLoader.TryChangeLevel(LevelChangeObserver.allScenes.regionSCene);
         AudioManager.instance.Play("ButtonClick");
     }
 
 
     private void OnClickAgainRegen()
     {
-        sceneLoader.UpdateCurrentLevel();
+        SceneLoader.UpdateCurrentLevel();
         closeAgainUI(true);
         AudioManager.instance.Play("ButtonClick");
     }

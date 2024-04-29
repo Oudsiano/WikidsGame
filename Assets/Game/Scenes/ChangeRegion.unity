@@ -5933,6 +5933,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1396561434}
   m_CullTransparentMesh: 1
+--- !u!1 &1586310092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1586310094}
+  - component: {fileID: 1586310093}
+  m_Layer: 0
+  m_Name: LocationChange
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1586310093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586310092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e13ed0be09474160975e27adc578f5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regions:
+  - Button: {fileID: 1839862257552360574}
+    loadedScene: 2
+  - Button: {fileID: 3290527254577709824}
+    loadedScene: 3
+  - Button: {fileID: 1090987520}
+    loadedScene: 4
+  - Button: {fileID: 137297110}
+    loadedScene: 6
+  - Button: {fileID: 2028636458}
+    loadedScene: 5
+  Loading: {fileID: 5214088809154012864}
+--- !u!4 &1586310094
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586310092}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 587.92, y: -5.72, z: 39.84}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1741537041 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1977176692237885867, guid: 7e5812406ae3246439ea2daa1ce31d5d,
@@ -6845,30 +6901,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4302800436804844479}
   m_CullTransparentMesh: 1
---- !u!114 &5113628282985774596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5714822123224279356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e13ed0be09474160975e27adc578f5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  regions:
-  - Button: {fileID: 1839862257552360574}
-    loadedScene: 2
-  - Button: {fileID: 3290527254577709824}
-    loadedScene: 4
-  - Button: {fileID: 1090987520}
-    loadedScene: 5
-  - Button: {fileID: 2028636458}
-    loadedScene: 6
-  - Button: {fileID: 137297110}
-    loadedScene: 3
-  Loading: {fileID: 5214088809154012864}
 --- !u!114 &5214088809154012864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6970,7 +7002,6 @@ GameObject:
   - component: {fileID: 441507593638128785}
   - component: {fileID: 1144759514523045035}
   - component: {fileID: 7993469873383136358}
-  - component: {fileID: 5113628282985774596}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -7309,3 +7340,4 @@ SceneRoots:
   - {fileID: 2078131723796311467}
   - {fileID: 3085696}
   - {fileID: 4657274256295833479}
+  - {fileID: 1586310094}

@@ -17,7 +17,7 @@ public class LevelChangeObserver : MonoBehaviour
         town1,
         town2,
         holl,
-        battleScene2
+        battleScene1
 
     }
 

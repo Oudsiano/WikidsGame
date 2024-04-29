@@ -64,15 +64,14 @@ public class UIManager : MonoBehaviour
         closeAgainUI(true);
         IGame.Instance.gameAPI.SaveUpdater();
 
-        sceneLoader.LoadScene(LevelChangeObserver.allScenes.regionSCene);
+        sceneLoader.TryChangeLevel(LevelChangeObserver.allScenes.regionSCene);
         AudioManager.instance.Play("ButtonClick");
     }
 
 
     private void OnClickAgainRegen()
     {
-        var dataPlayer = FindObjectOfType<DataPlayer>();
-        sceneLoader.LoadScene((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
+        sceneLoader.UpdateCurrentLevel();
         closeAgainUI(true);
         AudioManager.instance.Play("ButtonClick");
     }

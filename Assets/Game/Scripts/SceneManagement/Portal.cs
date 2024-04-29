@@ -71,7 +71,7 @@ namespace RPG.SceneManagement
                 Debug.LogError("Empty scene on portal. It's mistake");
 
             dataPlayer.SetSceneToLoad(sceneToLoad);
-            SceneLoader.Instance.LoadScene(sceneToLoad);
+            SceneLoader.Instance.TryChangeLevel(sceneToLoad);
 
             //yield return SceneManager.LoadSceneAsync(IGame.Instance.LevelChangeObserver.DAllScenes[sceneToLoad].name); // Загружаем новую сцену
 

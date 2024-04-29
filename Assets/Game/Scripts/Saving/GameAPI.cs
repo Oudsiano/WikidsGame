@@ -22,7 +22,7 @@ public class GameAPI : MonoBehaviour
 
         IDUpdater();
         SaveUpdater();
-        UpdateData();
+        LoadData();
         textForOtl.text = $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
     }
     public void FixedUpdate()
@@ -40,11 +40,11 @@ public class GameAPI : MonoBehaviour
         StartCoroutine(SaveGameData(dataPlayer.playerData));
         gameSave = true;
     }
-    public void UpdateData()
+    public void LoadData()
     {
         StartCoroutine(GetGameData());
         gameGet = true;
-        sceneLoader.LoadScene((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
+        sceneLoader.TryChangeLevel((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
     }
 
     public void UpdataDataTest(int IDLesson)
@@ -57,7 +57,10 @@ public class GameAPI : MonoBehaviour
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.D))
+        {
             StartCoroutine(GetGameData());
+            sceneLoader.UpdateCurrentLevel();
+        }
         if (Input.GetKeyDown(KeyCode.H))
         {
             StartCoroutine(SaveGameData(dataPlayer.playerData));
@@ -75,7 +78,6 @@ public class GameAPI : MonoBehaviour
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
             dataPlayer.playerData = playerData;
             Debug.Log("Data downloaded successfully");
-            sceneLoader.LoadScene( (LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
         }
         else
         {

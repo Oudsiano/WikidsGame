@@ -22,16 +22,19 @@ public class IGame : MonoBehaviour
     private void Awake()
     {
         if (Instance == null)
+
+        {
             Instance = this;
 
-        dataPLayer = FindObjectOfType<DataPlayer>();
-        gameAPI = FindObjectOfType<GameAPI>();
-        playerController = FindObjectOfType<PlayerController>();
-        LevelChangeObserver = FindAnyObjectByType<LevelChangeObserver>();
-        SavePointsManager = new SavePointsManager();
+            dataPLayer = FindObjectOfType<DataPlayer>();
+            gameAPI = FindObjectOfType<GameAPI>();
+            playerController = FindObjectOfType<PlayerController>();
+            LevelChangeObserver = FindAnyObjectByType<LevelChangeObserver>();
+            SavePointsManager = new SavePointsManager();
 
-        UIManager.Init();
-        LevelChangeObserver.Init();
-        playerController.Init();
+            UIManager.Init();
+            LevelChangeObserver.Init();
+            playerController.Init();
+        }
     }
 }

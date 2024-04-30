@@ -22,12 +22,13 @@ public class HelpInFirstScene : MonoBehaviour
 
         RPG.Core.FollowCamera.OnCameraRotation += FollowCamera_OnCameraRotation;
 
-        RPG.Core.FollowCamera.OnCameraScale += FollowCamera_OnCameraScale; 
+        RPG.Core.FollowCamera.OnCameraScale += FollowCamera_OnCameraScale;
+        restTexts();
     }
 
-    private void SceneLoader_LevelChanged(allScenes obj)
+    private void SceneLoader_LevelChanged(allScenes s)
     {
-        Study1Show();
+        Study1Show(s);
     }
 
     private void FollowCamera_OnCameraRotation() => EndStudy1();
@@ -41,6 +42,7 @@ public class HelpInFirstScene : MonoBehaviour
 
     private void restTexts()
     {
+        Panel.SetActive(false);
         text1.SetActive(false);
         text2.SetActive(false);
         text3.SetActive(false);
@@ -48,8 +50,9 @@ public class HelpInFirstScene : MonoBehaviour
         text5.SetActive(false);
     }
 
-    public void Study1Show()
+    public void Study1Show(allScenes s)
     {
+        if (s != allScenes.battle1) return;
         if (IGame.Instance.dataPLayer.playerData.helpIndex !=0) return;
 
         if (Panel == null)
@@ -76,6 +79,7 @@ public class HelpInFirstScene : MonoBehaviour
 
     public void Study2()
     {
+        if (IGame.Instance.dataPLayer.playerData.sceneToLoad != (int)allScenes.battle1) return;
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 1) return;
         Panel.SetActive(true);
         restTexts();
@@ -124,6 +128,11 @@ public class HelpInFirstScene : MonoBehaviour
         restTexts();
         text5.SetActive(true);
             IGame.Instance.dataPLayer.playerData.helpIndex = 5;
+    }
+    public void EndStudy5()
+    {
+        text5.SetActive(false);
+        Panel.SetActive(false);
     }
 
 

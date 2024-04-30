@@ -55,6 +55,8 @@ namespace RPG.SceneManagement
             // Проверяем, что в область портала входит игрок и что переход между сценами не происходит в данный момент
             if (other.gameObject == MainPlayer.Instance.gameObject)
             {
+                IGame.Instance.UIManager.HelpInFirstScene.EndStudy5();
+
                 if ((int)sceneToLoad != IGame.Instance.dataPLayer.playerData.sceneToLoad)
                     StartCoroutine(Transition()); // Запускаем переход между сценами
                 else

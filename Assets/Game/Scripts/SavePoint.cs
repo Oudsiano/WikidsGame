@@ -68,7 +68,7 @@ namespace RPG.SceneManagement
                 NotActiveSprite.SetActive(true);
         }
 
-        private void Awake()
+        private void Start()
         {
             IGame.Instance.SavePointsManager.AllSavePoints[spawnPoint] = this;
             NotActiveSprite.SetActive(true);

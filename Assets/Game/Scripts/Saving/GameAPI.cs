@@ -102,7 +102,7 @@ public class GameAPI : MonoBehaviour
             {
                 foreach (OneLeson item in IGame.Instance.dataPLayer.playerData.progress)
                 {
-                    if (item != null && item.id != IDLesson)
+                    if (item != null && item.id == IDLesson)
                         foreach (OneTestQuestion item2 in item.tests)
                         {
                             if (item2.completed)

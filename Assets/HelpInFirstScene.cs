@@ -49,7 +49,7 @@ public class HelpInFirstScene : MonoBehaviour
     public void Study1Show()
     {
         if (IGame.Instance.dataPLayer.playerData.helpIndex !=0) return;
-
+        
         Panel.SetActive(true);
         restTexts();
         text1.SetActive(true);

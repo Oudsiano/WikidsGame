@@ -13,6 +13,8 @@ namespace RPG.Core
         // Событие, возникающее при изменении уровня загрузки.
         private static event LevelChangedEventHandler LevelChanged;
 
+        
+
         [SerializeField] private allScenes levelToLoad = 0;
         private static SceneLoader _instance;
 
@@ -60,7 +62,7 @@ namespace RPG.Core
 
             Debug.Log("Уровень загрузки изменен на " + IdNewLevel);
             // Загружаем сцену с измененным номером.
-            SavePointsManager.ResetDict();
+            IGame.Instance.SavePointsManager.ResetDict();
             SceneManager.LoadScene(IGame.Instance.LevelChangeObserver.DAllScenes[IdNewLevel].name);
 
             OnLevelChanged(IdNewLevel);

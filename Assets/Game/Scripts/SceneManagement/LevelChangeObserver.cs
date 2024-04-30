@@ -43,7 +43,7 @@ public class LevelChangeObserver : MonoBehaviour
 
     [SerializeField] DataPlayer data;
 
-    private void Start()
+    public void Init()
     {
         DAllScenes = new Dictionary<allScenes, UnityEngine.Object>();
         foreach (OneScene scene in AllScenes)
@@ -67,9 +67,9 @@ public class LevelChangeObserver : MonoBehaviour
                 newLevel = item.Key;
             }
         }
-        if (IGame.Instance.dataPLayer.playerData.spawnPoint > 0)
+        if (IGame.Instance.SavePointsManager.AllSavePoints.Count > 0)
         {
-            Vector3 posThere = SavePointsManager.AllSavePoints[IGame.Instance.dataPLayer.playerData.spawnPoint].transform.position;
+            Vector3 posThere = IGame.Instance.SavePointsManager.AllSavePoints[IGame.Instance.dataPLayer.playerData.spawnPoint].transform.position;
             UpdatePlayerLocation(posThere);
         }
         else
@@ -85,7 +85,7 @@ public class LevelChangeObserver : MonoBehaviour
             //UpdatePlayerLocation(spawnPoints[newLevel]);
         }
 
-        RPG.SceneManagement.SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPLayer,true);
+        IGame.Instance.SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPLayer,true);
         MainPlayer.Instance.ResetCountEergy();
 
         StartCoroutine(IGame.Instance.gameAPI.SaveGameData(IGame.Instance.dataPLayer.playerData));

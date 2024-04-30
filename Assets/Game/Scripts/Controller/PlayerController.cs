@@ -23,7 +23,7 @@ namespace RPG.Controller
         private int enemyLayer = 9; // Номер слоя для врагов
 
         // Метод Start вызывается перед первым обновлением кадра
-        void Start()
+        public void Init()
         {
             // Получаем ссылки на компоненты
             mover = GetComponent<Mover>();

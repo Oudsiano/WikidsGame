@@ -9,8 +9,8 @@ namespace RPG.SceneManagement
 {
     public class SavePointsManager
     {
-        private static Dictionary<int, SavePoint> allSavePoints;
-        public static Dictionary<int, SavePoint> AllSavePoints
+        private Dictionary<int, SavePoint> allSavePoints;
+        public Dictionary<int, SavePoint> AllSavePoints
         {
             get
             {
@@ -20,7 +20,7 @@ namespace RPG.SceneManagement
             set => allSavePoints = value;
         }
 
-        public static void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer, bool reset = false)
+        public void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer, bool reset = false)
         {
 
             for (int i = 0; i < dataPlayer.playerData.stateSpawnPoints.Count; i++)
@@ -32,7 +32,7 @@ namespace RPG.SceneManagement
             }
         }
 
-        public static void ResetDict()
+        public void ResetDict()
         {
             allSavePoints = new Dictionary<int, SavePoint>();
         }
@@ -70,16 +70,10 @@ namespace RPG.SceneManagement
 
         private void Awake()
         {
-            SavePointsManager.AllSavePoints[spawnPoint] = this;
+            IGame.Instance.SavePointsManager.AllSavePoints[spawnPoint] = this;
             NotActiveSprite.SetActive(true);
             health = FindObjectOfType<Health>();
         }
-
-        private void OnDestroy()
-        {
-            SavePointsManager.AllSavePoints[spawnPoint] = null;
-        }
-
 
         // Обработчик события входа в область портала
         private void OnTriggerEnter(Collider other)
@@ -103,7 +97,7 @@ namespace RPG.SceneManagement
                     // Если объект найден, продолжаем с сохранением игры
                     StartCoroutine(IGame.Instance.gameAPI.SaveGameData(dataPlayer.playerData));
 
-                    SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
+                    IGame.Instance.SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
 
                     IGame.Instance.playerController.GetHealth().Restore();
                 }

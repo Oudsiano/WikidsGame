@@ -35,10 +35,6 @@ namespace RPG.Combat
             mover = GetComponent<Mover>(); // Получаем компонент Mover
             actionScheduler = GetComponent<ActionScheduler>(); // Получаем компонент ActionScheduler
             anim = GetComponent<Animator>(); // Получаем компонент Animator
-        }
-
-        private void Start()
-        {
             isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
 
             if (!equippedWeapon)
@@ -52,6 +48,9 @@ namespace RPG.Combat
         }
         public void SetCommonWeapon()
         {
+            if (anim == null)
+                Awake();
+
             isFirebalNow = false;
             equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }

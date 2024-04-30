@@ -11,7 +11,7 @@ namespace RPG.Core
         // Определите делегат для события изменения уровня загрузки.
         public delegate void LevelChangedEventHandler(allScenes IdNewLevel);
         // Событие, возникающее при изменении уровня загрузки.
-        private static event LevelChangedEventHandler LevelChanged;
+        public static event Action<allScenes> LevelChanged;
 
         
 
@@ -21,15 +21,6 @@ namespace RPG.Core
         public static SceneLoader Instance
         {
             get { return _instance; }
-        }
-
-        public static void AddEventListenerLevelChange(LevelChangedEventHandler e)
-        {
-            LevelChanged += e;
-        }
-        public static void RemoveEventListenerLevelChange(LevelChangedEventHandler e)
-        {
-            LevelChanged -= e;
         }
 
         private void Awake()
@@ -47,10 +38,17 @@ namespace RPG.Core
 
         public void UpdateCurrentLevel()
         {
-            TryChangeLevel((allScenes)IGame.Instance.dataPLayer.playerData.sceneToLoad);
+            LoadLevel((allScenes)IGame.Instance.dataPLayer.playerData.sceneToLoad);
         }
 
         public void TryChangeLevel(allScenes IdNewLevel)
+        {
+            IGame.Instance.SavePointsManager.ResetDict();
+            IGame.Instance.dataPLayer.playerData.spawnPoint = 0;
+            LoadLevel(IdNewLevel);
+        }
+
+        public void LoadLevel(allScenes IdNewLevel)
         {
             if (IdNewLevel == allScenes.emptyScene)
             {
@@ -62,8 +60,6 @@ namespace RPG.Core
 
             Debug.Log("Уровень загрузки изменен на " + IdNewLevel);
             // Загружаем сцену с измененным номером.
-            IGame.Instance.SavePointsManager.ResetDict();
-            IGame.Instance.dataPLayer.playerData.spawnPoint = 0;
             SceneManager.LoadScene(IGame.Instance.LevelChangeObserver.DAllScenes[IdNewLevel].name);
 
             OnLevelChanged(IdNewLevel);

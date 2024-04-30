@@ -31,7 +31,7 @@ public class LocationChange : MonoBehaviour
             item.Button.onClick.AddListener(() => OnClick(item.loadedScene));
         }
 
-        setUpMaxRegion(IGame.Instance.dataPLayer.playerData.IDmaxRegionAvaliable);
+        //setUpMaxRegion(IGame.Instance.dataPLayer.playerData.IDmaxRegionAvaliable);
     }
 
     public void setUpMaxRegion(int n)

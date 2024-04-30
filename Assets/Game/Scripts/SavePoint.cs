@@ -95,7 +95,7 @@ namespace RPG.SceneManagement
                     dataPlayer.playerData.stateSpawnPoints[spawnPoint] = true;
 
                     // Если объект найден, продолжаем с сохранением игры
-                    StartCoroutine(IGame.Instance.gameAPI.SaveGameData(dataPlayer.playerData));
+                    StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
 
                     IGame.Instance.SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
 

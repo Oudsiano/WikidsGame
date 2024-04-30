@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using static LevelChangeObserver;
 
 public class HelpInFirstScene : MonoBehaviour
 {
@@ -18,14 +18,16 @@ public class HelpInFirstScene : MonoBehaviour
 
     private void Awake()
     {
-        RPG.Core.SceneLoader.AddEventListenerLevelChange((e) =>
-        {
-            Study1Show();
-        });
+        RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
 
         RPG.Core.FollowCamera.OnCameraRotation += FollowCamera_OnCameraRotation;
 
         RPG.Core.FollowCamera.OnCameraScale += FollowCamera_OnCameraScale; 
+    }
+
+    private void SceneLoader_LevelChanged(allScenes obj)
+    {
+        Study1Show();
     }
 
     private void FollowCamera_OnCameraRotation() => EndStudy1();
@@ -49,7 +51,13 @@ public class HelpInFirstScene : MonoBehaviour
     public void Study1Show()
     {
         if (IGame.Instance.dataPLayer.playerData.helpIndex !=0) return;
-        
+
+        if (Panel == null)
+        {
+            Debug.LogError("panel null");
+            return;
+        }
+
         Panel.SetActive(true);
         restTexts();
         text1.SetActive(true);
@@ -58,6 +66,7 @@ public class HelpInFirstScene : MonoBehaviour
 
     private void EndStudy1()
     {
+        text1.SetActive(false);
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 0) return;
         Panel.SetActive(false);
         IGame.Instance.dataPLayer.playerData.helpIndex = 1;
@@ -74,6 +83,7 @@ public class HelpInFirstScene : MonoBehaviour
     }
     private void EndStudy2()
     {
+        text2.SetActive(false);
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 1) return;
         Panel.SetActive(false);
         IGame.Instance.dataPLayer.playerData.helpIndex = 2;
@@ -88,6 +98,7 @@ public class HelpInFirstScene : MonoBehaviour
 
     public void EndStudy3()
     {
+        text3.SetActive(false);
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 2) return;
         Panel.SetActive(false);
         IGame.Instance.dataPLayer.playerData.helpIndex = 3;
@@ -101,6 +112,7 @@ public class HelpInFirstScene : MonoBehaviour
     }
     public void EndStudy4()
     {
+        text4.SetActive(false);
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 3) return;
         Panel.SetActive(false);
         IGame.Instance.dataPLayer.playerData.helpIndex = 4;

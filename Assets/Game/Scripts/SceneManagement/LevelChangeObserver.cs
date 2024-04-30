@@ -88,7 +88,7 @@ public class LevelChangeObserver : MonoBehaviour
         IGame.Instance.SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPLayer,true);
         MainPlayer.Instance.ResetCountEergy();
 
-        StartCoroutine(IGame.Instance.gameAPI.SaveGameData(IGame.Instance.dataPLayer.playerData));
+        StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
     }
 
     // Метод для обновления местоположения игрока

@@ -21,15 +21,15 @@ public class KeyBoardsEvents : MonoBehaviour
 
     private void Awake()
     {
-        RPG.Core.SceneLoader.AddEventListenerLevelChange((e) =>
-        {
-            if (e == 0)
-                KeyBoardsEvents.sceneState = SceneState.meny;
-            else KeyBoardsEvents.sceneState = SceneState.battle;
-        });
+        RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
     }
 
-
+    private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)
+    {
+        if (obj == 0)
+            KeyBoardsEvents.sceneState = SceneState.meny;
+        else KeyBoardsEvents.sceneState = SceneState.battle;
+    }
 
     private void changeEscState()
     {

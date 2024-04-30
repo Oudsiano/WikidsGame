@@ -37,7 +37,7 @@ public class GameAPI : MonoBehaviour
     }
     public void SaveUpdater()
     {
-        StartCoroutine(SaveGameData(dataPlayer.playerData));
+        StartCoroutine(SaveGameData());
         gameSave = true;
     }
     public void LoadData()
@@ -63,7 +63,7 @@ public class GameAPI : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.H))
         {
-            StartCoroutine(SaveGameData(dataPlayer.playerData));
+            StartCoroutine(SaveGameData());
         }
     }
 
@@ -125,9 +125,9 @@ public class GameAPI : MonoBehaviour
         }
     }
 
-    public IEnumerator SaveGameData(PlayerData playerData)
+    public IEnumerator SaveGameData()
     {
-        string json = JsonUtility.ToJson(playerData);
+        string json = JsonUtility.ToJson(IGame.Instance.dataPLayer.playerData);
         Debug.Log("JSON to send: " + json);
 
         byte[] bodyRaw = Encoding.UTF8.GetBytes(json);

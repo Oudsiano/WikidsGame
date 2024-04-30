@@ -61,8 +61,8 @@ public class HelpInFirstScene : MonoBehaviour
             return;
         }
 
-        Panel.SetActive(true);
         restTexts();
+        Panel.SetActive(true);
         text1.SetActive(true);
 
     }
@@ -81,8 +81,8 @@ public class HelpInFirstScene : MonoBehaviour
     {
         if (IGame.Instance.dataPLayer.playerData.sceneToLoad != (int)allScenes.battle1) return;
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 1) return;
-        Panel.SetActive(true);
         restTexts();
+        Panel.SetActive(true);
         text2.SetActive(true);
     }
     private void EndStudy2()
@@ -95,8 +95,8 @@ public class HelpInFirstScene : MonoBehaviour
     public void Study3()
     {
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 2) return;
-        Panel.SetActive(true);
         restTexts();
+        Panel.SetActive(true);
         text3.SetActive(true);
     }
 
@@ -110,8 +110,8 @@ public class HelpInFirstScene : MonoBehaviour
     public void Study4()
     {
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 3) return;
-        Panel.SetActive(true);
         restTexts();
+        Panel.SetActive(true);
         text4.SetActive(true);
     }
     public void EndStudy4()
@@ -124,8 +124,8 @@ public class HelpInFirstScene : MonoBehaviour
     public void Study5()
     {
         //тут без условия. Типа дошли до конца карты и хватит
-        Panel.SetActive(true);
         restTexts();
+        Panel.SetActive(true);
         text5.SetActive(true);
             IGame.Instance.dataPLayer.playerData.helpIndex = 5;
     }

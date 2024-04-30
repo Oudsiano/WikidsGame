@@ -9,8 +9,8 @@ namespace RPG.SceneManagement
 {
     public class SavePointsManager
     {
-        private Dictionary<int, SavePoint> allSavePoints;
-        public Dictionary<int, SavePoint> AllSavePoints
+        private static Dictionary<int, SavePoint> allSavePoints;
+        public static Dictionary<int, SavePoint> AllSavePoints
         {
             get
             {
@@ -20,7 +20,7 @@ namespace RPG.SceneManagement
             set => allSavePoints = value;
         }
 
-        public void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer, bool reset = false)
+        public static void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer, bool reset = false)
         {
 
             for (int i = 0; i < dataPlayer.playerData.stateSpawnPoints.Count; i++)
@@ -32,7 +32,7 @@ namespace RPG.SceneManagement
             }
         }
 
-        public void ResetDict()
+        public static void ResetDict()
         {
             allSavePoints = new Dictionary<int, SavePoint>();
         }
@@ -68,9 +68,9 @@ namespace RPG.SceneManagement
                 NotActiveSprite.SetActive(true);
         }
 
-        private void Start()
+        private void Awake()
         {
-            IGame.Instance.SavePointsManager.AllSavePoints[spawnPoint] = this;
+            SavePointsManager.AllSavePoints[spawnPoint] = this;
             NotActiveSprite.SetActive(true);
             health = FindObjectOfType<Health>();
         }
@@ -97,7 +97,7 @@ namespace RPG.SceneManagement
                     // Если объект найден, продолжаем с сохранением игры
                     StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
 
-                    IGame.Instance.SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
+                    SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
 
                     IGame.Instance.playerController.GetHealth().Restore();
                 }

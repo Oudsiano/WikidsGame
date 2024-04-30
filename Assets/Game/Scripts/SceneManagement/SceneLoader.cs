@@ -63,6 +63,7 @@ namespace RPG.Core
             Debug.Log("Уровень загрузки изменен на " + IdNewLevel);
             // Загружаем сцену с измененным номером.
             IGame.Instance.SavePointsManager.ResetDict();
+            IGame.Instance.dataPLayer.playerData.spawnPoint = 0;
             SceneManager.LoadScene(IGame.Instance.LevelChangeObserver.DAllScenes[IdNewLevel].name);
 
             OnLevelChanged(IdNewLevel);

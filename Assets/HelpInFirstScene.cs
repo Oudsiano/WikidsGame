@@ -57,7 +57,7 @@ public class HelpInFirstScene : MonoBehaviour
 
         if (Panel == null)
         {
-            Debug.LogError("panel null");
+            //Debug.LogError("panel null");
             return;
         }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class OpenURL : MonoBehaviour
 {
-    public string urlToOpen = "https://wikids.ru";
+    public string urlToOpen;
 
     public void Open()
     {

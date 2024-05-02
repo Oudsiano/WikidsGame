@@ -11783,6 +11783,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1539114672904598112}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1530595488 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7279484789939759800, guid: 191e85be449d84b81a0c441f995b9b28,
+    type: 3}
+  m_PrefabInstance: {fileID: 69385038887913545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f855a56f33124e8c8baf64687dd1c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1532371957 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4676831442305938, guid: 5b527dab48d69864d8d0062544d9b246,
@@ -16580,10 +16592,40 @@ PrefabInstance:
       propertyPath: InvisibleWhenCorrectAnswer.Array.data[0]
       value: 
       objectReference: {fileID: 608016236}
+    - target: {fileID: 2361540803919279575, guid: 191e85be449d84b81a0c441f995b9b28,
+        type: 3}
+      propertyPath: IDLesson
+      value: 2163
+      objectReference: {fileID: 0}
     - target: {fileID: 2764080439206164473, guid: 191e85be449d84b81a0c441f995b9b28,
         type: 3}
       propertyPath: m_Name
       value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 3364415967198665473, guid: 191e85be449d84b81a0c441f995b9b28,
+        type: 3}
+      propertyPath: Event.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3364415967198665473, guid: 191e85be449d84b81a0c441f995b9b28,
+        type: 3}
+      propertyPath: Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1530595488}
+    - target: {fileID: 3364415967198665473, guid: 191e85be449d84b81a0c441f995b9b28,
+        type: 3}
+      propertyPath: Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Open
+      objectReference: {fileID: 0}
+    - target: {fileID: 3364415967198665473, guid: 191e85be449d84b81a0c441f995b9b28,
+        type: 3}
+      propertyPath: Event.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: OpenURL, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3364415967198665473, guid: 191e85be449d84b81a0c441f995b9b28,
+        type: 3}
+      propertyPath: Event.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3661788204768080852, guid: 191e85be449d84b81a0c441f995b9b28,
         type: 3}
@@ -16598,7 +16640,7 @@ PrefabInstance:
     - target: {fileID: 7279484789939759800, guid: 191e85be449d84b81a0c441f995b9b28,
         type: 3}
       propertyPath: urlToOpen
-      value: 'https://wikids.ru/story/kultura-rossii-v-xvi-nachale-xvii-vekov '
+      value: https://wikids.ru/story/kultura-rossii-v-xvi-nachale-xvii-vekov
       objectReference: {fileID: 0}
     - target: {fileID: 8193677321131029027, guid: 191e85be449d84b81a0c441f995b9b28,
         type: 3}

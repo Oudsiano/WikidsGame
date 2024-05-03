@@ -7307,7 +7307,15 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 856297167842390381, guid: 9f46fe5b6efe04afaa53507c0d73218b, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3431666646955674496, guid: 9f46fe5b6efe04afaa53507c0d73218b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 346707384}
+    - targetCorrespondingSourceObject: {fileID: 2861982805230516757, guid: 9f46fe5b6efe04afaa53507c0d73218b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 837698709}
   m_SourcePrefab: {fileID: 100100000, guid: 9f46fe5b6efe04afaa53507c0d73218b, type: 3}
 --- !u!1001 &206006254
 PrefabInstance:
@@ -7609,6 +7617,22 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 179258928}
   m_PrefabAsset: {fileID: 0}
+--- !u!208 &346707384
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346707383}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.84900004, y: 2.306, z: 0.39200002}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.758, y: 2.306, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &406690270 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3154274580982465842, guid: 95b0fe5a6b46aff49bba9985420bf36f,
@@ -7825,6 +7849,22 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 179258928}
   m_PrefabAsset: {fileID: 0}
+--- !u!208 &837698709
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837698708}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.87200004, y: 2.306, z: 0.39200002}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.781, y: 2.306, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &949413950
 GameObject:
   m_ObjectHideFlags: 0

@@ -35,6 +35,7 @@ namespace RPG.SceneManagement
         public static void ResetDict()
         {
             allSavePoints = new Dictionary<int, SavePoint>();
+            IGame.Instance.dataPLayer.playerData.stateSpawnPoints = new List<bool> { false };
         }
 
     }

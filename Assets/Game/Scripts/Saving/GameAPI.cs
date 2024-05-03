@@ -54,18 +54,18 @@ public class GameAPI : MonoBehaviour
 
 
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            StartCoroutine(GetGameData());
-            sceneLoader.UpdateCurrentLevel();
-        }
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            StartCoroutine(SaveGameData());
-        }
-    }
+    //public void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.D))
+    //    {
+    //        StartCoroutine(GetGameData());
+    //        sceneLoader.UpdateCurrentLevel();
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.H))
+    //    {
+    //        StartCoroutine(SaveGameData());
+    //    }
+    //}
 
     IEnumerator GetGameData()
     {

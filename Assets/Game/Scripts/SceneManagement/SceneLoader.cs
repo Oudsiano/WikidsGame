@@ -60,7 +60,7 @@ namespace RPG.Core
 
             Debug.Log("Уровень загрузки изменен на " + IdNewLevel);
             // Загружаем сцену с измененным номером.
-            SceneManager.LoadScene(IGame.Instance.LevelChangeObserver.DAllScenes[IdNewLevel].name);
+            SceneManager.LoadScene(IGame.Instance.LevelChangeObserver.DAllScenes[IdNewLevel]);
 
             OnLevelChanged(IdNewLevel);
         }
@@ -75,7 +75,7 @@ namespace RPG.Core
 
         public void OnFadeComplete()
         {
-            SceneManager.LoadScene(IGame.Instance.LevelChangeObserver.DAllScenes[levelToLoad].name);
+            SceneManager.LoadScene(IGame.Instance.LevelChangeObserver.DAllScenes[levelToLoad]);
         }
 
     }

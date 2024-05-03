@@ -25,12 +25,16 @@ public class LevelChangeObserver : MonoBehaviour
     [Serializable]
     public class OneScene
     {
+        [SerializeField]
         public allScenes IdScene;
-        public UnityEngine.Object fileScene;
+        [SerializeField]
+        public string fileScene;
     }
 
-    [SerializeField] public List<OneScene> AllScenes=new List<OneScene>();
-    public Dictionary<allScenes, UnityEngine.Object> DAllScenes;
+    [SerializeField] 
+    public List<OneScene> AllScenes=new List<OneScene>();
+
+    public Dictionary<allScenes, string> DAllScenes;
 
     /*Vector3[] spawnPointsSavePoint = new Vector3[]
     {
@@ -45,7 +49,7 @@ public class LevelChangeObserver : MonoBehaviour
 
     public void Init()
     {
-        DAllScenes = new Dictionary<allScenes, UnityEngine.Object>();
+        DAllScenes = new Dictionary<allScenes, string>();
         foreach (OneScene scene in AllScenes)
         {
             if (DAllScenes.ContainsKey(scene.IdScene))
@@ -62,7 +66,7 @@ public class LevelChangeObserver : MonoBehaviour
         allScenes newLevel = allScenes.emptyScene;
         foreach (var item in IGame.Instance.LevelChangeObserver.DAllScenes)
         {
-            if (item.Value.name == arg0.name)
+            if (item.Value == arg0.name)
             {
                 newLevel = item.Key;
             }

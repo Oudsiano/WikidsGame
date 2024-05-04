@@ -73,6 +73,12 @@ namespace RPG.Combat
                 equippedWeapon = weapon; // Устанавливаем текущее оружие
                 SetCommonWeapon();
             }
+
+            if (isPlayer)
+                if (weapon!= defaultWeapon)
+            {
+                IGame.Instance.dataPLayer.playerData.weaponToLoad = weapon.GetnameID();
+            }
         }
 
         // Снятие оружия

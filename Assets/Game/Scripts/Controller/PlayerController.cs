@@ -4,6 +4,7 @@ using RPG.Movement;
 using RPG.Combat;
 using RPG.Core;
 using DialogueEditor;
+using System;
 
 namespace RPG.Controller
 {
@@ -37,10 +38,32 @@ namespace RPG.Controller
 
             WeaponPanelUI.Init();
             PlayerUIManager.Init();
+
+            RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
+        }
+
+        private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)
+        {
+            EquipWeaponAndArmorAfterLoad();
         }
 
         public Health GetHealth () => health;
         public Fighter GetFighter () => fighter;
+
+        public void EquipWeaponAndArmorAfterLoad()
+        {
+            if (IGame.Instance.dataPLayer.playerData.weaponToLoad.Length>1)
+            {
+                foreach (Weapon weapon in IGame.Instance.WeaponManager.allWeaponsInGame)
+                {
+                    if (weapon.GetnameID() == IGame.Instance.dataPLayer.playerData.weaponToLoad)
+                    {
+                        fighter.EquipWeapon(weapon);
+                    }
+                }
+
+            }
+        }
 
         // Метод Update вызывается один раз за кадр
         void Update()

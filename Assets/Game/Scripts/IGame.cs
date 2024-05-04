@@ -14,6 +14,7 @@ public class IGame : MonoBehaviour
     public PlayerController playerController;
     public LevelChangeObserver LevelChangeObserver;
     public SavePointsManager SavePointsManager;
+    public ArrowForPlayerManager ArrowForPlayerManager;
 
     [SerializeField] public UIManager UIManager;
     [SerializeField] public CoinManager CoinManager;
@@ -35,10 +36,12 @@ public class IGame : MonoBehaviour
             BottleManager = FindAnyObjectByType<BottleManager>();
             WeaponManager = FindAnyObjectByType<WeaponManager>();
             SavePointsManager = new SavePointsManager();
+            ArrowForPlayerManager = new ArrowForPlayerManager();
 
             UIManager.Init();
             LevelChangeObserver.Init();
             playerController.Init();
+            ArrowForPlayerManager.Init();
         }
     }
 }

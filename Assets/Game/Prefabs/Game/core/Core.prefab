@@ -515,6 +515,7 @@ Transform:
   - {fileID: 843805563019123804}
   - {fileID: 7169750900257685959}
   - {fileID: 890524279794291204}
+  - {fileID: 6826047060665319556}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6291210132810660748
@@ -557,6 +558,7 @@ MonoBehaviour:
     spawnPoint: 0
     stateSpawnPoints: 
     alreadyExistWeapons: []
+    weaponToLoad: 
     progress:
     - id: 0
       title: 
@@ -669,6 +671,7 @@ MonoBehaviour:
   LevelChangeObserver: {fileID: 0}
   UIManager: {fileID: 1092365476529823417}
   CoinManager: {fileID: 7742220572861580248}
+  WeaponManager: {fileID: 0}
 --- !u!1 &2797873316370386146
 GameObject:
   m_ObjectHideFlags: 0
@@ -2174,6 +2177,58 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &7175823080056827699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6826047060665319556}
+  - component: {fileID: 1713965022907024265}
+  m_Layer: 0
+  m_Name: WeaponManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6826047060665319556
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7175823080056827699}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1091.5476, y: 547.06586, z: 3.7367978}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2078131722903570005}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1713965022907024265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7175823080056827699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbba5f1b1d0b06f459d175df38465ed1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allWeaponsInGame:
+  - {fileID: 11400000, guid: ffb74ce10e58a40848f605574f502b71, type: 2}
+  - {fileID: 11400000, guid: aca463bd6b6649c41b5e3398fbc45389, type: 2}
+  - {fileID: 11400000, guid: e8f65dbcfdc3a460f8d7ae35d0c2c980, type: 2}
+  - {fileID: 11400000, guid: a0e4f3572c655324c9c968ddc6ab7605, type: 2}
+  - {fileID: 11400000, guid: 65cafbedf47df404685cd0c71dd1be69, type: 2}
+  - {fileID: 11400000, guid: cfcea396904ad66498a2bb5fe864f577, type: 2}
+  - {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
 --- !u!1 &7341283298379489211
 GameObject:
   m_ObjectHideFlags: 0

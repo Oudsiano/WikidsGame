@@ -70,13 +70,6 @@ namespace RPG.Combat
             }
         }
 
-        public string GetnameID()
-        {
-            if (nameID == null)
-                Debug.LogError("Forgoten add Name ID. Забыли добавить имя предмету");
-
-            return nameID; 
-        }
 
         // Возвращает урон оружия
         public float GetWeaponDamage()

@@ -1,4 +1,5 @@
 using RPG.Combat;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,7 +58,6 @@ namespace RPG.Core
         public void TakeDamage(float damage)
         {
             currentHealth = Mathf.Max(currentHealth - damage, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0
-            print("Health of " + currentHealth); // Выводим текущее здоровье в консоль
 
             if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти
                 Die();
@@ -88,6 +88,12 @@ namespace RPG.Core
                 Destroy(healthBar.gameObject);
                 Destroy(this.gameObject, 5f); // Уничтожаем объект через 5 секунд после смерти
                 IGame.Instance.CoinManager.MakeGoldOnSceneWithCount(25, this.gameObject.transform.position);
+
+                var tempRandom = UnityEngine.Random.Range(0, 9);
+                if (tempRandom > 6) //30%
+                IGame.Instance.BottleManager.MakeBottleOnSceneWithCount(25, this.gameObject.transform.position);
+
+
             }
             else
             {

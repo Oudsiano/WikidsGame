@@ -140,9 +140,9 @@ namespace RPG.SceneManagement
         {
             if (bonusWeapon != null)
             {
-                if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusWeapon.GetnameID()))
+                if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusWeapon.name))
                 {
-                    IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusWeapon.GetnameID());
+                    IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusWeapon.name);
                     IGame.Instance.playerController.GetFighter().EquipWeapon(bonusWeapon);
                     IGame.Instance.playerController.PlayerUIManager.ShowNewWeapon();
                     IGame.Instance.gameAPI.SaveUpdater();

@@ -11,9 +11,4 @@ public class WeaponManager : MonoBehaviour
     [SerializeField]
     public List<Weapon> allWeaponsInGame;
 
-    public void Init()
-    {
-        allWeaponsInGame = new List<Weapon>();
-    }
-
 }

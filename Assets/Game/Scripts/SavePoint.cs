@@ -101,6 +101,8 @@ namespace RPG.SceneManagement
                     SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
 
                     IGame.Instance.playerController.GetHealth().Restore();
+
+                    gameObject.SetActive(false);
                 }
                 else
                 {

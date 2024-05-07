@@ -5,5 +5,6 @@ namespace FarrokhGames.Inventory.Examples
         Any,
         Weapons,
         Utility,
+        Armor,
     }
 }

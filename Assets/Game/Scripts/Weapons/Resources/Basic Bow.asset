@@ -12,12 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6633050ac13726345b6f02b2d761dfae, type: 3}
   m_Name: Basic Bow
   m_EditorClassIdentifier: 
+  _sprite: {fileID: 0}
+  _shape:
+    _width: 1
+    _height: 2
+    _shape: 0101
+  _type: 1
+  _canDrop: 1
+  _position: {x: 0, y: 0}
   weaponOverride: {fileID: 22100000, guid: 34bff875d6fa96e41a6b49270dffa436, type: 2}
   weaponPrefab: {fileID: 8850688159232812749, guid: 368b282eb45707440b04d9d69ccfb403,
     type: 3}
   isRightHanded: 0
   projectile: {fileID: 4660093068279401154, guid: c7f49c6920d49ba468b083941d79f2c0,
     type: 3}
+  IsFireballs: 0
   weaponDamage: 5
   weaponRange: 10
   timeBetweenAttacks: 4

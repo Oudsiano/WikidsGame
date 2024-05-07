@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class LookAtPlayer : MonoBehaviour
 {
-    public Transform camera;
+    private Transform _camera;
     // Update is called once per frame
     void Awake()
     {
-        camera = Camera.main.transform;
+        _camera = Camera.main.transform;
     }
 
     void LateUpdate()
     {
-        transform.LookAt(camera);
+        transform.LookAt(_camera);
     }
 }

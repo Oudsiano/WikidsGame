@@ -9,6 +9,7 @@ namespace FarrokhGames.Inventory
         private Vector2Int _size = Vector2Int.one;
         private IInventoryProvider _provider;
         private Rect _fullRect;
+        public bool isMarket;
 
         public InventoryManager(IInventoryProvider provider, int width, int height)
         {

@@ -12,11 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6633050ac13726345b6f02b2d761dfae, type: 3}
   m_Name: Axe
   m_EditorClassIdentifier: 
+  _sprite: {fileID: 0}
+  _shape:
+    _width: 1
+    _height: 2
+    _shape: 0101
+  _type: 1
+  _canDrop: 1
+  _position: {x: 0, y: 0}
   weaponOverride: {fileID: 22100000, guid: 8344e5f812a81414ea4a3690384ed042, type: 2}
   weaponPrefab: {fileID: 1666109015589508, guid: a824c82e2e7634d90a370534064a9d85,
     type: 3}
   isRightHanded: 1
   projectile: {fileID: 0}
+  IsFireballs: 0
   weaponDamage: 10
   weaponRange: 2.2
   timeBetweenAttacks: 2.5

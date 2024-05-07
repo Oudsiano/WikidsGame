@@ -10,7 +10,7 @@ namespace FarrokhGames.Inventory
         Action<IInventoryItem> onItemPickedUp { get; set; }
         Action<IInventoryItem> onItemAdded { get; set; }
         Action<IInventoryItem> onItemSwapped { get; set; }
-        Action<IInventoryItem> onItemReturned { get; set; }
+        Action<IInventoryItem> onItemReturned2 { get; set; }
         Action<IInventoryItem> onItemDropped { get; set; }
     }
 
@@ -40,7 +40,7 @@ namespace FarrokhGames.Inventory
             public Action<IInventoryItem> onItemSwapped { get; set; }
 
             /// <inheritdoc />
-            public Action<IInventoryItem> onItemReturned { get; set; }
+            public Action<IInventoryItem> onItemReturned2 { get; set; }
 
             /// <inheritdoc />
             public Action<IInventoryItem> onItemDropped { get; set; }
@@ -126,8 +126,15 @@ namespace FarrokhGames.Inventory
             {
                 if (_draggedItem == null) return;
                 
-                var mode = _draggedItem.Drop(eventData.position);
+                _draggedItem.Drop(eventData.position, AfterDragEnd);
 
+                _draggedItem = null;
+                _currentEventData = null;
+            }
+
+            public void AfterDragEnd(InventoryDraggedItem.DropMode mode)
+            {
+                Debug.Log(mode);
                 switch (mode)
                 {
                     case InventoryDraggedItem.DropMode.Added:
@@ -137,16 +144,13 @@ namespace FarrokhGames.Inventory
                         onItemSwapped?.Invoke(_itemToDrag);
                         break;
                     case InventoryDraggedItem.DropMode.Returned:
-                        onItemReturned?.Invoke(_itemToDrag);
+                        onItemReturned2?.Invoke(_itemToDrag);
                         break;
                     case InventoryDraggedItem.DropMode.Dropped:
                         onItemDropped?.Invoke(_itemToDrag);
                         ClearHoveredItem();
                         break;
                 }
-
-                _draggedItem = null;
-                _currentEventData = null;
             }
 
             /*

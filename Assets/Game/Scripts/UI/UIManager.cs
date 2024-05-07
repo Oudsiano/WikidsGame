@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using RPG.Core;
 using TMPro;
+using FarrokhGames.Inventory;
+using FarrokhGames.Inventory.Examples;
 
 public class UIManager : MonoBehaviour
 {
@@ -24,6 +26,9 @@ public class UIManager : MonoBehaviour
     [Header("HelpUI")]
     [SerializeField] public HelpInFirstScene HelpInFirstScene;
 
+    [Header("MarketUI")]
+    [SerializeField] public UiMarketPanel UiMarketPanel;
+
 
     private SceneLoader sceneLoader;
 
@@ -40,6 +45,8 @@ public class UIManager : MonoBehaviour
 
         DeathUI.gameObject.SetActive(false);
         _againUI.SetActive(false);
+
+        UiMarketPanel.Init();
     }
 
     public void ShowAgainUi()

@@ -34,7 +34,7 @@ namespace FarrokhGames.Inventory
         /*
          * Setup
          */
-        void Awake()
+        public void Init()
         {
             rectTransform = GetComponent<RectTransform>();
 

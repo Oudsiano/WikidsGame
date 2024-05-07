@@ -42,6 +42,11 @@ namespace FarrokhGames.Inventory
         private readonly Image _image;
         private Vector2 _offset;
 
+
+        private System.Action<DropMode> _actionAfterDrop;
+        private DropMode _dropModeForAction;
+
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -66,7 +71,7 @@ namespace FarrokhGames.Inventory
             _canvas = canvas;
             _canvasRect = canvas.transform as RectTransform;
 
-            _offset = offset; 
+            _offset = offset;
 
             // Create an image representing the dragged item
             _image = new GameObject("DraggedItem").AddComponent<Image>();
@@ -87,10 +92,10 @@ namespace FarrokhGames.Inventory
             {
                 // Move the image
                 var camera = _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera;
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, value + _offset, camera,  out var newValue);
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, value + _offset, camera, out var newValue);
                 _image.rectTransform.localPosition = newValue;
-                
-                
+
+
                 // Make selections
                 if (currentController != null)
                 {
@@ -107,21 +112,32 @@ namespace FarrokhGames.Inventory
         /// <summary>
         /// Drop this item at the given position
         /// </summary>
-        public DropMode Drop(Vector2 pos)
+        public void Drop(Vector2 pos, System.Action<DropMode> afterDrop)
         {
+            _actionAfterDrop = afterDrop;
+
             DropMode mode;
             if (currentController != null)
             {
+                
+
                 var grid = currentController.ScreenToGrid(pos + _offset + GetDraggedItemOffset(currentController.inventoryRenderer, item));
 
                 // Try to add new item
                 if (currentController.inventory.CanAddAt(item, grid))
                 {
-                    currentController.inventory.TryAddAt(item, grid); // Place the item in a new location
-                    mode = DropMode.Added;
+                    if (originalController.inventory.isMarket && originalController!=currentController)
+                    {
+                        IGame.Instance.UIManager.UiMarketPanel.InitMarketUI(OnMarketAccept, OnMarketDecline, grid);
+                    }
+                    else
+                    {
+                        currentController.inventory.TryAddAt(item, grid); // Place the item in a new location
+                        mode = DropMode.Added;
+                    }
                 }
                 // Adding did not work, try to swap
-                else if (CanSwap())
+                else if (!originalController.inventory.isMarket && CanSwap())
                 {
                     var otherItem = currentController.inventory.allItems[0];
                     currentController.inventory.TryRemove(otherItem);
@@ -134,12 +150,11 @@ namespace FarrokhGames.Inventory
                 {
                     originalController.inventory.TryAddAt(item, originPoint); // Return the item to its previous location
                     mode = DropMode.Returned;
-
                 }
 
                 currentController.inventoryRenderer.ClearSelection();
             }
-            else
+            else if (!originalController.inventory.isMarket)
             {
                 mode = DropMode.Dropped;
                 if (!originalController.inventory.TryForceDrop(item)) // Drop the item on the ground
@@ -150,8 +165,24 @@ namespace FarrokhGames.Inventory
 
             // Destroy the image representing the item
             Object.Destroy(_image.gameObject);
+        }
 
-            return mode;
+        public void OnMarketAccept(Vector2Int grid)
+        {
+            currentController.inventory.TryAddAt(item, grid); // Place the item in a new location
+            _dropModeForAction = DropMode.Added;
+        }
+
+        public void OnMarketDecline()
+        {
+            originalController.inventory.TryAddAt(item, originPoint); // Return the item to its previous location
+            _dropModeForAction = DropMode.Returned;
+            _actionAfterDrop(_dropModeForAction);
+        }
+
+        public void DelayedDrop(Vector2 pos)
+        {
+
         }
 
         /*

@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using FarrokhGames.Inventory;
+using FarrokhGames.Inventory.Examples;
+using UnityEngine;
 
 namespace RPG.Combat
 {
     // Создает объект оружия для использования в бою
     [CreateAssetMenu(fileName = "Weapon", menuName = "Weapons", order = 0)]
-    public class Weapon : ScriptableObject
+    public class Weapon : ItemDefinition
     {
         [Header("Core")]
         [SerializeField] private AnimatorOverrideController weaponOverride; // Переопределенный контроллер анимации оружия
@@ -12,15 +14,14 @@ namespace RPG.Combat
         [SerializeField] private bool isRightHanded = true; // Определяет, используется ли правая рука по умолчанию
         [SerializeField] private Projectile projectile; // Ссылка на снаряд, если оружие дистанционное
         [SerializeField] private bool IsFireballs = false;
-        [SerializeField] private string nameID;
 
         [Header("Stats")]
         [SerializeField] private float weaponDamage; // Урон, наносимый оружием
         [SerializeField] private float weaponRange = 2f; // Расстояние, на котором оружие может наносить урон
         [SerializeField] private float timeBetweenAttacks; // Время между атаками
 
-        private const string weaponName = "weapon"; // Имя объекта оружия в сцене
-
+        private const string weaponNameForHand = "weapon"; // Имя объекта оружия в сцене
+        
         // Спаунит объект оружия для игрока
         public void SpawnToPlayer(Transform rightHandPos, Transform lefthandPos, Animator anim)
         {
@@ -33,7 +34,7 @@ namespace RPG.Combat
                 Transform handPos = FindTransformOfHand(rightHandPos, lefthandPos);
                 GameObject wepInScene = Instantiate(weaponPrefab, handPos);
                 wepInScene.transform.localScale = Vector3.one * 1 / wepInScene.transform.lossyScale.x;
-                wepInScene.name = weaponName;
+                wepInScene.name = weaponNameForHand;
             }
 
             // Устанавливаем переопределенный контроллер анимации оружия, если он задан
@@ -62,7 +63,7 @@ namespace RPG.Combat
         // Уничтожает объект оружия в указанной руке
         private void DestroyWeaponOnHand(Transform handPos)
         {
-            Transform handWep = handPos.Find(weaponName);
+            Transform handWep = handPos.Find(weaponNameForHand);
             if (handWep)
             {
                 handWep.name = "DESTROYING";

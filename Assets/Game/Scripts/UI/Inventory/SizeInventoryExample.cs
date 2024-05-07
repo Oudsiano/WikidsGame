@@ -16,14 +16,18 @@ namespace FarrokhGames.Inventory.Examples
         [SerializeField] private ItemDefinition[] _definitions = null;
         [SerializeField] private bool _fillRandomly = true; // Should the inventory get filled with random items?
         [SerializeField] private bool _fillEmpty = false; // Should the inventory get completely filled?
+        [SerializeField] private bool _isMarket = false;
 
-        void Start()
+        public InventoryManager inventory;
+
+        public void Init()
         {
+            GetComponent<InventoryRenderer>().Init();
             var provider = new InventoryProvider(_renderMode, _maximumAlowedItemCount, _allowedItem);
 
             // Create inventory
-            var inventory = new InventoryManager(provider, _width, _height);
-
+            inventory = new InventoryManager(provider, _width, _height);
+            inventory.isMarket = _isMarket;
             // Fill inventory with random items
             if (_fillRandomly)
             {
@@ -44,6 +48,7 @@ namespace FarrokhGames.Inventory.Examples
             }
 
             // Sets the renderers's inventory to trigger drawing
+            
             GetComponent<InventoryRenderer>().SetInventory(inventory, provider.inventoryRenderMode);
 
             // Log items being dropped on the ground

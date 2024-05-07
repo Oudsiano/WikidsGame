@@ -151,9 +151,9 @@ namespace RPG.SceneManagement
 
             if (bonusArmor != null)
             {
-                if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusArmor.GetnameID()))
+                if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusArmor.name))
                 {
-                    IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusArmor.GetnameID());
+                    IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusArmor.name);
                     IGame.Instance.playerController.GetFighter().EquipArmor(bonusArmor);
                     IGame.Instance.playerController.PlayerUIManager.ShowNewArmor();
                     IGame.Instance.gameAPI.SaveUpdater();

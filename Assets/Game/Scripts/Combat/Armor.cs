@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FarrokhGames.Inventory.Examples;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "Armor", menuName = "Armors", order = 0)]
-public class Armor : ScriptableObject
+public class Armor : ItemDefinition
 {
 
     [Header("Core")]
@@ -16,17 +17,10 @@ public class Armor : ScriptableObject
     [SerializeField] private armorType armorType;
     [SerializeField] private armorID armorName;
 
-    [SerializeField] private string nameID;
-
     [SerializeField] private GameObject PlayerPosition; 
     [SerializeField] private GameObject ArmorPrefab;
     [Header("Stats")]
     [SerializeField] private float armor;
-
-    public string GetnameID()
-    {
-        return nameID;
-    }
 
     public void UseToPlayer()
     {

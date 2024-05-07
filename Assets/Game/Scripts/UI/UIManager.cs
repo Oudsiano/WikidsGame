@@ -27,6 +27,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] public HelpInFirstScene HelpInFirstScene;
 
     [Header("MarketUI")]
+
+    [SerializeField] private Button _buttonMarket;
     [SerializeField] public UiMarketPanel UiMarketPanel;
 
 
@@ -47,6 +49,7 @@ public class UIManager : MonoBehaviour
         _againUI.SetActive(false);
 
         UiMarketPanel.Init();
+        _buttonMarket.onClick.AddListener(OnClickButtonMarket);
     }
 
     public void ShowAgainUi()
@@ -68,6 +71,8 @@ public class UIManager : MonoBehaviour
             KeyBoardsEvents.escState = KeyBoardsEvents.EscState.none;
         }
     }
+
+    public void OnClickButtonMarket() => UiMarketPanel.gameObject.SetActive(true);
 
     public void OnCLickCancelAgain() => closeAgainUI();
     

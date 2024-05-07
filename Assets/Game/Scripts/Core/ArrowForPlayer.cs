@@ -60,7 +60,7 @@ public class ArrowForPlayer : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         trigered = true;
-        Destroy(IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[Index]);
+        IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[Index].gameObject.SetActive(false);
         IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.Remove(Index);
         IGame.Instance.ArrowForPlayerManager.StartArrow();
     }

@@ -32,7 +32,12 @@ public class UiMarketPanel : MonoBehaviour
         InventoryWeapon.Init();
         InventoryArmor.Init();
 
-        foreach (var item in IGame.Instance.WeaponManager.allWeaponsInGame)
+        foreach (var item in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
+        {
+            if (item.sprite != null)
+                Inventory.inventory.TryAdd(item);
+        }
+        foreach (var item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
         {
             if (item.sprite != null)
                 Inventory.inventory.TryAdd(item);

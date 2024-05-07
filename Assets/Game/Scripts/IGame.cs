@@ -19,7 +19,7 @@ public class IGame : MonoBehaviour
     [SerializeField] public UIManager UIManager;
     [SerializeField] public CoinManager CoinManager;
     [SerializeField] public BottleManager BottleManager;
-    [SerializeField] public WeaponManager WeaponManager;
+    [SerializeField] public WeaponArmorManager WeaponArmorManager;
 
 
     private void Awake()
@@ -34,7 +34,7 @@ public class IGame : MonoBehaviour
             playerController = FindObjectOfType<PlayerController>();
             LevelChangeObserver = FindAnyObjectByType<LevelChangeObserver>();
             BottleManager = FindAnyObjectByType<BottleManager>();
-            WeaponManager = FindAnyObjectByType<WeaponManager>();
+            WeaponArmorManager = FindAnyObjectByType<WeaponArmorManager>();
             SavePointsManager = new SavePointsManager();
             ArrowForPlayerManager = new ArrowForPlayerManager();
 

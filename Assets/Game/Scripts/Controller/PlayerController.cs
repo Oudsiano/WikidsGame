@@ -54,7 +54,7 @@ namespace RPG.Controller
         {
             if (IGame.Instance.dataPLayer.playerData.weaponToLoad.Length>1)
             {
-                foreach (Weapon weapon in IGame.Instance.WeaponManager.allWeaponsInGame)
+                foreach (Weapon weapon in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
                 {
                     if (weapon.name== IGame.Instance.dataPLayer.playerData.weaponToLoad)
                     {

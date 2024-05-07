@@ -5,10 +5,14 @@ using RPG.Core;
 using RPG.Movement;
 using RPG.Combat;
 
-public class WeaponManager : MonoBehaviour
+public class WeaponArmorManager : MonoBehaviour
 {
     [Header("Weapon")]
     [SerializeField]
     public List<Weapon> allWeaponsInGame;
+
+    [Header("Armors")]
+    [SerializeField]
+    public List<Armor> allArmorsInGame;
 
 }

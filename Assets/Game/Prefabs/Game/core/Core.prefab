@@ -1140,7 +1140,7 @@ MonoBehaviour:
   UIManager: {fileID: 1092365476529823417}
   CoinManager: {fileID: 7742220572861580248}
   BottleManager: {fileID: 0}
-  WeaponManager: {fileID: 0}
+  WeaponArmorManager: {fileID: 0}
 --- !u!1 &2797873316370386146
 GameObject:
   m_ObjectHideFlags: 0
@@ -2990,6 +2990,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
   - {fileID: 11400000, guid: d3121814bedfc4beaa69b6d86931021f, type: 2}
   - {fileID: 11400000, guid: 7d1acee3f4a9442ae85a137747b506f9, type: 2}
+  allArmorsInGame:
+  - {fileID: 11400000, guid: b1335edf85184da44bc916560c5f8413, type: 2}
 --- !u!1 &7341283298379489211
 GameObject:
   m_ObjectHideFlags: 0
@@ -3518,12 +3520,22 @@ PrefabInstance:
     - target: {fileID: 114782670811109416, guid: af34b9aa9fe6a694aa70366089e1088a,
         type: 3}
       propertyPath: _height
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114782670811109416, guid: af34b9aa9fe6a694aa70366089e1088a,
         type: 3}
       propertyPath: _isMarket
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114782670811109416, guid: af34b9aa9fe6a694aa70366089e1088a,
+        type: 3}
+      propertyPath: _fillRandomly
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114782670811109416, guid: af34b9aa9fe6a694aa70366089e1088a,
+        type: 3}
+      propertyPath: _definitions.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224204867781484398, guid: af34b9aa9fe6a694aa70366089e1088a,
         type: 3}
@@ -3773,6 +3785,11 @@ PrefabInstance:
     - target: {fileID: 7474776597704509325, guid: af34b9aa9fe6a694aa70366089e1088a,
         type: 3}
       propertyPath: _height
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7474776597704509325, guid: af34b9aa9fe6a694aa70366089e1088a,
+        type: 3}
+      propertyPath: _allowedItem
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7636310937544795877, guid: af34b9aa9fe6a694aa70366089e1088a,

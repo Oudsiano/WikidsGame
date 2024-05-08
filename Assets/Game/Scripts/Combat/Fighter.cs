@@ -75,7 +75,6 @@ namespace RPG.Combat
             }
 
             if (isPlayer)
-                if (weapon!= defaultWeapon)
             {
                 IGame.Instance.dataPLayer.playerData.weaponToLoad = weapon.name;
             }

@@ -33,6 +33,8 @@ public class UiMarketPanel : MonoBehaviour
     private Action _decline;
     private Vector2Int _grid;
 
+    private bool notAvaliableEvents = false;
+
     private void Awake()
     {
         _buttonAccept.onClick.AddListener(OnClickAccept);
@@ -85,6 +87,19 @@ public class UiMarketPanel : MonoBehaviour
         }*/
     }
 
+    public void Regen()
+    {
+        notAvaliableEvents = true;
+        InventoryBag.inventory.Clear();
+        foreach (ItemDefinition item in IGame.Instance.saveGame.bugItems)
+        {
+            InventoryBag.inventory.TryAdd(item);
+        }
+
+        ShowMarketItems(ItemType.Any);
+
+        notAvaliableEvents = false;
+    }
     public void GenerateMarketItems()
     {
         marketItems = new List<ItemDefinition>();
@@ -99,19 +114,58 @@ public class UiMarketPanel : MonoBehaviour
                 marketItems.Add(item);
         }
 
-        marketInventoryController.onItemPickedUp += HandleItemPickedUp;
+        //marketInventoryController.onItemPickedUp += HandleItemPickedUp;
         //marketInventoryController.onItemAdded += HandleItemAdded;
         InventoryAll.inventory.onItemAdded += HandleItemAdded;
+        InventoryAll.inventory.onItemRemoved += HandleItemRemoved;
+        InventoryBag.inventory.onItemAdded += HandleItemBugAdded;
+        InventoryBag.inventory.onItemRemoved += HandleItemBugRemoved;
     }
+
+    private void HandleItemRemoved(IInventoryItem obj)
+    {
+        if (notAvaliableEvents) return;
+        foreach (ItemDefinition item in InventoryAll.inventory.allItems)
+        {
+            if (obj.position == item.position)
+            {
+                marketItems.Remove(item);
+            }
+        }
+    }
+
+    private void HandleItemBugRemoved(IInventoryItem obj)
+    {
+        if (notAvaliableEvents) return;
+        foreach (ItemDefinition item in IGame.Instance.saveGame.bugItems)
+        {
+            if (item.sprite == obj.sprite)
+            {
+                IGame.Instance.saveGame.bugItems.Remove(item);
+                return;
+            }
+        }
+    }
+
+    private void HandleItemBugAdded(IInventoryItem obj)
+    {
+        if (notAvaliableEvents) return;
+        foreach (var item in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
+        {
+            if (item.sprite == obj.sprite)
+                IGame.Instance.saveGame.bugItems.Add(item);
+        }
+        foreach (var item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
+        {
+            if (item.sprite == obj.sprite)
+                IGame.Instance.saveGame.bugItems.Add(item);
+        }
+    }
+
 
     private void HandleItemAdded(IInventoryItem obj)
     {
-        Debug.Log("addEvent");
-
-        foreach (var item in marketItems)
-        {
-            if (item.sprite == obj.sprite) return;
-        }
+        if (notAvaliableEvents) return;
 
         foreach (var item in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
         {
@@ -126,19 +180,15 @@ public class UiMarketPanel : MonoBehaviour
     }
 
     private void HandleItemPickedUp(IInventoryItem obj)
-   {
-        foreach (ItemDefinition item in InventoryAll.inventory.allItems)
-        {
-            if (obj.position == item.position)
-            {
-                marketItems.Remove(item);
-            }
-        }
+    {
         
+
     }
 
     public void ShowMarketItems(ItemType state)
     {
+
+        notAvaliableEvents = true;
         marketState = state;
         InventoryAll.inventory.Clear();
 
@@ -153,6 +203,7 @@ public class UiMarketPanel : MonoBehaviour
             }
         }
 
+        notAvaliableEvents = false;
 
     }
 
@@ -181,8 +232,11 @@ public class UiMarketPanel : MonoBehaviour
     {
         if (marketInventoryController != null)
         {
-            marketInventoryController.onItemHovered -= HandleItemPickedUp;
+            //marketInventoryController.onItemHovered -= HandleItemPickedUp;
             InventoryAll.inventory.onItemAdded -= HandleItemAdded;
+            InventoryAll.inventory.onItemRemoved -= HandleItemRemoved;
+            InventoryBag.inventory.onItemAdded -= HandleItemBugAdded;
+            InventoryBag.inventory.onItemRemoved -= HandleItemBugRemoved;
         }
     }
 }

@@ -72,6 +72,8 @@ public class PlayerData
     public int chargeEnergy;
     public int IDmaxRegionAvaliable;
 
+    public string[] containsBug;
+
 
     public int helpIndex;
 }

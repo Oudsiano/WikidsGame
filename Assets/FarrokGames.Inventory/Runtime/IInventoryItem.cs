@@ -1,3 +1,4 @@
+using FarrokhGames.Inventory.Examples;
 using UnityEngine;
 
 namespace FarrokhGames.Inventory
@@ -13,6 +14,9 @@ namespace FarrokhGames.Inventory
         /// Returns this items position within an inventory
         /// </summary>
         Vector2Int position { get; set; }
+
+
+        ItemType Type { get;}
 
         /// <summary>
         /// The width of this item

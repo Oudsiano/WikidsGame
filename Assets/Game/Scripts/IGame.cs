@@ -10,6 +10,7 @@ public class IGame : MonoBehaviour
 
     public DataPlayer dataPLayer;
     public GameAPI gameAPI;
+    public SaveGame saveGame;
 
     public PlayerController playerController;
     public LevelChangeObserver LevelChangeObserver;
@@ -37,6 +38,7 @@ public class IGame : MonoBehaviour
             WeaponArmorManager = FindAnyObjectByType<WeaponArmorManager>();
             SavePointsManager = new SavePointsManager();
             ArrowForPlayerManager = new ArrowForPlayerManager();
+            saveGame = new SaveGame();
 
             UIManager.Init();
             LevelChangeObserver.Init();

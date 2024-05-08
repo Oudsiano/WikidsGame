@@ -31,6 +31,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _buttonMarket;
     [SerializeField] public UiMarketPanel UiMarketPanel;
 
+    [Header("InventoryBugUI")]
+    [SerializeField] private Button _buttonBug;
+    [SerializeField] public UIBug uIBug;
 
     private SceneLoader sceneLoader;
 
@@ -49,7 +52,16 @@ public class UIManager : MonoBehaviour
         _againUI.SetActive(false);
 
         UiMarketPanel.Init();
+        uIBug.Init();
         _buttonMarket.onClick.AddListener(OnClickButtonMarket);
+        _buttonBug.onClick.AddListener(OnClickButtonBug);
+    }
+
+    private void OnClickButtonBug()
+    {
+        uIBug.regen();
+        uIBug.gameObject.SetActive(true);
+
     }
 
     public void ShowAgainUi()
@@ -72,7 +84,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnClickButtonMarket() => UiMarketPanel.gameObject.SetActive(true);
+    public void OnClickButtonMarket()
+    {
+        UiMarketPanel.Regen();
+        UiMarketPanel.gameObject.SetActive(true);
+    }
 
     public void OnCLickCancelAgain() => closeAgainUI();
     

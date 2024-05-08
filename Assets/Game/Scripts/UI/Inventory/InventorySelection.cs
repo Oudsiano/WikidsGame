@@ -26,7 +26,6 @@ namespace FarrokhGames.Inventory.Examples
             if (allControllers != null)
             foreach (var controller in allControllers)
             {
-                    Debug.Log("destr");
                 controller.onItemHovered -= HandleItemHover;
             }
         }

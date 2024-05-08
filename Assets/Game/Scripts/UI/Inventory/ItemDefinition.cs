@@ -49,6 +49,7 @@ namespace FarrokhGames.Inventory.Examples
         /// <inheritdoc />
         public bool canDrop => _canDrop;
 
+
         /// <summary>
         /// Creates a copy if this scriptable object
         /// </summary>

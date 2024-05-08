@@ -23,7 +23,7 @@ public class ArmorOne
 {
     public armorType armorType;
     public armorID armorID;
-    public GameObject armorGO;
+    public GameObject[] armorGO;
 
 }
 

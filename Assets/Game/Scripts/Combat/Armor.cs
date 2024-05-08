@@ -34,9 +34,19 @@ public class Armor : ItemDefinition
             if (armorType == armor.armorType)
             {
                 if (armorName == armor.armorID)
-                    armor.armorGO.SetActive(true);
+                {
+                    foreach (var item in armor.armorGO)
+                    {
+                        item.SetActive(true);
+                    }
+                }
                 else
-                    armor.armorGO.SetActive(false);
+                {
+                    foreach (var item in armor.armorGO)
+                    {
+                        item.SetActive(false);
+                    }
+                }
             }
 
         }

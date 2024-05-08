@@ -100,11 +100,11 @@ namespace FarrokhGames.Inventory
                     offset
                 );
 
-                // Remove the item from inventory
-                inventory.TryRemove(_itemToDrag);
 
                 onItemPickedUp?.Invoke(_itemToDrag);
-            }
+            // Remove the item from inventory
+            inventory.TryRemove(_itemToDrag);
+        }
 
             /*
              * Dragging is continuing (IDragHandler)

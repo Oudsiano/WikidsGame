@@ -5,6 +5,8 @@ namespace FarrokhGames.Inventory.Examples
     /// <summary>
     /// Example Lobby class
     /// </summary>
+    /// 
+    [RequireComponent(typeof(InventoryController))]
     [RequireComponent(typeof(InventoryRenderer))]
     public class SizeInventoryExample : MonoBehaviour
     {

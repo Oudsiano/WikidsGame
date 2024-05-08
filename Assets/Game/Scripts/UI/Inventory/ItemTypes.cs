@@ -4,7 +4,7 @@ namespace FarrokhGames.Inventory.Examples
     {
         Any,
         Weapons,
-        Utility,
+        Consume,
         Armor,
     }
 }

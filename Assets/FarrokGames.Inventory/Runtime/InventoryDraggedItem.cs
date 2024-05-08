@@ -134,6 +134,7 @@ namespace FarrokhGames.Inventory
                     {
                         currentController.inventory.TryAddAt(item, grid); // Place the item in a new location
                         mode = DropMode.Added;
+                        _actionAfterDrop(mode);
                     }
                 }
                 // Adding did not work, try to swap
@@ -144,12 +145,14 @@ namespace FarrokhGames.Inventory
                     originalController.inventory.TryAdd(otherItem);
                     currentController.inventory.TryAdd(item);
                     mode = DropMode.Swapped;
+                    _actionAfterDrop(mode);
                 }
                 // Could not add or swap, return the item
                 else
                 {
                     originalController.inventory.TryAddAt(item, originPoint); // Return the item to its previous location
                     mode = DropMode.Returned;
+                    _actionAfterDrop(mode);
                 }
 
                 currentController.inventoryRenderer.ClearSelection();

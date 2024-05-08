@@ -64,11 +64,20 @@ public class UIBug : MonoBehaviour
     private void OnRemovedArmor(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
+        foreach (Armor item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
+        {
+            item.UnEquip();
+        }
     }
 
     private void OnAddedArmor(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
+        foreach (Armor item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
+        {
+            if (item == obj)
+                item.EquipIt();
+        }
     }
 
     private void OnRemovedWeapon(IInventoryItem obj)

@@ -32,7 +32,7 @@ public class PlayerArmorManager : MonoBehaviour
 {
 
     [Header("Chests")]
-    [SerializeField] public ArmorOne[] AllChests;
+    [SerializeField] public ArmorOne[] AllArmors;
 
 
 }

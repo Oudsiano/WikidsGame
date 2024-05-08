@@ -57,7 +57,7 @@ namespace RPG.Combat
 
         public void EquipArmor(Armor armor)
         {
-            armor.UseToPlayer();
+            armor.EquipIt();
         }
 
         // Экипировка оружия
@@ -75,6 +75,7 @@ namespace RPG.Combat
             }
 
             if (isPlayer)
+                if (IGame.Instance!=null)
             {
                 IGame.Instance.dataPLayer.playerData.weaponToLoad = weapon.name;
             }

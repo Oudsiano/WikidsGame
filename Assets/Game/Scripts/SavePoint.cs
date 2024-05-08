@@ -102,7 +102,7 @@ namespace RPG.SceneManagement
 
                     IGame.Instance.playerController.GetHealth().Restore();
 
-                    gameObject.SetActive(false);
+                    gameObject.GetComponent<Collider>().enabled = false;
                 }
                 else
                 {

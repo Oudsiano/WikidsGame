@@ -2558,6 +2558,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 196.44061
       objectReference: {fileID: 0}
+    - target: {fileID: 6291210132810660748, guid: c8da927f5d50e254fbcfb8be5ac5c110,
+        type: 3}
+      propertyPath: playerID
+      value: 1210
+      objectReference: {fileID: 0}
     - target: {fileID: 7267690437980418967, guid: c8da927f5d50e254fbcfb8be5ac5c110,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -2631,7 +2636,7 @@ PrefabInstance:
     - target: {fileID: 8756647812339660682, guid: c8da927f5d50e254fbcfb8be5ac5c110,
         type: 3}
       propertyPath: playerData.id
-      value: 123
+      value: 1210
       objectReference: {fileID: 0}
     - target: {fileID: 8756647812339660682, guid: c8da927f5d50e254fbcfb8be5ac5c110,
         type: 3}
@@ -4973,6 +4978,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2088702985161752185, guid: 7e5812406ae3246439ea2daa1ce31d5d,
+        type: 3}
+      propertyPath: m_Speed
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2090775611228982392, guid: 7e5812406ae3246439ea2daa1ce31d5d,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -6486,6 +6496,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1439947852500609383, guid: eaec74142d9304ce2974d156d260a179,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4818366060476727398, guid: eaec74142d9304ce2974d156d260a179,
         type: 3}
       propertyPath: patrolPath
@@ -24326,7 +24341,7 @@ MonoBehaviour:
       m_Calls: []
   NodeID: 1
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
   Audio: {fileID: 0}
 --- !u!1001 &1167557543600899482
 PrefabInstance:
@@ -36122,7 +36137,7 @@ MonoBehaviour:
         m_CallState: 2
   NodeID: 2
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
   Audio: {fileID: 0}
 --- !u!1001 &3011740589150340140
 PrefabInstance:
@@ -38067,36 +38082,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentIDCounter: 15
-  json: "{\"Options\":[],\"Parameters\":[{\"__type\":\"EditableBoolParameter:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"BoolValue\":false}],\"SpeechNodes\":[{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":7}],\"EditorInfo\":{\"isRoot\":true,\"xPos\":180.75,\"yPos\":22},\"ID\":0,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u0440\u0438\u0432\u0435\u0442
-    \u043F\u0443\u0442\u043D\u0438\u043A\",\"parentUIDs\":[],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":6}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":180,\"yPos\":251},\"ID\":1,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0415\u0441\u043B\u0438
+  json: "{\"Options\":[],\"Parameters\":[{\"__type\":\"EditableBoolParameter:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"BoolValue\":false}],\"SpeechNodes\":[{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":7}],\"EditorInfo\":{\"isRoot\":true,\"xPos\":373.75,\"yPos\":-596},\"ID\":0,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u0440\u0438\u0432\u0435\u0442
+    \u043F\u0443\u0442\u043D\u0438\u043A\",\"parentUIDs\":[],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":6}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":373,\"yPos\":-367},\"ID\":1,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0415\u0441\u043B\u0438
     \u0442\u044B \u0432\u044B\u0443\u0447\u0438\u0448\u044C \u0438 \u043E\u0442\u0432\u0435\u0442\u0438\u0448\u044C
     \u043D\u0430 \u0442\u0435\u0441\u0442 \u0441\u043C\u043E\u0436\u0435\u0448\u044C
     \u0437\u0430\u0447\u0438\u0441\u0442\u0438\u0442\u044C \u043B\u043E\u043A\u0430\u0446\u0438\u044E.\u041F\u043E\u0441\u043B\u0435
     \u0442\u043E\u0433\u043E \u043A\u0430\u043A \u0441\u0434\u0430\u0448\u044C \u0442\u0435\u0441\u0442
     \u0432\u0435\u0440\u043D\u0438\u0441\u044C \u0432\u043A\u043B\u0430\u0434\u043A\u0443
-    \u0438\u0433\u0440\u044B.\",\"parentUIDs\":[7],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":true}],\"NodeUID\":3},{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":false}],\"NodeUID\":4}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":172,\"yPos\":469},\"ID\":2,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0414\u0430\u0432\u0430\u0439\u043A\u0430
-    \u041F\u043E\u0441\u043C\u043E\u0442\u0440\u0438\u043C\",\"parentUIDs\":[6],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":11}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":-29,\"yPos\":584},\"ID\":3,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
+    \u0438\u0433\u0440\u044B.\",\"parentUIDs\":[7],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":true}],\"NodeUID\":3},{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":false}],\"NodeUID\":4}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":365,\"yPos\":-149},\"ID\":2,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0414\u0430\u0432\u0430\u0439\u043A\u0430
+    \u041F\u043E\u0441\u043C\u043E\u0442\u0440\u0438\u043C\",\"parentUIDs\":[6],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":11}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":164,\"yPos\":-34},\"ID\":3,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
     \u0432\u0435\u0440\u043D\u044B\u0439.\u0422\u0435\u043F\u0435\u0440\u044C \u0432\u044B\u0431\u0435\u0440\u0438
     \u0444\u0430\u0439\u0440\u0431\u043E\u043B\u044B \u0432 \u043D\u0438\u0436\u043D\u0435\u0439
-    \u043B\u0435\u0432\u043E\u0439 \u0441\u0442\u043E\u0440\u043E\u043D\u0435 \u044D\u043A\u0440\u0430\u043D\u0430\",\"parentUIDs\":[2],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":14}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":351,\"yPos\":594},\"ID\":4,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
-    \u041D\u0435\u0432\u0435\u0440\u043D\u044B\u0439\",\"parentUIDs\":[2],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":2}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":179,\"yPos\":358},\"ID\":6,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u043E\u043B\u0443\u0447\u0438\u043B\u043E\u0441\u044C?\",\"parentUIDs\":[1],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":1}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":179,\"yPos\":138},\"ID\":7,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0422\u0435\u043C\u043E\u0439
+    \u043B\u0435\u0432\u043E\u0439 \u0441\u0442\u043E\u0440\u043E\u043D\u0435 \u044D\u043A\u0440\u0430\u043D\u0430\",\"parentUIDs\":[2],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":14}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":544,\"yPos\":-23},\"ID\":4,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
+    \u041D\u0435\u0432\u0435\u0440\u043D\u044B\u0439\",\"parentUIDs\":[2],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":2}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":372,\"yPos\":-260},\"ID\":6,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u043E\u043B\u0443\u0447\u0438\u043B\u043E\u0441\u044C?\",\"parentUIDs\":[1],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":1}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":372,\"yPos\":-480},\"ID\":7,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0422\u0435\u043C\u043E\u0439
     \u043D\u044B\u043D\u0435\u0448\u043D\u0435\u0433\u043E \u0443\u0440\u043E\u043A\u0430
     \u0431\u0443\u0434\u0435\u0442 \u0418\u0441\u0442\u043E\u0440\u0438\u044F \u0420\u0443\u0441\u0438.\u0427\u0430\u0441\u0442\u044C
     \u0448\u0435\u0441\u0442\u043D\u0430\u0434\u0446\u0430\u0442\u0430\u044F.\u041A\u0443\u043B\u044C\u0442\u0443\u0440\u0430
     \u0420\u043E\u0441\u0441\u0438\u0438 \u0432 XVI-\u043D\u0430\u0447\u0430\u043B\u0435
-    XVII \u0432\u0435\u043A\u043E\u0432.\",\"parentUIDs\":[0],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":12}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":-35,\"yPos\":681},\"ID\":11,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u043D\u0438
+    XVII \u0432\u0435\u043A\u043E\u0432.\",\"parentUIDs\":[0],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":12}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":158,\"yPos\":63},\"ID\":11,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u043D\u0438
     \u043F\u043E\u043C\u043E\u0433\u0443\u0442 \u0432 \u0431\u043E\u0440\u044C\u0431\u0435
     \u0441 \u043D\u0435\u0432\u0435\u0436\u0435\u0441\u0442\u0432\u043E\u043C,\u043D\u043E
     \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u0443\u0439 \u0437\u0430\u0440\u044F\u0434\u044B
-    \u0441 \u0443\u043C\u043E\u043C\",\"parentUIDs\":[3],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":13}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":-36,\"yPos\":778},\"ID\":12,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0414\u0432\u0435\u0440\u044C
+    \u0441 \u0443\u043C\u043E\u043C\",\"parentUIDs\":[3],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":13}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":157,\"yPos\":160},\"ID\":12,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0414\u0432\u0435\u0440\u044C
     \u0434\u043E\u043B\u0436\u043D\u0430 \u0431\u044B\u043B\u0430 \u043E\u0442\u043A\u0440\u044B\u0442\u044C\u0441\u044F,
     \u0442\u0430\u043C \u0442\u0435\u0431\u044F \u0436\u0434\u0435\u0442 \u0441\u0435\u0440\u044C\u0435\u0437\u043D\u044B\u0439
-    \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\",\"parentUIDs\":[11],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":-28,\"yPos\":871},\"ID\":13,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0423\u0431\u0438\u0442\u044C
+    \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\",\"parentUIDs\":[11],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":165,\"yPos\":253},\"ID\":13,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0423\u0431\u0438\u0442\u044C
     \u0435\u0433\u043E \u0441\u043C\u043E\u0436\u0435\u0448\u044C \u0442\u043E\u043B\u044C\u043A\u043E
     \u0444\u0430\u0439\u0440\u0431\u043E\u043B\u0430\u043C\u0438.\u0423\u0434\u0430\u0447\u0438
     \u043F\u0443\u0442\u043D\u0438\u043A \u0438 \u043F\u0443\u0441\u0442\u044C \u0441\u0432\u0435\u0442
     \u0443\u0447\u0435\u043D\u0438\u044F \u043E\u0441\u0432\u0435\u0442\u0438\u0442
-    \u0442\u0432\u043E\u0439 \u043F\u0443\u0442\u044C.\",\"parentUIDs\":[12],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":357,\"yPos\":711},\"ID\":14,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0422\u0435\u0431\u0435
+    \u0442\u0432\u043E\u0439 \u043F\u0443\u0442\u044C.\",\"parentUIDs\":[12],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":550,\"yPos\":94},\"ID\":14,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0422\u0435\u0431\u0435
     \u043F\u0440\u0438\u0434\u0435\u0442\u0441\u044F \u0432\u044B\u0443\u0447\u0438\u0442\u044C
     \u0438 \u0441\u0434\u0430\u0442\u044C \u0442\u0435\u0441\u0442 \u043D\u0430 \u0441\u0430\u0439\u0442\u0435,
     \u0447\u0442\u043E\u0431\u044B \u043F\u0440\u043E\u0434\u0432\u0438\u043D\u0443\u0442\u0441\u044F
@@ -38908,7 +38923,7 @@ MonoBehaviour:
         m_CallState: 2
   NodeID: 3
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
   Audio: {fileID: 0}
 --- !u!1001 &3532817326903074923
 PrefabInstance:
@@ -48824,7 +48839,7 @@ MonoBehaviour:
       m_Calls: []
   NodeID: 4
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
   Audio: {fileID: 0}
 --- !u!1001 &5307768336440229645
 PrefabInstance:
@@ -62998,7 +63013,7 @@ MonoBehaviour:
       m_Calls: []
   NodeID: 0
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
   Audio: {fileID: 0}
 --- !u!1001 &7457403813132832158
 PrefabInstance:
@@ -71566,7 +71581,7 @@ MonoBehaviour:
         m_CallState: 2
   NodeID: 6
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
   Audio: {fileID: 0}
 --- !u!114 &8922344240721051404
 MonoBehaviour:
@@ -71642,7 +71657,7 @@ MonoBehaviour:
       m_Calls: []
   NodeID: 7
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
   Audio: {fileID: 0}
 --- !u!114 &8922344240721051408
 MonoBehaviour:
@@ -71661,7 +71676,7 @@ MonoBehaviour:
       m_Calls: []
   NodeID: 14
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
   Audio: {fileID: 0}
 --- !u!114 &8922344240721051409
 MonoBehaviour:
@@ -71680,7 +71695,7 @@ MonoBehaviour:
       m_Calls: []
   NodeID: 13
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: ea0d15c8ad5814d68ba5d1f53bae6247, type: 3}
   Audio: {fileID: 0}
 --- !u!114 &8922344240721051410
 MonoBehaviour:
@@ -71699,7 +71714,7 @@ MonoBehaviour:
       m_Calls: []
   NodeID: 12
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
   Audio: {fileID: 0}
 --- !u!114 &8922344240721051411
 MonoBehaviour:
@@ -71718,7 +71733,7 @@ MonoBehaviour:
       m_Calls: []
   NodeID: 11
   TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
   Audio: {fileID: 0}
 --- !u!23 &8923558643378232111
 MeshRenderer:

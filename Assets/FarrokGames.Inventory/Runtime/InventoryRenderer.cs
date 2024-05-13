@@ -6,6 +6,35 @@ using UnityEngine.UI;
 
 namespace FarrokhGames.Inventory
 {
+    public class ItemWithPrice
+    {
+        public GameObject itemGO;
+
+        public Image img;
+
+        public GameObject textGo;
+        public TMPro.TMP_Text text;
+        public TMPro.TextMeshProUGUI textUI;
+
+        public ItemWithPrice()
+        {
+            itemGO = new GameObject("item");
+            img = itemGO.AddComponent<Image>();
+            img.transform.localScale = Vector3.one;
+
+            textGo = new GameObject("textItem");
+            textGo.transform.parent = itemGO.transform;
+
+            //text = textGo.AddComponent<TMPro.TMP_Text>();
+            //text.text = "test";
+
+            textUI = textGo.AddComponent<TMPro.TextMeshProUGUI>();
+            textUI.text = "test";
+        }
+    }
+
+
+
     /// <summary>
     /// Renders a given inventory
     /// /// </summary>
@@ -27,9 +56,10 @@ namespace FarrokhGames.Inventory
         internal IInventoryManager inventory;
         InventoryRenderMode _renderMode;
         private bool _haveListeners;
-        private Pool<Image> _imagePool;
+        private Pool<Image> _imagePool2;
+        private Pool<ItemWithPrice> _itemPool;
         private Image[] _grids;
-        private Dictionary<IInventoryItem, Image> _items = new Dictionary<IInventoryItem, Image>();
+        private Dictionary<IInventoryItem, ItemWithPrice> _items = new Dictionary<IInventoryItem, ItemWithPrice>();
 
         /*
          * Setup
@@ -45,7 +75,18 @@ namespace FarrokhGames.Inventory
             imageContainer.transform.localScale = Vector3.one;
 
             // Create pool of images
-            _imagePool = new Pool<Image>(
+            _itemPool = new Pool<ItemWithPrice>(
+                delegate
+                {
+                    var item = new ItemWithPrice();
+
+                    item.itemGO.transform.SetParent(imageContainer);
+                    item.itemGO.transform.localScale = Vector3.one;
+
+                    return item;
+                });
+            // Create pool of images
+            _imagePool2 = new Pool<Image>(
                 delegate
                 {
                     var image = new GameObject("Image").AddComponent<Image>();
@@ -127,7 +168,7 @@ namespace FarrokhGames.Inventory
                 for (var i = 0; i < _grids.Length; i++)
                 {
                     _grids[i].gameObject.SetActive(false);
-                    RecycleImage(_grids[i]);
+                    RecycleImage2(_grids[i]);
                     _grids[i].transform.SetSiblingIndex(i);
                 }
             }
@@ -139,7 +180,7 @@ namespace FarrokhGames.Inventory
             switch (_renderMode)
             {
                 case InventoryRenderMode.Single:
-                    grid = CreateImage(_cellSpriteEmpty, true);
+                    grid = CreateImage2(_cellSpriteEmpty, true);
                     grid.rectTransform.SetAsFirstSibling();
                     grid.type = Image.Type.Sliced;
                     grid.rectTransform.localPosition = Vector3.zero;
@@ -156,7 +197,7 @@ namespace FarrokhGames.Inventory
                     {
                         for (int x = 0; x < inventory.width; x++)
                         {
-                            grid = CreateImage(_cellSpriteEmpty, true);
+                            grid = CreateImage2(_cellSpriteEmpty, true);
                             grid.gameObject.name = "Grid " + c;
                             grid.rectTransform.SetAsFirstSibling();
                             grid.type = Image.Type.Sliced;
@@ -181,10 +222,10 @@ namespace FarrokhGames.Inventory
         private void ReRenderAllItems()
         {
             // Clear all items
-            foreach (var image in _items.Values)
+            foreach (var item in _items.Values)
             {
-                image.gameObject.SetActive(false);
-                RecycleImage(image);
+                item.itemGO.SetActive(false);
+                RecycleItems(item);
             }
             _items.Clear();
 
@@ -200,18 +241,18 @@ namespace FarrokhGames.Inventory
         */
         private void HandleItemAdded(IInventoryItem item)
         {
-            var img = CreateImage(item.sprite, false);
+            var itemThis = CreateItem(item, false);
 
             if (_renderMode == InventoryRenderMode.Single)
             {
-                img.rectTransform.localPosition = rectTransform.rect.center;
+                itemThis.itemGO.transform.localPosition = rectTransform.rect.center;
             }
             else
             {
-                img.rectTransform.localPosition = GetItemOffset(item);
+                itemThis.itemGO.transform.localPosition = GetItemOffset(item);
             }
 
-            _items.Add(item, img);
+            _items.Add(item, itemThis);
         }
 
         /*
@@ -221,9 +262,9 @@ namespace FarrokhGames.Inventory
         {
             if (_items.ContainsKey(item))
             {
-                var image = _items[item];
-                image.gameObject.SetActive(false);
-                RecycleImage(image);
+                var itemThis = _items[item];
+                itemThis.itemGO.gameObject.SetActive(false);
+                RecycleItems(itemThis);
                 _items.Remove(item);
             }
         }
@@ -240,9 +281,9 @@ namespace FarrokhGames.Inventory
         /*
          * Create an image with given sprite and settings
          */
-        private Image CreateImage(Sprite sprite, bool raycastTarget)
+        private Image CreateImage2(Sprite sprite, bool raycastTarget)
         {
-            var img = _imagePool.Take();
+            var img = _imagePool2.Take();
             img.gameObject.SetActive(true);
             img.sprite = sprite;
             img.rectTransform.sizeDelta = new Vector2(img.sprite.rect.width, img.sprite.rect.height);
@@ -251,15 +292,35 @@ namespace FarrokhGames.Inventory
             img.raycastTarget = raycastTarget;
             return img;
         }
+        private ItemWithPrice CreateItem(IInventoryItem _item, bool raycastTarget)
+        {
+            var item = _itemPool.Take();
+            item.itemGO.SetActive(true);
+
+            item.img.gameObject.SetActive(true);
+            item.img.sprite = _item.sprite;
+            item.img.rectTransform.sizeDelta = new Vector2(item.img.sprite.rect.width, item.img.sprite.rect.height);
+            item.img.transform.SetAsLastSibling();
+            item.img.type = Image.Type.Simple;
+            item.img.raycastTarget = raycastTarget;
+
+            return item;
+        }
 
         /*
          * Recycles given image 
          */
-        private void RecycleImage(Image image)
+        private void RecycleImage2(Image image)
         {
             image.gameObject.name = "Image";
             image.gameObject.SetActive(false);
-            _imagePool.Recycle(image);
+            _imagePool2.Recycle(image);
+        }
+        private void RecycleItems(ItemWithPrice item)
+        {
+            //item.itemGO.gameObject.name = "Image";
+            item.itemGO.gameObject.SetActive(false);
+            _itemPool.Recycle(item);
         }
 
         /// <summary>

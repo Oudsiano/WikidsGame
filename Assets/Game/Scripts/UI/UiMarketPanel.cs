@@ -26,12 +26,15 @@ public class UiMarketPanel : MonoBehaviour
     [SerializeField] private Button _btnArmors;
     [SerializeField] private Button _btnConsume;
 
+    [SerializeField] public TMPro.TMP_Text coinCountText;
+
     private ItemType marketState;
     public List<ItemDefinition> marketItems;
 
     private Action<Vector2Int> _accept;
     private Action _decline;
     private Vector2Int _grid;
+    private IInventoryItem _item;
 
     private bool notAvaliableEvents = false;
 
@@ -207,11 +210,19 @@ public class UiMarketPanel : MonoBehaviour
 
     }
 
-    public void InitMarketUI(Action<Vector2Int> accept, Action decline, Vector2Int grid)
+    public void InitMarketUI(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
     {
         _accept = accept;
         _decline = decline;
         _grid = grid;
+        _item = item;
+
+        if (IGame.Instance.dataPLayer.playerData.coins< _item.price)
+        {
+            _decline?.Invoke();
+            return;
+        }
+
         _confirmPanel.SetActive(true);
     }
 
@@ -226,6 +237,9 @@ public class UiMarketPanel : MonoBehaviour
 
         _accept?.Invoke(_grid);
         _confirmPanel.SetActive(false);
+
+        IGame.Instance.dataPLayer.playerData.coins -= _item.price;
+        coinCountText.text = IGame.Instance.dataPLayer.playerData.coins.ToString();
     }
 
     private void OnDestroy()

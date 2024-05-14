@@ -63,6 +63,17 @@ namespace RPG.Controller
                 }
 
             }
+
+            if (IGame.Instance.dataPLayer.playerData.armorIdToload>-1)
+            {
+                foreach (Armor armr in IGame.Instance.WeaponArmorManager.allArmorsInGame)
+                {
+                    if ((int)armr.ArmorName == IGame.Instance.dataPLayer.playerData.armorIdToload)
+                    {
+                        armr.EquipIt();
+                    }
+                }
+            }
         }
 
         // Метод Update вызывается один раз за кадр

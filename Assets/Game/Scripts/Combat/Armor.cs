@@ -22,16 +22,21 @@ public class Armor : ItemDefinition
     [Header("Stats")]
     [SerializeField] private float armor;
 
+    public float ArmorValue { get => armor; set => armor = value; }
+    public armorID ArmorName { get => armorName; set => armorName = value; }
+
     public void EquipIt()
     {
-        if (armorName == armorID.none)
+        if (ArmorName == armorID.none)
             Debug.LogError("Not correct armor");
         /*if (armorType == armorType.none)
             Debug.LogError("Not correct armor");*/
 
+        IGame.Instance.dataPLayer.playerData.armorIdToload = (int)ArmorName;
+
         foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllArmors)
         {
-            if (armorName == armor.armorID)
+            if (ArmorName == armor.armorID)
             {
                 foreach (var item in armor.armorGO)
                 {
@@ -43,9 +48,11 @@ public class Armor : ItemDefinition
 
     public void UnEquip()
     {
+        IGame.Instance.dataPLayer.playerData.armorIdToload = -1;
+
         foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllArmors)
         {
-            if (armorName == armor.armorID)
+            if (ArmorName == armor.armorID)
             {
                 foreach (var item in armor.armorGO)
                 {

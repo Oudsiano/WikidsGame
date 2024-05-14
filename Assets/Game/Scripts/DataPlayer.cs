@@ -68,6 +68,7 @@ public class PlayerData
     public List<bool> stateSpawnPoints;
     public List<string> alreadyExistWeapons;
     public string weaponToLoad;
+    public int armorIdToload;
     public OneLeson[] progress;
     public int chargeEnergy;
     public int IDmaxRegionAvaliable;

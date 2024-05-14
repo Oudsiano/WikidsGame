@@ -45,6 +45,15 @@ public class UIBug : MonoBehaviour
                 InventoryWeapon.inventory.TryAdd(item);
             }
         }
+        InventoryArmor.inventory.Clear();
+        foreach (Armor item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
+        {
+            if (IGame.Instance.dataPLayer.playerData.armorIdToload == (int)item.ArmorName)
+            {
+                if (item.sprite != null)
+                    InventoryWeapon.inventory.TryAdd(item);
+            }
+        }
         notAvaliableEvents = false;
 
 

@@ -16,6 +16,7 @@ namespace FarrokhGames.Inventory
         public TMPro.TMP_Text text;
         public TMPro.TextMeshProUGUI textUI;
 
+        private Image CoinImg;
         public ItemWithPrice()
         {
             itemGO = new GameObject("item");
@@ -23,14 +24,42 @@ namespace FarrokhGames.Inventory
             img.transform.localScale = Vector3.one;
 
             textGo = new GameObject("textItem");
-            textGo.transform.parent = itemGO.transform;
+            textGo.transform.SetParent( itemGO.transform, false);
 
             //text = textGo.AddComponent<TMPro.TMP_Text>();
             //text.text = "test";
 
             textUI = textGo.AddComponent<TMPro.TextMeshProUGUI>();
-            textUI.text = "test";
+            var textRt = textGo.GetComponent<RectTransform>();
+            textRt.anchorMin = new Vector2(0.5f, 0);
+            textRt.anchorMax = new Vector2(0.5f, 0);
+            textRt.pivot = new Vector2(0.5f, 0.5f);
+            textRt.localPosition = new Vector2(0, 25);
+
+            textUI.text = "";
+            textUI.alignment = TMPro.TextAlignmentOptions.Center;
+
+            CoinImg = new GameObject("coin").AddComponent<Image>();
+            CoinImg.gameObject.transform.SetParent( textGo.transform, false);
+
+
+            var _texture = Resources.Load("CoinForPrice", typeof(Texture2D)) as Texture2D;
+            var _sprite = Sprite.Create(_texture, new Rect(0, 0, _texture.width, _texture.height), new Vector2(0f, 0f), 1f);
+            
+
+            CoinImg.sprite = _sprite;
+            CoinImg.transform.localPosition = new Vector2(50, 0);
+            CoinImg.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 50);
+            textRt.anchoredPosition = new Vector2(-25, 25);
+            //CoinImg
         }
+
+        public void setVisPriceSector(bool vis)
+        {
+            textUI.gameObject.SetActive(vis);
+            CoinImg.gameObject.SetActive(vis);
+        }
+
     }
 
 
@@ -80,6 +109,8 @@ namespace FarrokhGames.Inventory
                 {
                     var item = new ItemWithPrice();
 
+                    item.setVisPriceSector(((InventoryManager)inventory).isMarket);
+
                     item.itemGO.transform.SetParent(imageContainer);
                     item.itemGO.transform.localScale = Vector3.one;
 
@@ -102,7 +133,7 @@ namespace FarrokhGames.Inventory
         public void SetInventory(IInventoryManager inventoryManager, InventoryRenderMode renderMode)
         {
             OnDisable();
-            inventory = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager)); 
+            inventory = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager));
             _renderMode = renderMode;
             OnEnable();
         }
@@ -303,6 +334,8 @@ namespace FarrokhGames.Inventory
             item.img.transform.SetAsLastSibling();
             item.img.type = Image.Type.Simple;
             item.img.raycastTarget = raycastTarget;
+
+            item.textUI.text = _item.price.ToString();
 
             return item;
         }

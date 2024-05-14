@@ -16,6 +16,7 @@ namespace FarrokhGames.Inventory
         Vector2Int position { get; set; }
 
 
+        int price { get; }
         ItemType Type { get;}
 
         /// <summary>

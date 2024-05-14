@@ -53,6 +53,7 @@ public class ArrowForPlayer : MonoBehaviour
 
     private void Awake()
     {
+        if (IGame.Instance!=null)
         IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[Index] = this;
         if (Index != 0) gameObject.SetActive(false);
     }

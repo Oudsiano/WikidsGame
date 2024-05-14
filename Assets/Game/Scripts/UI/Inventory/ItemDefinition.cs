@@ -15,6 +15,9 @@ namespace FarrokhGames.Inventory.Examples
         [SerializeField] private bool _canDrop = true;
         [SerializeField, HideInInspector] private Vector2Int _position = Vector2Int.zero;
 
+
+        public int price => PriceCoins;
+
         /// <summary>
         /// The name of the item
         /// </summary>
@@ -49,6 +52,7 @@ namespace FarrokhGames.Inventory.Examples
 
         /// <inheritdoc />
         public bool canDrop => _canDrop;
+
 
 
         /// <summary>

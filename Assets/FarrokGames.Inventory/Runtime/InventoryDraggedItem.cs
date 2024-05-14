@@ -128,7 +128,7 @@ namespace FarrokhGames.Inventory
                 {
                     if (originalController.inventory.isMarket && originalController!=currentController)
                     {
-                        IGame.Instance.UIManager.UiMarketPanel.InitMarketUI(OnMarketAccept, OnMarketDecline, grid);
+                        IGame.Instance.UIManager.UiMarketPanel.InitMarketUI(OnMarketAccept, OnMarketDecline, grid, item);
                     }
                     else
                     {

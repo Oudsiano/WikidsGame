@@ -15,7 +15,11 @@ public enum armorID
 {
     none,
     armorM28,
-    armorM2
+    armorM2,
+    leatherGreenArmor,
+    armorBlueWolf,
+    armorDragon
+    
 };
 
 [Serializable]

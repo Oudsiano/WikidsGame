@@ -17,8 +17,8 @@ public class Armor : ItemDefinition
     [SerializeField] private armorType armorType;
     [SerializeField] private armorID armorName;
 
-    [SerializeField] private GameObject PlayerPosition;
-    [SerializeField] private GameObject ArmorPrefab;
+    //[SerializeField] private GameObject PlayerPosition;
+    //[SerializeField] private GameObject ArmorPrefab;
     [Header("Stats")]
     [SerializeField] private float armor;
 

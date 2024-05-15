@@ -60,7 +60,7 @@ public class PlayerData
 {
     public int id;
     public int health;
-    public float coins;
+    public double coins;
     public bool isAlive;
     public int sceneToLoad;
     public bool testSuccess;

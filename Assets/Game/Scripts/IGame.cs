@@ -30,6 +30,8 @@ public class IGame : MonoBehaviour
         {
             Instance = this;
 
+            
+
             dataPLayer = FindObjectOfType<DataPlayer>();
             gameAPI = FindObjectOfType<GameAPI>();
             playerController = FindObjectOfType<PlayerController>();
@@ -40,6 +42,7 @@ public class IGame : MonoBehaviour
             ArrowForPlayerManager = new ArrowForPlayerManager();
             saveGame = new SaveGame();
 
+            CoinManager.Init();
             UIManager.Init();
             LevelChangeObserver.Init();
             playerController.Init();

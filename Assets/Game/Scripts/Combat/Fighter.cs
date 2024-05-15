@@ -37,6 +37,11 @@ namespace RPG.Combat
             anim = GetComponent<Animator>(); // Получаем компонент Animator
             isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
 
+            
+            if(isPlayer)
+            if (IGame.Instance.saveGame.EquipedWeapon != null)
+                EquipWeapon(IGame.Instance.saveGame.EquipedWeapon);
+
             if (!equippedWeapon)
                 EquipWeapon(defaultWeapon); // Экипируем базовое оружие при старте, если нет текущего оружия
         }
@@ -77,7 +82,7 @@ namespace RPG.Combat
             if (isPlayer)
                 if (IGame.Instance!=null)
             {
-                IGame.Instance.dataPLayer.playerData.weaponToLoad = weapon.name;
+                    IGame.Instance.saveGame.EquipedWeapon = weapon;
             }
         }
 

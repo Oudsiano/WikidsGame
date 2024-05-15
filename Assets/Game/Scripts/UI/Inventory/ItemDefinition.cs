@@ -21,7 +21,7 @@ namespace FarrokhGames.Inventory.Examples
         /// <summary>
         /// The name of the item
         /// </summary>
-        public string Name => this.name;
+        public string Name => name;
 
         /// <summary>
         /// The type of the item

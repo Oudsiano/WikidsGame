@@ -106,12 +106,12 @@ public class UiMarketPanel : MonoBehaviour
     public void GenerateMarketItems()
     {
         marketItems = new List<ItemDefinition>();
-        foreach (var item in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
+        foreach (var item in IGame.Instance.WeaponArmorManager.AllWeaponsInGame)
         {
             if (item.sprite != null)
                 marketItems.Add(item);
         }
-        foreach (var item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
+        foreach (var item in IGame.Instance.WeaponArmorManager.AllArmorsInGame)
         {
             if (item.sprite != null)
                 marketItems.Add(item);
@@ -123,8 +123,14 @@ public class UiMarketPanel : MonoBehaviour
         InventoryAll.inventory.onItemRemoved += HandleItemRemoved;
         InventoryBag.inventory.onItemAdded += HandleItemBugAdded;
         InventoryBag.inventory.onItemRemoved += HandleItemBugRemoved;
+
+        IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
     }
 
+    private void OnChangeMoney(double newValue)
+    {
+        coinCountText.text = newValue.ToString();
+    }
     private void HandleItemRemoved(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
@@ -153,12 +159,12 @@ public class UiMarketPanel : MonoBehaviour
     private void HandleItemBugAdded(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
-        foreach (var item in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
+        foreach (var item in IGame.Instance.WeaponArmorManager.AllWeaponsInGame)
         {
             if (item.sprite == obj.sprite)
                 IGame.Instance.saveGame.bugItems.Add(item);
         }
-        foreach (var item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
+        foreach (var item in IGame.Instance.WeaponArmorManager.AllArmorsInGame)
         {
             if (item.sprite == obj.sprite)
                 IGame.Instance.saveGame.bugItems.Add(item);
@@ -170,12 +176,12 @@ public class UiMarketPanel : MonoBehaviour
     {
         if (notAvaliableEvents) return;
 
-        foreach (var item in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
+        foreach (var item in IGame.Instance.WeaponArmorManager.AllWeaponsInGame)
         {
             if (item.sprite == obj.sprite)
                 marketItems.Add(item);
         }
-        foreach (var item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
+        foreach (var item in IGame.Instance.WeaponArmorManager.AllArmorsInGame)
         {
             if (item.sprite == obj.sprite)
                 marketItems.Add(item);
@@ -217,7 +223,7 @@ public class UiMarketPanel : MonoBehaviour
         _grid = grid;
         _item = item;
 
-        if (IGame.Instance.dataPLayer.playerData.coins< _item.price)
+        if (IGame.Instance.saveGame.Coins< _item.price)
         {
             _decline?.Invoke();
             return;
@@ -238,8 +244,7 @@ public class UiMarketPanel : MonoBehaviour
         _accept?.Invoke(_grid);
         _confirmPanel.SetActive(false);
 
-        IGame.Instance.dataPLayer.playerData.coins -= _item.price;
-        coinCountText.text = IGame.Instance.dataPLayer.playerData.coins.ToString();
+        IGame.Instance.saveGame.Coins -= _item.price;
     }
 
     private void OnDestroy()
@@ -252,5 +257,7 @@ public class UiMarketPanel : MonoBehaviour
             InventoryBag.inventory.onItemAdded -= HandleItemBugAdded;
             InventoryBag.inventory.onItemRemoved -= HandleItemBugRemoved;
         }
+
+        IGame.Instance.CoinManager.Coins.OnChangeCount -= OnChangeMoney;
     }
 }

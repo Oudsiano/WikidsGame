@@ -15,14 +15,15 @@ public class GameAPI : MonoBehaviour
     public bool idUpdate = false;
     public bool gameSave = false;
     public bool gameGet = false;
+    private bool GameLoaded = false;
 
     public void Start()
     {
         dataPlayer = IGame.Instance.dataPLayer;
 
         IDUpdater();
-        SaveUpdater();
-        LoadData();
+        //SaveUpdater();
+        FirstLoad();
         textForOtl.text = $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
     }
     public void FixedUpdate()
@@ -37,14 +38,14 @@ public class GameAPI : MonoBehaviour
     }
     public void SaveUpdater()
     {
+        if (!GameLoaded) return;
+
         StartCoroutine(SaveGameData());
         gameSave = true;
     }
-    public void LoadData()
+    public void FirstLoad()
     {
-        StartCoroutine(GetGameData());
-        gameGet = true;
-        sceneLoader.TryChangeLevel((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
+        StartCoroutine(FirstGetGameData());
     }
 
     public void UpdataDataTest(int IDLesson)
@@ -67,7 +68,7 @@ public class GameAPI : MonoBehaviour
     //    }
     //}
 
-    IEnumerator GetGameData()
+    IEnumerator FirstGetGameData()
     {
         UnityWebRequest request = UnityWebRequest.Get("https://wikids.ru/api/v1/game/" + playerID);
         yield return request.SendWebRequest();
@@ -78,6 +79,11 @@ public class GameAPI : MonoBehaviour
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
             dataPlayer.playerData = playerData;
             Debug.Log("Data downloaded successfully");
+
+
+            gameGet = true;
+            sceneLoader.TryChangeLevel((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
+            GameLoaded = true;
         }
         else
         {
@@ -127,6 +133,8 @@ public class GameAPI : MonoBehaviour
 
     public IEnumerator SaveGameData()
     {
+        
+
         string json = JsonUtility.ToJson(IGame.Instance.dataPLayer.playerData);
         Debug.Log("JSON to send: " + json);
 

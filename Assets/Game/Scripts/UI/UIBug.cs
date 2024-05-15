@@ -37,27 +37,15 @@ public class UIBug : MonoBehaviour
         }
 
         InventoryWeapon.inventory.Clear();
-        foreach (Weapon item in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
-        {
-            if (IGame.Instance.dataPLayer.playerData.weaponToLoad == item.name)
-            {
-                if (item.sprite!=null)
-                InventoryWeapon.inventory.TryAdd(item);
-            }
-        }
+        if (IGame.Instance.saveGame.EquipedWeapon.sprite != null)
+            InventoryWeapon.inventory.TryAdd(IGame.Instance.saveGame.EquipedWeapon);
         InventoryArmor.inventory.Clear();
-        foreach (Armor item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
-        {
-            if (IGame.Instance.dataPLayer.playerData.armorIdToload == (int)item.ArmorName)
-            {
-                if (item.sprite != null)
-                    InventoryWeapon.inventory.TryAdd(item);
-            }
-        }
+        if (IGame.Instance.saveGame.EquipedArmor.sprite != null)
+            InventoryArmor.inventory.TryAdd(IGame.Instance.saveGame.EquipedArmor);
+
         notAvaliableEvents = false;
-
-
     }
+
     void Start()
     {
         InventoryBag.inventory.onItemAdded += OnAdded;
@@ -68,25 +56,20 @@ public class UIBug : MonoBehaviour
 
         InventoryArmor.inventory.onItemAdded += OnAddedArmor;
         InventoryArmor.inventory.onItemRemoved += OnRemovedArmor;
+
+        regen();
     }
 
     private void OnRemovedArmor(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
-        foreach (Armor item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
-        {
-            item.UnEquip();
-        }
+        IGame.Instance.WeaponArmorManager.TryGetArmorByName(obj.name).UnEquip();
     }
 
     private void OnAddedArmor(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
-        foreach (Armor item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
-        {
-            if (item == obj)
-                item.EquipIt();
-        }
+        IGame.Instance.WeaponArmorManager.TryGetArmorByName(obj.name).EquipIt();
     }
 
     private void OnRemovedWeapon(IInventoryItem obj)
@@ -98,11 +81,7 @@ public class UIBug : MonoBehaviour
     private void OnAddedWeapon(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
-        foreach (Weapon item in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
-        {
-            if (item == obj)
-                IGame.Instance.playerController.GetFighter().EquipWeapon(item);
-        }
+        IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(obj.name));
     }
 
     private void OnRemoved(IInventoryItem obj)

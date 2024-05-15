@@ -2,9 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Curency
+{
+    private double _count;
+    public double Count { get { return _count; } }
+    public double OnLoadCount
+    {
+        set
+        {
+            _count = value;
+            OnChangeCount?.Invoke(_count);
+        }
+    }
+
+    public event Action<double> OnChangeCount;
+    public void ChangeCount(double change)
+    {
+        _count += change;
+        OnChangeCount?.Invoke(_count);
+    }
+
+    public void SetCount(double count)
+    {
+        _count = count;
+        OnChangeCount?.Invoke(_count);
+    }
+}
+
 public class CoinManager : MonoBehaviour
 {
     [SerializeField] private GameObject _Coin;
+
+    private Curency coins;
+
+    public void Init()
+    {
+        Coins = new Curency();
+    }
+
+    public Curency Coins { get => coins; set => coins = value; }
 
     public void MakeGoldOnSceneWithCount(float count, Vector3 pos)
     {

@@ -55,6 +55,18 @@ public class UIManager : MonoBehaviour
         uIBug.Init();
         _buttonMarket.onClick.AddListener(OnClickButtonMarket);
         _buttonBug.onClick.AddListener(OnClickButtonBug);
+
+
+        IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
+    }
+
+    private void OnDestroy()
+    {
+        IGame.Instance.CoinManager.Coins.OnChangeCount -= OnChangeMoney;
+    }
+    private void OnChangeMoney(double newValue)
+    {
+        textCoin.text = newValue.ToString();
     }
 
     private void OnClickButtonBug()
@@ -109,10 +121,6 @@ public class UIManager : MonoBehaviour
         AudioManager.instance.Play("ButtonClick");
     }
 
-    public void setCoinCount(string c)
-    {
-        textCoin.text = c;
-    }
     public void setEnergyCharger(string c)
     {
         energyCharger.text = c;

@@ -27,12 +27,13 @@ public class Armor : ItemDefinition
 
     public void EquipIt()
     {
-        if (ArmorName == armorID.none)
-            Debug.LogError("Not correct armor");
+        //if (ArmorID == armorID.none)
+        //    Debug.LogError("Not correct armor");
         /*if (armorType == armorType.none)
             Debug.LogError("Not correct armor");*/
 
-        IGame.Instance.dataPLayer.playerData.armorIdToload = (int)ArmorName;
+        IGame.Instance.saveGame.EquipedArmor = this;
+        //IGame.Instance.dataPLayer.playerData.armorIdToload = (int)ArmorName;
 
         foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllArmors)
         {
@@ -44,12 +45,12 @@ public class Armor : ItemDefinition
                 }
             }
         }
+
+        IGame.Instance.saveGame.MakeSave();
     }
 
     public void UnEquip()
     {
-        IGame.Instance.dataPLayer.playerData.armorIdToload = -1;
-
         foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllArmors)
         {
             if (ArmorName == armor.armorID)
@@ -60,6 +61,8 @@ public class Armor : ItemDefinition
                 }
             }
         }
+
+        IGame.Instance.WeaponArmorManager.GerArmorById(armorID.none).EquipIt();
     }
 
 

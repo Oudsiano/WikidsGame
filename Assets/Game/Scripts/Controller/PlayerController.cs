@@ -44,6 +44,7 @@ namespace RPG.Controller
 
         private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)
         {
+            IGame.Instance.saveGame.MakeLoad();
             EquipWeaponAndArmorAfterLoad();
         }
 
@@ -54,26 +55,9 @@ namespace RPG.Controller
         {
             if (IGame.Instance.dataPLayer.playerData.weaponToLoad.Length>1)
             {
-                foreach (Weapon weapon in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
-                {
-                    if (weapon.name== IGame.Instance.dataPLayer.playerData.weaponToLoad)
-                    {
-                        fighter.EquipWeapon(weapon);
-                    }
-                }
-
+                fighter.EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPLayer.playerData.weaponToLoad));
             }
-
-            if (IGame.Instance.dataPLayer.playerData.armorIdToload>-1)
-            {
-                foreach (Armor armr in IGame.Instance.WeaponArmorManager.allArmorsInGame)
-                {
-                    if ((int)armr.ArmorName == IGame.Instance.dataPLayer.playerData.armorIdToload)
-                    {
-                        armr.EquipIt();
-                    }
-                }
-            }
+            IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPLayer.playerData.armorIdToload).EquipIt();
         }
 
         // Метод Update вызывается один раз за кадр

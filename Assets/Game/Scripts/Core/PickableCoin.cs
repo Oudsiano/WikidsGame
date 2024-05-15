@@ -20,8 +20,7 @@ public class PickableCoin : MonoBehaviour
     {
         if (other.GetComponent<PlayerController>())
         {
-            IGame.Instance.dataPLayer.playerData.coins += count;
-            IGame.Instance.UIManager.setCoinCount(IGame.Instance.dataPLayer.playerData.coins.ToString());
+            IGame.Instance.saveGame.Coins += count;
             Destroy(gameObject);
         }
     }

@@ -266,7 +266,7 @@ public class UiMarketPanel : MonoBehaviour
         oldArmorWhenTryOn.EquipIt();
         IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(oldWeaponWhenTryOn.name));
 
-        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 1, 0);
+        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 0, 0);
         IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
@@ -281,7 +281,7 @@ public class UiMarketPanel : MonoBehaviour
         oldArmorWhenTryOn.EquipIt();
         IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(oldWeaponWhenTryOn.name));
 
-        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 1, 0);
+        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 0, 0);
         IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 

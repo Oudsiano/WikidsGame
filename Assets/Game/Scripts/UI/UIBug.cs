@@ -31,7 +31,7 @@ public class UIBug : MonoBehaviour
     {
         notAvaliableEvents = true;
         InventoryBag.inventory.Clear();
-        foreach (ItemDefinition item in IGame.Instance.saveGame.bugItems)
+        foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
         {
             InventoryBag.inventory.TryAdd(item);
         }
@@ -87,13 +87,13 @@ public class UIBug : MonoBehaviour
     private void OnRemoved(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
-        IGame.Instance.saveGame.bugItems.Remove((ItemDefinition)obj);
+        IGame.Instance.saveGame.BugItems.Remove((ItemDefinition)obj);
     }
 
     private void OnAdded(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
-        IGame.Instance.saveGame.bugItems.Add((ItemDefinition)obj);
+        IGame.Instance.saveGame.BugItems.Add((ItemDefinition)obj);
     }
 
     // Update is called once per frame

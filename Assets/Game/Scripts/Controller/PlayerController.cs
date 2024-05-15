@@ -5,6 +5,8 @@ using RPG.Combat;
 using RPG.Core;
 using DialogueEditor;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RPG.Controller
 {
@@ -16,7 +18,7 @@ namespace RPG.Controller
         private Mover mover; // Компонент, отвечающий за перемещение игрока
         private Health health; // Компонент, отвечающий за здоровье игрока
 
-        public  PlayerArmorManager playerArmorManager;
+        public PlayerArmorManager playerArmorManager;
 
         public WeaponPanelUI WeaponPanelUI;
         public PlayerUIManager PlayerUIManager;
@@ -24,6 +26,8 @@ namespace RPG.Controller
         public GameObject modularCharacter;
 
         private int enemyLayer = 9; // Номер слоя для врагов
+
+        private List<Fighter> allEnemyes;
 
         // Метод Start вызывается перед первым обновлением кадра
         public void Init()
@@ -47,15 +51,22 @@ namespace RPG.Controller
         private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)
         {
             IGame.Instance.saveGame.MakeLoad();
+
+            //Начало работы над автоатакой. Типа сначала получаем всех врагов, а потом будем смотреть, есть ли кто рядом. Но сейчас пока задача отложенна ради более важных
+            //allEnemyes = new List<Fighter>();
+            //allEnemyes = FindObjectsOfType<Fighter>().ToList();
+
             EquipWeaponAndArmorAfterLoad();
         }
 
-        public Health GetHealth () => health;
-        public Fighter GetFighter () => fighter;
+        public Health GetHealth() => health;
+        public Fighter GetFighter() => fighter;
+
+
 
         public void EquipWeaponAndArmorAfterLoad()
         {
-            if (IGame.Instance.dataPLayer.playerData.weaponToLoad.Length>1)
+            if (IGame.Instance.dataPLayer.playerData.weaponToLoad.Length > 1)
             {
                 fighter.EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPLayer.playerData.weaponToLoad));
             }
@@ -139,17 +150,17 @@ namespace RPG.Controller
             // Если игрок кликнул мышью, перемещаемся к указанной точке
             if (Input.GetMouseButton(0))
                 if (!EventSystem.current.IsPointerOverGameObject())
-            {
-                bool readyToGo = true;
+                {
+                    bool readyToGo = true;
 
-                if (ConversationManager.Instance!=null)
-                    if (ConversationManager.Instance.IsConversationActive)
-                        readyToGo = false;
+                    if (ConversationManager.Instance != null)
+                        if (ConversationManager.Instance.IsConversationActive)
+                            readyToGo = false;
 
-                if (readyToGo)
+                    if (readyToGo)
 
-                    mover.StartMoveAction(hit.point);
-            }
+                        mover.StartMoveAction(hit.point);
+                }
 
             return true;
         }

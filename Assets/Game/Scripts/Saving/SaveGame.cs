@@ -8,7 +8,7 @@ public class SaveGame
     //Заготовка для сейв гейма
 
     //Сумка
-    public List<ItemDefinition> bugItems;
+    private List<ItemDefinition> bugItems;
     private Armor equipedArmor;
     private Weapon equipedWeapon;
 
@@ -19,9 +19,11 @@ public class SaveGame
     public Armor EquipedArmor { get => equipedArmor; set => equipedArmor = value; }
     public double Coins { get => coins; set { coins = value; IGame.Instance.CoinManager.Coins.SetCount(value); }}
 
+    public List<ItemDefinition> BugItems { get => bugItems; set => bugItems = value; }
+
     public SaveGame()
     {
-        bugItems = new List<ItemDefinition>();
+        BugItems = new List<ItemDefinition>();
 
 
         EquipedArmor = new Armor();
@@ -30,12 +32,12 @@ public class SaveGame
 
     public void AddItemToBug(ItemDefinition item)
     {
-        bugItems.Add(item);
+        BugItems.Add(item);
     }
 
     public void RemoveItemFromBug(ItemDefinition item)
     {
-        bugItems.Remove(item);
+        BugItems.Remove(item);
     }
 
 
@@ -46,7 +48,7 @@ public class SaveGame
         IGame.Instance.dataPLayer.playerData.weaponToLoad = EquipedWeapon.name;
 
         List<string> tempBug = new List<string>();
-        foreach (var item in bugItems)
+        foreach (var item in BugItems)
         {
             tempBug.Add(item.name);
         }
@@ -63,7 +65,7 @@ public class SaveGame
 
         foreach (var item in IGame.Instance.dataPLayer.playerData.containsBug)
         {
-            bugItems.Add(IGame.Instance.WeaponArmorManager.TryGetItemByName(item));
+            BugItems.Add((ItemDefinition)IGame.Instance.WeaponArmorManager.TryGetItemByName(item).CreateInstance());
         }
 
         Coins = IGame.Instance.dataPLayer.playerData.coins;

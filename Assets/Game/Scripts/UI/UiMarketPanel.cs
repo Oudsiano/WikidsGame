@@ -100,7 +100,7 @@ public class UiMarketPanel : MonoBehaviour
     {
         notAvaliableEvents = true;
         InventoryBag.inventory.Clear();
-        foreach (ItemDefinition item in IGame.Instance.saveGame.bugItems)
+        foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
         {
             InventoryBag.inventory.TryAdd(item);
         }
@@ -154,11 +154,11 @@ public class UiMarketPanel : MonoBehaviour
     private void HandleItemBugRemoved(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
-        foreach (ItemDefinition item in IGame.Instance.saveGame.bugItems)
+        foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
         {
             if (item.sprite == obj.sprite)
             {
-                IGame.Instance.saveGame.bugItems.Remove(item);
+                IGame.Instance.saveGame.BugItems.Remove(item);
                 return;
             }
         }
@@ -170,12 +170,12 @@ public class UiMarketPanel : MonoBehaviour
         foreach (var item in IGame.Instance.WeaponArmorManager.AllWeaponsInGame)
         {
             if (item.sprite == obj.sprite)
-                IGame.Instance.saveGame.bugItems.Add(item);
+                IGame.Instance.saveGame.BugItems.Add(item);
         }
         foreach (var item in IGame.Instance.WeaponArmorManager.AllArmorsInGame)
         {
             if (item.sprite == obj.sprite)
-                IGame.Instance.saveGame.bugItems.Add(item);
+                IGame.Instance.saveGame.BugItems.Add(item);
         }
     }
 

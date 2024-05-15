@@ -32,9 +32,10 @@ public class Armor : ItemDefinition
         /*if (armorType == armorType.none)
             Debug.LogError("Not correct armor");*/
 
-        IGame.Instance.saveGame.EquipedArmor = this;
+            UnEquipOtherArmorFromPlayer();
         //IGame.Instance.dataPLayer.playerData.armorIdToload = (int)ArmorName;
 
+        IGame.Instance.saveGame.EquipedArmor = this;
         foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllArmors)
         {
             if (ArmorName == armor.armorID)
@@ -63,6 +64,17 @@ public class Armor : ItemDefinition
         }
 
         IGame.Instance.WeaponArmorManager.GerArmorById(armorID.none).EquipIt();
+    }
+
+    public void UnEquipOtherArmorFromPlayer()
+    {
+        foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllArmors)
+        {
+            foreach (var item in armor.armorGO)
+            {
+                item.SetActive(false);
+            }
+        }
     }
 
 

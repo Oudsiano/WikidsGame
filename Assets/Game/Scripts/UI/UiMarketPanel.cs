@@ -1,5 +1,6 @@
 using FarrokhGames.Inventory;
 using FarrokhGames.Inventory.Examples;
+using RPG.Combat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,6 +36,11 @@ public class UiMarketPanel : MonoBehaviour
     private Action _decline;
     private Vector2Int _grid;
     private IInventoryItem _item;
+
+    private float angleTryOnEquip;
+    private Weapon oldWeaponWhenTryOn;
+    private Armor oldArmorWhenTryOn;
+
 
     private bool notAvaliableEvents = false;
 
@@ -102,6 +108,8 @@ public class UiMarketPanel : MonoBehaviour
         ShowMarketItems(ItemType.Any);
 
         notAvaliableEvents = false;
+
+
     }
     public void GenerateMarketItems()
     {
@@ -190,7 +198,7 @@ public class UiMarketPanel : MonoBehaviour
 
     private void HandleItemPickedUp(IInventoryItem obj)
     {
-        
+
 
     }
 
@@ -223,11 +231,29 @@ public class UiMarketPanel : MonoBehaviour
         _grid = grid;
         _item = item;
 
-        if (IGame.Instance.saveGame.Coins< _item.price)
+        if (IGame.Instance.saveGame.Coins < _item.price)
         {
             _decline?.Invoke();
             return;
         }
+
+        oldWeaponWhenTryOn = IGame.Instance.saveGame.EquipedWeapon;
+        oldArmorWhenTryOn = IGame.Instance.saveGame.EquipedArmor;
+
+        ItemDefinition newItem = IGame.Instance.WeaponArmorManager.TryGetItemByName(item.name);
+
+        if (newItem.Type == ItemType.Armor)
+        {
+            ((Armor)newItem).EquipIt();
+        }
+        if (newItem.Type == ItemType.Weapons)
+        {
+            IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(item.name));
+        }
+
+        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
+        angleTryOnEquip = 0;
+        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         _confirmPanel.SetActive(true);
     }
@@ -236,6 +262,12 @@ public class UiMarketPanel : MonoBehaviour
     {
         _decline?.Invoke();
         _confirmPanel.SetActive(false);
+
+        oldArmorWhenTryOn.EquipIt();
+        IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(oldWeaponWhenTryOn.name));
+
+        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 1, 0);
+        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     private void OnClickAccept()
@@ -245,6 +277,12 @@ public class UiMarketPanel : MonoBehaviour
         _confirmPanel.SetActive(false);
 
         IGame.Instance.saveGame.Coins -= _item.price;
+
+        oldArmorWhenTryOn.EquipIt();
+        IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(oldWeaponWhenTryOn.name));
+
+        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 1, 0);
+        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     private void OnDestroy()
@@ -259,5 +297,14 @@ public class UiMarketPanel : MonoBehaviour
         }
 
         IGame.Instance.CoinManager.Coins.OnChangeCount -= OnChangeMoney;
+    }
+
+
+    private void Update()
+    {
+        if (!_confirmPanel.gameObject.active) return;
+        angleTryOnEquip += Time.deltaTime * 60;
+        if (angleTryOnEquip > 360) angleTryOnEquip -= 360;
+        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, angleTryOnEquip, 0);
     }
 }

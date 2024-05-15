@@ -21,6 +21,8 @@ namespace RPG.Controller
         public WeaponPanelUI WeaponPanelUI;
         public PlayerUIManager PlayerUIManager;
 
+        public GameObject modularCharacter;
+
         private int enemyLayer = 9; // Номер слоя для врагов
 
         // Метод Start вызывается перед первым обновлением кадра

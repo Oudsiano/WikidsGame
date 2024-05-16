@@ -73,6 +73,7 @@ public class UIManager : MonoBehaviour
     {
         uIBug.regen();
         uIBug.gameObject.SetActive(true);
+        IGame.Instance.SetPause(true);
 
     }
 
@@ -100,6 +101,7 @@ public class UIManager : MonoBehaviour
     {
         UiMarketPanel.Regen();
         UiMarketPanel.gameObject.SetActive(true);
+        IGame.Instance.SetPause(true);
     }
 
     public void OnCLickCancelAgain() => closeAgainUI();

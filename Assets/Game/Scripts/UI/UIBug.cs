@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIBug : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class UIBug : MonoBehaviour
 
     [SerializeField] public SizeInventoryExample InventoryWeapon;
     [SerializeField] public SizeInventoryExample InventoryArmor;
+
+    [SerializeField] public Button btnClose;
 
     private bool notAvaliableEvents = false;
     private bool inited = false;
@@ -25,6 +28,14 @@ public class UIBug : MonoBehaviour
         InventoryArmor.Init();
         InventoryWeapon.Init();
         inited = true;
+
+        btnClose.onClick.AddListener(onClickClose);
+    }
+
+    private void onClickClose()
+    {
+        gameObject.SetActive(false);
+        IGame.Instance.SetPause(false);
     }
 
     public void regen()
@@ -111,5 +122,7 @@ public class UIBug : MonoBehaviour
         InventoryWeapon.inventory.onItemRemoved -= OnRemovedWeapon;
         InventoryArmor.inventory.onItemAdded -= OnAddedArmor;
         InventoryArmor.inventory.onItemRemoved -= OnRemovedArmor;
+
+        btnClose.onClick.RemoveAllListeners();
     }
 }

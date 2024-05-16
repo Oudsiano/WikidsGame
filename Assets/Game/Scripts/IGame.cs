@@ -47,7 +47,7 @@ public class IGame : MonoBehaviour
         }
     }*/
 
-    public void Init()
+    private void Init()
     {
 
 
@@ -66,5 +66,11 @@ public class IGame : MonoBehaviour
         LevelChangeObserver.Init();
         playerController.Init();
         ArrowForPlayerManager.Init();
+
+    }
+
+    public void SetPause(bool p)
+    {
+        //Time.timeScale = p ? 0.0001f : 1;
     }
 }

@@ -26,6 +26,7 @@ public class UiMarketPanel : MonoBehaviour
     [SerializeField] private Button _btnWeapons;
     [SerializeField] private Button _btnArmors;
     [SerializeField] private Button _btnConsume;
+    [SerializeField] private Button _btnClose;
 
     [SerializeField] public TMPro.TMP_Text coinCountText;
 
@@ -54,6 +55,14 @@ public class UiMarketPanel : MonoBehaviour
         _btnArmors.onClick.AddListener(OnClickBtnArmors);
         _btnConsume.onClick.AddListener(OnClickBtnConsume);
         _confirmPanel.SetActive(false);
+
+        _btnClose.onClick.AddListener(OnClickClose);
+    }
+
+    private void OnClickClose()
+    {
+        gameObject.SetActive(false);
+        IGame.Instance.SetPause(false);
     }
 
     private void OnClickBtnConsume()
@@ -253,7 +262,7 @@ public class UiMarketPanel : MonoBehaviour
 
         IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
         angleTryOnEquip = 0;
-        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
+        IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         _confirmPanel.SetActive(true);
     }
@@ -267,7 +276,7 @@ public class UiMarketPanel : MonoBehaviour
         IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(oldWeaponWhenTryOn.name));
 
         IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 0, 0);
-        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
+        IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
     private void OnClickAccept()
@@ -282,7 +291,7 @@ public class UiMarketPanel : MonoBehaviour
         IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(oldWeaponWhenTryOn.name));
 
         IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 0, 0);
-        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
+        IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
     private void OnDestroy()
@@ -297,6 +306,15 @@ public class UiMarketPanel : MonoBehaviour
         }
 
         IGame.Instance.CoinManager.Coins.OnChangeCount -= OnChangeMoney;
+        _btnClose.onClick.RemoveAllListeners();
+
+        _buttonAccept.onClick.RemoveAllListeners();
+        _buttonDecline.onClick.RemoveAllListeners();
+
+        _btnAll.onClick.RemoveAllListeners();
+        _btnWeapons.onClick.RemoveAllListeners();
+        _btnArmors.onClick.RemoveAllListeners();
+        _btnConsume.onClick.RemoveAllListeners();
     }
 
 
@@ -305,6 +323,6 @@ public class UiMarketPanel : MonoBehaviour
         if (!_confirmPanel.gameObject.active) return;
         angleTryOnEquip += Time.deltaTime * 60;
         if (angleTryOnEquip > 360) angleTryOnEquip -= 360;
-        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, angleTryOnEquip, 0);
+        IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, angleTryOnEquip, 0);
     }
 }

@@ -22,7 +22,7 @@ public class GameAPI : MonoBehaviour
         dataPlayer = IGame.Instance.dataPLayer;
 
         IDUpdater();
-        //SaveUpdater();
+        SaveUpdater();
         FirstLoad();
         textForOtl.text = $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
     }
@@ -82,7 +82,7 @@ public class GameAPI : MonoBehaviour
 
 
             gameGet = true;
-            sceneLoader.TryChangeLevel((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
+            //sceneLoader.TryChangeLevel((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
             GameLoaded = true;
         }
         else

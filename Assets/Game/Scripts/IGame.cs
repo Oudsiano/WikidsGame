@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class IGame : MonoBehaviour
 {
-    public static IGame Instance;
+    private static IGame instance;
 
     public DataPlayer dataPLayer;
     public GameAPI gameAPI;
@@ -22,31 +22,49 @@ public class IGame : MonoBehaviour
     [SerializeField] public BottleManager BottleManager;
     [SerializeField] public WeaponArmorManager WeaponArmorManager;
 
+    public static IGame Instance { get {
 
+            if (instance == null)
+            {
+                instance = FindObjectOfType<IGame>();
+                instance.Init();
+            }
+
+                return instance;
+                } 
+        set => instance = value; }
+
+    /*[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private void Awake()
     {
+        Debug.Log("inut Inst");
         if (Instance == null)
 
         {
             Instance = this;
 
-            
-
-            dataPLayer = FindObjectOfType<DataPlayer>();
-            gameAPI = FindObjectOfType<GameAPI>();
-            playerController = FindObjectOfType<PlayerController>();
-            LevelChangeObserver = FindAnyObjectByType<LevelChangeObserver>();
-            BottleManager = FindAnyObjectByType<BottleManager>();
-            WeaponArmorManager = FindAnyObjectByType<WeaponArmorManager>();
-            SavePointsManager = new SavePointsManager();
-            ArrowForPlayerManager = new ArrowForPlayerManager();
-            saveGame = new SaveGame();
-
-            CoinManager.Init();
-            UIManager.Init();
-            LevelChangeObserver.Init();
-            playerController.Init();
-            ArrowForPlayerManager.Init();
+            Init();
         }
+    }*/
+
+    public void Init()
+    {
+
+
+        dataPLayer = FindObjectOfType<DataPlayer>();
+        gameAPI = FindObjectOfType<GameAPI>();
+        playerController = FindObjectOfType<PlayerController>();
+        LevelChangeObserver = FindAnyObjectByType<LevelChangeObserver>();
+        BottleManager = FindAnyObjectByType<BottleManager>();
+        WeaponArmorManager = FindAnyObjectByType<WeaponArmorManager>();
+        SavePointsManager = new SavePointsManager();
+        ArrowForPlayerManager = new ArrowForPlayerManager();
+        saveGame = new SaveGame();
+
+        CoinManager.Init();
+        UIManager.Init();
+        LevelChangeObserver.Init();
+        playerController.Init();
+        ArrowForPlayerManager.Init();
     }
 }

@@ -37,7 +37,6 @@ namespace RPG.Combat
             anim = GetComponent<Animator>(); // Получаем компонент Animator
             isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
 
-            
             if(isPlayer)
             if (IGame.Instance.saveGame.EquipedWeapon != null)
                 EquipWeapon(IGame.Instance.saveGame.EquipedWeapon);
@@ -57,7 +56,8 @@ namespace RPG.Combat
                 Awake();
 
             isFirebalNow = false;
-            equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
+            if (equippedWeapon!=null)
+                equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
 
         public void EquipArmor(Armor armor)

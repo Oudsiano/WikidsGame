@@ -57,6 +57,17 @@ namespace RPG.Core
         // Метод для нанесения урона существу
         public void TakeDamage(float damage)
         {
+            if (isPlayer)
+            {
+                var tempRandom = UnityEngine.Random.Range(0, 9);
+                if (tempRandom > 6) //30%
+                {
+                    Dodge();
+                    return;
+                }
+
+
+            }
             currentHealth = Mathf.Max(currentHealth - damage, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0
 
             if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти
@@ -69,6 +80,10 @@ namespace RPG.Core
                 healthBar.value = currentHealth; // хил бар только у других. У пользователя свой отдельный скрипт
         }
 
+        private void Dodge()
+        {
+            GetComponent<Animator>().SetTrigger("dodge");
+        }
 
         // Метод для обработки смерти существа
         private void Die()

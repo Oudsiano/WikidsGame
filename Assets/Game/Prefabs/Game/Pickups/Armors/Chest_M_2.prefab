@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 1790824613282736399}
   - component: {fileID: 8676173068991778192}
   - component: {fileID: 5894066482092901147}
-  - component: {fileID: 334570855348933410}
+  - component: {fileID: 8479696979757747120}
+  - component: {fileID: 4397519470998940022}
   m_Layer: 0
   m_Name: Chest_M_2
   m_TagString: Untagged
@@ -107,7 +108,28 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300480, guid: 038320a534bd8b444b43734860d1a211, type: 3}
---- !u!114 &334570855348933410
+--- !u!135 &8479696979757747120
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2627196261830985413}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 34.5271
+  m_Center: {x: 0, y: 117.78516, z: -2.0011978}
+--- !u!114 &4397519470998940022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,10 +138,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2627196261830985413}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9a36caad382f544d9d07b1e79e04579, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bab17c746a34cb4f8a59d784edf79f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armor: {fileID: 11400000, guid: b1335edf85184da44bc916560c5f8413, type: 2}
+  item: {fileID: 11400000, guid: b1335edf85184da44bc916560c5f8413, type: 2}
   respawnTime: 5
 --- !u!1 &7105334855648024767
 GameObject:

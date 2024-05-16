@@ -1,4 +1,5 @@
-﻿using RPG.Core;
+﻿using FarrokhGames.Inventory.Examples;
+using RPG.Core;
 using RPG.Movement;
 using UnityEngine;
 
@@ -60,9 +61,16 @@ namespace RPG.Combat
                 equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
 
-        public void EquipArmor(Armor armor)
+
+
+        public void EquipItem(ItemDefinition item)
         {
-            armor.EquipIt();
+            if (item is Armor)
+                ((Armor)item).EquipIt();
+            else
+
+            if (item is Weapon)
+                EquipWeapon((Weapon)item);
         }
 
         // Экипировка оружия

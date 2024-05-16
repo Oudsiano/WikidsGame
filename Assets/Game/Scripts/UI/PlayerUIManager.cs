@@ -9,6 +9,7 @@ public class PlayerUIManager : MonoBehaviour
 
     [SerializeField] public Button ButtonShowMap;
     [SerializeField] public GameObject MapCanvas;
+    [SerializeField] public Button _btnCloseMap;
 
     [SerializeField] private GameObject newWeaponScr;
     [SerializeField] private GameObject newArmorScr;
@@ -20,11 +21,19 @@ public class PlayerUIManager : MonoBehaviour
     public void Init()
     {
         ButtonShowMap.onClick.AddListener(OnClickButtonMap);
+        _btnCloseMap.onClick.AddListener(OnClickBtnCloseMap);
+    }
+
+    private void OnClickBtnCloseMap()
+    {
+        IGame.Instance.SetPause(false);
+        MapCanvas.SetActive(false);
     }
 
     private void OnClickButtonMap()
     {
         if (!MapCanvas.gameObject.activeSelf) MapCanvas.gameObject.SetActive(true);
+        IGame.Instance.SetPause(true);
     }
 
 }

@@ -2500,7 +2500,7 @@ GameObject:
   - component: {fileID: 6826047060665319556}
   - component: {fileID: 1713965022907024265}
   m_Layer: 0
-  m_Name: WeaponManager
+  m_Name: WeaponArmorManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2549,6 +2549,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3aec20623bd8e46059cb3f021cb507e2, type: 2}
   - {fileID: 11400000, guid: c92999f5f46694fd88c15c73bfcac878, type: 2}
   - {fileID: 11400000, guid: b1335edf85184da44bc916560c5f8413, type: 2}
+  dafaultPrefab: {fileID: 2510248455695900177, guid: 16303966daffa2a49ac4655db9d7b6d6,
+    type: 3}
 --- !u!1 &7341283298379489211
 GameObject:
   m_ObjectHideFlags: 0
@@ -4265,6 +4267,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1478296416743616945, guid: 10f01e881ca839440bb590f2e0d746e9,
+        type: 3}
+      propertyPath: _width
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478296416743616945, guid: 10f01e881ca839440bb590f2e0d746e9,
+        type: 3}
+      propertyPath: _height
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2644160816377223996, guid: 10f01e881ca839440bb590f2e0d746e9,
         type: 3}
       propertyPath: m_UiScaleMode
@@ -4323,7 +4335,7 @@ PrefabInstance:
     - target: {fileID: 4591730375738002116, guid: 10f01e881ca839440bb590f2e0d746e9,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 898
+      value: 1098
       objectReference: {fileID: 0}
     - target: {fileID: 4591730375738002116, guid: 10f01e881ca839440bb590f2e0d746e9,
         type: 3}
@@ -4333,7 +4345,7 @@ PrefabInstance:
     - target: {fileID: 5452505989118157942, guid: 10f01e881ca839440bb590f2e0d746e9,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -624
+      value: -424
       objectReference: {fileID: 0}
     - target: {fileID: 5452505989118157942, guid: 10f01e881ca839440bb590f2e0d746e9,
         type: 3}
@@ -4407,8 +4419,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8560832636596931184, guid: 10f01e881ca839440bb590f2e0d746e9,
         type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560832636596931184, guid: 10f01e881ca839440bb590f2e0d746e9,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 700
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560832636596931184, guid: 10f01e881ca839440bb590f2e0d746e9,
+        type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 348
+      value: 448
       objectReference: {fileID: 0}
     - target: {fileID: 8560832636596931184, guid: 10f01e881ca839440bb590f2e0d746e9,
         type: 3}

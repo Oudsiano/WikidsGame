@@ -25,11 +25,27 @@ public class PickableEquip : MonoBehaviour
         }*/
     }
 
+    public void SetItem(ItemDefinition _item)
+    {
+        item = (ItemDefinition)_item.CreateInstance();
+    }
+
     private void PickUpIt()
     {
+        if (item != null)
+        {
+            item.CreateInstance();
+            IGame.Instance.UIManager.uIBug.TryAddEquipToBug(item);
+        }
+        else
+            Debug.LogError("mistake item");
+
         // Получаем компонент Fighter у объекта, который столкнулся с пикапом
-        IGame.Instance.playerController.GetFighter().EquipItem(item);
-        StartCoroutine(HideForSeconds(respawnTime));
+        //IGame.Instance.playerController.GetFighter().EquipItem(item);
+
+        //StartCoroutine(HideForSeconds(respawnTime));
+
+        Destroy(gameObject);
     }
 
     private void Update()

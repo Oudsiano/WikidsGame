@@ -30,12 +30,46 @@ public class UIBug : MonoBehaviour
         inited = true;
 
         btnClose.onClick.AddListener(onClickClose);
+
+        
     }
 
     private void onClickClose()
     {
         gameObject.SetActive(false);
         IGame.Instance.SetPause(false);
+    }
+
+
+
+    public void TryAddEquipToBug(ItemDefinition item)
+    {
+        notAvaliableEvents = true;
+        if (InventoryBag.inventory.CanAdd(item))
+        {
+            InventoryBag.inventory.TryAdd(item.CreateInstance());
+            IGame.Instance.saveGame.SaveItemToBug(item);
+        }
+        else
+        {
+            DropItemNearPlayer(item);
+        }
+        notAvaliableEvents = false;
+    }
+
+    public void DropItemNearPlayer(ItemDefinition item)
+    {
+        notAvaliableEvents = true;
+
+        float posX = IGame.Instance.playerController.transform.localPosition.x + UnityEngine.Random.Range(-10, 10) * 0.1f;
+        float posY = IGame.Instance.playerController.transform.localPosition.y + UnityEngine.Random.Range(-10, 10) * 0.1f;
+
+        Instantiate(IGame.Instance.WeaponArmorManager.dafaultPrefab,
+            new Vector3(posX, posY+1, IGame.Instance.playerController.transform.localPosition.z ),
+            Quaternion.Euler(0, 0, 0))
+            .GetComponent<PickableEquip>().SetItem(item);
+
+        notAvaliableEvents = false;
     }
 
     public void regen()
@@ -49,10 +83,10 @@ public class UIBug : MonoBehaviour
 
         InventoryWeapon.inventory.Clear();
         if (IGame.Instance.saveGame.EquipedWeapon.sprite != null)
-            InventoryWeapon.inventory.TryAdd(IGame.Instance.saveGame.EquipedWeapon);
+            InventoryWeapon.inventory.TryAdd(IGame.Instance.saveGame.EquipedWeapon.CreateInstance());
         InventoryArmor.inventory.Clear();
         if (IGame.Instance.saveGame.EquipedArmor.sprite != null)
-            InventoryArmor.inventory.TryAdd(IGame.Instance.saveGame.EquipedArmor);
+            InventoryArmor.inventory.TryAdd(IGame.Instance.saveGame.EquipedArmor.CreateInstance());
 
         notAvaliableEvents = false;
     }
@@ -62,6 +96,9 @@ public class UIBug : MonoBehaviour
         InventoryBag.inventory.onItemAdded += OnAdded;
         InventoryBag.inventory.onItemRemoved += OnRemoved;
 
+        InventoryBag.inventory.onItemDropped += OnDrop;
+
+
         InventoryWeapon.inventory.onItemAdded += OnAddedWeapon;
         InventoryWeapon.inventory.onItemRemoved += OnRemovedWeapon;
 
@@ -69,6 +106,11 @@ public class UIBug : MonoBehaviour
         InventoryArmor.inventory.onItemRemoved += OnRemovedArmor;
 
         regen();
+    }
+
+    private void OnDrop(IInventoryItem obj)
+    {
+        DropItemNearPlayer((ItemDefinition)obj);
     }
 
     private void OnRemovedArmor(IInventoryItem obj)

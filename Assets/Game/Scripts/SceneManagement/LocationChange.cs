@@ -32,6 +32,7 @@ public class LocationChange : MonoBehaviour
         }
 
         setUpMaxRegion(IGame.Instance.dataPLayer.playerData.IDmaxRegionAvaliable);
+        Debug.Log("awake changeLoc");
     }
 
     public void setUpMaxRegion(int n)

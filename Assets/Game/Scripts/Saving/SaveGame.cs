@@ -17,9 +17,13 @@ public class SaveGame
 
     public Weapon EquipedWeapon { get => equipedWeapon; set => equipedWeapon = value; }
     public Armor EquipedArmor { get => equipedArmor; set => equipedArmor = value; }
-    public double Coins { get => coins; set { coins = value; IGame.Instance.CoinManager.Coins.SetCount(value); }}
+    public double Coins { get => coins; set { coins = value; IGame.Instance.CoinManager.Coins.SetCount(value); } }
 
-    public List<ItemDefinition> BugItems { get => bugItems; set => bugItems = value; }
+    public List<ItemDefinition> BugItems
+    {
+        get => bugItems;
+        set => bugItems = value;
+    }
 
     public SaveGame()
     {
@@ -30,14 +34,21 @@ public class SaveGame
         EquipedWeapon = new Weapon();
     }
 
-    public void AddItemToBug(ItemDefinition item)
+    public void SaveItemToBug(ItemDefinition item)
     {
         BugItems.Add(item);
     }
 
     public void RemoveItemFromBug(ItemDefinition item)
     {
-        BugItems.Remove(item);
+        if (BugItems.Contains(item))
+        {
+            BugItems.Remove(item);
+        }
+        else
+        {
+            Debug.LogError("Потенциально ошибка");
+        }
     }
 
 
@@ -60,12 +71,15 @@ public class SaveGame
 
     public void MakeLoad()
     {
+        BugItems.Clear();
         EquipedArmor = IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPLayer.playerData.armorIdToload);
         EquipedWeapon = IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPLayer.playerData.weaponToLoad);
 
         foreach (var item in IGame.Instance.dataPLayer.playerData.containsBug)
         {
-            BugItems.Add((ItemDefinition)IGame.Instance.WeaponArmorManager.TryGetItemByName(item).CreateInstance());
+            BugItems.Add((ItemDefinition)IGame.Instance.WeaponArmorManager.TryGetItemByName(item)
+                .CreateInstance()
+                );
         }
 
         Coins = IGame.Instance.dataPLayer.playerData.coins;

@@ -92,17 +92,12 @@ public class UiMarketPanel : MonoBehaviour
         InventoryBag.Init();
         GenerateMarketItems();
 
-        /*
-        foreach (var item in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
-        {
-            if (item.sprite != null)
-                InventoryAll.inventory.TryAdd(item);
-        }
-        foreach (var item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
-        {
-            if (item.sprite != null)
-                InventoryAll.inventory.TryAdd(item);
-        }*/
+        InventoryBag.inventory.onItemAdded += HandleItemBugAdded;
+        InventoryBag.inventory.onItemRemoved += HandleItemBugRemoved;
+        InventoryAll.inventory.onItemAdded += HandleItemAdded;
+        InventoryAll.inventory.onItemRemoved += HandleItemRemoved;
+
+        IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
     }
 
     public void Regen()
@@ -114,11 +109,10 @@ public class UiMarketPanel : MonoBehaviour
             InventoryBag.inventory.TryAdd(item);
         }
 
+
         ShowMarketItems(ItemType.Any);
 
         notAvaliableEvents = false;
-
-
     }
     public void GenerateMarketItems()
     {
@@ -133,15 +127,6 @@ public class UiMarketPanel : MonoBehaviour
             if (item.sprite != null)
                 marketItems.Add(item);
         }
-
-        //marketInventoryController.onItemPickedUp += HandleItemPickedUp;
-        //marketInventoryController.onItemAdded += HandleItemAdded;
-        InventoryAll.inventory.onItemAdded += HandleItemAdded;
-        InventoryAll.inventory.onItemRemoved += HandleItemRemoved;
-        InventoryBag.inventory.onItemAdded += HandleItemBugAdded;
-        InventoryBag.inventory.onItemRemoved += HandleItemBugRemoved;
-
-        IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
     }
 
     private void OnChangeMoney(double newValue)
@@ -233,7 +218,7 @@ public class UiMarketPanel : MonoBehaviour
 
     }
 
-    public void InitMarketUI(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
+    public void InitConfirmMarketUI(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
     {
         _accept = accept;
         _decline = decline;

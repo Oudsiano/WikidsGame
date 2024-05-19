@@ -19,6 +19,8 @@ public class WeaponArmorManager : MonoBehaviour
     public List<Weapon> AllWeaponsInGame { get => allWeaponsInGame; set => allWeaponsInGame = value; }
     public List<Armor> AllArmorsInGame { get => allArmorsInGame; set => allArmorsInGame = value; }
 
+    public PickableEquip dafaultPrefab;
+
     public Armor GerArmorById(armorID armrId)
     {
         return allArmorsInGame.Find((item) => item.ArmorName == armrId);

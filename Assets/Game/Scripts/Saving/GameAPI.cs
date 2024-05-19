@@ -80,6 +80,7 @@ public class GameAPI : MonoBehaviour
             dataPlayer.playerData = playerData;
             Debug.Log("Data downloaded successfully");
 
+            IGame.Instance.saveGame.MakeLoad();
 
             gameGet = true;
             //sceneLoader.TryChangeLevel((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);

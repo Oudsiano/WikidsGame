@@ -253,7 +253,7 @@ namespace FarrokhGames.Inventory
         public bool CanAdd(IInventoryItem item)
         {
             Vector2Int point;
-            if (!Contains(item) && GetFirstPointThatFitsItem(item, out point))
+            if (GetFirstPointThatFitsItem(item, out point))
             {
                 return CanAddAt(item, point);
             }

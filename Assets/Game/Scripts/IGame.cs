@@ -71,6 +71,6 @@ public class IGame : MonoBehaviour
 
     public void SetPause(bool p)
     {
-        Time.timeScale = p ? 0.0005f : 1;
+        //Time.timeScale = p ? 0.01f : 1;
     }
 }

@@ -208,9 +208,6 @@ public class UiMarketPanel : MonoBehaviour
 
     public void ShowMarketItems(ItemType state)
     {
-
-
-
         notAvaliableEvents = true;
         marketState = state;
         InventoryAll.inventory.Clear();
@@ -229,17 +226,19 @@ public class UiMarketPanel : MonoBehaviour
                             find = true;
                             break;
                         }
-
-                        
                     }
+
+                    if (IGame.Instance.saveGame.EquipedArmor.name == item.name)
+                        find = true;
+                    if (IGame.Instance.saveGame.EquipedWeapon.name == item.name)
+                        find = true;
+
                     if (!find)
                     InventoryAll.inventory.TryAdd(item);
                 }
             }
         }
-
         notAvaliableEvents = false;
-
     }
 
     public void InitConfirmMarketUI(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
@@ -326,12 +325,21 @@ public class UiMarketPanel : MonoBehaviour
         _btnConsume.onClick.RemoveAllListeners();
     }
 
+    private long oldTime;
 
     private void Update()
     {
-        if (!_confirmPanel.gameObject.active) return;
-        angleTryOnEquip += Time.deltaTime * 60;
+        if (!_confirmPanel.gameObject.activeInHierarchy) return;
+
+        if (oldTime == 0) oldTime = now_time();
+
+        angleTryOnEquip += (now_time()-oldTime)*0.05f;
+        oldTime = now_time();
         if (angleTryOnEquip > 360) angleTryOnEquip -= 360;
         IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, angleTryOnEquip, 0);
+    }
+    public long now_time()
+    {
+        return (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds;
     }
 }

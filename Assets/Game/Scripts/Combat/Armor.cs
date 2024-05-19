@@ -47,7 +47,7 @@ public class Armor : ItemDefinition
             }
         }
 
-        IGame.Instance.saveGame.MakeSave();
+        //IGame.Instance.saveGame.MakeSave(); 
     }
 
     public void UnEquip()

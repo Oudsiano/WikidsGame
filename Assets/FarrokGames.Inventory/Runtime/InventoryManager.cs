@@ -10,6 +10,8 @@ namespace FarrokhGames.Inventory
         private IInventoryProvider _provider;
         private Rect _fullRect;
         public bool isMarket;
+        public float PriceMultiple;
+        public bool DropedFromThere;
 
         public InventoryManager(IInventoryProvider provider, int width, int height)
         {

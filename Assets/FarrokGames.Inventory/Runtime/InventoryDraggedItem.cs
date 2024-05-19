@@ -130,6 +130,11 @@ namespace FarrokhGames.Inventory
                     {
                         IGame.Instance.UIManager.UiMarketPanel.InitConfirmMarketUI(OnMarketAccept, OnMarketDecline, grid, item);
                     }
+                    else if (currentController.inventory.isMarket && originalController != currentController)
+                    {
+                        //Перенос В маркет
+                        IGame.Instance.UIManager.UiMarketPanel.SellItem(OnMarketAccept, OnMarketDecline, grid, item);
+                    }
                     else
                     {
                         currentController.inventory.TryAddAt(item, grid); // Place the item in a new location
@@ -157,7 +162,7 @@ namespace FarrokhGames.Inventory
 
                 currentController.inventoryRenderer.ClearSelection();
             }
-            else if (!originalController.inventory.isMarket)
+            else if (!originalController.inventory.isMarket && !originalController.inventory.DropedFromThere)
             {
                 mode = DropMode.Dropped;
                 if (!originalController.inventory.TryForceDrop(item)) // Drop the item on the ground

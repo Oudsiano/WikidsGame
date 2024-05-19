@@ -19,6 +19,8 @@ namespace FarrokhGames.Inventory.Examples
         [SerializeField] private bool _fillRandomly = true; // Should the inventory get filled with random items?
         [SerializeField] private bool _fillEmpty = false; // Should the inventory get completely filled?
         [SerializeField] private bool _isMarket = false;
+        [SerializeField] private bool _dropedFromThere = false;
+        [SerializeField] private float _priceMultiple = 1;
 
         public InventoryManager inventory;
 
@@ -30,6 +32,8 @@ namespace FarrokhGames.Inventory.Examples
             // Create inventory
             inventory = new InventoryManager(provider, _width, _height);
             inventory.isMarket = _isMarket;
+            inventory.DropedFromThere = _dropedFromThere;
+            inventory.PriceMultiple = _priceMultiple;
             // Fill inventory with random items
             if (_fillRandomly)
             {

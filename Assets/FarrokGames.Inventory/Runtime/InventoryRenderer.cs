@@ -1,6 +1,7 @@
 ﻿using FarrokhGames.Shared;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,9 +15,13 @@ namespace FarrokhGames.Inventory
 
         public GameObject textGo;
         public TMPro.TMP_Text text;
-        public TMPro.TextMeshProUGUI textUI;
+        private TMPro.TextMeshProUGUI textUI;
 
         private Image CoinImg;
+
+        private int price = 0;
+        private float multy = 1;
+
         public ItemWithPrice()
         {
             itemGO = new GameObject("item");
@@ -24,28 +29,28 @@ namespace FarrokhGames.Inventory
             img.transform.localScale = Vector3.one;
 
             textGo = new GameObject("textItem");
-            textGo.transform.SetParent( itemGO.transform, false);
+            textGo.transform.SetParent(itemGO.transform, false);
 
             //text = textGo.AddComponent<TMPro.TMP_Text>();
             //text.text = "test";
 
-            textUI = textGo.AddComponent<TMPro.TextMeshProUGUI>();
+            TextUI = textGo.AddComponent<TMPro.TextMeshProUGUI>();
             var textRt = textGo.GetComponent<RectTransform>();
             textRt.anchorMin = new Vector2(0.5f, 0);
             textRt.anchorMax = new Vector2(0.5f, 0);
             textRt.pivot = new Vector2(0.5f, 0.5f);
             textRt.localPosition = new Vector2(0, 25);
 
-            textUI.text = "";
-            textUI.alignment = TMPro.TextAlignmentOptions.Center;
+            TextUI.text = "";
+            TextUI.alignment = TMPro.TextAlignmentOptions.Center;
 
             CoinImg = new GameObject("coin").AddComponent<Image>();
-            CoinImg.gameObject.transform.SetParent( textGo.transform, false);
+            CoinImg.gameObject.transform.SetParent(textGo.transform, false);
 
 
             var _texture = Resources.Load("CoinForPrice", typeof(Texture2D)) as Texture2D;
             var _sprite = Sprite.Create(_texture, new Rect(0, 0, _texture.width, _texture.height), new Vector2(0f, 0f), 1f);
-            
+
 
             CoinImg.sprite = _sprite;
             CoinImg.transform.localPosition = new Vector2(50, 0);
@@ -54,10 +59,29 @@ namespace FarrokhGames.Inventory
             //CoinImg
         }
 
-        public void setVisPriceSector(bool vis)
+        public TextMeshProUGUI TextUI { get => textUI; set => textUI = value; }
+
+        public void settextFromPrice(int _price)
         {
-            textUI.gameObject.SetActive(vis);
-            CoinImg.gameObject.SetActive(vis);
+            price = _price;
+            textUI.text = ((int)(price * multy)).ToString();
+        }
+
+        public void setVisPriceSector(float multiple)
+        {
+            multy = multiple;
+            if (multiple > 0)
+            {
+
+                textUI.text = ((int)(price * multy)).ToString();
+                TextUI.gameObject.SetActive(true);
+                CoinImg.gameObject.SetActive(true);
+            }
+            else
+            {
+                TextUI.gameObject.SetActive(false);
+                CoinImg.gameObject.SetActive(false);
+            }
         }
 
     }
@@ -109,7 +133,10 @@ namespace FarrokhGames.Inventory
                 {
                     var item = new ItemWithPrice();
 
-                    item.setVisPriceSector(((InventoryManager)inventory).isMarket);
+                    //if (((InventoryManager)inventory).isMarket)
+                        item.setVisPriceSector(((InventoryManager)inventory).PriceMultiple);
+                    //else
+                    //    item.setVisPriceSector(0);
 
                     item.itemGO.transform.SetParent(imageContainer);
                     item.itemGO.transform.localScale = Vector3.one;
@@ -334,8 +361,8 @@ namespace FarrokhGames.Inventory
             item.img.transform.SetAsLastSibling();
             item.img.type = Image.Type.Simple;
             item.img.raycastTarget = raycastTarget;
-
-            item.textUI.text = _item.price.ToString();
+            item.settextFromPrice(_item.price);
+            //item.TextUI.text = _item.price.ToString();
 
             return item;
         }

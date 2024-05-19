@@ -114,12 +114,20 @@ public class UiMarketPanel : MonoBehaviour
 
         notAvaliableEvents = false;
     }
+
+    public void SellItem(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
+    {
+        IGame.Instance.saveGame.Coins += (int)(item.price * InventoryBag.inventory.PriceMultiple);
+        accept?.Invoke(grid);
+    }
+
     public void GenerateMarketItems()
     {
         marketItems = new List<ItemDefinition>();
         foreach (var item in IGame.Instance.WeaponArmorManager.AllWeaponsInGame)
         {
             if (item.sprite != null)
+
                 marketItems.Add(item);
         }
         foreach (var item in IGame.Instance.WeaponArmorManager.AllArmorsInGame)
@@ -128,6 +136,8 @@ public class UiMarketPanel : MonoBehaviour
                 marketItems.Add(item);
         }
     }
+
+    
 
     private void OnChangeMoney(double newValue)
     {
@@ -199,6 +209,8 @@ public class UiMarketPanel : MonoBehaviour
     public void ShowMarketItems(ItemType state)
     {
 
+
+
         notAvaliableEvents = true;
         marketState = state;
         InventoryAll.inventory.Clear();
@@ -209,6 +221,18 @@ public class UiMarketPanel : MonoBehaviour
             {
                 if ((state == ItemType.Any) || (item.Type == state))
                 {
+                    bool find = false;
+                    foreach (var itemBug in InventoryBag.inventory.allItems)
+                    {
+                        if (itemBug.name == item.name)
+                        {
+                            find = true;
+                            break;
+                        }
+
+                        
+                    }
+                    if (!find)
                     InventoryAll.inventory.TryAdd(item);
                 }
             }

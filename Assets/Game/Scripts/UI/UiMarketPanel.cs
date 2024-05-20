@@ -42,6 +42,8 @@ public class UiMarketPanel : MonoBehaviour
     private Weapon oldWeaponWhenTryOn;
     private Armor oldArmorWhenTryOn;
 
+    private int minPrice;
+    private int maxPrice;
 
     private bool notAvaliableEvents = false;
 
@@ -100,8 +102,11 @@ public class UiMarketPanel : MonoBehaviour
         IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
     }
 
-    public void Regen()
+    public void Regen(int _minPrice, int _maxPrice)
     {
+        minPrice = _minPrice;
+        maxPrice = _maxPrice;
+
         notAvaliableEvents = true;
         InventoryBag.inventory.Clear();
         foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
@@ -234,7 +239,8 @@ public class UiMarketPanel : MonoBehaviour
                         find = true;
 
                     if (!find)
-                    InventoryAll.inventory.TryAdd(item);
+                        if (item.price>=minPrice && item.price<=maxPrice)
+                        InventoryAll.inventory.TryAdd(item);
                 }
             }
         }

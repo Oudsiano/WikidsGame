@@ -21,7 +21,6 @@ public class ArrowForPlayerManager
     private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)
     {
         allArrowForPlayers = new SortedDictionary<int, ArrowForPlayer>();
-
     }
 
     public void StartArrow()
@@ -29,7 +28,7 @@ public class ArrowForPlayerManager
         List<ArrowForPlayer> sorted = AllArrowForPlayers.Values.ToList();
         if (sorted.Count > 0)
         {
-            sorted[0].gameObject.SetActive(true);
+            sorted[0].ArrowSprite.SetActive(true);
         }
     }
 
@@ -55,14 +54,28 @@ public class ArrowForPlayer : MonoBehaviour
     {
         if (IGame.Instance!=null)
         IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[Index] = this;
-        if (Index != 0) gameObject.SetActive(false);
+        if (Index != 0)
+        {
+            ArrowSprite.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         trigered = true;
-        IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[Index].gameObject.SetActive(false);
-        IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.Remove(Index);
+
+        for (int i = IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.Count; i >= 0; i--)
+        {
+            if (i <= Index)
+            {
+                if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.ContainsKey(i))
+                {
+                    IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[i].gameObject.SetActive(false);
+                    IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.Remove(i);
+                }
+            }
+        }
+
         IGame.Instance.ArrowForPlayerManager.StartArrow();
     }
 

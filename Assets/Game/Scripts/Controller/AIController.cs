@@ -44,6 +44,8 @@ namespace RPG.Controller
 
         void Update()
         {
+            if (IGame.Instance.IsPause) return;
+
             if (health.IsDead())
                 return;
 

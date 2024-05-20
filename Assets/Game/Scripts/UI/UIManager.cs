@@ -86,6 +86,9 @@ public class UIManager : MonoBehaviour
             _buttonCancelAgain.gameObject.SetActive(true);
         else
             _buttonCancelAgain.gameObject.SetActive(false);
+
+
+        IGame.Instance.SavePlayerPosLikeaPause(true);
     }
 
     private void closeAgainUI(bool force=false)
@@ -95,6 +98,9 @@ public class UIManager : MonoBehaviour
             _againUI.SetActive(false);
             KeyBoardsEvents.escState = KeyBoardsEvents.EscState.none;
         }
+
+
+        IGame.Instance.SavePlayerPosLikeaPause(false);
     }
 
     public void OnClickButtonMarket()

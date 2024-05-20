@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class IGame : MonoBehaviour
 {
+    private bool isPause = false;
+
     private static IGame instance;
 
     public DataPlayer dataPLayer;
@@ -33,6 +35,8 @@ public class IGame : MonoBehaviour
                 return instance;
                 } 
         set => instance = value; }
+
+    public bool IsPause { get => isPause; set => isPause = value; }
 
     /*[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private void Awake()
@@ -75,11 +79,13 @@ public class IGame : MonoBehaviour
         {
             IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
             IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            isPause = true;
         }
         else
         {
             IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 0, 0);
             IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            isPause = false;
         }
         //Time.timeScale = p ? 0.01f : 1;
     }

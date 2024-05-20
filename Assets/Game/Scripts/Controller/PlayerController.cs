@@ -21,7 +21,6 @@ namespace RPG.Controller
         public PlayerArmorManager playerArmorManager;
 
         public WeaponPanelUI WeaponPanelUI;
-        public PlayerUIManager PlayerUIManager;
 
         public GameObject modularCharacter;
 
@@ -40,10 +39,8 @@ namespace RPG.Controller
 
 
             WeaponPanelUI = FindObjectOfType<WeaponPanelUI>();
-            PlayerUIManager = FindObjectOfType<PlayerUIManager>();
 
             WeaponPanelUI.Init();
-            PlayerUIManager.Init();
 
             RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
         }

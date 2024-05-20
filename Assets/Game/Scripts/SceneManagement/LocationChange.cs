@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using static LevelChangeObserver;
 
 public class LocationChange : MonoBehaviour
@@ -19,16 +20,33 @@ public class LocationChange : MonoBehaviour
     [SerializeField]
     public List<OneBtnChangeRegion> regions = new List<OneBtnChangeRegion>();
 
-    //private SceneLoader sceneLoader;
-
     [SerializeField] private TMP_Text Loading;
-
+    [SerializeField] private TMP_Text hoverTextDisplay; // Поле для отображения текста при наведении
+    [SerializeField] private MultiLineText multiLineText; // Ссылка на компонент с многострочным текстом
 
     public void Awake()
     {
-        foreach (OneBtnChangeRegion item in regions)
+        if (multiLineText.hoverTexts.Length != regions.Count)
         {
-            item.Button.onClick.AddListener(() => OnClick(item.loadedScene));
+            Debug.LogError("The number of hover texts does not match the number of regions.");
+            return;
+        }
+
+        for (int i = 0; i < regions.Count; i++)
+        {
+            int index = i; // Локальная копия переменной, чтобы избежать проблем с замыканием
+            regions[i].Button.onClick.AddListener(() => OnClick(regions[index].loadedScene));
+
+            EventTrigger trigger = regions[i].Button.gameObject.AddComponent<EventTrigger>();
+            EventTrigger.Entry entryEnter = new EventTrigger.Entry();
+            entryEnter.eventID = EventTriggerType.PointerEnter;
+            entryEnter.callback.AddListener((eventData) => { OnPointerEnter(index); });
+            trigger.triggers.Add(entryEnter);
+
+            EventTrigger.Entry entryExit = new EventTrigger.Entry();
+            entryExit.eventID = EventTriggerType.PointerExit;
+            entryExit.callback.AddListener((eventData) => { OnPointerExit(); });
+            trigger.triggers.Add(entryExit);
         }
 
         setUpMaxRegion(IGame.Instance.dataPLayer.playerData.IDmaxRegionAvaliable);
@@ -44,9 +62,8 @@ public class LocationChange : MonoBehaviour
         for (int i = 0; i < regions.Count; i++)
         {
             if (regions[i].loadedScene == maxID)
-                if (findedIndex < i) 
+                if (findedIndex < i)
                     findedIndex = i;
-
         }
 
         for (int i = 0; i < regions.Count; i++)
@@ -56,8 +73,6 @@ public class LocationChange : MonoBehaviour
             else
                 regions[i].Button.interactable = false;
         }
-
-
     }
 
     private void OnClick(allScenes sceneId)
@@ -73,6 +88,22 @@ public class LocationChange : MonoBehaviour
     {
         SceneLoader.Instance.TryChangeLevel((LevelChangeObserver.allScenes)IGame.Instance.dataPLayer.playerData.sceneToLoad);
         Loading.gameObject.SetActive(false);
+    }
 
+    private void OnPointerEnter(int index)
+    {
+        if (index >= 0 && index < multiLineText.hoverTexts.Length)
+        {
+            hoverTextDisplay.text = multiLineText.hoverTexts[index];
+        }
+        else
+        {
+            Debug.LogWarning($"Index {index} is out of range for hover texts.");
+        }
+    }
+
+    private void OnPointerExit()
+    {
+        hoverTextDisplay.text = string.Empty;
     }
 }

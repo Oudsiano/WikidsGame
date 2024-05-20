@@ -28,19 +28,14 @@ public class UIBug : MonoBehaviour
         InventoryArmor.Init();
         InventoryWeapon.Init();
         inited = true;
-
         btnClose.onClick.AddListener(onClickClose);
-
-        
     }
 
     private void onClickClose()
     {
         gameObject.SetActive(false);
-        IGame.Instance.SetPause(false);
+        IGame.Instance.SavePlayerPosLikeaPause(false);
     }
-
-
 
     public void TryAddEquipToBug(ItemDefinition item)
     {

@@ -84,7 +84,7 @@ namespace RPG.Core
             if (MX == 0) return;
 
             // Получаем значения вращения по осям X и Y
-            camYRotation += (MX * rotationSpeed * Time.deltaTime);
+            camYRotation = transform.localEulerAngles.y +(MX * rotationSpeed * Time.deltaTime);
             //camXRotation += (Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime);
 
             // Ограничиваем вращение по оси X

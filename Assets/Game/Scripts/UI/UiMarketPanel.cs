@@ -62,7 +62,7 @@ public class UiMarketPanel : MonoBehaviour
     private void OnClickClose()
     {
         gameObject.SetActive(false);
-        IGame.Instance.SetPause(false);
+        IGame.Instance.SavePlayerPosLikeaPause(false);
     }
 
     private void OnClickBtnConsume()
@@ -283,8 +283,7 @@ public class UiMarketPanel : MonoBehaviour
         oldArmorWhenTryOn.EquipIt();
         IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(oldWeaponWhenTryOn.name));
 
-        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 0, 0);
-        IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        
     }
 
     private void OnClickAccept()
@@ -298,8 +297,7 @@ public class UiMarketPanel : MonoBehaviour
         oldArmorWhenTryOn.EquipIt();
         IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(oldWeaponWhenTryOn.name));
 
-        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 0, 0);
-        IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        
     }
 
     private void OnDestroy()

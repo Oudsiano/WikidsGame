@@ -35,6 +35,24 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _buttonBug;
     [SerializeField] public UIBug uIBug;
 
+    [Header("Map")]
+    [SerializeField] public Button ButtonShowMap;
+    [SerializeField] public GameObject MapCanvas;
+    [SerializeField] public Button _btnCloseMap;
+
+    [Header("PLayerBtns")]
+    [SerializeField] private GameObject newWeaponScr;
+    [SerializeField] private GameObject newArmorScr;
+
+    [SerializeField] private Button UserInfoBtn;
+    [SerializeField] private TMPro.TMP_Text textNamePlayer;
+
+    [Header("PlayerInfoScr")]
+    [SerializeField] private GameObject PlayerInfoScr;
+    [SerializeField] private TMP_InputField _playerNameInputField;
+    [SerializeField] private Button _btnClosePLayerInfoScr;
+    [SerializeField] private Button _btnComfirmPLayerInfoScr;
+
     private SceneLoader sceneLoader;
 
     public SceneLoader SceneLoader { get => sceneLoader; set => sceneLoader = value; }
@@ -56,13 +74,67 @@ public class UIManager : MonoBehaviour
         _buttonMarket.onClick.AddListener(OnClickButtonMarket);
         _buttonBug.onClick.AddListener(OnClickButtonBug);
 
+        ButtonShowMap.onClick.AddListener(OnClickButtonMap);
+        _btnCloseMap.onClick.AddListener(OnClickBtnCloseMap);
+
+        UserInfoBtn.onClick.AddListener(OnClickUserInfo);
+
+        _btnClosePLayerInfoScr.onClick.AddListener( ClosePlayerScr);
+        _btnComfirmPLayerInfoScr.onClick.AddListener(onClickConfirmPLayersScr);
 
         IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
+        IGame.Instance.saveGame.OnChangePlayerName += SaveGame_OnChangePlayerName;
+
+        SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
     }
 
-    private void OnDestroy()
+    private void SaveGame_OnChangePlayerName(string obj)
     {
-        IGame.Instance.CoinManager.Coins.OnChangeCount -= OnChangeMoney;
+        _playerNameInputField.text = obj;
+        textNamePlayer.text = obj;
+    }
+
+    private void Start()
+    {
+    }
+
+    private void ClosePlayerScr() 
+    {
+        PlayerInfoScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false);
+    }
+    private void onClickConfirmPLayersScr()
+    {
+        IGame.Instance.saveGame.PlayerName = _playerNameInputField.text;
+        IGame.Instance.saveGame.MakeSave();
+        
+        ClosePlayerScr();
+    }
+
+    private void OnClickUserInfo()
+    {
+        IGame.Instance.SavePlayerPosLikeaPause(true);
+        PlayerInfoScr.SetActive(true);
+        RegenPLayerInfoScr();
+    }
+
+    private void RegenPLayerInfoScr()
+    {
+        _playerNameInputField.text = IGame.Instance.saveGame.PlayerName;
+    }
+
+    public void ShowNewArmor() => newArmorScr.SetActive(true);
+    public void ShowNewWeapon() => newWeaponScr.SetActive(true);
+
+    public void OnClickBtnCloseMap()
+    {
+        IGame.Instance.SavePlayerPosLikeaPause(false);
+        MapCanvas.SetActive(false);
+    }
+
+    private void OnClickButtonMap()
+    {
+        if (!MapCanvas.gameObject.activeSelf) MapCanvas.gameObject.SetActive(true);
+        IGame.Instance.SavePlayerPosLikeaPause(true);
     }
     private void OnChangeMoney(double newValue)
     {

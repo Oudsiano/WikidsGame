@@ -144,7 +144,7 @@ namespace RPG.SceneManagement
                 {
                     IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusWeapon.name);
                     IGame.Instance.playerController.GetFighter().EquipWeapon(bonusWeapon);
-                    IGame.Instance.playerController.PlayerUIManager.ShowNewWeapon();
+                    IGame.Instance.UIManager.ShowNewWeapon();
                     IGame.Instance.gameAPI.SaveUpdater();
                 }
             }
@@ -155,7 +155,7 @@ namespace RPG.SceneManagement
                 {
                     IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusArmor.name);
                     IGame.Instance.playerController.GetFighter().EquipItem(bonusArmor);
-                    IGame.Instance.playerController.PlayerUIManager.ShowNewArmor();
+                    IGame.Instance.UIManager.ShowNewArmor();
                     IGame.Instance.gameAPI.SaveUpdater();
                 }
             }

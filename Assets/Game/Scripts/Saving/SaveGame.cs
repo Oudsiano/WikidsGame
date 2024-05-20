@@ -1,5 +1,6 @@
 ﻿using FarrokhGames.Inventory.Examples;
 using RPG.Combat;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ public class SaveGame
 
     private double coins;
 
+    private string playerName;
+    public event Action<string> OnChangePlayerName;
 
     public Weapon EquipedWeapon { get => equipedWeapon; set => equipedWeapon = value; }
     public Armor EquipedArmor { get => equipedArmor; set => equipedArmor = value; }
@@ -24,6 +27,7 @@ public class SaveGame
         get => bugItems;
         set => bugItems = value;
     }
+    public string PlayerName { get => playerName; set { playerName = value; OnChangePlayerName?.Invoke(playerName); } }
 
     public SaveGame()
     {
@@ -66,6 +70,8 @@ public class SaveGame
         IGame.Instance.dataPLayer.playerData.containsBug = tempBug.ToArray();
         IGame.Instance.dataPLayer.playerData.coins = Coins;
 
+        IGame.Instance.dataPLayer.playerData.playerName = PlayerName;
+
         IGame.Instance.gameAPI.SaveUpdater();
     }
 
@@ -75,18 +81,21 @@ public class SaveGame
         EquipedArmor = IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPLayer.playerData.armorIdToload);
         EquipedWeapon = IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPLayer.playerData.weaponToLoad);
 
-        if (IGame.Instance.dataPLayer.playerData.containsBug.Length>99)
+        if (IGame.Instance.dataPLayer.playerData.playerName != "")
+            PlayerName = IGame.Instance.dataPLayer.playerData.playerName;
+
+        if (IGame.Instance.dataPLayer.playerData.containsBug.Length > 99)
         {
             IGame.Instance.dataPLayer.playerData.containsBug = new string[0];
             MakeSave();
         }
         else
-        foreach (var item in IGame.Instance.dataPLayer.playerData.containsBug)
-        {
-            BugItems.Add((ItemDefinition)IGame.Instance.WeaponArmorManager.TryGetItemByName(item)
-                .CreateInstance()
-                );
-        }
+            foreach (var item in IGame.Instance.dataPLayer.playerData.containsBug)
+            {
+                BugItems.Add((ItemDefinition)IGame.Instance.WeaponArmorManager.TryGetItemByName(item)
+                    .CreateInstance()
+                    );
+            }
 
         Coins = IGame.Instance.dataPLayer.playerData.coins;
     }

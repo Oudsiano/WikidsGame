@@ -57,8 +57,9 @@ public class OneTestQuestion
 
 [System.Serializable]
 public class PlayerData
-{
+{    
     public int id;
+    public string playerName;
     public int health;
     public double coins;
     public bool isAlive;

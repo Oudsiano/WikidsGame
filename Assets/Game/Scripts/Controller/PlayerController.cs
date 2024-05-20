@@ -76,6 +76,8 @@ namespace RPG.Controller
         // Метод Update вызывается один раз за кадр
         void Update()
         {
+            if (IGame.Instance.IsPause) return;
+
             // Если игрок мертв, прекращаем выполнение метода
             if (health.IsDead())
                 return;

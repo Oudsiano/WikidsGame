@@ -104,6 +104,8 @@ namespace RPG.Combat
 
         void Update()
         {
+            if (IGame.Instance.IsPause) return;
+
             timer += Time.deltaTime; // Обновляем таймер
 
             if (!target) // Если нет цели, выходим

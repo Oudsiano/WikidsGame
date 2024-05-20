@@ -24,7 +24,7 @@ public class PlayerUIManager : MonoBehaviour
         _btnCloseMap.onClick.AddListener(OnClickBtnCloseMap);
     }
 
-    private void OnClickBtnCloseMap()
+    public void OnClickBtnCloseMap()
     {
         IGame.Instance.SavePlayerPosLikeaPause(false);
         MapCanvas.SetActive(false);

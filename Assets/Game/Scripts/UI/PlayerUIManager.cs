@@ -26,14 +26,14 @@ public class PlayerUIManager : MonoBehaviour
 
     private void OnClickBtnCloseMap()
     {
-        IGame.Instance.SetPause(false);
+        IGame.Instance.SavePlayerPosLikeaPause(false);
         MapCanvas.SetActive(false);
     }
 
     private void OnClickButtonMap()
     {
         if (!MapCanvas.gameObject.activeSelf) MapCanvas.gameObject.SetActive(true);
-        IGame.Instance.SetPause(true);
+        IGame.Instance.SavePlayerPosLikeaPause(true);
     }
 
 }

@@ -75,6 +75,12 @@ public class SaveGame
         EquipedArmor = IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPLayer.playerData.armorIdToload);
         EquipedWeapon = IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPLayer.playerData.weaponToLoad);
 
+        if (IGame.Instance.dataPLayer.playerData.containsBug.Length>99)
+        {
+            IGame.Instance.dataPLayer.playerData.containsBug = new string[0];
+            MakeSave();
+        }
+        else
         foreach (var item in IGame.Instance.dataPLayer.playerData.containsBug)
         {
             BugItems.Add((ItemDefinition)IGame.Instance.WeaponArmorManager.TryGetItemByName(item)

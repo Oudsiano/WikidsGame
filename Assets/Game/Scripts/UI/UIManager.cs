@@ -91,7 +91,7 @@ public class UIManager : MonoBehaviour
         IGame.Instance.SavePlayerPosLikeaPause(true);
     }
 
-    private void closeAgainUI(bool force=false)
+    private void closeAgainUI(bool force = false)
     {
         if ((IGame.Instance.dataPLayer.playerData.health > 0) || (force))
         {
@@ -103,15 +103,17 @@ public class UIManager : MonoBehaviour
         IGame.Instance.SavePlayerPosLikeaPause(false);
     }
 
-    public void OnClickButtonMarket()
+    public void OnClickButtonMarket() => OpenMarket(0, int.MaxValue);
+
+    public void OpenMarket(int minPrice, int maxPrice)
     {
-        UiMarketPanel.Regen();
+        UiMarketPanel.Regen(minPrice, maxPrice);
         UiMarketPanel.gameObject.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true);
     }
 
     public void OnCLickCancelAgain() => closeAgainUI();
-    
+
     public void OnClickGoToSceneZero()
     {
         closeAgainUI(true);

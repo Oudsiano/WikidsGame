@@ -20,8 +20,11 @@ namespace RPG.Combat
         [SerializeField] private float weaponRange = 2f; // Расстояние, на котором оружие может наносить урон
         [SerializeField] private float timeBetweenAttacks; // Время между атаками
 
+        [Header("Description")]
+        [SerializeField] [TextArea] private string description; // Описание оружия
+
         private const string weaponNameForHand = "weapon"; // Имя объекта оружия в сцене
-        
+
         // Спаунит объект оружия для игрока
         public void SpawnToPlayer(Transform rightHandPos, Transform lefthandPos, Animator anim)
         {
@@ -71,7 +74,6 @@ namespace RPG.Combat
             }
         }
 
-
         // Возвращает урон оружия
         public float GetWeaponDamage()
         {
@@ -90,6 +92,12 @@ namespace RPG.Combat
             return timeBetweenAttacks;
         }
 
+        // Возвращает описание оружия
+        public string GetDescription()
+        {
+            return description;
+        }
+
         // Создает снаряд, если оружие дистанционное, и назначает цель для него
         public void SpawnProjectile(Transform target, Transform rightHand, Transform leftHand)
         {
@@ -101,7 +109,6 @@ namespace RPG.Combat
         {
             return IsFireballs;
         }
-
 
         // Определяет, является ли оружие дистанционным
         public bool IsRanged()

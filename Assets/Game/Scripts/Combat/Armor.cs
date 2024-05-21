@@ -6,34 +6,27 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-
 [CreateAssetMenu(fileName = "Armor", menuName = "Armors", order = 0)]
 public class Armor : ItemDefinition
 {
-
     [Header("Core")]
-
-
     [SerializeField] private armorType armorType;
     [SerializeField] private armorID armorName;
 
-    //[SerializeField] private GameObject PlayerPosition;
-    //[SerializeField] private GameObject ArmorPrefab;
     [Header("Stats")]
     [SerializeField] private float armor;
+
+    [Header("Description")]
+    [SerializeField] [TextArea] private string description; // Описание брони
 
     public float ArmorValue { get => armor; set => armor = value; }
     public armorID ArmorName { get => armorName; set => armorName = value; }
 
+    public string Description { get => description; set => description = value; } // Свойство для описания
+
     public void EquipIt()
     {
-        //if (ArmorID == armorID.none)
-        //    Debug.LogError("Not correct armor");
-        /*if (armorType == armorType.none)
-            Debug.LogError("Not correct armor");*/
-
-            UnEquipOtherArmorFromPlayer();
-        //IGame.Instance.dataPLayer.playerData.armorIdToload = (int)ArmorName;
+        UnEquipOtherArmorFromPlayer();
 
         IGame.Instance.saveGame.EquipedArmor = this;
         foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllArmors)
@@ -46,8 +39,6 @@ public class Armor : ItemDefinition
                 }
             }
         }
-
-        //IGame.Instance.saveGame.MakeSave(); 
     }
 
     public void UnEquip()
@@ -76,6 +67,4 @@ public class Armor : ItemDefinition
             }
         }
     }
-
-
 }

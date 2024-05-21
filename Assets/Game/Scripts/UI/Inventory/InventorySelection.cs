@@ -41,17 +41,14 @@ namespace FarrokhGames.Inventory.Examples
                 {
                     Weapon wpn = (itm as Weapon);
                     _text.text = (wpn.GetWeaponRange() > 2.5f) ?
-                      $"Оружие {itm.Name}, урон: {wpn.GetWeaponDamage()} дистанционная атака, дальность {wpn.GetWeaponRange()}" :
-                      $"Оружие {itm.Name}, урон: {wpn.GetWeaponDamage()} ближняя атака, дальность {wpn.GetWeaponRange()}";
-                } else
-                if (itm.Type == ItemType.Armor)
+                      $"Оружие: {itm.Name} Урон: {wpn.GetWeaponDamage()} Тип атаки: Дистанционная Дальность: {wpn.GetWeaponRange()}\nОписание: {wpn.GetDescription()}" :
+                      $"Оружие: {itm.Name}Урон: {wpn.GetWeaponDamage()} Тип атаки: Ближняя Дальность: {wpn.GetWeaponRange()} \nОписание: {wpn.GetDescription()}";
+                }
+                else if (itm.Type == ItemType.Armor)
                 {
                     Armor armr = (itm as Armor);
-                    _text.text = $"{itm.Name}, броня: {armr.ArmorValue} ";
+                    _text.text = $"{itm.Name} Броня: {armr.ArmorValue}\nОписание: {armr.Description}";
                 }
-
-
-
             }
             else
             {

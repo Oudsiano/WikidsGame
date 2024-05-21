@@ -1,17 +1,17 @@
-﻿using RPG.Combat;
+﻿using TMPro;
+using RPG.Combat;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace FarrokhGames.Inventory.Examples
 {
     public class InventorySelection : MonoBehaviour
     {
-        Text _text;
+        [SerializeField]TMP_Text _text;
         InventoryController[] allControllers;
 
         void Start()
         {
-            _text = GetComponentInChildren<Text>();
+            _text = GetComponentInChildren<TMP_Text>();
             _text.text = string.Empty;
 
             allControllers = GameObject.FindObjectsOfType<InventoryController>();
@@ -42,7 +42,7 @@ namespace FarrokhGames.Inventory.Examples
                     Weapon wpn = (itm as Weapon);
                     _text.text = (wpn.GetWeaponRange() > 2.5f) ?
                       $"Оружие: {itm.Name} Урон: {wpn.GetWeaponDamage()} Тип атаки: Дистанционная Дальность: {wpn.GetWeaponRange()}\nОписание: {wpn.GetDescription()}" :
-                      $"Оружие: {itm.Name}Урон: {wpn.GetWeaponDamage()} Тип атаки: Ближняя Дальность: {wpn.GetWeaponRange()} \nОписание: {wpn.GetDescription()}";
+                      $"Оружие: {itm.Name} Урон: {wpn.GetWeaponDamage()} Тип атаки: Ближняя Дальность: {wpn.GetWeaponRange()}\nОписание: {wpn.GetDescription()}";
                 }
                 else if (itm.Type == ItemType.Armor)
                 {

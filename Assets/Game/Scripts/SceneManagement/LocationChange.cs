@@ -20,7 +20,7 @@ public class LocationChange : MonoBehaviour
     [SerializeField]
     public List<OneBtnChangeRegion> regions = new List<OneBtnChangeRegion>();
 
-    [SerializeField] private TMP_Text Loading;
+    [SerializeField] private GameObject Loading;
     [SerializeField] private TMP_Text hoverTextDisplay; // Поле для отображения текста при наведении
     [SerializeField] private MultiLineText multiLineText; // Ссылка на компонент с многострочным текстом
 

@@ -11,6 +11,8 @@ namespace RPG.Core
         public static event Action OnCameraRotation; //Для обучения
         public static event Action OnCameraScale; //Для обучения
 
+        public static event Action<float> NewYRotation;
+
 
         private Transform target; // Цель, за которой следует камера
         [SerializeField] private float rotationSpeed; // Скорость вращения камеры
@@ -26,7 +28,7 @@ namespace RPG.Core
         private bool canZoom;
 
         // Переменные для вращения камеры
-        private float camXRotation = 0;
+        private float camXRotation = 40;
         private float camYRotation = 0;
 
         // Пределы масштабирования
@@ -88,13 +90,14 @@ namespace RPG.Core
             //camXRotation += (Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime);
 
             // Ограничиваем вращение по оси X
-            camXRotation = Mathf.Clamp(camXRotation, 0, 0);
+            camXRotation = Mathf.Clamp(camXRotation, 40, 40);
             // Ограничиваем вращение по оси Y
             //camYRotation = Mathf.Clamp(camYRotation, -90, 90);
 
 
             transform.localEulerAngles = new Vector3(camXRotation, camYRotation, 0);
             OnCameraRotation?.Invoke();
+            NewYRotation?.Invoke(camYRotation);
         }
 
         // Метод для масштабирования камеры

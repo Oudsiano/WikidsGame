@@ -18,9 +18,12 @@ public class ConversationMarket : MonoBehaviour
     {
         MarketBtn.gameObject.SetActive(false);
         ConversationManager.OnConversationStarted += onStartConversation;
+        ConversationManager.OnConversationEnded += OnConversationEnded;
 
         MarketBtn.onClick.AddListener(onClickBtn);
     }
+
+    private void OnConversationEnded() => MarketBtn.gameObject.SetActive(false);
 
     private void onStartConversation()
     {

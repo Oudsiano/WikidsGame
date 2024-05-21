@@ -26,6 +26,7 @@ public class LocationChange : MonoBehaviour
 
     public void Awake()
     {
+        
         if (multiLineText.hoverTexts.Length != regions.Count)
         {
             Debug.LogError("The number of hover texts does not match the number of regions.");

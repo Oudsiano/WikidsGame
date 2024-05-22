@@ -82,7 +82,7 @@ public class LocationChange : MonoBehaviour
         Loading.gameObject.SetActive(true);
         IGame.Instance.gameAPI.SaveUpdater();
         Invoke("LoadSceneAfterDelay", 2f);
-        AudioManager.instance.Play("ClickButton");
+        AudioManager.instance.PlaySound("ClickButton");
     }
 
     private void LoadSceneAfterDelay()

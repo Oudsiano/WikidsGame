@@ -110,6 +110,8 @@ public class UIManager : MonoBehaviour
 
     private void OnChangeMusicVolume(float arg0)
     {
+        SoundManager.SetMusicVolume(arg0);
+
         AudioManager.instance.MusicVol = arg0;
     }
 
@@ -120,6 +122,7 @@ public class UIManager : MonoBehaviour
 
     private void OnChangeMusicState(bool arg0)
     {
+        SoundManager.SetMusicMuted(!arg0);
         AudioManager.instance.MusicON = arg0;
     }
 
@@ -232,7 +235,7 @@ public class UIManager : MonoBehaviour
         IGame.Instance.gameAPI.SaveUpdater();
 
         SceneLoader.TryChangeLevel(LevelChangeObserver.allScenes.regionSCene);
-        AudioManager.instance.Play("ButtonClick");
+        AudioManager.instance.PlaySound("ButtonClick");
     }
 
 
@@ -240,7 +243,7 @@ public class UIManager : MonoBehaviour
     {
         SceneLoader.UpdateCurrentLevel();
         closeAgainUI(true);
-        AudioManager.instance.Play("ButtonClick");
+        AudioManager.instance.PlaySound("ButtonClick");
     }
 
     public void setEnergyCharger(string c)

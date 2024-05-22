@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     public Sound[] sounds;
+    public Sound[] musics;
 
     private float soundVol;
     private bool soundON;
@@ -55,21 +56,30 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void Play(string sound)
+    public void PlayMusic(string music)
+    {
+        if (!musicON) return;
+
+        Sound s = Array.Find(musics, item => item.name == music);
+        s.source.volume = soundVol;
+        s.source.Play();
+    }
+
+    public void PlaySound(string sound)
     {
         if (!soundON) return;
         Sound s = Array.Find(sounds, item => item.name == sound);
         s.source.volume = soundVol;
         s.source.Play();
     }
-    public void Stop(string sound)
+    public void StopSound(string sound)
     {
         Sound s = Array.Find(sounds, item => item.name == sound);
         s.source.Stop();
     }
     public void PlayButtonClick()
     {
-        Play("ButtonClick");
+        PlaySound("ButtonClick");
     }
 
 }

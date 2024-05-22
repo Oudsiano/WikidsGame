@@ -75,7 +75,8 @@ public class SaveGame
 
         IGame.Instance.dataPLayer.playerData.soundOn = AudioManager.instance.SoundON;
         IGame.Instance.dataPLayer.playerData.soundVol = AudioManager.instance.SoundVol;
-        //IGame.Instance.dataPLayer.playerData.musicOn = 
+        IGame.Instance.dataPLayer.playerData.musicOn = !SoundManager.GetMusicMuted();
+        IGame.Instance.dataPLayer.playerData.musicVol = SoundManager.GetMusicVolume();
 
         IGame.Instance.gameAPI.SaveUpdater();
     }

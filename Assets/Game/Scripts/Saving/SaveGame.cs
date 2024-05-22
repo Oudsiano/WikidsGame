@@ -73,17 +73,27 @@ public class SaveGame
 
         IGame.Instance.dataPLayer.playerData.playerName = PlayerName;
 
+        IGame.Instance.dataPLayer.playerData.soundOn = AudioManager.instance.SoundON;
+        IGame.Instance.dataPLayer.playerData.soundVol = AudioManager.instance.SoundVol;
+        //IGame.Instance.dataPLayer.playerData.musicOn = 
+
         IGame.Instance.gameAPI.SaveUpdater();
     }
 
     public void MakeLoad()
     {
+        IGame.Instance.UIManager.UpdateParamsUI();
+
+
         BugItems.Clear();
         EquipedArmor = IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPLayer.playerData.armorIdToload);
         EquipedWeapon = IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPLayer.playerData.weaponToLoad);
 
         if (IGame.Instance.dataPLayer.playerData.playerName != "")
             PlayerName = IGame.Instance.dataPLayer.playerData.playerName;
+
+        if (IGame.Instance.dataPLayer.playerData.containsBug==null)
+            IGame.Instance.dataPLayer.playerData.containsBug = new string[0];
 
         if (IGame.Instance.dataPLayer.playerData.containsBug.Length > 99)
         {

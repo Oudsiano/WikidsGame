@@ -94,7 +94,8 @@ public class SavePoint : MonoBehaviour
                 dataPlayer.playerData.stateSpawnPoints[spawnPoint] = true;
 
                 // Если объект найден, продолжаем с сохранением игры
-                StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
+                IGame.Instance.gameAPI.SaveUpdater();
+                //StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
 
                 SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
 

@@ -7,6 +7,7 @@ using RPG.Core;
 using TMPro;
 using FarrokhGames.Inventory;
 using FarrokhGames.Inventory.Examples;
+using UnityEngine.Events;
 
 public class UIManager : MonoBehaviour
 {
@@ -90,7 +91,41 @@ public class UIManager : MonoBehaviour
         IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
         IGame.Instance.saveGame.OnChangePlayerName += SaveGame_OnChangePlayerName;
 
+        _toggleSound.onValueChanged.AddListener(OnChangeSoundState);
+        _toggleMusic.onValueChanged.AddListener(OnChangeMusicState);
+        _sliderSound.onValueChanged.AddListener(OnChangeSoundVolume);
+        _sliderMusic.onValueChanged.AddListener(OnChangeMusicVolume);
+
+
         SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
+    }
+
+    public void UpdateParamsUI()
+    {
+        _toggleSound.isOn = IGame.Instance.dataPLayer.playerData.soundOn;
+        _toggleMusic.isOn = IGame.Instance.dataPLayer.playerData.musicOn;
+        _sliderSound.value = IGame.Instance.dataPLayer.playerData.soundVol;
+        _sliderMusic.value = IGame.Instance.dataPLayer.playerData.musicVol;
+    }
+
+    private void OnChangeMusicVolume(float arg0)
+    {
+        AudioManager.instance.MusicVol = arg0;
+    }
+
+    private void OnChangeSoundVolume(float arg0)
+    {
+        AudioManager.instance.SoundVol = arg0;
+    }
+
+    private void OnChangeMusicState(bool arg0)
+    {
+        AudioManager.instance.MusicON = arg0;
+    }
+
+    private void OnChangeSoundState(bool arg0)
+    {
+        AudioManager.instance.SoundON = arg0;
     }
 
     private void SaveGame_OnChangePlayerName(string obj)

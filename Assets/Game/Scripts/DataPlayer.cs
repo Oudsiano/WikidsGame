@@ -78,4 +78,10 @@ public class PlayerData
 
 
     public int helpIndex;
+
+    public float soundVol=1;
+    public float musicVol=1;
+    public bool soundOn=true;
+    public bool musicOn=true;
+
 }

@@ -19,6 +19,7 @@ public class GameAPI : MonoBehaviour
 
     public bool TestSuccessKey = false; //Ключ нужен отдельно, потому, что диалог его сбрасывает. И нам надо хранить его запределами диалогов.
 
+    private bool needMakeSaveInNextUpdate = false;
     public void Start()
     {
         dataPlayer = IGame.Instance.dataPLayer;
@@ -40,10 +41,7 @@ public class GameAPI : MonoBehaviour
     }
     public void SaveUpdater()
     {
-        if (!GameLoaded) return;
-
-        StartCoroutine(SaveGameData());
-        gameSave = true;
+        needMakeSaveInNextUpdate = true;
     }
 
     public void FirstLoad()
@@ -56,7 +54,16 @@ public class GameAPI : MonoBehaviour
         StartCoroutine(GetGameDataTest(IDLesson, _currentConversation));
     }
 
-
+    private void Update()
+    {
+        if (!GameLoaded) return;
+        if (needMakeSaveInNextUpdate)
+        {
+            needMakeSaveInNextUpdate = false;
+            StartCoroutine(SaveGameData());
+            gameSave = true;
+        }
+    }
 
     //public void Update()
     //{

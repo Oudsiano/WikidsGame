@@ -45,6 +45,7 @@ namespace RPG.Core
             canRotate = true; // Устанавливаем возможность вращения
             canZoom = true; // Устанавливаем возможность масштабирования
             target = MainPlayer.Instance.transform; // Получаем цель (обычно игрока)
+            RotationMovement();
         }
 
         // Метод вызывается один раз за кадр, после Update
@@ -90,8 +91,8 @@ namespace RPG.Core
             //camXRotation += (Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime);
 
             // Ограничиваем вращение по оси X
-            //camXRotation = Mathf.Clamp(camXRotation, 40, 40);
-            camXRotation = 0;
+            camXRotation = Mathf.Clamp(camXRotation, 40, 40);
+            //camXRotation = 0;
             // Ограничиваем вращение по оси Y
             //camYRotation = Mathf.Clamp(camYRotation, -90, 90);
 

@@ -14,7 +14,7 @@ public class LookAtPlayer : MonoBehaviour
         RPG.Core.FollowCamera.NewYRotation += newYrotate;
     }
 
-    float keepYRotate;
+    float keepYRotate=220;
 
     private void newYrotate(float obj) => keepYRotate = obj;
     

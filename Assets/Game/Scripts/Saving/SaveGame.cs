@@ -17,9 +17,10 @@ public class SaveGame
 
     private string playerName;
     public event Action<string> OnChangePlayerName;
+    public event Action OnLoadItems;
 
-    public Weapon EquipedWeapon { get => equipedWeapon; set => equipedWeapon = value; }
-    public Armor EquipedArmor { get => equipedArmor; set => equipedArmor = value; }
+    public Weapon EquipedWeapon { get => equipedWeapon; set { equipedWeapon = value;  } }
+    public Armor EquipedArmor { get => equipedArmor; set { equipedArmor = value; } }
     public double Coins { get => coins; set { coins = value; IGame.Instance.CoinManager.Coins.SetCount(value); } }
 
     public List<ItemDefinition> BugItems
@@ -96,7 +97,7 @@ public class SaveGame
                     .CreateInstance()
                     );
             }
-
+        OnLoadItems?.Invoke();
         Coins = IGame.Instance.dataPLayer.playerData.coins;
     }
 }

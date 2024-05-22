@@ -28,6 +28,7 @@ namespace RPG.Controller
 
         private List<Fighter> allEnemyes;
 
+
         // Метод Start вызывается перед первым обновлением кадра
         public void Init()
         {
@@ -43,6 +44,13 @@ namespace RPG.Controller
             WeaponPanelUI.Init();
 
             RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
+            IGame.Instance.saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
+        }
+
+        private void SaveGame_OnOnLoadItems()
+        {
+            fighter.EquipItem(IGame.Instance.saveGame.EquipedArmor);
+            fighter.EquipItem(IGame.Instance.saveGame.EquipedWeapon);
         }
 
         private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)

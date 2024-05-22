@@ -124,6 +124,7 @@ public class UiMarketPanel : MonoBehaviour
     {
         IGame.Instance.saveGame.Coins += (int)(item.price * InventoryBag.inventory.PriceMultiple);
         accept?.Invoke(grid);
+        IGame.Instance.saveGame.MakeSave();
     }
 
     public void GenerateMarketItems()
@@ -279,6 +280,7 @@ public class UiMarketPanel : MonoBehaviour
         IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         _confirmPanel.SetActive(true);
+        IGame.Instance.saveGame.MakeSave();
     }
 
     private void OnClickDecline()

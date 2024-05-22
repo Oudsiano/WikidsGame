@@ -53,6 +53,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _btnClosePLayerInfoScr;
     [SerializeField] private Button _btnComfirmPLayerInfoScr;
 
+    [SerializeField] private Toggle _toggleSound;
+    [SerializeField] private Slider _sliderSound;
+    [SerializeField] private Toggle _toggleMusic;
+    [SerializeField] private Slider _sliderMusic;
+
     private SceneLoader sceneLoader;
 
     public SceneLoader SceneLoader { get => sceneLoader; set => sceneLoader = value; }

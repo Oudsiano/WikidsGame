@@ -266,6 +266,332 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72866d574fafac147adfa43d4061a16e, type: 3}
+--- !u!1 &274351956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 274351958}
+  - component: {fileID: 274351963}
+  - component: {fileID: 274351962}
+  - component: {fileID: 274351961}
+  - component: {fileID: 274351960}
+  - component: {fileID: 274351959}
+  - component: {fileID: 274351957}
+  m_Layer: 0
+  m_Name: ConversationEventInfo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &274351957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274351956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event:
+    m_PersistentCalls:
+      m_Calls: []
+  NodeID: 15
+  TMPFont: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
+  Audio: {fileID: 0}
+--- !u!4 &274351958
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274351956}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -539.7928, y: -321.14935, z: 1.6113281}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 322383569}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &274351959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274351956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event:
+    m_PersistentCalls:
+      m_Calls: []
+  NodeID: 14
+  TMPFont: {fileID: 0}
+  Icon: {fileID: 0}
+  Audio: {fileID: 0}
+--- !u!114 &274351960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274351956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6009491825772990258}
+        m_TargetAssemblyTypeName: ConversationStarter, Assembly-CSharp
+        m_MethodName: DialogEnded
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ConversationStarter, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6009491825772990258}
+        m_TargetAssemblyTypeName: ConversationStarter, Assembly-CSharp
+        m_MethodName: setCharger
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  NodeID: 5
+  TMPFont: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
+  Audio: {fileID: 0}
+--- !u!114 &274351961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274351956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event:
+    m_PersistentCalls:
+      m_Calls: []
+  NodeID: 4
+  TMPFont: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
+  Audio: {fileID: 0}
+--- !u!114 &274351962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274351956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1775206257517398500}
+        m_TargetAssemblyTypeName: NPCInteractable, Assembly-CSharp
+        m_MethodName: MakeInvisibleWhenCorrectAnswer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  NodeID: 3
+  TMPFont: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
+  Audio: {fileID: 0}
+--- !u!114 &274351963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274351956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6009491825772990258}
+        m_TargetAssemblyTypeName: ConversationStarter, Assembly-CSharp
+        m_MethodName: UpdateSuccessState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  NodeID: 0
+  TMPFont: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
+  Audio: {fileID: 0}
+--- !u!1 &322383567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 322383569}
+  - component: {fileID: 322383568}
+  m_Layer: 0
+  m_Name: OneNpcConversation2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &322383568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322383567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83189876d4d389f43b7dd2e925aa112e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentIDCounter: 16
+  json: "{\"Options\":[],\"Parameters\":[{\"__type\":\"EditableBoolParameter:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"BoolValue\":false}],\"SpeechNodes\":[{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":false}],\"NodeUID\":4},{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":true}],\"NodeUID\":3}],\"EditorInfo\":{\"isRoot\":true,\"xPos\":328.5,\"yPos\":97},\"ID\":0,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u043E\u0441\u043C\u043E\u0442\u0440\u0438\u043C,
+    \u043A\u0430\u043A \u0442\u044B \u043F\u0440\u043E\u0448\u0435\u043B \u0442\u0435\u0441\u0442\",\"parentUIDs\":[],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":5}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":208.75,\"yPos\":297},\"ID\":3,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
+    \u0432\u0435\u0440\u043D\u044B\u0439\",\"parentUIDs\":[0],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":14}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":462.75,\"yPos\":305},\"ID\":4,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
+    \u041D\u0435\u0432\u0435\u0440\u043D\u044B\u0439\",\"parentUIDs\":[0],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":15}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":192.75,\"yPos\":415},\"ID\":5,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041C\u0443\u0436\u0430\u0439\u0441\u044F,
+    \u0432\u0435\u0434\u044C \u043D\u0430 \u0442\u0432\u043E\u0438\u0445 \u043F\u043B\u0435\u0447\u0430\u0445
+    \u043B\u0435\u0436\u0438\u0442 \u0441\u0443\u0434\u044C\u0431\u0430 \u0432\u0441\u0435\u0433\u043E
+    \u043A\u043E\u0440\u043E\u043B\u0435\u0432\u0441\u0442\u0432\u0430.\",\"parentUIDs\":[3],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":451.75,\"yPos\":408},\"ID\":14,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0422\u0435\u0431\u0435
+    \u043F\u0440\u0438\u0434\u0435\u0442\u0441\u044F \u043F\u0440\u043E\u0439\u0442\u0438
+    \u0442\u0435\u0441\u0442, \u0447\u0442\u043E\u0431\u044B \u043F\u0440\u043E\u0434\u0432\u0438\u043D\u0443\u0442\u0441\u044F
+    \u0432 \u0438\u0433\u0440\u0435 \u0434\u0430\u043B\u044C\u0448\u0435!\u041F\u043E\u0434\u043E\u0439\u0434\u0438
+    \u0435\u0449\u0435 \u0440\u0430\u0437 \u043A \u0440\u044B\u0446\u0430\u0440\u044E
+    \u043E\u043D \u043E\u0442\u043A\u0440\u043E\u0435\u0442 \u0442\u0435\u0431\u0435
+    \u0441\u0430\u0439\u0442.\",\"parentUIDs\":[4],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":213.75,\"yPos\":501},\"ID\":15,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0412\u044B\u0431\u0435\u0440\u0438
+    \u0444\u0430\u0439\u0440\u0431\u043E\u043B\u044B \u0432 \u043D\u0438\u0436\u043D\u0435\u0439
+    \u043B\u0435\u0432\u043E\u0439 \u0447\u0430\u0441\u0442\u0438 \u044D\u043A\u0440\u0430\u043D\u0430
+    \u0438 \u0431\u043E\u0440\u0438\u0441\u044C \u0441 \u043D\u0435\u0432\u0435\u0436\u0435\u0441\u0442\u0432\u043E\u043C
+    \u0441 \u043E\u0442\u0432\u0430\u0433\u043E\u0439!\",\"parentUIDs\":[5],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0}]}"
+  saveVersion: 110
+  DefaultName: 
+  DefaultSprite: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
+  DefaultFont: {fileID: 0}
+  NodeSerializedDataList:
+  - {fileID: 274351963}
+  - {fileID: 274351962}
+  - {fileID: 274351961}
+  - {fileID: 274351960}
+  - {fileID: 274351959}
+  - {fileID: 274351957}
+  ContinueFont: {fileID: 0}
+  EndConversationFont: {fileID: 0}
+  Event:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6009491825772990258}
+        m_TargetAssemblyTypeName: ConversationStarter, Assembly-CSharp
+        m_MethodName: UpdateSuccessState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &322383569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322383567}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.9898049, z: 0, w: 0.14243019}
+  m_LocalPosition: {x: -530.58606, y: 319.32935, z: 122.409805}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 274351958}
+  m_Father: {fileID: 8193677321182539573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &378835950
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33881,35 +34207,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentIDCounter: 16
-  json: "{\"Options\":[],\"Parameters\":[{\"__type\":\"EditableBoolParameter:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"BoolValue\":false}],\"SpeechNodes\":[{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":7}],\"EditorInfo\":{\"isRoot\":true,\"xPos\":180.75,\"yPos\":22},\"ID\":0,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u0443\u0442\u043D\u0438\u043A,
+  json: "{\"Options\":[],\"Parameters\":[{\"__type\":\"EditableBoolParameter:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"BoolValue\":false}],\"SpeechNodes\":[{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":7}],\"EditorInfo\":{\"isRoot\":true,\"xPos\":304.5,\"yPos\":-78},\"ID\":0,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u0443\u0442\u043D\u0438\u043A,
     \u0432 \u044D\u0442\u043E\u0442 \u0440\u0430\u0437 \u0442\u0435\u0431\u044F \u0436\u0434\u0435\u0442
-    \u0442\u044F\u0436\u0435\u043B\u043E\u0435 \u0438\u0441\u043F\u044B\u0442\u0430\u043D\u0438\u0435\",\"parentUIDs\":[],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":true}],\"NodeUID\":3},{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[{\"__type\":\"EditableBoolCondition:#DialogueEditor\",\"ParameterName\":\"TestSuccess\",\"CheckType\":0,\"RequiredValue\":false}],\"NodeUID\":4}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":82,\"yPos\":437},\"ID\":2,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0414\u0430\u0432\u0430\u0439\u043A\u0430
-    \u041F\u043E\u0441\u043C\u043E\u0442\u0440\u0438\u043C\",\"parentUIDs\":[13],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":5}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":49,\"yPos\":558},\"ID\":3,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
-    \u0432\u0435\u0440\u043D\u044B\u0439\",\"parentUIDs\":[2],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":14}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":303,\"yPos\":566},\"ID\":4,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041E\u0442\u0432\u0435\u0442
-    \u041D\u0435\u0432\u0435\u0440\u043D\u044B\u0439\",\"parentUIDs\":[2],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":15}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":33,\"yPos\":676},\"ID\":5,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041C\u0443\u0436\u0430\u0439\u0441\u044F,
-    \u0432\u0435\u0434\u044C \u043D\u0430 \u0442\u0432\u043E\u0438\u0445 \u043F\u043B\u0435\u0447\u0430\u0445
-    \u043B\u0435\u0436\u0438\u0442 \u0441\u0443\u0434\u044C\u0431\u0430 \u0432\u0441\u0435\u0433\u043E
-    \u043A\u043E\u0440\u043E\u043B\u0435\u0432\u0441\u0442\u0432\u0430.\",\"parentUIDs\":[3],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":12}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":172,\"yPos\":115},\"ID\":7,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0422\u0435\u043C\u043E\u0439
+    \u0442\u044F\u0436\u0435\u043B\u043E\u0435 \u0438\u0441\u043F\u044B\u0442\u0430\u043D\u0438\u0435\",\"parentUIDs\":[],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":205.75,\"yPos\":337},\"ID\":2,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0414\u0430\u0432\u0430\u0439\u043A\u0430
+    \u041F\u043E\u0441\u043C\u043E\u0442\u0440\u0438\u043C\",\"parentUIDs\":[13],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":12}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":295.75,\"yPos\":15},\"ID\":7,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0422\u0435\u043C\u043E\u0439
     \u0443\u0440\u043E\u043A\u0430 \u0432 \u044D\u0442\u043E\u0442 \u0440\u0430\u0437
     \u0431\u0443\u0434\u0435\u0442\\n\u0418\u0441\u0442\u043E\u0440\u0438\u044F \u0420\u0443\u0441\u0438.
     \u0427\u0430\u0441\u0442\u044C \u0432\u043E\u0441\u0435\u043C\u043D\u0430\u0434\u0446\u0430\u0442\u0430\u044F.
-    \u0414\u0435\u0442\u0438 \u0410\u043B\u0435\u043A\u0441\u0435\u044F \u0420\u043E\u043C\u0430\u043D\u043E\u0432\u0430\\n\",\"parentUIDs\":[0],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":13}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":144,\"yPos\":222},\"ID\":12,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0421\u0434\u0430\u0439
+    \u0414\u0435\u0442\u0438 \u0410\u043B\u0435\u043A\u0441\u0435\u044F \u0420\u043E\u043C\u0430\u043D\u043E\u0432\u0430\\n\",\"parentUIDs\":[0],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":13}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":267.75,\"yPos\":122},\"ID\":12,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0421\u0434\u0430\u0439
     \u0442\u0435\u0441\u0442 \u0438 \u044F \u0434\u0430\u043C \u0442\u0435\u0431\u0435
     \u043E\u0440\u0443\u0436\u0438\u0435 \u0434\u043B\u044F \u0431\u043E\u0440\u044C\u0431\u044B
     \u0441 \u0432\u0440\u0430\u0433\u043E\u043C!\u0412\u0435\u0440\u043D\u0438\u0441\u044C
     \u0432\u043E \u0432\u043A\u043B\u0430\u0434\u043A\u0443 \u0438\u0433\u0440\u044B
     \u0432 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0435 \u043F\u043E\u0441\u043B\u0435
-    \u0441\u0434\u0430\u0447\u0438 \u0442\u0435\u0441\u0442\u0430.\",\"parentUIDs\":[7],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":2}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":113,\"yPos\":326},\"ID\":13,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u043E\u043B\u0443\u0447\u0438\u043B\u043E\u0441\u044C?\",\"parentUIDs\":[12],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":292,\"yPos\":669},\"ID\":14,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0422\u0435\u0431\u0435
-    \u043F\u0440\u0438\u0434\u0435\u0442\u0441\u044F \u043F\u0440\u043E\u0439\u0442\u0438
-    \u0442\u0435\u0441\u0442, \u0447\u0442\u043E\u0431\u044B \u043F\u0440\u043E\u0434\u0432\u0438\u043D\u0443\u0442\u0441\u044F
-    \u0432 \u0438\u0433\u0440\u0435 \u0434\u0430\u043B\u044C\u0448\u0435!\u041F\u043E\u0434\u043E\u0439\u0434\u0438
-    \u0435\u0449\u0435 \u0440\u0430\u0437 \u043A \u0440\u044B\u0446\u0430\u0440\u044E
-    \u043E\u043D \u043E\u0442\u043A\u0440\u043E\u0435\u0442 \u0442\u0435\u0431\u0435
-    \u0441\u0430\u0439\u0442.\",\"parentUIDs\":[4],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":54,\"yPos\":762},\"ID\":15,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u0412\u044B\u0431\u0435\u0440\u0438
-    \u0444\u0430\u0439\u0440\u0431\u043E\u043B\u044B \u0432 \u043D\u0438\u0436\u043D\u0435\u0439
-    \u043B\u0435\u0432\u043E\u0439 \u0447\u0430\u0441\u0442\u0438 \u044D\u043A\u0440\u0430\u043D\u0430
-    \u0438 \u0431\u043E\u0440\u0438\u0441\u044C \u0441 \u043D\u0435\u0432\u0435\u0436\u0435\u0441\u0442\u0432\u043E\u043C
-    \u0441 \u043E\u0442\u0432\u0430\u0433\u043E\u0439!\",\"parentUIDs\":[5],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0}]}"
+    \u0441\u0434\u0430\u0447\u0438 \u0442\u0435\u0441\u0442\u0430.\",\"parentUIDs\":[7],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":2}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":236.75,\"yPos\":226},\"ID\":13,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"\u041F\u043E\u043B\u0443\u0447\u0438\u043B\u043E\u0441\u044C?\",\"parentUIDs\":[12],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Knight\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0}]}"
   saveVersion: 110
   DefaultName: 
   DefaultSprite: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
@@ -33917,19 +34228,26 @@ MonoBehaviour:
   NodeSerializedDataList:
   - {fileID: 7475739691950462808}
   - {fileID: 2975038618970036503}
-  - {fileID: 3471457283234681511}
-  - {fileID: 5283329922227938723}
-  - {fileID: 3661788204779482818}
   - {fileID: 8359825666974818021}
   - {fileID: 8359825666974818020}
   - {fileID: 8359825666974818019}
-  - {fileID: 8359825666974818023}
-  - {fileID: 8359825666974818022}
   ContinueFont: {fileID: 0}
   EndConversationFont: {fileID: 0}
   Event:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2361540803903416513}
+        m_TargetAssemblyTypeName: DownloadTestData, Assembly-CSharp
+        m_MethodName: DownloadData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &3395306221831013056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34551,37 +34869,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3469077028683079783}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3471457283234681511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4933836295464940276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1775206257517398500}
-        m_TargetAssemblyTypeName: NPCInteractable, Assembly-CSharp
-        m_MethodName: MakeInvisibleWhenCorrectAnswer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  NodeID: 3
-  TMPFont: {fileID: 0}
-  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
-  Audio: {fileID: 0}
 --- !u!1001 &3512363124024362718
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36065,85 +36352,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3661788204779482818
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4933836295464940276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6009491825772990258}
-        m_TargetAssemblyTypeName: ConversationStarter, Assembly-CSharp
-        m_MethodName: DialogEnded
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ConversationStarter, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6009491825772990258}
-        m_TargetAssemblyTypeName: ConversationStarter, Assembly-CSharp
-        m_MethodName: setCharger
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  NodeID: 5
-  TMPFont: {fileID: 0}
-  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
-  Audio: {fileID: 0}
 --- !u!1001 &3661854998419996487
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46390,14 +46598,9 @@ GameObject:
   - component: {fileID: 8359825666974818018}
   - component: {fileID: 7475739691950462808}
   - component: {fileID: 2975038618970036503}
-  - component: {fileID: 3471457283234681511}
-  - component: {fileID: 5283329922227938723}
-  - component: {fileID: 3661788204779482818}
   - component: {fileID: 8359825666974818021}
   - component: {fileID: 8359825666974818020}
   - component: {fileID: 8359825666974818019}
-  - component: {fileID: 8359825666974818023}
-  - component: {fileID: 8359825666974818022}
   m_Layer: 0
   m_Name: ConversationEventInfo
   m_TagString: Untagged
@@ -48916,25 +49119,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5281414217016410253}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5283329922227938723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4933836295464940276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event:
-    m_PersistentCalls:
-      m_Calls: []
-  NodeID: 4
-  TMPFont: {fileID: 0}
-  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
-  Audio: {fileID: 0}
 --- !u!1001 &5290852365527722527
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54487,6 +54671,8 @@ MonoBehaviour:
   DialogStarted: 0
   data: {fileID: 0}
   myConversation: {fileID: 3364415967289755159}
+  SecondConversation: {fileID: 322383568}
+  waitStartSecondDialog: 0
 --- !u!1001 &6026849872820340762
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -71657,6 +71843,7 @@ Transform:
   - {fileID: 2413977485523309367}
   - {fileID: 4604196048933855161}
   - {fileID: 2233342879381755114}
+  - {fileID: 322383569}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 163.623, z: 0}
 --- !u!1001 &8206311728677171992
@@ -73265,44 +73452,6 @@ MonoBehaviour:
   NodeID: 7
   TMPFont: {fileID: 0}
   Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
-  Audio: {fileID: 0}
---- !u!114 &8359825666974818022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4933836295464940276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event:
-    m_PersistentCalls:
-      m_Calls: []
-  NodeID: 15
-  TMPFont: {fileID: 0}
-  Icon: {fileID: 21300000, guid: 049d1403ca0954c6e8c805419a41f803, type: 3}
-  Audio: {fileID: 0}
---- !u!114 &8359825666974818023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4933836295464940276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event:
-    m_PersistentCalls:
-      m_Calls: []
-  NodeID: 14
-  TMPFont: {fileID: 0}
-  Icon: {fileID: 0}
   Audio: {fileID: 0}
 --- !u!1001 &8362354172786280196
 PrefabInstance:

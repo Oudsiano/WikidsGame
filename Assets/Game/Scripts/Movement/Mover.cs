@@ -141,7 +141,7 @@ namespace RPG.Movement
                     return; // Если да, то выходим из метода
                 } else
                 {
-                    AudioManager.instance.Play("Walk");
+                    AudioManager.instance.PlaySound("Walk");
                 }
 
             }

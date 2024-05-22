@@ -112,36 +112,42 @@ public class UIBug : MonoBehaviour
     {
         if (notAvaliableEvents) return;
         IGame.Instance.WeaponArmorManager.TryGetArmorByName(obj.name).UnEquip();
+        IGame.Instance.saveGame.MakeSave();
     }
 
     private void OnAddedArmor(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
         IGame.Instance.WeaponArmorManager.TryGetArmorByName(obj.name).EquipIt();
+        IGame.Instance.saveGame.MakeSave();
     }
 
     private void OnRemovedWeapon(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
         IGame.Instance.playerController.GetFighter().UnequipWeapon();
+        IGame.Instance.saveGame.MakeSave();
     }
 
     private void OnAddedWeapon(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
         IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(obj.name));
+        IGame.Instance.saveGame.MakeSave();
     }
 
     private void OnRemoved(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
         IGame.Instance.saveGame.BugItems.Remove((ItemDefinition)obj);
+        IGame.Instance.saveGame.MakeSave();
     }
 
     private void OnAdded(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
         IGame.Instance.saveGame.BugItems.Add((ItemDefinition)obj);
+        IGame.Instance.saveGame.MakeSave();
     }
 
     // Update is called once per frame

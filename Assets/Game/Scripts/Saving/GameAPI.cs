@@ -17,6 +17,9 @@ public class GameAPI : MonoBehaviour
     public bool gameGet = false;
     private bool GameLoaded = false;
 
+    public bool TestSuccessKey = false; //Ключ нужен отдельно, потому, что диалог его сбрасывает. И нам надо хранить его запределами диалогов.
+
+    private bool needMakeSaveInNextUpdate = false;
     public void Start()
     {
         dataPlayer = IGame.Instance.dataPLayer;
@@ -38,10 +41,7 @@ public class GameAPI : MonoBehaviour
     }
     public void SaveUpdater()
     {
-        if (!GameLoaded) return;
-
-        StartCoroutine(SaveGameData());
-        gameSave = true;
+        needMakeSaveInNextUpdate = true;
     }
 
     public void FirstLoad()
@@ -49,12 +49,21 @@ public class GameAPI : MonoBehaviour
         StartCoroutine(FirstGetGameData());
     }
 
-    public void UpdataDataTest(int IDLesson)
+    public void UpdataDataTest(int IDLesson, ConversationStarter _currentConversation)
     {
-        StartCoroutine(GetGameDataTest(IDLesson));
+        StartCoroutine(GetGameDataTest(IDLesson, _currentConversation));
     }
 
-
+    private void Update()
+    {
+        if (!GameLoaded) return;
+        if (needMakeSaveInNextUpdate)
+        {
+            needMakeSaveInNextUpdate = false;
+            StartCoroutine(SaveGameData());
+            gameSave = true;
+        }
+    }
 
     //public void Update()
     //{
@@ -93,8 +102,10 @@ public class GameAPI : MonoBehaviour
         }
     }
 
-    IEnumerator GetGameDataTest(int IDLesson)
+    IEnumerator GetGameDataTest(int IDLesson, ConversationStarter _currentConversation)
     {
+        TestSuccessKey = false;
+
         UnityWebRequest request = UnityWebRequest.Get("https://wikids.ru/api/v1/game/" + playerID);
         yield return request.SendWebRequest();
 
@@ -121,8 +132,12 @@ public class GameAPI : MonoBehaviour
             }
             int countSuccessAnswers = countSuccessAnswer;
             RPG.Core.MainPlayer.Instance.ChangeCountEnegry(countSuccessAnswers);
+            TestSuccessKey = countSuccessAnswers > 0;
+            ConversationManager.Instance.SetBool("TestSuccess", TestSuccessKey);
+            //ConversationManager.Instance.SetBool("LoadedData", true);
+            if (_currentConversation != null)
+                _currentConversation.waitStartSecondDialog = true;
 
-            ConversationManager.Instance.SetBool("TestSuccess", countSuccessAnswers > 0);
 
             Debug.Log("?????????? ??????? " + countSuccessAnswers);
 

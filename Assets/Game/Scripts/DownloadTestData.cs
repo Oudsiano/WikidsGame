@@ -13,7 +13,7 @@ public class DownloadTestData : MonoBehaviour
     {
         gameAPI = FindObjectOfType<GameAPI>();
         starterConversation = FindObjectOfType<ConversationStarter>();
-        gameAPI.UpdataDataTest(IDLesson);
+        gameAPI.UpdataDataTest(IDLesson, starterConversation);
        
 
         //ConversationManager.Instance.SetBool("TestSuccess", true);

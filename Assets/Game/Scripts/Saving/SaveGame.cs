@@ -17,9 +17,10 @@ public class SaveGame
 
     private string playerName;
     public event Action<string> OnChangePlayerName;
+    public event Action OnLoadItems;
 
-    public Weapon EquipedWeapon { get => equipedWeapon; set => equipedWeapon = value; }
-    public Armor EquipedArmor { get => equipedArmor; set => equipedArmor = value; }
+    public Weapon EquipedWeapon { get => equipedWeapon; set { equipedWeapon = value;  } }
+    public Armor EquipedArmor { get => equipedArmor; set { equipedArmor = value; } }
     public double Coins { get => coins; set { coins = value; IGame.Instance.CoinManager.Coins.SetCount(value); } }
 
     public List<ItemDefinition> BugItems
@@ -72,17 +73,28 @@ public class SaveGame
 
         IGame.Instance.dataPLayer.playerData.playerName = PlayerName;
 
+        IGame.Instance.dataPLayer.playerData.soundOn = AudioManager.instance.SoundON;
+        IGame.Instance.dataPLayer.playerData.soundVol = AudioManager.instance.SoundVol;
+        IGame.Instance.dataPLayer.playerData.musicOn = !SoundManager.GetMusicMuted();
+        IGame.Instance.dataPLayer.playerData.musicVol = SoundManager.GetMusicVolume();
+
         IGame.Instance.gameAPI.SaveUpdater();
     }
 
     public void MakeLoad()
     {
+        IGame.Instance.UIManager.UpdateParamsUI();
+
+
         BugItems.Clear();
         EquipedArmor = IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPLayer.playerData.armorIdToload);
         EquipedWeapon = IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPLayer.playerData.weaponToLoad);
 
         if (IGame.Instance.dataPLayer.playerData.playerName != "")
             PlayerName = IGame.Instance.dataPLayer.playerData.playerName;
+
+        if (IGame.Instance.dataPLayer.playerData.containsBug==null)
+            IGame.Instance.dataPLayer.playerData.containsBug = new string[0];
 
         if (IGame.Instance.dataPLayer.playerData.containsBug.Length > 99)
         {
@@ -96,7 +108,7 @@ public class SaveGame
                     .CreateInstance()
                     );
             }
-
+        OnLoadItems?.Invoke();
         Coins = IGame.Instance.dataPLayer.playerData.coins;
     }
 }

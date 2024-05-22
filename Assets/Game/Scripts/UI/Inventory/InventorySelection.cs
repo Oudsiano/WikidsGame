@@ -12,6 +12,7 @@ namespace FarrokhGames.Inventory.Examples
         void Start()
         {
             _text = GetComponentInChildren<TMP_Text>();
+            if (_text!=null)
             _text.text = string.Empty;
 
             allControllers = GameObject.FindObjectsOfType<InventoryController>();
@@ -40,19 +41,22 @@ namespace FarrokhGames.Inventory.Examples
                 if (itm.Type == ItemType.Weapons)
                 {
                     Weapon wpn = (itm as Weapon);
-                    _text.text = (wpn.GetWeaponRange() > 2.5f) ?
+                    if (_text != null)
+                        _text.text = (wpn.GetWeaponRange() > 2.5f) ?
                       $"Оружие: {itm.Name} Урон: {wpn.GetWeaponDamage()} Тип атаки: Дистанционная Дальность: {wpn.GetWeaponRange()}\nОписание: {wpn.GetDescription()}" :
                       $"Оружие: {itm.Name} Урон: {wpn.GetWeaponDamage()} Тип атаки: Ближняя Дальность: {wpn.GetWeaponRange()}\nОписание: {wpn.GetDescription()}";
                 }
                 else if (itm.Type == ItemType.Armor)
                 {
                     Armor armr = (itm as Armor);
-                    _text.text = $"{itm.Name} Броня: {armr.ArmorValue}\nОписание: {armr.Description}";
+                    if (_text != null)
+                        _text.text = $"{itm.Name} Броня: {armr.ArmorValue}\nОписание: {armr.Description}";
                 }
             }
             else
             {
-                _text.text = string.Empty;
+                if (_text != null)
+                    _text.text = string.Empty;
             }
         }
     }

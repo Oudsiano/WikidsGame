@@ -90,7 +90,8 @@ namespace RPG.Core
             //camXRotation += (Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime);
 
             // Ограничиваем вращение по оси X
-            camXRotation = Mathf.Clamp(camXRotation, 40, 40);
+            //camXRotation = Mathf.Clamp(camXRotation, 40, 40);
+            camXRotation = 0;
             // Ограничиваем вращение по оси Y
             //camYRotation = Mathf.Clamp(camYRotation, -90, 90);
 

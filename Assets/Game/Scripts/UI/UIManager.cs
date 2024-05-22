@@ -133,6 +133,13 @@ public class UIManager : MonoBehaviour
 
     private void SaveGame_OnChangePlayerName(string obj)
     {
+        if (obj.Length<1)
+        {
+            textNamePlayer.text = "¬ведите им€";
+            return;
+
+        }
+
         _playerNameInputField.text = obj;
         textNamePlayer.text = obj;
     }

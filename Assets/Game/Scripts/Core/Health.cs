@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace RPG.Core
 {
@@ -18,8 +19,9 @@ namespace RPG.Core
         private bool isPlayer = false;
         public Slider healthBar; // Ссылка на полосу здоровья в пользовательском интерфейсе
 
-        // Примечание: в настоящее время значение здоровья при загрузке новой сцены перезаписывается этим методом
-        // из-за порядка выполнения сценариев
+        // Событие, которое будет вызываться при смерти персонажа
+        public event Action OnDeath;
+
         void Start()
         {
             currentHealth = maxHealth; // Устанавливаем текущее здоровье в максимальное значение при старте
@@ -28,10 +30,8 @@ namespace RPG.Core
             isPlayer = gameObject.GetComponent("MainPlayer");
 
             if (isPlayer)
-            StartCoroutine(HeallUpPLayer());
+                StartCoroutine(HeallUpPLayer());
         }
-
-
 
         private IEnumerator HeallUpPLayer()
         {
@@ -54,6 +54,7 @@ namespace RPG.Core
         {
             currentHealth = Mathf.Min(currentHealth + heal, maxHealth);
         }
+
         // Метод для нанесения урона существу
         public void TakeDamage(float damage)
         {
@@ -65,15 +66,12 @@ namespace RPG.Core
                     Dodge();
                     return;
                 }
-
-
             }
             currentHealth = Mathf.Max(currentHealth - damage, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0
 
             if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти
                 Die();
 
-            
             if (isPlayer)
                 isAtackedInlast5sec = 5;
             else
@@ -92,6 +90,13 @@ namespace RPG.Core
             isDead = true; // Устанавливаем флаг "мертв"
             GetComponent<ActionScheduler>().CancelAction(); // Отменяем действие, выполняемое действенным планировщиком
             RemoveProjectiles(); // Удаляем снаряды
+
+            // Вызов события при смерти персонажа
+            if (OnDeath != null)
+            {
+                OnDeath();
+            }
+
             if (!isPlayer)
             {
                 // Разрушаем/деактивируем объект
@@ -106,13 +111,12 @@ namespace RPG.Core
 
                 var tempRandom = UnityEngine.Random.Range(0, 9);
                 if (tempRandom > 6) //30%
-                IGame.Instance.BottleManager.MakeBottleOnSceneWithCount(25, this.gameObject.transform.position);
-
-
+                    IGame.Instance.BottleManager.MakeBottleOnSceneWithCount(25, this.gameObject.transform.position);
             }
             else
             {
                 IGame.Instance.UIManager.DeathUI.ShowDeathScreen();
+                Destroy(this.gameObject); // Уничтожаем объект немедленно, чтобы вызвался OnDestroy
             }
         }
 

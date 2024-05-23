@@ -30,6 +30,7 @@ public class Curency
     public void SetCount(double count)
     {
         _count = count;
+        IGame.Instance.saveGame.MakeSave();
         OnChangeCount?.Invoke(_count);
     }
 }

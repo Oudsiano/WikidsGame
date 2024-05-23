@@ -48,6 +48,7 @@ public class HelpInFirstScene : MonoBehaviour
         text3.SetActive(false);
         text4.SetActive(false);
         text5.SetActive(false);
+        Panel.SetActive(false);
     }
 
     public void Study1Show(allScenes s)

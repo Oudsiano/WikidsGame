@@ -24,6 +24,8 @@ public class LocationChange : MonoBehaviour
     [SerializeField] private TMP_Text hoverTextDisplay; // Поле для отображения текста при наведении
     [SerializeField] private MultiLineText multiLineText; // Ссылка на компонент с многострочным текстом
 
+    [SerializeField] private TMP_Text textID;
+
     public void Awake()
     {
         
@@ -52,6 +54,9 @@ public class LocationChange : MonoBehaviour
 
         setUpMaxRegion(IGame.Instance.dataPLayer.playerData.IDmaxRegionAvaliable);
         Debug.Log("awake changeLoc");
+
+        if (textID != null)
+            textID.text = IGame.Instance.dataPLayer.playerData.id.ToString();
     }
 
     private void Start()

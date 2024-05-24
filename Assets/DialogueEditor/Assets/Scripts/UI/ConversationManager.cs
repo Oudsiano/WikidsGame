@@ -369,6 +369,9 @@ namespace DialogueEditor
             if (t > 1)
             {
                 SetState(eState.Idle);
+
+                for (int i = 0; i < m_uiOptions.Count; i++)
+                    m_uiOptions[i].SetAlpha(1);
                 return;
             }
 
@@ -750,10 +753,16 @@ namespace DialogueEditor
             m_currentSelectedIndex = -1;
         }
 
+        private void LateUpdate()
+        {
+            //LayoutRebuilder.ForceRebuildLayoutImmediate(OptionsPanel);
+        }
+
         private UIConversationButton CreateButton()
         {
             UIConversationButton button = GameObject.Instantiate(ButtonPrefab, OptionsPanel);
             m_uiOptions.Add(button);
+            //OptionsPanel.gameObject.GetComponent<VerticalLayoutGroup>.
             return button;
         }
 

@@ -64,11 +64,12 @@ public class ArrowForPlayer : MonoBehaviour
     {
         trigered = true;
 
-        for (int i = IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.Count; i >= 0; i--)
+        for (int i = Index; i >= 0; i--)
         {
-            if (i <= Index)
+            if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.ContainsKey(i))
+            if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[i].Index <= Index)
             {
-                if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.ContainsKey(i))
+                //if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.ContainsKey(IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[i].Index))
                 {
                     IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[i].gameObject.SetActive(false);
                     IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.Remove(i);

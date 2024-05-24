@@ -54,6 +54,11 @@ public class LocationChange : MonoBehaviour
         Debug.Log("awake changeLoc");
     }
 
+    private void Start()
+    {
+        Loading.gameObject.SetActive(false);
+    }
+
     public void setUpMaxRegion(int n)
     {
         List<allScenes> posTempList = new List<allScenes>(IGame.Instance.LevelChangeObserver.DAllScenes.Keys);
@@ -81,15 +86,15 @@ public class LocationChange : MonoBehaviour
         IGame.Instance.dataPLayer.SetSceneToLoad(sceneId);
         Loading.gameObject.SetActive(true);
         IGame.Instance.gameAPI.SaveUpdater();
-        Invoke("LoadSceneAfterDelay", 2f);
+        //Invoke("LoadSceneAfterDelay", 2f); 
+        SceneLoader.Instance.TryChangeLevel((LevelChangeObserver.allScenes)IGame.Instance.dataPLayer.playerData.sceneToLoad);
         AudioManager.instance.PlaySound("ClickButton");
     }
-
+    /*
     private void LoadSceneAfterDelay()
     {
-        SceneLoader.Instance.TryChangeLevel((LevelChangeObserver.allScenes)IGame.Instance.dataPLayer.playerData.sceneToLoad);
-        Loading.gameObject.SetActive(false);
-    }
+        
+    }*/
 
     private void OnPointerEnter(int index)
     {

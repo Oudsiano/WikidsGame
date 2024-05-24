@@ -27,7 +27,7 @@ namespace RPG.Core
             currentHealth = maxHealth; // Устанавливаем текущее здоровье в максимальное значение при старте
             healthBar.value = currentHealth; // Устанавливаем значение полосы здоровья в текущее здоровье
 
-            isPlayer = gameObject.GetComponent("MainPlayer");
+            isPlayer = gameObject.GetComponent<MainPlayer>() != null;
 
             if (isPlayer)
                 StartCoroutine(HeallUpPLayer());
@@ -116,7 +116,10 @@ namespace RPG.Core
             else
             {
                 IGame.Instance.UIManager.DeathUI.ShowDeathScreen();
-                Destroy(this.gameObject); // Уничтожаем объект немедленно, чтобы вызвался OnDestroy
+                // Деактивируем необходимые компоненты
+                GetComponent<NavMeshAgent>().enabled = false;
+                GetComponent<Collider>().enabled = false;
+                this.enabled = false; // Отключаем скрипт здоровья
             }
         }
 

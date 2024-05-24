@@ -117,9 +117,9 @@ namespace RPG.Core
             {
                 IGame.Instance.UIManager.DeathUI.ShowDeathScreen();
                 // Деактивируем необходимые компоненты
-                GetComponent<NavMeshAgent>().enabled = false;
-                GetComponent<Collider>().enabled = false;
-                this.enabled = false; // Отключаем скрипт здоровья
+                //GetComponent<NavMeshAgent>().enabled = false;
+                //GetComponent<Collider>().enabled = false;
+                //this.enabled = false; // Отключаем скрипт здоровья
             }
         }
 

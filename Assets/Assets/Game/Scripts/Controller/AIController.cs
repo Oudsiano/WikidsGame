@@ -1,0 +1,210 @@
+﻿using RPG.Combat;
+using UnityEngine;
+using RPG.Core;
+using RPG.Movement;
+
+namespace RPG.Controller
+{
+    public class AIController : MonoBehaviour
+    {
+        [SerializeField] private float chaseDistance = 5f;
+        [SerializeField] private float suspicionTimer = 10f;
+        [SerializeField] private PatrolPath patrolPath;
+        private int currentWayPointIndex = 0;
+        [SerializeField] private float tolerance = 1f;
+
+        [SerializeField] private float minDwellTime;
+        [SerializeField] private float maxDwellTime;
+
+        [SerializeField] private float currentDwellTime;
+
+        private Vector3 lastKnownLocation;
+        private Vector3 guardLocation;
+        private Quaternion guardRotation;
+        [SerializeField] private float timeSinceLastSawPlayer = Mathf.Infinity;
+
+        private Fighter fighter;
+        private Mover mover;
+        private Health health;
+
+        private GameObject halfCircle;
+        private MeshRenderer halfCircleRenderer;
+        private MeshFilter halfCircleFilter;
+
+        private void Awake()
+        {
+            fighter = GetComponent<Fighter>();
+            mover = GetComponent<Mover>();
+            health = GetComponent<Health>();
+
+            guardLocation = transform.position;
+            guardRotation = transform.rotation;
+
+            CreateHalfCircle();
+        }
+
+        private void CreateHalfCircle()
+        {
+            halfCircle = new GameObject("HalfCircle");
+            halfCircle.transform.parent = transform;
+            halfCircle.transform.localPosition = Vector3.zero;
+            halfCircle.transform.localRotation = Quaternion.identity;
+
+            halfCircleRenderer = halfCircle.AddComponent<MeshRenderer>();
+            halfCircleFilter = halfCircle.AddComponent<MeshFilter>();
+            halfCircleFilter.mesh = CreateHalfCircleMesh(chaseDistance, 20);
+
+            halfCircleRenderer.material = new Material(Shader.Find("Standard"));
+            halfCircleRenderer.material.color = new Color(1, 0, 0, 0.3f); // Красный полупрозрачный полукруг
+        }
+
+        private Mesh CreateHalfCircleMesh(float radius, int segments)
+        {
+            Mesh mesh = new Mesh();
+
+            Vector3[] vertices = new Vector3[segments + 2];
+            int[] triangles = new int[segments * 3];
+
+            vertices[0] = Vector3.zero;
+
+            for (int i = 0; i <= segments; i++)
+            {
+                float angle = Mathf.PI * i / segments;
+                float x = radius * Mathf.Cos(angle);
+                float z = radius * Mathf.Sin(angle);
+
+                vertices[i + 1] = new Vector3(x, 0, z);
+            }
+
+            for (int i = 0; i < segments; i++)
+            {
+                triangles[i * 3] = 0;
+                triangles[i * 3 + 1] = i + 1;
+                triangles[i * 3 + 2] = i + 2;
+            }
+
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+
+            return mesh;
+        }
+
+        private void Update()
+        {
+            if (IGame.Instance.IsPause) return;
+
+            if (health.IsDead())
+                return;
+
+            if (DistanceToPlayer() < 40)
+            {
+                InteractWithCombat();
+            }
+
+            timeSinceLastSawPlayer += Time.deltaTime;
+        }
+
+        private float DistanceToPlayer()
+        {
+            return Vector3.Distance(MainPlayer.Instance.transform.position, transform.position);
+        }
+
+        private void InteractWithCombat()
+        {
+            if (IsPlayerInSight() && DistanceToPlayer() <= chaseDistance && (fighter.CanAttack(MainPlayer.Instance.gameObject) || IsAttacked()))
+            {
+                AttackBehavior();
+            }
+            else if (suspicionTimer > timeSinceLastSawPlayer)
+            {
+                SuspicionBehavior();
+            }
+            else
+            {
+                PatrolBehavior();
+            }
+        }
+
+        private bool IsAttacked()
+        {
+            var player = MainPlayer.Instance;
+            bool isAttacked = player.GetComponent<Fighter>().target == this.gameObject.GetComponent<Health>();
+            return isAttacked;
+        }
+
+        private bool IsPlayerInSight()
+        {
+            Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
+            float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
+
+            if (angleBetween <= 90f)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void PatrolBehavior()
+        {
+            Vector3 nextPos = guardLocation;
+
+            if (patrolPath)
+            {
+                if (AtWayPoint())
+                {
+                    if (currentDwellTime > 0)
+                        currentDwellTime -= Time.deltaTime;
+                    else
+                        GoToNextWayPoint();
+                }
+
+                nextPos = GetCurrentWayPoint();
+            }
+
+            mover.StartMoveAction(nextPos);
+
+            if (!patrolPath && mover.IsAtLocation(tolerance))
+            {
+                transform.rotation = guardRotation;
+            }
+        }
+
+        private void GoToNextWayPoint()
+        {
+            if (currentWayPointIndex < patrolPath.transform.childCount)
+            {
+                currentWayPointIndex++;
+            }
+
+            if (currentWayPointIndex == patrolPath.transform.childCount)
+            {
+                currentWayPointIndex = 0;
+            }
+
+            currentDwellTime = Random.Range(minDwellTime, maxDwellTime);
+        }
+
+        private bool AtWayPoint()
+        {
+            return Vector3.Distance(transform.position, patrolPath.transform.GetChild(currentWayPointIndex).position) < tolerance;
+        }
+
+        private Vector3 GetCurrentWayPoint()
+        {
+            return patrolPath.transform.GetChild(currentWayPointIndex).position;
+        }
+
+        private void SuspicionBehavior()
+        {
+            mover.StartMoveAction(lastKnownLocation);
+        }
+
+        private void AttackBehavior()
+        {
+            timeSinceLastSawPlayer = 0;
+            fighter.Attack(MainPlayer.Instance.gameObject);
+            lastKnownLocation = MainPlayer.Instance.transform.position;
+        }
+    }
+}

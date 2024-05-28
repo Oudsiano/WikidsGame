@@ -19,6 +19,7 @@ public class LevelChangeObserver : MonoBehaviour
         holl,
         battleScene1,
         BS3,
+        VikingScene,
 
     }
 

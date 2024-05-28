@@ -47,8 +47,8 @@ namespace RPG.Controller
         {
             halfCircle = new GameObject("HalfCircle");
             halfCircle.transform.parent = transform;
-            halfCircle.transform.localPosition = Vector3.zero;
-            halfCircle.transform.localRotation = Quaternion.identity;
+            halfCircle.transform.localPosition = new Vector3(0,1,0);
+            halfCircle.transform.eulerAngles = new Vector3(0, 0, 180);
 
             halfCircleRenderer = halfCircle.AddComponent<MeshRenderer>();
             halfCircleFilter = halfCircle.AddComponent<MeshFilter>();
@@ -56,6 +56,13 @@ namespace RPG.Controller
 
             halfCircleRenderer.material = new Material(Shader.Find("Standard"));
             halfCircleRenderer.material.color = new Color(1, 0, 0, 0.3f); // Красный полупрозрачный полукруг
+            halfCircleRenderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            halfCircleRenderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            halfCircleRenderer.material.SetInt("_ZWrite", 0);
+            halfCircleRenderer.material.DisableKeyword("_ALPHATEST_ON");
+            halfCircleRenderer.material.DisableKeyword("_ALPHABLEND_ON");
+            halfCircleRenderer.material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+            halfCircleRenderer.material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
         }
 
         private Mesh CreateHalfCircleMesh(float radius, int segments)

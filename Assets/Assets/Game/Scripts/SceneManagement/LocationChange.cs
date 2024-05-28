@@ -24,6 +24,8 @@ public class LocationChange : MonoBehaviour
     [SerializeField] private TMP_Text hoverTextDisplay; // Поле для отображения текста при наведении
     [SerializeField] private MultiLineText multiLineText; // Ссылка на компонент с многострочным текстом
 
+    [SerializeField] private TMP_Text textID;
+
     public void Awake()
     {
         
@@ -52,6 +54,14 @@ public class LocationChange : MonoBehaviour
 
         setUpMaxRegion(IGame.Instance.dataPLayer.playerData.IDmaxRegionAvaliable);
         Debug.Log("awake changeLoc");
+
+        if (textID != null)
+            textID.text = IGame.Instance.dataPLayer.playerData.id.ToString();
+    }
+
+    private void Start()
+    {
+        Loading.gameObject.SetActive(false);
     }
 
     public void setUpMaxRegion(int n)
@@ -81,15 +91,15 @@ public class LocationChange : MonoBehaviour
         IGame.Instance.dataPLayer.SetSceneToLoad(sceneId);
         Loading.gameObject.SetActive(true);
         IGame.Instance.gameAPI.SaveUpdater();
-        Invoke("LoadSceneAfterDelay", 2f);
+        //Invoke("LoadSceneAfterDelay", 2f); 
+        SceneLoader.Instance.TryChangeLevel((LevelChangeObserver.allScenes)IGame.Instance.dataPLayer.playerData.sceneToLoad);
         AudioManager.instance.PlaySound("ClickButton");
     }
-
+    /*
     private void LoadSceneAfterDelay()
     {
-        SceneLoader.Instance.TryChangeLevel((LevelChangeObserver.allScenes)IGame.Instance.dataPLayer.playerData.sceneToLoad);
-        Loading.gameObject.SetActive(false);
-    }
+        
+    }*/
 
     private void OnPointerEnter(int index)
     {

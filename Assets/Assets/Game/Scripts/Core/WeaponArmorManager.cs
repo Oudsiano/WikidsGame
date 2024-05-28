@@ -28,6 +28,7 @@ public class WeaponArmorManager : MonoBehaviour
 
     public Weapon TryGetWeaponByName(string _name)
     {
+        if (_name == "" || _name==null) _name = "Unarmed";
         foreach (var item in allWeaponsInGame)
         {
             if (item.name == _name)

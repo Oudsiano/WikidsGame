@@ -158,6 +158,14 @@ namespace RPG.Controller
                     else
                         GoToNextWayPoint();
                 }
+                else
+                {
+                    // Randomly decide to change direction while moving
+                    if (Random.Range(0f, 1f) < 0.01f) // Adjust the probability as needed
+                    {
+                        GoToNextWayPoint();
+                    }
+                }
 
                 nextPos = GetCurrentWayPoint();
             }
@@ -172,15 +180,8 @@ namespace RPG.Controller
 
         private void GoToNextWayPoint()
         {
-            if (currentWayPointIndex < patrolPath.transform.childCount)
-            {
-                currentWayPointIndex++;
-            }
-
-            if (currentWayPointIndex == patrolPath.transform.childCount)
-            {
-                currentWayPointIndex = 0;
-            }
+            // Randomly choose the next waypoint
+            currentWayPointIndex = Random.Range(0, patrolPath.transform.childCount);
 
             currentDwellTime = Random.Range(minDwellTime, maxDwellTime);
         }

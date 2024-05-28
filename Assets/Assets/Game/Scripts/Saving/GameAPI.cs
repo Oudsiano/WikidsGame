@@ -5,6 +5,17 @@ using System.Collections;
 using System.Text;
 using TMPro;
 using DialogueEditor;
+using System;
+
+[Serializable]
+public class ErrorResponse
+{
+    public string name;
+    public string message;
+    public int code;
+    public int status;
+    public string type;
+}
 
 public class GameAPI : MonoBehaviour
 {
@@ -20,12 +31,14 @@ public class GameAPI : MonoBehaviour
     public bool TestSuccessKey = false; //Ключ нужен отдельно, потому, что диалог его сбрасывает. И нам надо хранить его запределами диалогов.
 
     private bool needMakeSaveInNextUpdate = false;
+    
     public void Start()
     {
         dataPlayer = IGame.Instance.dataPLayer;
 
         IDUpdater();
-        SaveUpdater();
+
+        //TryInitDataServer();
         FirstLoad();
         textForOtl.text = $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
     }
@@ -38,6 +51,11 @@ public class GameAPI : MonoBehaviour
     {
         playerID = dataPlayer.playerData.id.ToString();
         idUpdate = true;
+    }
+    public void TryInitDataServer()
+    {////
+        //StartCoroutine(TryInit());
+        gameSave = true;
     }
     public void SaveUpdater()
     {
@@ -98,7 +116,19 @@ public class GameAPI : MonoBehaviour
         }
         else
         {
+            ErrorResponse errorResponse =  JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
+
+            if (errorResponse.message== "Game data not found")
+            {
+                IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName("Sword"));
+                SaveUpdater();
+
+                GameLoaded = true;
+            }
+            else
+
             Debug.LogError("Error downloading data: " + request.error);
+
         }
     }
 

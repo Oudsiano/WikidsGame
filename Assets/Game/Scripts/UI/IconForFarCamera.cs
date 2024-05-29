@@ -3,14 +3,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class IconForFarCamera : MonoBehaviour
 {
 
     [SerializeField] float startDistanceForShowIcon = 125;
+
+    [TextArea(3, 10)]
+    public string description;
+
     private SpriteRenderer thisImg;
     private Vector3 thisEulerAngles;
+
+    private SpriteRenderer spriteRenderer;
+    private bool isMouseOver = false;
+
+    [SerializeField] bool isMovable = false;
 
     private void Awake()
     {
@@ -21,25 +31,66 @@ public class IconForFarCamera : MonoBehaviour
         thisImg.gameObject.SetActive(false);
         thisEulerAngles = thisImg.transform.eulerAngles;
 
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+    void Update()
+    {
+        // Создаем луч от камеры к курсору мыши
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        // Проверяем, попадает ли луч в объект
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider != null && hit.collider.gameObject == gameObject)
+            {
+                if (!isMouseOver)
+                    OnMouseEnter();
+                isMouseOver = true;
+            }
+            else
+            {
+                if (isMouseOver)
+                {
+                   // OnMouseExit();
+                }
+                isMouseOver = false;
+            }
+        }
+        else
+        {
+            if (isMouseOver)
+            {
+                //OnMouseExit();
+            }
+            isMouseOver = false;
+        }
+
+        if (isMovable) UpdateData();
+    }
+
+    private void OnMouseEnter()
+    {
+        Debug.Log(description);
+    }
+
+    private void UpdateData()
+    {
+        thisImg.gameObject.transform.eulerAngles = thisEulerAngles;
     }
 
     private void FollowCamera_NewXRotation(float obj)
     {
         thisEulerAngles.x = obj;
-        thisImg.gameObject.transform.eulerAngles = thisEulerAngles;
+        UpdateData();
     }
 
     private void FollowCamera_NewYRotation(float obj)
     {
         thisEulerAngles.y = obj;
-        thisImg.gameObject.transform.eulerAngles = thisEulerAngles;
+        UpdateData();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
     private void FollowCamera_OnCameraDistance(float obj)
     {
         if (obj > startDistanceForShowIcon)
@@ -57,10 +108,5 @@ public class IconForFarCamera : MonoBehaviour
         {
             thisImg.gameObject.SetActive(false);
         }
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

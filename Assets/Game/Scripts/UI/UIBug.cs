@@ -15,6 +15,7 @@ public class UIBug : MonoBehaviour
 
     [SerializeField] public SizeInventoryExample InventoryWeapon;
     [SerializeField] public SizeInventoryExample InventoryArmor;
+    [SerializeField] public SizeInventoryExample DropPlace;
 
     [SerializeField] public Button btnClose;
 
@@ -27,6 +28,7 @@ public class UIBug : MonoBehaviour
         InventoryBag.Init();
         InventoryArmor.Init();
         InventoryWeapon.Init();
+        DropPlace.Init();
         inited = true;
         btnClose.onClick.AddListener(onClickClose);
     }
@@ -100,7 +102,14 @@ public class UIBug : MonoBehaviour
         InventoryArmor.inventory.onItemAdded += OnAddedArmor;
         InventoryArmor.inventory.onItemRemoved += OnRemovedArmor;
 
+        DropPlace.inventory.onItemAdded += OnAddedDropPlace;
+
         regen();
+    }
+
+    private void OnAddedDropPlace(IInventoryItem obj)
+    {
+        DropItemNearPlayer((ItemDefinition)obj);
     }
 
     private void OnDrop(IInventoryItem obj)
@@ -153,7 +162,7 @@ public class UIBug : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        DropPlace.inventory.DropAll(); //Вынес сюда, чтобы сброс происходил в отдельном фрейме. Если сброс делать во время переноса предмета, то косяк
     }
 
     private void OnDestroy()

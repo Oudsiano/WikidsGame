@@ -104,7 +104,7 @@ namespace RPG.Controller
             if (health.IsDead())
                 return;
 
-            if (DistanceToPlayer() < 40)
+            if (!IGame.Instance.playerController.GetPlayerInvis() &&  DistanceToPlayer() < 40)
             {
                 InteractWithCombat();
             }

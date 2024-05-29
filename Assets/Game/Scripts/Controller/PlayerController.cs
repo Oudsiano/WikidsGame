@@ -27,6 +27,7 @@ namespace RPG.Controller
         private int enemyLayer = 9; // Номер слоя для врагов
 
         private List<Fighter> allEnemyes;
+        private bool _currentInvisState = false; //невидимость(Стелс) выключена
 
 
         // Метод Start вызывается перед первым обновлением кадра
@@ -68,6 +69,19 @@ namespace RPG.Controller
         public Fighter GetFighter() => fighter;
 
 
+        public bool GetPlayerInvis()
+        {
+            return _currentInvisState;
+        }
+
+        public void SetInvisByBtn(bool invis)
+        {
+            if (_currentInvisState==invis) return;
+            _currentInvisState = invis;
+
+
+        }
+        
 
         public void EquipWeaponAndArmorAfterLoad()
         {

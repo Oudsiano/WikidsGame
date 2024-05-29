@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(SphereCollider))]
 public class IconForFarCamera : MonoBehaviour
 {
 
@@ -21,6 +22,7 @@ public class IconForFarCamera : MonoBehaviour
     private bool isMouseOver = false;
 
     [SerializeField] bool isMovable = false;
+    SphereCollider sphereCollider;
 
     private void Awake()
     {
@@ -32,6 +34,9 @@ public class IconForFarCamera : MonoBehaviour
         thisEulerAngles = thisImg.transform.eulerAngles;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
+        sphereCollider = GetComponent<SphereCollider>();
+        sphereCollider.isTrigger = true;
+        sphereCollider.radius = 1.5f;
     }
     void Update()
     {
@@ -45,7 +50,7 @@ public class IconForFarCamera : MonoBehaviour
             if (hit.collider != null && hit.collider.gameObject == gameObject)
             {
                 if (!isMouseOver)
-                    OnMouseEnter();
+                    _OnMouseEnter();
                 isMouseOver = true;
             }
             else
@@ -69,10 +74,14 @@ public class IconForFarCamera : MonoBehaviour
         if (isMovable) UpdateData();
     }
 
-    private void OnMouseEnter()
+    private void _OnMouseEnter()
     {
         Debug.Log(description);
     }
+    /*private void OnMouseEnter()
+    {
+        Debug.Log("2");
+    }*/
 
     private void UpdateData()
     {

@@ -175,7 +175,7 @@ namespace FarrokhGames.Inventory
         /// <inheritdoc />
         public bool TryDrop(IInventoryItem item)
         {
-            if (!CanDrop(item) || !_provider.DropInventoryItem(item)) 
+            if ( !CanDrop(item) || !_provider.DropInventoryItem(item)) 
 			{
 				onItemDroppedFailed?.Invoke(item);
 				return false;

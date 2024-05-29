@@ -162,7 +162,7 @@ namespace FarrokhGames.Inventory
 
                 currentController.inventoryRenderer.ClearSelection();
             }
-            else if (!originalController.inventory.isMarket && !originalController.inventory.DropedFromThere)
+            else if (!originalController.inventory.isMarket && originalController.inventory.DropedFromThere)
             {
                 mode = DropMode.Dropped;
                 if (!originalController.inventory.TryForceDrop(item)) // Drop the item on the ground
@@ -170,7 +170,12 @@ namespace FarrokhGames.Inventory
                     originalController.inventory.TryAddAt(item, originPoint);
                 }
             }
-
+            else
+            {
+                originalController.inventory.TryAddAt(item, originPoint); // Return the item to its previous location
+                mode = DropMode.Returned;
+                _actionAfterDrop(mode);
+            }
             // Destroy the image representing the item
             Object.Destroy(_image.gameObject);
         }

@@ -4,34 +4,31 @@ using UnityEngine;
 
 namespace RPG.Combat
 {
-    // Создает объект оружия для использования в бою
     [CreateAssetMenu(fileName = "Weapon", menuName = "Weapons", order = 0)]
     public class Weapon : ItemDefinition
     {
         [Header("Core")]
-        [SerializeField] private AnimatorOverrideController weaponOverride; // Переопределенный контроллер анимации оружия
-        [SerializeField] private GameObject weaponPrefab; // Префаб объекта оружия
-        [SerializeField] private bool isRightHanded = true; // Определяет, используется ли правая рука по умолчанию
-        [SerializeField] private Projectile projectile; // Ссылка на снаряд, если оружие дистанционное
-        [SerializeField] private bool IsFireballs = false;
+        [SerializeField] private AnimatorOverrideController weaponOverride;
+        [SerializeField] private GameObject weaponPrefab;
+        [SerializeField] private bool isRightHanded = true;
+        [SerializeField] private Projectile projectile;
+        [SerializeField] private bool isFireballs = false;
+        [SerializeField] private GameObject hitVFX;
 
         [Header("Stats")]
-        [SerializeField] private float weaponDamage; // Урон, наносимый оружием
-        [SerializeField] private float weaponRange = 2f; // Расстояние, на котором оружие может наносить урон
-        [SerializeField] private float timeBetweenAttacks; // Время между атаками
+        [SerializeField] private float weaponDamage;
+        [SerializeField] private float weaponRange = 2f;
+        [SerializeField] private float timeBetweenAttacks;
 
         [Header("Description")]
-        [SerializeField] [TextArea] private string description; // Описание оружия
+        [SerializeField] [TextArea] private string description;
 
-        private const string weaponNameForHand = "weapon"; // Имя объекта оружия в сцене
+        private const string weaponNameForHand = "weapon";
 
-        // Спаунит объект оружия для игрока
         public void SpawnToPlayer(Transform rightHandPos, Transform lefthandPos, Animator anim)
         {
-            // Уничтожаем предыдущее оружие игрока
             DestroyWeaponOnPlayer(rightHandPos, lefthandPos, anim);
 
-            // Создаем новое оружие, если задан префаб
             if (weaponPrefab)
             {
                 Transform handPos = FindTransformOfHand(rightHandPos, lefthandPos);
@@ -40,7 +37,6 @@ namespace RPG.Combat
                 wepInScene.name = weaponNameForHand;
             }
 
-            // Устанавливаем переопределенный контроллер анимации оружия, если он задан
             var overrideController = anim.runtimeAnimatorController as AnimatorOverrideController;
             if (weaponOverride)
                 anim.runtimeAnimatorController = weaponOverride;
@@ -50,20 +46,17 @@ namespace RPG.Combat
             }
         }
 
-        // Находит позицию для оружия в соответствии с выбранной рукой
         private Transform FindTransformOfHand(Transform rightHandPos, Transform lefthandPos)
         {
             return isRightHanded ? rightHandPos : lefthandPos;
         }
 
-        // Уничтожает объект оружия у игрока
         public void DestroyWeaponOnPlayer(Transform rightHandPos, Transform leftHandPos, Animator anim)
         {
             DestroyWeaponOnHand(rightHandPos);
             DestroyWeaponOnHand(leftHandPos);
         }
 
-        // Уничтожает объект оружия в указанной руке
         private void DestroyWeaponOnHand(Transform handPos)
         {
             Transform handWep = handPos.Find(weaponNameForHand);
@@ -74,31 +67,26 @@ namespace RPG.Combat
             }
         }
 
-        // Возвращает урон оружия
         public float GetWeaponDamage()
         {
             return weaponDamage;
         }
 
-        // Возвращает дальность действия оружия
         public float GetWeaponRange()
         {
             return weaponRange;
         }
 
-        // Возвращает время между атаками оружия
         public float GetTimeBetweenAttacks()
         {
             return timeBetweenAttacks;
         }
 
-        // Возвращает описание оружия
         public string GetDescription()
         {
             return description;
         }
 
-        // Создает снаряд, если оружие дистанционное, и назначает цель для него
         public void SpawnProjectile(Transform target, Transform rightHand, Transform leftHand)
         {
             var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
@@ -107,13 +95,22 @@ namespace RPG.Combat
 
         public bool IsFireball()
         {
-            return IsFireballs;
+            return isFireballs;
         }
 
-        // Определяет, является ли оружие дистанционным
         public bool IsRanged()
         {
             return projectile;
+        }
+
+        // Воспроизводит VFX эффект при попадании оружия и удаляет его после проигрывания
+        public void PlayHitVFX(Vector3 position)
+        {
+            if (hitVFX != null)
+            {
+                GameObject vfx = Instantiate(hitVFX, position, Quaternion.identity);
+                Destroy(vfx, vfx.GetComponent<ParticleSystem>().main.duration); // Уничтожаем VFX после завершения
+            }
         }
     }
 }

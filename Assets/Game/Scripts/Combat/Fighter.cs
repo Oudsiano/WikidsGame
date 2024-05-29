@@ -3,47 +3,44 @@ using RPG.Core;
 using RPG.Movement;
 using UnityEngine;
 
-// Пространство имен, содержащее класс, отвечающий за бой
 namespace RPG.Combat
 {
-    // Класс, представляющий бойца
     public class Fighter : MonoBehaviour, IAction
     {
-        // Поля, связанные с оружием
         [Header("Fighter Stats")]
         [Header("Weapon")]
-        [SerializeField] private Transform rightHandPosition = null; // Позиция правой руки для прикрепления оружия
-        [SerializeField] private Transform leftHandPosition = null; // Позиция левой руки для прикрепления оружия
-        [SerializeField] private Weapon defaultWeapon = null; // Базовое оружие
-        [SerializeField] private Weapon equippedWeapon = null; // Текущее экипированное оружие
+        [SerializeField] private Transform rightHandPosition = null;
+        [SerializeField] private Transform leftHandPosition = null;
+        [SerializeField] private Weapon defaultWeapon = null;
+        [SerializeField] private Weapon equippedWeapon = null;
         [SerializeField] private Weapon FireballWeapon = null;
         private bool isPlayer;
         private bool isFirebalNow = false;
 
         [Header("")]
-        public float timer = 20; // Таймер для определения времени между атаками
+        public float timer = 20;
 
-        // Ссылка на здоровье цели
-        public Health target; // Сериализовано для отладки
+        public Health target;
 
-        // Кэшированные компоненты
-        private Mover mover; // Компонент движения
-        private ActionScheduler actionScheduler; // Планировщик действий
-        private Animator anim; // Компонент анимации
+        private Mover mover;
+        private ActionScheduler actionScheduler;
+        private Animator anim;
 
         void Awake()
         {
-            mover = GetComponent<Mover>(); // Получаем компонент Mover
-            actionScheduler = GetComponent<ActionScheduler>(); // Получаем компонент ActionScheduler
-            anim = GetComponent<Animator>(); // Получаем компонент Animator
+            mover = GetComponent<Mover>();
+            actionScheduler = GetComponent<ActionScheduler>();
+            anim = GetComponent<Animator>();
             isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
 
-            if(isPlayer)
-            if (IGame.Instance.saveGame.EquipedWeapon != null)
-                EquipWeapon(IGame.Instance.saveGame.EquipedWeapon);
+            if (isPlayer)
+            {
+                if (IGame.Instance.saveGame.EquipedWeapon != null)
+                    EquipWeapon(IGame.Instance.saveGame.EquipedWeapon);
+            }
 
             if (!equippedWeapon)
-                EquipWeapon(defaultWeapon); // Экипируем базовое оружие при старте, если нет текущего оружия
+                EquipWeapon(defaultWeapon);
         }
 
         public void SetFirball()
@@ -51,29 +48,25 @@ namespace RPG.Combat
             isFirebalNow = true;
             FireballWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
+
         public void SetCommonWeapon()
         {
             if (anim == null)
                 Awake();
 
             isFirebalNow = false;
-            if (equippedWeapon!=null)
+            if (equippedWeapon != null)
                 equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
-
-
 
         public void EquipItem(ItemDefinition item)
         {
             if (item is Armor)
                 ((Armor)item).EquipIt();
-            else
-
-            if (item is Weapon)
+            else if (item is Weapon)
                 EquipWeapon((Weapon)item);
         }
 
-        // Экипировка оружия
         public void EquipWeapon(Weapon weapon)
         {
             if (weapon.IsFireball())
@@ -83,71 +76,66 @@ namespace RPG.Combat
             }
             else
             {
-                equippedWeapon = weapon; // Устанавливаем текущее оружие
+                equippedWeapon = weapon;
                 SetCommonWeapon();
             }
 
             if (isPlayer)
-                if (IGame.Instance!=null)
             {
+                if (IGame.Instance != null)
                     IGame.Instance.saveGame.EquipedWeapon = weapon;
             }
         }
 
-        // Снятие оружия
         public void UnequipWeapon()
         {
-            if (equippedWeapon == defaultWeapon) return; // Нельзя снять базовое оружие
-            equippedWeapon.DestroyWeaponOnPlayer(rightHandPosition, leftHandPosition, anim); // Уничтожаем модель оружия на персонаже
-            EquipWeapon(defaultWeapon); // Экипируем базовое оружие
+            if (equippedWeapon == defaultWeapon) return;
+            equippedWeapon.DestroyWeaponOnPlayer(rightHandPosition, leftHandPosition, anim);
+            EquipWeapon(defaultWeapon);
         }
 
         void Update()
         {
             if (IGame.Instance.IsPause) return;
 
-            timer += Time.deltaTime; // Обновляем таймер
+            timer += Time.deltaTime;
 
-            if (!target) // Если нет цели, выходим
-                return;
+            if (!target) return;
 
-            if (!InRange()) // Если цель вне дальности атаки, перемещаемся к цели
+            if (!InRange())
             {
                 mover.MoveTo(target.transform.position);
             }
-            else // Если цель в дальности атаки, атакуем
+            else
             {
-                transform.LookAt(target.transform); // Поворачиваемся к цели
-                mover.Cancel(); // Отменяем движение
-                AttackBehavior(); // Выполняем атаку
+                transform.LookAt(target.transform);
+                mover.Cancel();
+                AttackBehavior();
             }
         }
 
-        // Проверка на нахождение в дальности атаки
         private bool InRange()
         {
-            var distance = Mathf.Abs(Vector3.Distance(transform.position, target.transform.position)); // Расстояние до цели
-            return distance < equippedWeapon.GetWeaponRange(); // Проверяем, находится ли цель в дальности атаки оружия
+            var distance = Mathf.Abs(Vector3.Distance(transform.position, target.transform.position));
+            return distance < equippedWeapon.GetWeaponRange();
         }
 
-        // Поведение при атаке
         private void AttackBehavior()
         {
-            if (target.IsDead()) // Если цель мертва, отменяем атаку
+            if (target.IsDead())
             {
                 Cancel();
                 actionScheduler.CancelAction();
             }
-            else if (timer > equippedWeapon.GetTimeBetweenAttacks()) // Проверяем, прошло ли время между атаками
+            else if (timer > equippedWeapon.GetTimeBetweenAttacks())
             {
                 if (isPlayer && isFirebalNow)
                 {
-
                     if (IGame.Instance.dataPLayer.playerData.chargeEnergy > 0)
                     {
                         MainPlayer.Instance.ChangeCountEnegry(-1);
                         shotFireball();
-                        timer = 0; // Сбрасываем таймер атаки
+                        timer = 0;
                         return;
                     }
                     else
@@ -156,53 +144,54 @@ namespace RPG.Combat
                     }
                 }
 
-                anim.ResetTrigger("stopAttack"); // Сбрасываем триггер остановки атаки
-                anim.SetTrigger("attack"); // Запускаем анимацию атаки
+                anim.ResetTrigger("stopAttack");
+                anim.SetTrigger("attack");
 
-                if (equippedWeapon.IsRanged()) // Если оружие дальнего боя
-                    equippedWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition); // Создаем снаряд
+                if (equippedWeapon.IsRanged())
+                    equippedWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition);
 
-                timer = 0; // Сбрасываем таймер атаки
+                timer = 0;
             }
         }
 
         private void shotFireball()
         {
-            anim.ResetTrigger("stopAttack"); // Сбрасываем триггер остановки атаки
-            anim.SetTrigger("attack"); // Запускаем анимацию атаки
-            FireballWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition); // Создаем снаряд
+            anim.ResetTrigger("stopAttack");
+            anim.SetTrigger("attack");
+            FireballWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition);
         }
 
-        // Отмена действия
         public void Cancel()
         {
-            target = null; // Сбрасываем цель
-            anim.SetTrigger("stopAttack"); // Запускаем триггер остановки атаки
+            target = null;
+            anim.SetTrigger("stopAttack");
         }
 
-        // Начало атаки по цели
         public void Attack(GameObject combatTarget)
         {
-            actionScheduler.StartAction(this); // Начинаем действие
-            target = combatTarget.GetComponent<Health>(); // Получаем здоровье цели
+            actionScheduler.StartAction(this);
+            target = combatTarget.GetComponent<Health>();
         }
 
-        // Можно ли атаковать цель
         public bool CanAttack(GameObject target)
         {
-            return target && !target.GetComponent<Health>().IsDead(); // Проверяем, не мертва ли цель
+            return target && !target.GetComponent<Health>().IsDead();
         }
 
-        // Событие попадания (вызывается из анимации)
         void Hit()
         {
             if (!target) return; // Если нет цели, выходим
+
             AudioManager.instance.PlaySound("Attack");
 
             target.TakeDamage(equippedWeapon.GetWeaponDamage()); // Наносим урон цели
+
+            // Воспроизводим VFX эффект при попадании
+            Vector3 hitPosition = new Vector3(target.transform.position.x,target.transform.position.y +1.5f,target.transform.position.z-1); // Используем позицию цели для VFX
+            equippedWeapon.PlayHitVFX(hitPosition);
         }
 
-        // Отрисовка гизмоны для обозначения дальности атаки
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
@@ -210,24 +199,21 @@ namespace RPG.Combat
                 Gizmos.DrawWireSphere(transform.position, equippedWeapon.GetWeaponRange());
         }
 
-        // Установка цели
         public void SetTarget(Health other)
         {
             target = other;
         }
 
-        // Сохранение состояния
         public object CaptureState()
         {
-            return equippedWeapon.name; // Сохраняем имя текущего оружия
+            return equippedWeapon.name;
         }
 
-        // Восстановление состояния
         public void RestoreState(object state)
         {
-            string weaponName = (string)state; // Получаем имя оружия из сохраненного состояния
-            Weapon weapon = Resources.Load<Weapon>(weaponName);// Загружаем оружие по его имени из ресурсов
-            EquipWeapon(weapon);// Экипируем это оружие
+            string weaponName = (string)state;
+            Weapon weapon = Resources.Load<Weapon>(weaponName);
+            EquipWeapon(weapon);
         }
     }
 }

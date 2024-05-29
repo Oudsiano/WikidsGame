@@ -57,7 +57,7 @@ public class IconForFarCamera : MonoBehaviour
             {
                 if (isMouseOver)
                 {
-                   // OnMouseExit();
+                    _OnMouseExit();
                 }
                 isMouseOver = false;
             }
@@ -66,7 +66,7 @@ public class IconForFarCamera : MonoBehaviour
         {
             if (isMouseOver)
             {
-                //OnMouseExit();
+                _OnMouseExit();
             }
             isMouseOver = false;
         }
@@ -76,7 +76,13 @@ public class IconForFarCamera : MonoBehaviour
 
     private void _OnMouseEnter()
     {
-        Debug.Log(description);
+        IGame.Instance.UIManager.UpdateIconMapPanel(description);
+        //Debug.Log(description);
+    }
+    private void _OnMouseExit()
+    {
+        IGame.Instance.UIManager.UpdateIconMapPanel("");
+        //Debug.Log(description);
     }
     /*private void OnMouseEnter()
     {

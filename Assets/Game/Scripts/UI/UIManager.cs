@@ -59,6 +59,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Toggle _toggleMusic;
     [SerializeField] private Slider _sliderMusic;
 
+    [Header("IconMap")]
+    [SerializeField] private GameObject IconMapPanel;
+    [SerializeField] private TMPro.TMP_Text IconMapText;
+
+
     private SceneLoader sceneLoader;
 
     public SceneLoader SceneLoader { get => sceneLoader; set => sceneLoader = value; }
@@ -100,6 +105,18 @@ public class UIManager : MonoBehaviour
         SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
     }
 
+    public void UpdateIconMapPanel(string text)
+    {
+        if (text.Length>0)
+        {
+            IconMapPanel.SetActive(true);
+            IconMapText.text = text;
+        }
+        else
+        {
+            IconMapPanel.SetActive(false);
+        }
+    }
     public void UpdateParamsUI()
     {
         _toggleSound.isOn = IGame.Instance.dataPLayer.playerData.soundOn;

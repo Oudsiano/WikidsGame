@@ -9,7 +9,9 @@ namespace RPG.Core
     {
         public static event Action OnCameraRotation; // Для обучения
         public static event Action OnCameraScale; // Для обучения
+        public static event Action<float> OnCameraDistance;
         public static event Action<float> NewYRotation;
+        public static event Action<float> NewXRotation;
 
         private Transform target; // Цель, за которой следует камера
         [SerializeField] private float rotationSpeed = 10f; // Скорость вращения камеры
@@ -78,7 +80,7 @@ namespace RPG.Core
         private void RotationMovement()
         {
             var MX = Input.GetAxis("Mouse X");
-            if (MX == 0) return;
+            //if (MX == 0) return;
 
             // Получаем значения вращения по осям X и Y
             camYRotation = transform.localEulerAngles.y + (MX * rotationSpeed * Time.deltaTime);
@@ -90,6 +92,7 @@ namespace RPG.Core
             transform.localEulerAngles = new Vector3(camXRotation, camYRotation, 0);
             OnCameraRotation?.Invoke();
             NewYRotation?.Invoke(camYRotation);
+            NewXRotation?.Invoke(camXRotation);
         }
 
         // Метод для масштабирования камеры
@@ -113,6 +116,9 @@ namespace RPG.Core
             if (zoomTotal > minZoom && zoomTotal < Mathf.Min(maxZoom, 13))
             {
                 mainCam.transform.position = newZoomPos;
+
+                OnCameraDistance?.Invoke(Math.Abs(zoomTotal));
+
                 Debug.Log($"Zoom Total: {zoomTotal}"); // Отладочное сообщение для отслеживания zoomTotal
             }
 

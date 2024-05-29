@@ -7,6 +7,7 @@ using DialogueEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.UI;
 
 namespace RPG.Controller
 {
@@ -23,6 +24,9 @@ namespace RPG.Controller
         public WeaponPanelUI WeaponPanelUI;
 
         public GameObject modularCharacter;
+
+        [SerializeField] Image canvasHelmet;
+        [SerializeField] float startDistanceForShowIcon = 125;
 
         private int enemyLayer = 9; // Номер слоя для врагов
 
@@ -46,6 +50,23 @@ namespace RPG.Controller
 
             RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
             IGame.Instance.saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
+
+            FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
+        }
+
+        private void FollowCamera_OnCameraDistance(float obj)
+        {
+            if (obj > startDistanceForShowIcon)
+            {
+                canvasHelmet.gameObject.SetActive(true);
+                Color newColor = canvasHelmet.color;
+                newColor.a = Mathf.Min(((obj- startDistanceForShowIcon) /50f),1);
+                canvasHelmet.color = newColor;
+            }
+            else
+            {
+                canvasHelmet.gameObject.SetActive(false);
+            }
         }
 
         private void SaveGame_OnOnLoadItems()

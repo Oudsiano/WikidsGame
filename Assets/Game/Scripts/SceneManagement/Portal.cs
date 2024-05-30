@@ -15,8 +15,8 @@ namespace RPG.SceneManagement
         [SerializeField] LevelChangeObserver.allScenes sceneToLoad = LevelChangeObserver.allScenes.emptyScene; // Индекс сцены для загрузки
         [SerializeField] private Transform spawnPoint; // Точка спавна в новой сцене
         [SerializeField] private DestinationIdentifier destination; // Идентификатор места назначения портала
-        [SerializeField] private float fadeOutTime = 2f; // Время затухания перед загрузкой новой сцены
-        [SerializeField] private float fadeInTime = 2f; // Время появления после загрузки новой сцены
+        //[SerializeField] private float fadeOutTime = 2f; // Время затухания перед загрузкой новой сцены
+        //[SerializeField] private float fadeInTime = 2f; // Время появления после загрузки новой сцены
         [SerializeField] private float betweenFadeTime = 2f; // Время ожидания между затуханием и появлением
         [SerializeField] public DataPlayer dataPlayer;
         [SerializeField] public bool ItFinishPortal = true;

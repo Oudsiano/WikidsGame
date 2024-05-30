@@ -18,6 +18,7 @@ public class IGame : MonoBehaviour
     public LevelChangeObserver LevelChangeObserver;
     public SavePointsManager SavePointsManager;
     public ArrowForPlayerManager ArrowForPlayerManager;
+    public QuestManager QuestManager;
 
     [SerializeField] public UIManager UIManager;
     [SerializeField] public CoinManager CoinManager;
@@ -63,6 +64,7 @@ public class IGame : MonoBehaviour
         WeaponArmorManager = FindAnyObjectByType<WeaponArmorManager>();
         SavePointsManager = new SavePointsManager();
         ArrowForPlayerManager = new ArrowForPlayerManager();
+        QuestManager = new QuestManager();
         saveGame = new SaveGame();
 
         CoinManager.Init();
@@ -70,6 +72,7 @@ public class IGame : MonoBehaviour
         LevelChangeObserver.Init();
         playerController.Init();
         ArrowForPlayerManager.Init();
+        QuestManager.Init();
 
     }
 

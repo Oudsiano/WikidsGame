@@ -20,7 +20,10 @@ namespace RPG.Controller
         private Health health; // Компонент, отвечающий за здоровье игрока
 
         public PlayerArmorManager playerArmorManager;
-
+        [SerializeField] ParticleSystem invizVFX;
+        [SerializeField] ParticleSystem exitInvizVFX; // VFX для выхода из невидимости
+        [SerializeField] AudioSource invizAudioSource; // Звуковой компонент для входа в невидимость
+        [SerializeField] AudioSource exitInvizAudioSource; // Звуковой компонент для выхода из невидимости
         public WeaponPanelUI WeaponPanelUI;
 
         public GameObject modularCharacter;
@@ -28,8 +31,7 @@ namespace RPG.Controller
         private int enemyLayer = 9; // Номер слоя для врагов
 
         private List<Fighter> allEnemyes;
-        private bool _currentInvisState = false; //невидимость(Стелс) выключена
-
+        private bool _currentInvisState = false; // невидимость (Стелс) выключена
 
         // Метод Start вызывается перед первым обновлением кадра
         public void Init()
@@ -40,9 +42,7 @@ namespace RPG.Controller
             health = GetComponent<Health>();
             playerArmorManager = FindObjectOfType<PlayerArmorManager>();
 
-
             WeaponPanelUI = FindObjectOfType<WeaponPanelUI>();
-
             WeaponPanelUI.Init();
 
             RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
@@ -58,17 +58,11 @@ namespace RPG.Controller
         private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)
         {
             IGame.Instance.saveGame.MakeLoad();
-
-            //Начало работы над автоатакой. Типа сначала получаем всех врагов, а потом будем смотреть, есть ли кто рядом. Но сейчас пока задача отложенна ради более важных
-            //allEnemyes = new List<Fighter>();
-            //allEnemyes = FindObjectsOfType<Fighter>().ToList();
-
             EquipWeaponAndArmorAfterLoad();
         }
 
         public Health GetHealth() => health;
         public Fighter GetFighter() => fighter;
-
 
         public bool GetPlayerInvis()
         {
@@ -77,12 +71,29 @@ namespace RPG.Controller
 
         public void SetInvisByBtn(bool invis)
         {
-            if (_currentInvisState==invis) return;
+            if (_currentInvisState == invis) return;
             _currentInvisState = invis;
-
-
+            if (invis)
+            {
+                invizVFX.Play();
+                if (invizAudioSource != null)
+                {
+                    invizAudioSource.Play();
+                }
+            }
+            else
+            {
+                invizVFX.Stop();
+                if (exitInvizVFX != null)
+                {
+                    exitInvizVFX.Play();
+                }
+                if (exitInvizAudioSource != null)
+                {
+                    exitInvizAudioSource.Play();
+                }
+            }
         }
-        
 
         public void EquipWeaponAndArmorAfterLoad()
         {
@@ -180,7 +191,6 @@ namespace RPG.Controller
                             readyToGo = false;
 
                     if (readyToGo)
-
                         mover.StartMoveAction(hit.point);
                 }
 

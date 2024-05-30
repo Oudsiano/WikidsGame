@@ -190,23 +190,24 @@ namespace RPG.Combat
 
         public void Hit()
         {
-            if (!target) return; // Если нет цели, выходим
+            if (!target) return; // If there's no target, exit
 
             AudioManager.instance.PlaySound("Attack");
 
-            if (IsBehindTarget()) // Проверка атаки со спины
+            if (IsBehindTarget() && !target.GetComponent<MainPlayer>()) // Check if the attack is from behind and the target is not the player
             {
-                target.TakeDamage(target.GetCurrentHealth()); // Убийство с одного удара
+                target.TakeDamage(target.GetCurrentHealth()); // Kill the target instantly
             }
             else
             {
-                target.TakeDamage(equippedWeapon.GetWeaponDamage()); // Наносим урон цели
+                target.TakeDamage(equippedWeapon.GetWeaponDamage()); // Deal normal damage to the target
             }
 
-            // Воспроизводим VFX эффект при попадании
-            Vector3 hitPosition = new Vector3(target.transform.position.x, target.transform.position.y + 1.5f, target.transform.position.z - 1); // Используем позицию цели для VFX
+            // Play VFX effect on hit
+            Vector3 hitPosition = new Vector3(target.transform.position.x, target.transform.position.y + 1.5f, target.transform.position.z - 1); // Use target's position for VFX
             equippedWeapon.PlayHitVFX(hitPosition);
         }
+
 
         private void OnDrawGizmos()
         {

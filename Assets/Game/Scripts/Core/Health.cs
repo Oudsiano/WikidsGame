@@ -1,11 +1,9 @@
 using RPG.Combat;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 namespace RPG.Core
 {
@@ -159,6 +157,12 @@ namespace RPG.Core
                 Destroy(projectile.gameObject); // Уничтожаем снаряд
                 Debug.Log("hello"); // Выводим сообщение в консоль
             }
+        }
+
+        // Добавляем метод для получения текущего здоровья
+        public float GetCurrentHealth()
+        {
+            return currentHealth;
         }
     }
 }

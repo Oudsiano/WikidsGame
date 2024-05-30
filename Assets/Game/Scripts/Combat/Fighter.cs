@@ -178,19 +178,35 @@ namespace RPG.Combat
             return target && !target.GetComponent<Health>().IsDead();
         }
 
-        void Hit()
+        private bool IsBehindTarget()
+        {
+            if (!target) return false;
+
+            Vector3 directionToPlayer = (transform.position - target.transform.position).normalized;
+            float angleBetween = Vector3.Angle(target.transform.forward, directionToPlayer);
+
+            return angleBetween > 135f; // Угол, определяющий, что атака со спины (например, > 135 градусов)
+        }
+
+        public void Hit()
         {
             if (!target) return; // Если нет цели, выходим
 
             AudioManager.instance.PlaySound("Attack");
 
-            target.TakeDamage(equippedWeapon.GetWeaponDamage()); // Наносим урон цели
+            if (IsBehindTarget()) // Проверка атаки со спины
+            {
+                target.TakeDamage(target.GetCurrentHealth()); // Убийство с одного удара
+            }
+            else
+            {
+                target.TakeDamage(equippedWeapon.GetWeaponDamage()); // Наносим урон цели
+            }
 
             // Воспроизводим VFX эффект при попадании
-            Vector3 hitPosition = new Vector3(target.transform.position.x,target.transform.position.y +1.5f,target.transform.position.z-1); // Используем позицию цели для VFX
+            Vector3 hitPosition = new Vector3(target.transform.position.x, target.transform.position.y + 1.5f, target.transform.position.z - 1); // Используем позицию цели для VFX
             equippedWeapon.PlayHitVFX(hitPosition);
         }
-
 
         private void OnDrawGizmos()
         {

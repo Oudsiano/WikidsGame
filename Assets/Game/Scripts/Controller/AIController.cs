@@ -47,7 +47,7 @@ namespace RPG.Controller
         {
             halfCircle = new GameObject("HalfCircle");
             halfCircle.transform.parent = transform;
-            halfCircle.transform.localPosition = new Vector3(0,1,0);
+            halfCircle.transform.localPosition = new Vector3(0, 1, 0);
             halfCircle.transform.eulerAngles = new Vector3(0, 0, 180);
 
             halfCircleRenderer = halfCircle.AddComponent<MeshRenderer>();
@@ -73,14 +73,11 @@ namespace RPG.Controller
             int[] triangles = new int[segments * 3];
 
             vertices[0] = Vector3.zero;
-
+            float angleStep = Mathf.PI / segments;
             for (int i = 0; i <= segments; i++)
             {
-                float angle = Mathf.PI * i / segments;
-                float x = radius * Mathf.Cos(angle);
-                float z = radius * Mathf.Sin(angle);
-
-                vertices[i + 1] = new Vector3(x, 0, z);
+                float angle = i * angleStep;
+                vertices[i + 1] = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
             }
 
             for (int i = 0; i < segments; i++)
@@ -104,7 +101,7 @@ namespace RPG.Controller
             if (health.IsDead())
                 return;
 
-            if (!IGame.Instance.playerController.GetPlayerInvis() &&  DistanceToPlayer() < 40)
+            if (!IGame.Instance.playerController.GetPlayerInvis() && DistanceToPlayer() < 40)
             {
                 InteractWithCombat();
             }
@@ -121,7 +118,15 @@ namespace RPG.Controller
         {
             if (IsPlayerInSight() && DistanceToPlayer() <= chaseDistance && (fighter.CanAttack(MainPlayer.Instance.gameObject) || IsAttacked()))
             {
-                AttackBehavior();
+                if (IsPlayerBehind())
+                {
+                    // Игрок атакует со спины
+                    fighter.Hit();
+                }
+                else
+                {
+                    AttackBehavior();
+                }
             }
             else if (suspicionTimer > timeSinceLastSawPlayer)
             {
@@ -150,6 +155,14 @@ namespace RPG.Controller
                 return true;
             }
             return false;
+        }
+
+        private bool IsPlayerBehind()
+        {
+            Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
+            float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
+
+            return angleBetween > 135f; // Угол, определяющий, что игрок позади (например, > 135 градусов)
         }
 
         private void PatrolBehavior()

@@ -22,6 +22,7 @@ namespace RPG.Controller
         private Vector3 guardLocation;
         private Quaternion guardRotation;
         [SerializeField] private float timeSinceLastSawPlayer = Mathf.Infinity;
+        [SerializeField] private float timeSinceLastHit = Mathf.Infinity;
 
         private Fighter fighter;
         private Mover mover;
@@ -30,6 +31,8 @@ namespace RPG.Controller
         private GameObject halfCircle;
         private MeshRenderer halfCircleRenderer;
         private MeshFilter halfCircleFilter;
+
+        private float lastHealth;
 
         private void Awake()
         {
@@ -107,6 +110,18 @@ namespace RPG.Controller
             }
 
             timeSinceLastSawPlayer += Time.deltaTime;
+            timeSinceLastHit += Time.deltaTime;
+
+            // Check if health has decreased, indicating a ranged attack
+            if (health.GetCurrentHealth() < lastHealth)
+            {
+                timeSinceLastHit = 0;
+                lastKnownLocation = MainPlayer.Instance.transform.position;
+                AttackBehavior();
+            }
+
+            // Update last health
+            lastHealth = health.GetCurrentHealth();
         }
 
         private float DistanceToPlayer()
@@ -128,7 +143,7 @@ namespace RPG.Controller
                     AttackBehavior();
                 }
             }
-            else if (suspicionTimer > timeSinceLastSawPlayer)
+            else if (suspicionTimer > timeSinceLastSawPlayer || timeSinceLastHit < 5f)
             {
                 SuspicionBehavior();
             }

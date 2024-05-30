@@ -2760,6 +2760,7 @@ GameObject:
   - component: {fileID: 6989202285038657620}
   - component: {fileID: 4091629468880032576}
   - component: {fileID: 4676309419092139947}
+  - component: {fileID: 7401886221478097318}
   m_Layer: 0
   m_Name: Invis
   m_TagString: Untagged
@@ -2842,6 +2843,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7401886221478097318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8366961570655252228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36f0637afff50c14492bd057567984a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BG: {fileID: 7562915083660106582}
+  text: {fileID: 6923703333661203123}
+  sector: {fileID: 7246229555889233458}
 --- !u!1 &8865925142194115133
 GameObject:
   m_ObjectHideFlags: 0
@@ -3559,8 +3575,6 @@ MonoBehaviour:
   defaultWeapon: {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
   equippedWeapon: {fileID: 0}
   FireballWeapon: {fileID: 11400000, guid: 10a25ce9fbd584c48b226d615507622c, type: 2}
-  attackParticles: {fileID: 198839111030712356, guid: 16b154ffbfe6c5841b0a46456345a632,
-    type: 3}
   timer: 0
   target: {fileID: 0}
 --- !u!114 &8927321506417499780

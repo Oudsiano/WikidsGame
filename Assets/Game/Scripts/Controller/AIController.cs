@@ -51,7 +51,7 @@ namespace RPG.Controller
             halfCircle = new GameObject("HalfCircle");
             halfCircle.transform.parent = transform;
             halfCircle.transform.localPosition = new Vector3(0, 1, 0);
-            halfCircle.transform.eulerAngles = new Vector3(0, 0, 180);
+            halfCircle.transform.localEulerAngles = new Vector3(0, 0, 180);
 
             halfCircleRenderer = halfCircle.AddComponent<MeshRenderer>();
             halfCircleFilter = halfCircle.AddComponent<MeshFilter>();

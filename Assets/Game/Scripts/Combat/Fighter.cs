@@ -190,23 +190,45 @@ namespace RPG.Combat
 
         public void Hit()
         {
-            if (!target) return; // If there's no target, exit
+            if (!target) return; // Если цели нет, выйти
 
             AudioManager.instance.PlaySound("Attack");
 
-            if (IsBehindTarget() && !target.GetComponent<MainPlayer>()) // Check if the attack is from behind and the target is not the player
+            if (IsBehindTarget() && !target.GetComponent<MainPlayer>()) // Проверка, если атака сзади и цель не игрок
             {
-                target.TakeDamage(target.GetCurrentHealth()); // Kill the target instantly
+                target.TakeDamage(target.GetCurrentHealth()); // Убить цель мгновенно
             }
             else
             {
-                target.TakeDamage(equippedWeapon.GetWeaponDamage()); // Deal normal damage to the target
+                target.TakeDamage(equippedWeapon.GetWeaponDamage()); // Нанести нормальный урон цели
             }
 
-            // Play VFX effect on hit
-            Vector3 hitPosition = new Vector3(target.transform.position.x, target.transform.position.y + 1.5f, target.transform.position.z - 1); // Use target's position for VFX
+            // Проиграть эффект при попадании
+            Vector3 hitPosition = new Vector3(target.transform.position.x, target.transform.position.y + 1.5f, target.transform.position.z - 1); // Использовать позицию цели для VFX
             equippedWeapon.PlayHitVFX(hitPosition);
+
+            // Проверить, жива ли цель
+            if (target.IsDead())
+            {
+                Animator targetAnim = target.GetComponent<Animator>();
+                if (targetAnim != null)
+                {
+                    targetAnim.SetTrigger("dead"); // Запуск анимации смерти
+                }
+            }
+            else
+            {
+                // Запустить анимацию получения урона у цели
+                Animator targetAnim = target.GetComponent<Animator>();
+                if (targetAnim != null)
+                {
+                    targetAnim.SetTrigger("takeDamage");
+                }
+            }
         }
+
+
+
 
 
         private void OnDrawGizmos()

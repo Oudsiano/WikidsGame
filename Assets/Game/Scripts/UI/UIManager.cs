@@ -63,6 +63,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject IconMapPanel;
     [SerializeField] private TMPro.TMP_Text IconMapText;
 
+    [Header("QuestSector")]
+    [SerializeField] private Button _btnQuestScr;
+    [SerializeField] private Button _btnCloseQuestScr;
+    [SerializeField] private GameObject QuestScr;
+
+
 
     private SceneLoader sceneLoader;
 
@@ -90,7 +96,7 @@ public class UIManager : MonoBehaviour
 
         UserInfoBtn.onClick.AddListener(OnClickUserInfo);
 
-        _btnClosePLayerInfoScr.onClick.AddListener( ClosePlayerScr);
+        _btnClosePLayerInfoScr.onClick.AddListener(ClosePlayerScr);
         _btnComfirmPLayerInfoScr.onClick.AddListener(onClickConfirmPLayersScr);
 
         IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
@@ -101,13 +107,16 @@ public class UIManager : MonoBehaviour
         _sliderSound.onValueChanged.AddListener(OnChangeSoundVolume);
         _sliderMusic.onValueChanged.AddListener(OnChangeMusicVolume);
 
+        _btnQuestScr.onClick.AddListener(() => { QuestScr.SetActive(true); IGame.Instance.SavePlayerPosLikeaPause(true); });
+        _btnCloseQuestScr.onClick.AddListener(() => { QuestScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false); });
+
 
         SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
     }
 
     public void UpdateIconMapPanel(string text)
     {
-        if (text.Length>0)
+        if (text.Length > 0)
         {
             IconMapPanel.SetActive(true);
             IconMapText.text = text;
@@ -150,7 +159,7 @@ public class UIManager : MonoBehaviour
 
     private void SaveGame_OnChangePlayerName(string obj)
     {
-        if (obj!=null && obj.Length<1)
+        if (obj != null && obj.Length < 1)
         {
             textNamePlayer.text = "¬ведите им€";
             return;
@@ -165,7 +174,7 @@ public class UIManager : MonoBehaviour
     {
     }
 
-    private void ClosePlayerScr() 
+    private void ClosePlayerScr()
     {
         PlayerInfoScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false);
     }
@@ -173,7 +182,7 @@ public class UIManager : MonoBehaviour
     {
         IGame.Instance.saveGame.PlayerName = _playerNameInputField.text;
         IGame.Instance.saveGame.MakeSave();
-        
+
         ClosePlayerScr();
     }
 

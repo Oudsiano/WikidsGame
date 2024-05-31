@@ -7,7 +7,7 @@ using UnityEngine;
 public class PickableEquip : MonoBehaviour
 {
     [SerializeField] private ItemDefinition item;
-    [SerializeField] private float respawnTime = 20f; // Время до появления оружия снова
+    //[SerializeField] private float respawnTime = 20f; // Время до появления оружия снова
 
     // Метод, вызываемый при взаимодействии с коллайдером
     private void OnTriggerEnter(Collider other)

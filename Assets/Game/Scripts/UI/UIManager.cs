@@ -67,6 +67,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _btnQuestScr;
     [SerializeField] private Button _btnCloseQuestScr;
     [SerializeField] private GameObject QuestScr;
+    [SerializeField] public GameObject OneQuestPref;
+    [SerializeField] public ScrollRect QuestsContentScrollRect;
 
 
 

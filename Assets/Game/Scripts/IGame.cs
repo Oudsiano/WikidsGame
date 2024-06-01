@@ -54,8 +54,6 @@ public class IGame : MonoBehaviour
 
     private void Init()
     {
-
-
         dataPLayer = FindObjectOfType<DataPlayer>();
         gameAPI = FindObjectOfType<GameAPI>();
         playerController = FindObjectOfType<PlayerController>();
@@ -64,7 +62,7 @@ public class IGame : MonoBehaviour
         WeaponArmorManager = FindAnyObjectByType<WeaponArmorManager>();
         SavePointsManager = new SavePointsManager();
         ArrowForPlayerManager = new ArrowForPlayerManager();
-        QuestManager = new QuestManager();
+        QuestManager = FindAnyObjectByType<QuestManager>();
         saveGame = new SaveGame();
 
         CoinManager.Init();
@@ -73,7 +71,6 @@ public class IGame : MonoBehaviour
         playerController.Init();
         ArrowForPlayerManager.Init();
         QuestManager.Init();
-
     }
 
     public void SavePlayerPosLikeaPause(bool p)

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace RPG.Controller
 {
@@ -45,7 +46,7 @@ namespace RPG.Controller
 
             WeaponPanelUI.Init();
 
-            RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
+            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             IGame.Instance.saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }
 
@@ -55,7 +56,7 @@ namespace RPG.Controller
             fighter.EquipItem(IGame.Instance.saveGame.EquipedWeapon);
         }
 
-        private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)
+        private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode)
         {
             IGame.Instance.saveGame.MakeLoad();
 

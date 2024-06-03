@@ -51,7 +51,7 @@ public class ArrowForPlayer : MonoBehaviour
 
     }
 
-    private void Awake()
+    private void Start()
     {
         if (IGame.Instance!=null)
         IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[Index] = this;

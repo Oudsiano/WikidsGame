@@ -4,10 +4,7 @@ using RPG.Movement;
 using RPG.Combat;
 using RPG.Core;
 using DialogueEditor;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 namespace RPG.Controller
@@ -21,8 +18,8 @@ namespace RPG.Controller
         private Health health; // Компонент, отвечающий за здоровье игрока
 
         public PlayerArmorManager playerArmorManager;
-        [SerializeField] ParticleSystem invizVFX;
-        [SerializeField] ParticleSystem exitInvizVFX; // VFX для выхода из невидимости
+        [SerializeField] GameObject invizVFXPrefab;
+        [SerializeField] GameObject exitInvizVFXPrefab;
         [SerializeField] AudioSource invizAudioSource; // Звуковой компонент для входа в невидимость
         [SerializeField] AudioSource exitInvizAudioSource; // Звуковой компонент для выхода из невидимости
         public WeaponPanelUI WeaponPanelUI;
@@ -33,6 +30,8 @@ namespace RPG.Controller
 
         private List<Fighter> allEnemyes;
         private bool _currentInvisState = false; // невидимость (Стелс) выключена
+
+        private GameObject activeInvizVFX; // Текущий активный VFX объект для невидимости
 
         // Метод Start вызывается перед первым обновлением кадра
         public void Init()
@@ -76,7 +75,8 @@ namespace RPG.Controller
             _currentInvisState = invis;
             if (invis)
             {
-                invizVFX.Play();
+                // Создание VFX для входа в невидимость
+                activeInvizVFX = PlayVFX(invizVFXPrefab);
                 if (invizAudioSource != null)
                 {
                     invizAudioSource.Play();
@@ -84,16 +84,33 @@ namespace RPG.Controller
             }
             else
             {
-                invizVFX.Stop();
-                if (exitInvizVFX != null)
+                // Уничтожение VFX для невидимости и создание VFX для выхода из невидимости
+                if (activeInvizVFX != null)
                 {
-                    exitInvizVFX.Play();
+                    Destroy(activeInvizVFX);
                 }
+                PlayVFX(exitInvizVFXPrefab);
                 if (exitInvizAudioSource != null)
                 {
                     exitInvizAudioSource.Play();
                 }
             }
+        }
+
+        private GameObject PlayVFX(GameObject vfxPrefab)
+        {
+            if (vfxPrefab == null) return null;
+            GameObject vfxInstance = Instantiate(vfxPrefab, transform.position, transform.rotation, transform);
+            ParticleSystem vfx = vfxInstance.GetComponent<ParticleSystem>();
+            if (vfx != null)
+            {
+                vfx.Play();
+                if (!vfx.main.loop)
+                {
+                    Destroy(vfxInstance, vfx.main.duration);
+                }
+            }
+            return vfxInstance;
         }
 
         public void EquipWeaponAndArmorAfterLoad()

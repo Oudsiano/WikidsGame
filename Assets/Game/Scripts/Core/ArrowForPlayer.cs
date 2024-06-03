@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ArrowForPlayerManager
 {
@@ -15,10 +16,10 @@ public class ArrowForPlayerManager
     public void Init()
     {
         allArrowForPlayers = new SortedDictionary<int, ArrowForPlayer>();
-        RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
+        SceneManager.sceneLoaded += SceneLoader_LevelChanged;
     }
 
-    private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)
+    private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode)
     {
         allArrowForPlayers = new SortedDictionary<int, ArrowForPlayer>();
     }

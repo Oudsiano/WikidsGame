@@ -10,6 +10,7 @@ namespace RPG.Core
         public static event Action OnCameraRotation; // Для обучения
         public static event Action OnCameraScale; // Для обучения
         public static event Action<float> OnCameraDistance;
+        public static event Action<Vector3> OnupdateEulerAngles;
         public static event Action<float> NewYRotation;
         public static event Action<float> NewXRotation;
 
@@ -90,9 +91,10 @@ namespace RPG.Core
             camXRotation = Mathf.Clamp(camXRotation, 45, 90);
 
             transform.localEulerAngles = new Vector3(camXRotation, camYRotation, 0);
+            OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
             OnCameraRotation?.Invoke();
-            NewYRotation?.Invoke(camYRotation);
-            NewXRotation?.Invoke(camXRotation);
+            //NewYRotation?.Invoke(camYRotation);
+            //NewXRotation?.Invoke(camXRotation);
         }
 
         // Метод для масштабирования камеры
@@ -117,6 +119,7 @@ namespace RPG.Core
             {
                 mainCam.transform.position = newZoomPos;
 
+                OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
                 OnCameraDistance?.Invoke(Math.Abs(zoomTotal));
 
                 Debug.Log($"Zoom Total: {zoomTotal}"); // Отладочное сообщение для отслеживания zoomTotal

@@ -39,6 +39,22 @@ public class UIBug : MonoBehaviour
         IGame.Instance.SavePlayerPosLikeaPause(false);
     }
 
+    public bool TryTakeQuestItem(string itemName)
+    {
+
+        foreach (var item in InventoryBag.inventory.allItems)
+        {
+            if (item.name == itemName)
+            {
+                Debug.Log("Предмет найдет. Возможно стоит еще прописать удаление");
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
     public void TryAddEquipToBug(ItemDefinition item)
     {
         notAvaliableEvents = true;

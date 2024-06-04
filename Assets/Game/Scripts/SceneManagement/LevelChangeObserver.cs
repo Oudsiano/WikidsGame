@@ -116,4 +116,8 @@ public class LevelChangeObserver : MonoBehaviour
         MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = true;
     }
 
+    private void OnDestroy()
+    {
+        Debug.Log("destr");
+    }
 }

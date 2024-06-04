@@ -70,6 +70,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] public GameObject OneQuestPref;
     [SerializeField] public ScrollRect QuestsContentScrollRect;
 
+    [Header("OptionsSector")]
+    [SerializeField] private Button _btnOptions;
+
 
 
     private SceneLoader sceneLoader;
@@ -112,8 +115,14 @@ public class UIManager : MonoBehaviour
         _btnQuestScr.onClick.AddListener(() => { QuestScr.SetActive(true); IGame.Instance.SavePlayerPosLikeaPause(true); });
         _btnCloseQuestScr.onClick.AddListener(() => { QuestScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false); });
 
+        _btnOptions.onClick.AddListener(OnClickBtnOption);
 
         SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
+    }
+
+    private void OnClickBtnOption()
+    {
+        uIBug.TryAddEquipToBug(IGame.Instance.QuestManager.allQuestsItems[0]);
     }
 
     public void UpdateIconMapPanel(string text)

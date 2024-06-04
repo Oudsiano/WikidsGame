@@ -15,29 +15,69 @@ public class IGame : MonoBehaviour
     public SaveGame saveGame;
 
     public PlayerController playerController;
-    public LevelChangeObserver LevelChangeObserver;
+    private LevelChangeObserver levelChangeObserver;
     public SavePointsManager SavePointsManager;
     public ArrowForPlayerManager ArrowForPlayerManager;
-    public QuestManager QuestManager;
+    private QuestManager questManager;
 
     [SerializeField] public UIManager UIManager;
     [SerializeField] public CoinManager CoinManager;
     [SerializeField] public BottleManager BottleManager;
-    [SerializeField] public WeaponArmorManager WeaponArmorManager;
+    [SerializeField] private WeaponArmorManager weaponArmorManager;
 
-    public static IGame Instance { get {
-
+    public static IGame Instance
+    {
+        get
+        {
             if (instance == null)
             {
                 instance = FindObjectOfType<IGame>();
                 instance.Init();
             }
-
-                return instance;
-                } 
-        set => instance = value; }
+            return instance;
+        }
+        set => instance = value;
+    }
 
     public bool IsPause { get => isPause; set => isPause = value; }
+    public LevelChangeObserver LevelChangeObserver
+    {
+        get
+        {
+            if (levelChangeObserver == null)
+            {
+                levelChangeObserver = FindAnyObjectByType<LevelChangeObserver>();
+                levelChangeObserver.Init();
+            }
+            return levelChangeObserver;
+        }
+        set => levelChangeObserver = value;
+    }
+
+    public WeaponArmorManager WeaponArmorManager
+    {
+        get
+        {
+            if (weaponArmorManager==null)
+            {
+                weaponArmorManager = FindAnyObjectByType<WeaponArmorManager>();
+            }
+            return weaponArmorManager;
+        }
+        set => weaponArmorManager = value;
+    }
+
+    public QuestManager QuestManager { 
+        get 
+        {
+            if (questManager == null)
+            {
+                questManager = FindAnyObjectByType<QuestManager>();
+                questManager.Init();
+            }
+            return questManager; 
+        }
+        set => questManager = value; }
 
     /*[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private void Awake()
@@ -57,20 +97,16 @@ public class IGame : MonoBehaviour
         dataPLayer = FindObjectOfType<DataPlayer>();
         gameAPI = FindObjectOfType<GameAPI>();
         playerController = FindObjectOfType<PlayerController>();
-        LevelChangeObserver = FindAnyObjectByType<LevelChangeObserver>();
         BottleManager = FindAnyObjectByType<BottleManager>();
-        WeaponArmorManager = FindAnyObjectByType<WeaponArmorManager>();
         SavePointsManager = new SavePointsManager();
         ArrowForPlayerManager = new ArrowForPlayerManager();
-        QuestManager = FindAnyObjectByType<QuestManager>();
+        
         saveGame = new SaveGame();
 
         CoinManager.Init();
         UIManager.Init();
-        LevelChangeObserver.Init();
         playerController.Init();
         ArrowForPlayerManager.Init();
-        QuestManager.Init();
     }
 
     public void SavePlayerPosLikeaPause(bool p)

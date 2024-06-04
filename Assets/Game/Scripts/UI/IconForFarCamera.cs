@@ -29,6 +29,7 @@ public class IconForFarCamera : MonoBehaviour
         FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
         FollowCamera.NewYRotation += FollowCamera_NewYRotation;
         FollowCamera.NewXRotation += FollowCamera_NewXRotation;
+        FollowCamera.OnupdateEulerAngles += FollowCamera_OnupdateEulerAngles;
         thisImg = GetComponent<SpriteRenderer>();
         thisImg.gameObject.SetActive(false);
         thisEulerAngles = thisImg.transform.eulerAngles;
@@ -37,6 +38,21 @@ public class IconForFarCamera : MonoBehaviour
         sphereCollider = GetComponent<SphereCollider>();
         sphereCollider.isTrigger = true;
         sphereCollider.radius = 1.5f;
+    }
+
+    private void FollowCamera_OnupdateEulerAngles(Vector3 obj)
+    {
+        thisEulerAngles.x = obj.x;
+        thisEulerAngles.y = obj.y;
+        UpdateData();
+    }
+
+    private void OnDestroy()
+    {
+        FollowCamera.OnCameraDistance -= FollowCamera_OnCameraDistance;
+        FollowCamera.NewYRotation -= FollowCamera_NewYRotation;
+        FollowCamera.NewXRotation -= FollowCamera_NewXRotation;
+        FollowCamera.OnupdateEulerAngles -= FollowCamera_OnupdateEulerAngles;
     }
     void Update()
     {
@@ -77,20 +93,15 @@ public class IconForFarCamera : MonoBehaviour
     private void _OnMouseEnter()
     {
         IGame.Instance.UIManager.UpdateIconMapPanel(description);
-        //Debug.Log(description);
     }
     private void _OnMouseExit()
     {
         IGame.Instance.UIManager.UpdateIconMapPanel("");
-        //Debug.Log(description);
     }
-    /*private void OnMouseEnter()
-    {
-        Debug.Log("2");
-    }*/
 
     private void UpdateData()
     {
+
         thisImg.gameObject.transform.eulerAngles = thisEulerAngles;
     }
 
@@ -108,20 +119,28 @@ public class IconForFarCamera : MonoBehaviour
 
     private void FollowCamera_OnCameraDistance(float obj)
     {
-        if (obj > startDistanceForShowIcon)
+        if (thisImg != null)
         {
-            thisImg.gameObject.SetActive(true);
-            Color newColor = thisImg.color;
-            newColor.a = Mathf.Min(((obj - startDistanceForShowIcon) / 50f), 1);
-            thisImg.color = newColor;
+            if (obj > startDistanceForShowIcon)
+            {
+                thisImg.gameObject.SetActive(true);
+                Color newColor = thisImg.color;
+                newColor.a = Mathf.Min(((obj - startDistanceForShowIcon) / 50f), 1);
+                thisImg.color = newColor;
 
-            float _scale = (obj - startDistanceForShowIcon) / 100f + 1;
+                float _scale = (obj - startDistanceForShowIcon) / 100f + 1;
 
-            thisImg.transform.localScale = new Vector3(_scale, _scale, _scale);
+                thisImg.transform.localScale = new Vector3(_scale, _scale, _scale);
+            }
+            else
+            {
+                _OnMouseExit();
+                thisImg.gameObject.SetActive(false);
+            }
         }
         else
         {
-            thisImg.gameObject.SetActive(false);
+            Debug.LogWarning("Не найдена картинка, хотя ожидалась");
         }
     }
 }

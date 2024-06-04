@@ -62,6 +62,11 @@ public class WeaponArmorManager : MonoBehaviour
             if (item.name == _name)
                 return item;
         }
+        foreach (var item in IGame.Instance.QuestManager.allQuestsItems)
+        {
+            if (item.name == _name)
+                return item;
+        }
 
         Debug.LogError("Can't return item. It can be mistake");
         return null;

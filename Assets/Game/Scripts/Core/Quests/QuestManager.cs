@@ -1,3 +1,4 @@
+using FarrokhGames.Inventory.Examples;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ public enum QuestType
 public class QuestManager : MonoBehaviour
 {
     public List<OneQuest> thisQuestsScene;
+
+    public List<ItemDefinition> allQuestsItems;
     private List<UiOneQuestElement> QuestsInScene;
 
     private QuestsForThisScene _QuestsForThisScene;

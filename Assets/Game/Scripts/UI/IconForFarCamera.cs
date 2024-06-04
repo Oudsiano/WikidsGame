@@ -134,7 +134,7 @@ public class IconForFarCamera : MonoBehaviour
             }
             else
             {
-                _OnMouseExit();
+                _OnMouseExit(); 
                 thisImg.gameObject.SetActive(false);
             }
         }

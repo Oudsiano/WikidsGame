@@ -67,7 +67,10 @@ public class LocationChange : MonoBehaviour
     public void setUpMaxRegion(int n)
     {
         List<allScenes> posTempList = new List<allScenes>(IGame.Instance.LevelChangeObserver.DAllScenes.Keys);
-        allScenes maxID = posTempList[n + 1];
+        allScenes maxID = posTempList[n];
+        if (n + 1 < posTempList.Count)
+            maxID = posTempList[n + 1];
+
 
         int findedIndex = 0;
         for (int i = 0; i < regions.Count; i++)

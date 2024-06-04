@@ -31,7 +31,7 @@ public class GameAPI : MonoBehaviour
     public bool TestSuccessKey = false; //Ключ нужен отдельно, потому, что диалог его сбрасывает. И нам надо хранить его запределами диалогов.
 
     private bool needMakeSaveInNextUpdate = false;
-    
+
     public void Start()
     {
         dataPlayer = IGame.Instance.dataPLayer;
@@ -83,19 +83,6 @@ public class GameAPI : MonoBehaviour
         }
     }
 
-    //public void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.D))
-    //    {
-    //        StartCoroutine(GetGameData());
-    //        sceneLoader.UpdateCurrentLevel();
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.H))
-    //    {
-    //        StartCoroutine(SaveGameData());
-    //    }
-    //}
-
     IEnumerator FirstGetGameData()
     {
         UnityWebRequest request = UnityWebRequest.Get("https://wikids.ru/api/v1/game/" + playerID);
@@ -116,9 +103,9 @@ public class GameAPI : MonoBehaviour
         }
         else
         {
-            ErrorResponse errorResponse =  JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
+            ErrorResponse errorResponse = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
 
-            if (errorResponse.message== "Game data not found")
+            if (errorResponse.message == "Game data not found")
             {
                 IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName("Sword"));
                 SaveUpdater();
@@ -127,7 +114,7 @@ public class GameAPI : MonoBehaviour
             }
             else
 
-            Debug.LogError("Error downloading data: " + request.error);
+                Debug.LogError("Error downloading data: " + request.error);
 
         }
     }
@@ -171,17 +158,34 @@ public class GameAPI : MonoBehaviour
 
             Debug.Log("?????????? ??????? " + countSuccessAnswers);
 
-            Debug.Log("Data downloaded successfully");        }
+            Debug.Log("Data downloaded successfully");
+        }
         else
         {
             Debug.LogError("Error downloading data: " + request.error);
         }
     }
 
+    public bool IsTestCompleted(int testId)
+    {
+        if (dataPlayer.playerData.progress != null)
+        {
+            foreach (var lesson in dataPlayer.playerData.progress)
+            {
+                foreach (var test in lesson.tests)
+                {
+                    if (test.id == testId)
+                    {
+                        return test.completed;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public IEnumerator SaveGameData()
     {
-        
-
         string json = JsonUtility.ToJson(IGame.Instance.dataPLayer.playerData);
         Debug.Log("JSON to send: " + json);
 

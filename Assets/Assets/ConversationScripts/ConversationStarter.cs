@@ -69,29 +69,16 @@ public class ConversationStarter : MonoBehaviour
 
     public void IsTestCompleted(int testId)
     {
-        DataPlayer playerData = FindObjectOfType<DataPlayer>();
-        if (playerData == null || playerData.playerData == null || playerData.playerData.progress == null)
+        if (FindObjectOfType<GameAPI>().IsTestCompleted(testId))
         {
-            Debug.LogError("Player data or progress data is missing.");
+            Debug.Log("???? ???? ? ??????????? ????????");
+             ConversationManager.Instance.SetBool("ThisTestCompleted", FindObjectOfType<GameAPI>().IsTestCompleted(testId));
         }
-
-        foreach (OneLeson lesson in playerData.playerData.progress)
+        else
         {
-            if (lesson.tests != null)
-            {
-                foreach (OneTestQuestion test in lesson.tests)
-                {
-                    if (test.id == testId)
-                    {
-                        Debug.Log("worked true");
-                        ConversationManager.Instance.SetBool("ThisTestCompleted", true);
-                    }
-                }
-            }
-        }
-        Debug.Log("worked false");
-        Debug.LogWarning($"Test with ID {testId} not found.");
-        ConversationManager.Instance.SetBool("ThisTestCompleted", false);
+            Debug.Log("???? ?? ???? ? ??????????? ????????");
 
+             ConversationManager.Instance.SetBool("ThisTestCompleted", FindObjectOfType<GameAPI>().IsTestCompleted(testId));
+        }
     }
 }

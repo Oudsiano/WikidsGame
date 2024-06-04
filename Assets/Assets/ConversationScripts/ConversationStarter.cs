@@ -71,12 +71,12 @@ public class ConversationStarter : MonoBehaviour
     {
         if (FindObjectOfType<GameAPI>().IsTestCompleted(testId))
         {
-            Debug.Log("???? ???? ? ??????????? ????????");
+            Debug.Log("test completed znachenie update");
              ConversationManager.Instance.SetBool("ThisTestCompleted", FindObjectOfType<GameAPI>().IsTestCompleted(testId));
         }
         else
         {
-            Debug.Log("???? ?? ???? ? ??????????? ????????");
+            Debug.Log("test not completed znachenie update");
 
              ConversationManager.Instance.SetBool("ThisTestCompleted", FindObjectOfType<GameAPI>().IsTestCompleted(testId));
         }

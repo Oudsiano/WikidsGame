@@ -176,11 +176,13 @@ public class GameAPI : MonoBehaviour
                 {
                     if (test.id == testId)
                     {
+                        Debug.Log("game api work");
                         return test.completed;
                     }
                 }
             }
         }
+        Debug.Log("game api work");
         return false;
     }
 

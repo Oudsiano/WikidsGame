@@ -11,12 +11,13 @@ public class ConversationStarter : MonoBehaviour
     [SerializeField] public NPCConversation SecondConversation;
 
     public bool waitStartSecondDialog = false;
+
     public void StartDialog()
     {
         data = FindObjectOfType<DownloadTestData>();
         if (ConversationManager.Instance.IsConversationActive)
         {
-            Debug.LogError("??????? ????????? ?????? ??? ??? ?????????? ???????. ??????????? ??????, ?? ???????");
+            Debug.LogError("A conversation is already active. Please wait for it to finish before starting a new one.");
             return;
         }
 
@@ -24,7 +25,7 @@ public class ConversationStarter : MonoBehaviour
         ConversationManager.Instance.StartConversation(myConversation);
         DialogStarted = true;
         Debug.Log("Dialog Started");
-        //TODO: ??????? ?????? ? ???????? ?????? data.countSuccessAnswer ??? ????? ???????.
+        //TODO: Uncomment this and display the success count once the data object is properly initialized.
         //Debug.Log(data.countSuccessAnswers);
     }
 
@@ -33,7 +34,7 @@ public class ConversationStarter : MonoBehaviour
         if (waitStartSecondDialog)
         {
             if (!ConversationManager.Instance.IsConversationActive)
-            StartSecondDialog();
+                StartSecondDialog();
         }
     }
 
@@ -44,7 +45,7 @@ public class ConversationStarter : MonoBehaviour
             ConversationManager.Instance.StartConversation(SecondConversation);
         else
         {
-            Debug.LogError("not have second conversation");
+            Debug.LogError("No second conversation available.");
         }
     }
 
@@ -59,11 +60,38 @@ public class ConversationStarter : MonoBehaviour
     public void DialogEnded()
     {
         DialogStarted = false;
-
     }
 
     public void UpdateSuccessState()
     {
         ConversationManager.Instance.SetBool("TestSuccess", FindObjectOfType<GameAPI>().TestSuccessKey);
+    }
+
+    public void IsTestCompleted(int testId)
+    {
+        DataPlayer playerData = FindObjectOfType<DataPlayer>();
+        if (playerData == null || playerData.playerData == null || playerData.playerData.progress == null)
+        {
+            Debug.LogError("Player data or progress data is missing.");
+        }
+
+        foreach (OneLeson lesson in playerData.playerData.progress)
+        {
+            if (lesson.tests != null)
+            {
+                foreach (OneTestQuestion test in lesson.tests)
+                {
+                    if (test.id == testId)
+                    {
+                        Debug.Log("worked true");
+                        ConversationManager.Instance.SetBool("ThisTestCompleted", true);
+                    }
+                }
+            }
+        }
+        Debug.Log("worked false");
+        Debug.LogWarning($"Test with ID {testId} not found.");
+        ConversationManager.Instance.SetBool("ThisTestCompleted", false);
+
     }
 }

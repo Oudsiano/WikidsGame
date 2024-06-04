@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public enum QuestType
 {
     killEnemy,
-    VisitPoints,
+    toSpeekNPC,
 
 }
 
@@ -64,6 +64,16 @@ public class QuestManager : MonoBehaviour
         {
             if (item.QuestType == QuestType.killEnemy)
                 item.addOneProcess();
+        }
+    }
+
+    public void startedConversation(ConversationStarter conversationStarter)
+    {
+        foreach (UiOneQuestElement item in QuestsInScene)
+        {
+            if (item.QuestType == QuestType.toSpeekNPC)
+
+                item.startedConversation(conversationStarter);
         }
     }
 }

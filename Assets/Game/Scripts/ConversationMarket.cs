@@ -25,6 +25,7 @@ public class ConversationMarket : MonoBehaviour
 
     private void OnConversationEnded()
     {
+        if (MarketBtn!=null)
         MarketBtn.gameObject.SetActive(false);
     }
 

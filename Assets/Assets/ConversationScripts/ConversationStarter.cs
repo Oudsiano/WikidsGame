@@ -20,6 +20,8 @@ public class ConversationStarter : MonoBehaviour
             return;
         }
 
+        IGame.Instance.QuestManager.startedConversation(this);
+
         DataPlayer playerData = FindObjectOfType<DataPlayer>();
         ConversationManager.Instance.StartConversation(myConversation);
         DialogStarted = true;

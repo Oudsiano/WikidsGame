@@ -1,3 +1,4 @@
+using DialogueEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,6 +21,11 @@ public class UiOneQuestElement : MonoBehaviour
     RectTransform rtimgProcess;
     Vector2 sizeDeltaImgProcess;
 
+    //ƒл€ начатых бесед услови€
+    public List<string> ListNeedStartConversations;
+    //дл€ различных элементов лист выполнени€ услови€
+    private List<bool> pointSuccess;
+
     public QuestType QuestType { get => questType; set => questType = value; }
 
     public void setQuest(OneQuest quest)
@@ -32,6 +38,18 @@ public class UiOneQuestElement : MonoBehaviour
 
         rtimgProcess = imgProcess.GetComponent<RectTransform>();
         sizeDeltaImgProcess = rtimgProcess.sizeDelta;
+
+        if (quest.questType == QuestType.toSpeekNPC)
+        {
+            targetProcess = quest.ListNeedConversationsStarter.Count;
+            pointSuccess = new List<bool>();
+            ListNeedStartConversations = new List<string>();
+            for (int i = 0; i < quest.ListNeedConversationsStarter.Count; i++)
+            {
+                pointSuccess.Add(false);
+                ListNeedStartConversations.Add(quest.ListNeedConversationsStarter[i]);
+            }
+        }
     }
 
     private void CheckUpdate()
@@ -41,7 +59,7 @@ public class UiOneQuestElement : MonoBehaviour
             case QuestType.killEnemy:
                 updateProcess(currentProcess, targetProcess);
                 break;
-            case QuestType.VisitPoints:
+            case QuestType.toSpeekNPC:
                 updateProcess(currentProcess, targetProcess);
                 break;
             default:
@@ -49,12 +67,34 @@ public class UiOneQuestElement : MonoBehaviour
         }
     }
 
+
+
     public void addOneProcess()
     {
         currentProcess++;
         CheckUpdate();
 
         //TODO чекнуть завершение
+    }
+    public void startedConversation(ConversationStarter conversationStarter)
+    {
+        for (int i = 0; i < ListNeedStartConversations.Count; i++)
+        {
+            if (ListNeedStartConversations[i] == conversationStarter.name)
+            {
+                if (pointSuccess[i]) return;
+                else
+                {
+                    pointSuccess[i] = true;
+                }
+            }
+        }
+        currentProcess = 0;
+        foreach (var item in pointSuccess)
+        {
+            if (item) currentProcess++;
+        }
+        CheckUpdate();
     }
 
     private void updateProcess(float c, float t)

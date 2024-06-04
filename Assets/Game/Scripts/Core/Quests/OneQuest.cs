@@ -1,3 +1,4 @@
+using DialogueEditor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,9 @@ public class OneQuest : ScriptableObject
 
     [SerializeField] public QuestType questType;
     [SerializeField] public int questTargetCount;
+
+    //Специальное условие на необходимость поговорить с определенным количеством НПС
+    [SerializeField] public List<string> ListNeedConversationsStarter;
 
 
 }

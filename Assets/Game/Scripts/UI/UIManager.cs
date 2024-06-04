@@ -54,10 +54,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _btnClosePLayerInfoScr;
     [SerializeField] private Button _btnComfirmPLayerInfoScr;
 
-    [SerializeField] private Toggle _toggleSound;
-    [SerializeField] private Slider _sliderSound;
-    [SerializeField] private Toggle _toggleMusic;
-    [SerializeField] private Slider _sliderMusic;
 
     [Header("IconMap")]
     [SerializeField] private GameObject IconMapPanel;
@@ -72,6 +68,13 @@ public class UIManager : MonoBehaviour
 
     [Header("OptionsSector")]
     [SerializeField] private Button _btnOptions;
+    [SerializeField] private GameObject OptionScr;
+    [SerializeField] private Button _btnCloseOptionScr;
+    [SerializeField] private Toggle _toggleSound;
+    [SerializeField] private Slider _sliderSound;
+    [SerializeField] private Toggle _toggleMusic;
+    [SerializeField] private Slider _sliderMusic;
+    [SerializeField] private Button _btnTest;
 
 
 
@@ -116,13 +119,25 @@ public class UIManager : MonoBehaviour
         _btnCloseQuestScr.onClick.AddListener(() => { QuestScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false); });
 
         _btnOptions.onClick.AddListener(OnClickBtnOption);
+        _btnCloseOptionScr.onClick.AddListener(OnCLickCloseOption);
+        _btnTest.onClick.AddListener(OnClickBtnTest);
 
         SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
     }
 
-    private void OnClickBtnOption()
+    private void OnCLickCloseOption()
+    {
+        OptionScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false);
+    }
+
+    private void OnClickBtnTest()
     {
         uIBug.TryAddEquipToBug(IGame.Instance.QuestManager.allQuestsItems[0]);
+    }
+
+    private void OnClickBtnOption()
+    {
+        OptionScr.SetActive(true); IGame.Instance.SavePlayerPosLikeaPause(true);
     }
 
     public void UpdateIconMapPanel(string text)

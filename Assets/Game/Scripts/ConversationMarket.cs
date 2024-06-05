@@ -52,6 +52,7 @@ public class ConversationMarket : MonoBehaviour
     private void OnDestroy()
     {
         ConversationManager.OnConversationStarted -= onStartConversation;
+        ConversationManager.OnConversationEnded -= OnConversationEnded;
         MarketBtn.onClick.RemoveAllListeners();
     }
 }

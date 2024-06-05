@@ -49,6 +49,7 @@ namespace RPG.Controller
         private void CreateHalfCircle()
         {
             halfCircle = new GameObject("HalfCircle");
+            halfCircle.layer = LayerMask.NameToLayer("Enemy");
             halfCircle.transform.parent = transform;
             halfCircle.transform.localPosition = new Vector3(0, 1, 0);
             halfCircle.transform.localEulerAngles = new Vector3(0, 0, 180);

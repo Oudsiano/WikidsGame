@@ -71,16 +71,18 @@ public class ConversationStarter : MonoBehaviour
 
     public void IsTestCompleted(int testId)
     {
-        if (FindObjectOfType<GameAPI>().IsTestCompleted(testId))
+        FindObjectOfType<GameAPI>().IsTestCompleted(testId, (isCompleted) =>
         {
-            Debug.Log("test completed znachenie update");
-             ConversationManager.Instance.SetBool("ThisTestCompleted", FindObjectOfType<GameAPI>().IsTestCompleted(testId));
-        }
-        else
-        {
-            Debug.Log("test not completed znachenie update");
-
-             ConversationManager.Instance.SetBool("ThisTestCompleted", FindObjectOfType<GameAPI>().IsTestCompleted(testId));
-        }
+            if (isCompleted)
+            {
+                Debug.Log("test completed znachenie update");
+                ConversationManager.Instance.SetBool("ThisTestCompleted", true);
+            }
+            else
+            {
+                Debug.Log("test not completed znachenie update");
+                ConversationManager.Instance.SetBool("ThisTestCompleted", false);
+            }
+        });
     }
 }

@@ -156,7 +156,7 @@ public class GameAPI : MonoBehaviour
                 _currentConversation.waitStartSecondDialog = true;
 
 
-            Debug.Log("?????????? ??????? " + countSuccessAnswers);
+            Debug.Log("Успешные ответы: " + countSuccessAnswers);
 
             Debug.Log("Data downloaded successfully");
         }
@@ -166,24 +166,47 @@ public class GameAPI : MonoBehaviour
         }
     }
 
-    public bool IsTestCompleted(int testId)
+    public void IsTestCompleted(int testId, Action<bool> callback)
     {
-        if (dataPlayer.playerData.progress != null)
+        StartCoroutine(CheckTestCompletionOnServer(testId, callback));
+    }
+
+    IEnumerator CheckTestCompletionOnServer(int testId, Action<bool> callback)
+    {
+        UnityWebRequest request = UnityWebRequest.Get("https://wikids.ru/api/v1/game/" + playerID);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
         {
-            foreach (var lesson in dataPlayer.playerData.progress)
+            string json = request.downloadHandler.text;
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
+            dataPlayer.playerData = playerData;
+
+            if (dataPlayer.playerData.progress != null)
             {
-                foreach (var test in lesson.tests)
+                foreach (var lesson in dataPlayer.playerData.progress)
                 {
-                    if (test.id == testId)
+                    foreach (var test in lesson.tests)
                     {
-                        Debug.Log("game api work");
-                        return test.completed;
+                        if (test.id == testId)
+                        {
+                            Debug.Log("game api work");
+                            // Вызываем колбэк с результатом
+                            callback(test.completed);
+                            yield break;
+                        }
                     }
                 }
             }
+            // Если тест не найден, вызываем колбэк с false
+            callback(false);
         }
-        Debug.Log("game api work");
-        return false;
+        else
+        {
+            Debug.LogError("Error downloading data: " + request.error);
+            // В случае ошибки вызываем колбэк с false
+            callback(false);
+        }
     }
 
     public IEnumerator SaveGameData()

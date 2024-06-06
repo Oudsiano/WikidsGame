@@ -71,8 +71,8 @@ public class HelpInFirstScene : MonoBehaviour
     private void EndStudy1()
     {
         text1.SetActive(false);
-        if (IGame.Instance.dataPLayer.playerData.helpIndex != 0) return;
         Panel.SetActive(false);
+        if (IGame.Instance.dataPLayer.playerData.helpIndex != 0) return;
         IGame.Instance.dataPLayer.playerData.helpIndex = 1;
         Study2();
     }
@@ -83,57 +83,57 @@ public class HelpInFirstScene : MonoBehaviour
         if (IGame.Instance.dataPLayer.playerData.sceneToLoad != (int)allScenes.battle1) return;
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 1) return;
         restTexts();
-        Panel.SetActive(true);
         text2.SetActive(true);
+        Panel.SetActive(true);
     }
     private void EndStudy2()
     {
+        Panel.SetActive(false);
         text2.SetActive(false);
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 1) return;
-        Panel.SetActive(false);
         IGame.Instance.dataPLayer.playerData.helpIndex = 2;
     }
     public void Study3()
     {
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 2) return;
         restTexts();
-        Panel.SetActive(true);
         text3.SetActive(true);
+        Panel.SetActive(true);
     }
 
     public void EndStudy3()
     {
+        Panel.SetActive(false);
         text3.SetActive(false);
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 2) return;
-        Panel.SetActive(false);
         IGame.Instance.dataPLayer.playerData.helpIndex = 3;
     }
     public void Study4()
     {
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 3) return;
         restTexts();
-        Panel.SetActive(true);
         text4.SetActive(true);
+        Panel.SetActive(true);
     }
     public void EndStudy4()
     {
+        Panel.SetActive(false);
         text4.SetActive(false);
         if (IGame.Instance.dataPLayer.playerData.helpIndex != 3) return;
-        Panel.SetActive(false);
         IGame.Instance.dataPLayer.playerData.helpIndex = 4;
     }
     public void Study5()
     {
         //тут без условия. Типа дошли до конца карты и хватит
         restTexts();
-        Panel.SetActive(true);
         text5.SetActive(true);
-            IGame.Instance.dataPLayer.playerData.helpIndex = 5;
+        Panel.SetActive(true);
+        IGame.Instance.dataPLayer.playerData.helpIndex = 5;
     }
     public void EndStudy5()
     {
-        text5.SetActive(false);
         Panel.SetActive(false);
+        text5.SetActive(false);
     }
 
 

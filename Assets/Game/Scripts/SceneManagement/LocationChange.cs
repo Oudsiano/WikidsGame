@@ -68,8 +68,9 @@ public class LocationChange : MonoBehaviour
     {
         List<allScenes> posTempList = new List<allScenes>(IGame.Instance.LevelChangeObserver.DAllScenes.Keys);
         allScenes maxID = posTempList[n];
-        if (n + 1 < posTempList.Count)
-            maxID = posTempList[n + 1];
+
+        /*if (n + 1 < posTempList.Count)
+            maxID = posTempList[n + 1];*/
 
 
         int findedIndex = 0;
@@ -78,6 +79,12 @@ public class LocationChange : MonoBehaviour
             if (regions[i].loadedScene == maxID)
                 if (findedIndex < i)
                     findedIndex = i;
+        }
+
+        if (n>1) //0 и 1 это не сцены а заглушки. Соответственно если 0 или 1, то значит у нас первая сцена и смещения не делаем. Иначе стараемся сделать смещение
+        if ((findedIndex+1)<regions.Count)
+        {
+            findedIndex++;
         }
 
         for (int i = 0; i < regions.Count; i++)

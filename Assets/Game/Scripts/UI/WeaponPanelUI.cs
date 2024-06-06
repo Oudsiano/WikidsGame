@@ -28,7 +28,7 @@ public class WeaponPanelUI : MonoBehaviour
 
     private void OnCLickFireballBTN()
     {
-        IGame.Instance.playerController.GetFighter().SetFirball();
+        IGame.Instance.playerController.GetFighter().SetFireball();
         FireballPanell.SetActive(true);
         CommonWeaponPanell.SetActive(false);
     }

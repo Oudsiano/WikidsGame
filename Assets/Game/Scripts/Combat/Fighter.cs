@@ -13,9 +13,9 @@ namespace RPG.Combat
         [SerializeField] private Transform leftHandPosition = null;
         [SerializeField] private Weapon defaultWeapon = null;
         [SerializeField] private Weapon equippedWeapon = null;
-        [SerializeField] private Weapon FireballWeapon = null;
+        [SerializeField] private Weapon fireballWeapon = null;
         private bool isPlayer;
-        private bool isFirebalNow = false;
+        private bool isFireballNow = false;
 
         [Header("")]
         public float timer = 20;
@@ -43,10 +43,10 @@ namespace RPG.Combat
                 EquipWeapon(defaultWeapon);
         }
 
-        public void SetFirball()
+        public void SetFireball()
         {
-            isFirebalNow = true;
-            FireballWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
+            isFireballNow = true;
+            fireballWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
 
         public void SetCommonWeapon()
@@ -54,7 +54,7 @@ namespace RPG.Combat
             if (anim == null)
                 Awake();
 
-            isFirebalNow = false;
+            isFireballNow = false;
             if (equippedWeapon != null)
                 equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
@@ -71,7 +71,7 @@ namespace RPG.Combat
         {
             if (weapon.IsFireball())
             {
-                FireballWeapon = weapon;
+                fireballWeapon = weapon;
                 return;
             }
             else
@@ -129,12 +129,12 @@ namespace RPG.Combat
             }
             else if (timer > equippedWeapon.GetTimeBetweenAttacks())
             {
-                if (isPlayer && isFirebalNow)
+                if (isPlayer && isFireballNow)
                 {
                     if (IGame.Instance.dataPLayer.playerData.chargeEnergy > 0)
                     {
                         MainPlayer.Instance.ChangeCountEnegry(-1);
-                        shotFireball();
+                        ShootFireball();
                         timer = 0;
                         return;
                     }
@@ -154,11 +154,11 @@ namespace RPG.Combat
             }
         }
 
-        private void shotFireball()
+        private void ShootFireball()
         {
             anim.ResetTrigger("stopAttack");
             anim.SetTrigger("attack");
-            FireballWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition);
+            fireballWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition);
         }
 
         public void Cancel()
@@ -194,7 +194,7 @@ namespace RPG.Combat
 
             AudioManager.instance.PlaySound("Attack");
 
-            if (IsBehindTarget() && !target.GetComponent<MainPlayer>()) // Проверка, если атака сзади и цель не игрок
+            if (IsBehindTarget() && !target.GetComponent<MainPlayer>() && !target.GetComponent<Boss>()) // Проверка, если атака сзади и цель не игрок и не босс
             {
                 target.TakeDamage(target.GetCurrentHealth()); // Убить цель мгновенно
             }
@@ -227,10 +227,6 @@ namespace RPG.Combat
                 }
             }
         }
-
-
-
-
 
         private void OnDrawGizmos()
         {

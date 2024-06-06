@@ -44,6 +44,7 @@ namespace RPG.Controller
             guardRotation = transform.rotation;
 
             CreateHalfCircle();
+            health.redHalfCircle = halfCircle;
         }
 
         private void CreateHalfCircle()

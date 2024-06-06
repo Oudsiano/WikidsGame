@@ -210,7 +210,6 @@ namespace RPG.Combat
             // Проверить, жива ли цель
             if (target.IsDead())
             {
-                IGame.Instance.QuestManager.newKill();
                 Animator targetAnim = target.GetComponent<Animator>();
                 if (targetAnim != null)
                 {

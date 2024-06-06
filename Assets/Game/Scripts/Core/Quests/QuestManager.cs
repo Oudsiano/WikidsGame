@@ -11,6 +11,13 @@ public enum QuestType
     toSpeekNPC,
 }
 
+public enum QuestAwardType
+{
+    none,
+    money,
+    item,
+}
+
 public class QuestManager : MonoBehaviour
 {
     public List<OneQuest> thisQuestsScene;
@@ -19,7 +26,7 @@ public class QuestManager : MonoBehaviour
 
     private QuestsForThisScene _QuestsForThisScene;
 
-    public static event Action KillEnemy;
+    //public static event Action KillEnemy;
 
     public void Init()
     {

@@ -93,7 +93,7 @@ namespace RPG.Core
             transform.localEulerAngles = new Vector3(camXRotation, camYRotation, 0);
             OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
             OnCameraRotation?.Invoke();
-            //NewYRotation?.Invoke(camYRotation);
+            NewYRotation?.Invoke(camYRotation);
             //NewXRotation?.Invoke(camXRotation);
         }
 

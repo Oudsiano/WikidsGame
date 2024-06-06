@@ -1,4 +1,5 @@
 using DialogueEditor;
+using FarrokhGames.Inventory.Examples;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,11 @@ public class OneQuest : ScriptableObject
 
     //Специальное условие на необходимость поговорить с определенным количеством НПС
     [SerializeField] public List<string> ListNeedConversationsStarter;
+
+    [Header("Award block")]
+    [SerializeField] public QuestAwardType questAwardType;
+    [SerializeField] public float countMoney;
+    [SerializeField] public ItemDefinition awardItem;
 
 
 }

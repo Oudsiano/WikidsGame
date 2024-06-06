@@ -9,6 +9,7 @@ public enum QuestType
 {
     killEnemy,
     toSpeekNPC,
+    killSpecialEnemy,
 }
 
 public enum QuestAwardType
@@ -73,7 +74,7 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    public void newKill()
+    public void newKill(string name = null)
     {
         if (QuestsInScene == null)
         {
@@ -90,6 +91,12 @@ public class QuestManager : MonoBehaviour
             }
 
             if (item.QuestType == QuestType.killEnemy)
+            {
+                item.addOneProcess();
+            }
+
+            if (item.QuestType == QuestType.killSpecialEnemy)
+            if (item.quest.specialEnemyName == name)
             {
                 item.addOneProcess();
             }

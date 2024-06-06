@@ -13,13 +13,21 @@ public class OneQuest : ScriptableObject
     [SerializeField] public QuestType questType;
     [SerializeField] public int questTargetCount;
 
+
+    [Header("toSpeekNPC block")]
     //Специальное условие на необходимость поговорить с определенным количеством НПС
     [SerializeField] public List<string> ListNeedConversationsStarter;
+
+
+    [Header("killSpecialEnemy block")]
+    [SerializeField] public string specialEnemyName;
 
     [Header("Award block")]
     [SerializeField] public QuestAwardType questAwardType;
     [SerializeField] public float countMoney;
     [SerializeField] public ItemDefinition awardItem;
+
+    
 
 
 }

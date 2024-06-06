@@ -23,14 +23,14 @@ public class UiOneQuestElement : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text textAward;
 
     private bool compliteWaitAward = false;
-
+    private bool alreadyStarted = true; //Выдали ли нам квест
     private bool fullComplite = false; //Полностю завершеный квест
 
     private float currentProcess;
     private float targetProcess;
 
     private QuestType questType;
-    OneQuest quest;
+    public OneQuest quest;
 
 
 
@@ -112,8 +112,6 @@ public class UiOneQuestElement : MonoBehaviour
             case QuestAwardType.item:
                 IGame.Instance.UIManager.uIBug.TryAddEquipToBug(quest.awardItem);
                 break;
-            default:
-                break;
         }
 
         FadeOutAndShrinkUIElement(this.gameObject);
@@ -132,6 +130,7 @@ public class UiOneQuestElement : MonoBehaviour
                 updateProcess(currentProcess, targetProcess);
                 break;
             default:
+                updateProcess(currentProcess, targetProcess);
                 break;
         }
 
@@ -145,11 +144,14 @@ public class UiOneQuestElement : MonoBehaviour
 
     public void addOneProcess()
     {
+        if (!alreadyStarted) return;
         currentProcess++;
         CheckUpdateAndComplite();
     }
     public void startedConversation(ConversationStarter conversationStarter)
     {
+        if (!alreadyStarted) return;
+
         for (int i = 0; i < ListNeedStartConversations.Count; i++)
         {
             if (ListNeedStartConversations[i] == conversationStarter.name)
@@ -212,7 +214,6 @@ public class UiOneQuestElement : MonoBehaviour
         sequence.OnUpdate(()=>
         {
             vertLGrroup.SetLayoutVertical();
-            Debug.Log("upd");
         });
     }
 

@@ -20,6 +20,8 @@ namespace RPG.Core
         // Событие, которое будет вызываться при смерти персонажа
         public event Action OnDeath;
 
+        public GameObject redHalfCircle;
+
         void Start()
         {
             currentHealth = maxHealth; // Устанавливаем текущее здоровье в максимальное значение при старте
@@ -84,6 +86,8 @@ namespace RPG.Core
         // Метод для обработки смерти существа
         private void Die()
         {
+            if (redHalfCircle != null) redHalfCircle.SetActive(false);
+
             GetComponent<Animator>().SetTrigger("dead"); // Устанавливаем триггер смерти для аниматора
             isDead = true; // Устанавливаем флаг "мертв"
             GetComponent<ActionScheduler>().CancelAction(); // Отменяем действие, выполняемое действенным планировщиком
@@ -103,6 +107,15 @@ namespace RPG.Core
                     GetComponent<NavMeshAgent>().enabled = false; // Отключаем компонент навигации
                     removed = true; // Устанавливаем флаг "удален"
                 }
+
+                IGame.Instance.QuestManager.newKill();
+
+                QuestSpecialEnemyName SpecialEnemyName = GetComponent<QuestSpecialEnemyName>();
+                if (SpecialEnemyName != null)
+                {
+                    IGame.Instance.QuestManager.newKill(SpecialEnemyName.specialEnemyName);
+                }
+
                 Destroy(healthBar.gameObject);
                 Destroy(this.gameObject, 5f); // Уничтожаем объект через 5 секунд после смерти
                 IGame.Instance.CoinManager.MakeGoldOnSceneWithCount(25, this.gameObject.transform.position);

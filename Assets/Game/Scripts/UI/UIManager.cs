@@ -8,6 +8,7 @@ using TMPro;
 using FarrokhGames.Inventory;
 using FarrokhGames.Inventory.Examples;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -123,6 +124,16 @@ public class UIManager : MonoBehaviour
         _btnTest.onClick.AddListener(OnClickBtnTest);
 
         SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
+
+
+        SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+    }
+
+    private void SceneLoader_LevelChanged(Scene arg0, LoadSceneMode arg1)
+    {
+        GameObject MapCamera = GameObject.Find("CameraForMainMap");
+        if (MapCamera != null)
+            MapCamera.GetComponent<Camera>().enabled = false;
     }
 
     private void OnCLickCloseOption()
@@ -231,11 +242,21 @@ public class UIManager : MonoBehaviour
     {
         IGame.Instance.SavePlayerPosLikeaPause(false);
         MapCanvas.SetActive(false);
+
+        GameObject MapCamera = GameObject.Find("CameraForMainMap");
+        if (MapCamera != null)
+            MapCamera.GetComponent<Camera>().enabled = false;
     }
 
     private void OnClickButtonMap()
     {
-        if (!MapCanvas.gameObject.activeSelf) MapCanvas.gameObject.SetActive(true);
+        if (!MapCanvas.gameObject.activeSelf)
+        {
+            GameObject MapCamera = GameObject.Find("CameraForMainMap");
+            if (MapCamera != null)
+                MapCamera.GetComponent<Camera>().enabled = true;
+            MapCanvas.gameObject.SetActive(true);
+        }
         IGame.Instance.SavePlayerPosLikeaPause(true);
     }
     private void OnChangeMoney(double newValue)

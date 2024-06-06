@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _btnComfirmPLayerInfoScr;
 
 
-    [Header("IconMap")]
+    [Header("Information Icon")]
     [SerializeField] private GameObject IconMapPanel;
     [SerializeField] private TMPro.TMP_Text IconMapText;
 
@@ -187,7 +187,7 @@ public class UIManager : MonoBehaviour
     {
         if (obj != null && obj.Length < 1)
         {
-            textNamePlayer.text = "¬ведите им€";
+            textNamePlayer.text = "??????? ???";
             return;
 
         }

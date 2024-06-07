@@ -74,6 +74,30 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+    public void StartNewQuest(OneQuest quest)
+    {
+        GameObject newQuest = Instantiate(IGame.Instance.UIManager.OneQuestPref, IGame.Instance.UIManager.QuestsContentScrollRect.content);
+
+        var questElement = newQuest.GetComponent<UiOneQuestElement>();
+        if (questElement != null)
+        {
+            questElement.setQuest(quest);
+            QuestsInScene.Add(questElement);
+        }
+    }
+    public void StartNewQuestIfNot(OneQuest quest)
+    {
+        //if quest not exist before
+        foreach (var item in QuestsInScene)
+        {
+            if (item.quest.name == quest.name)
+            {
+                return;
+            }
+        }
+        StartNewQuest(quest);
+    }
+
     public void newKill(string name = null)
     {
         if (QuestsInScene == null)

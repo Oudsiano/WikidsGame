@@ -32,6 +32,20 @@ public class IGame : MonoBehaviour
             if (instance == null)
             {
                 instance = FindObjectOfType<IGame>();
+                /*if (instance==null)
+                {
+                    SceneComponent sc = FindObjectOfType<SceneComponent>();
+                    if (sc!=null)
+                    {
+                        Instantiate(sc.TheCore);
+                        instance = FindObjectOfType<IGame>();
+                    }
+                    else
+                    {
+                        Debug.LogError("Not added Core prefab");
+                    }
+                }
+                */
                 instance.Init();
             }
             return instance;

@@ -7,5 +7,6 @@ public class SceneComponent : MonoBehaviour
 {
     [SerializeField] public allScenes IdScene;
 
+    //[SerializeField] public GameObject TheCore;
 
 }

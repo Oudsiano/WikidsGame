@@ -85,4 +85,14 @@ public class ConversationStarter : MonoBehaviour
             }
         });
     }
+
+    public void AnywayStartNewQuest(OneQuest quest)
+    {
+        IGame.Instance.QuestManager.StartNewQuest(quest);
+    }
+
+    public void OnlyOneTimeStartNewQuest(OneQuest quest)
+    {
+        IGame.Instance.QuestManager.StartNewQuestIfNot(quest);
+    }
 }

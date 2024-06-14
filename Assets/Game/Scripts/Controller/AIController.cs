@@ -34,6 +34,9 @@ namespace RPG.Controller
 
         private float lastHealth;
 
+        [SerializeField] private float startDistanceForShowIcon = 125f;
+        [SerializeField] private float maxOpacity = 0.3f;  // Добавлено поле для максимальной непрозрачности
+
         private void Awake()
         {
             fighter = GetComponent<Fighter>();
@@ -45,6 +48,13 @@ namespace RPG.Controller
 
             CreateHalfCircle();
             health.redHalfCircle = halfCircle;
+
+            FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
+        }
+
+        private void OnDestroy()
+        {
+            FollowCamera.OnCameraDistance -= FollowCamera_OnCameraDistance;
         }
 
         private void CreateHalfCircle()
@@ -60,7 +70,7 @@ namespace RPG.Controller
             halfCircleFilter.mesh = CreateHalfCircleMesh(chaseDistance, 20);
 
             halfCircleRenderer.material = new Material(Shader.Find("Standard"));
-            halfCircleRenderer.material.color = new Color(1, 0, 0, 0.3f); // Красный полупрозрачный полукруг
+            halfCircleRenderer.material.color = new Color(1, 0, 0, maxOpacity); // Используем maxOpacity
             halfCircleRenderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
             halfCircleRenderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             halfCircleRenderer.material.SetInt("_ZWrite", 0);
@@ -243,6 +253,31 @@ namespace RPG.Controller
             timeSinceLastSawPlayer = 0;
             fighter.Attack(MainPlayer.Instance.gameObject);
             lastKnownLocation = MainPlayer.Instance.transform.position;
+        }
+
+        private void FollowCamera_OnCameraDistance(float obj)
+        {
+            if (halfCircleRenderer != null)
+            {
+                if (obj < startDistanceForShowIcon)
+                {
+                    halfCircle.SetActive(true);
+                    Color newColor = halfCircleRenderer.material.color;
+                    newColor.a = Mathf.Min(((startDistanceForShowIcon - obj) / 50f), maxOpacity);
+                    halfCircleRenderer.material.color = newColor;
+
+                    float _scale = (startDistanceForShowIcon - obj) / 100f + 1;
+                    halfCircle.transform.localScale = new Vector3(_scale, _scale, _scale);
+                }
+                else
+                {
+                    halfCircle.SetActive(false);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Полусфера не найдена, пожалуйста проверьте инициализацию.");
+            }
         }
     }
 }

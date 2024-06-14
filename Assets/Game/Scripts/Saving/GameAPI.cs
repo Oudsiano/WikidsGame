@@ -6,6 +6,7 @@ using System.Text;
 using TMPro;
 using DialogueEditor;
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class ErrorResponse
@@ -93,12 +94,17 @@ public class GameAPI : MonoBehaviour
             string json = request.downloadHandler.text;
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
             dataPlayer.playerData = playerData;
-            Debug.Log("Data downloaded successfully");
 
+            // Инициализация списка пройденных квестов
+            if (dataPlayer.playerData.completedQuests == null)
+            {
+                dataPlayer.playerData.completedQuests = new List<string>();
+            }
+
+            Debug.Log("Data downloaded successfully");
             IGame.Instance.saveGame.MakeLoad();
 
             gameGet = true;
-            //sceneLoader.TryChangeLevel((LevelChangeObserver.allScenes)dataPlayer.playerData.sceneToLoad);
             GameLoaded = true;
         }
         else
@@ -113,11 +119,12 @@ public class GameAPI : MonoBehaviour
                 GameLoaded = true;
             }
             else
-
+            {
                 Debug.LogError("Error downloading data: " + request.error);
-
+            }
         }
     }
+
 
     IEnumerator GetGameDataTest(int IDLesson, ConversationStarter _currentConversation)
     {

@@ -92,7 +92,6 @@ public class UiOneQuestElement : MonoBehaviour
 
     private void OnClickBtn()
     {
-
         if (!compliteWaitAward)
         {
             RTbutton.DOShakeAnchorPos(1f, new Vector2(10, 0), vibrato: 8, randomness: 0, snapping: false, fadeOut: false)
@@ -114,10 +113,21 @@ public class UiOneQuestElement : MonoBehaviour
                 break;
         }
 
+        MarkQuestAsComplete();
         FadeOutAndShrinkUIElement(this.gameObject);
         fullComplite = true;
-
     }
+
+    private void MarkQuestAsComplete()
+    {
+        var dataPlayer = IGame.Instance.dataPLayer;
+        if (!dataPlayer.playerData.completedQuests.Contains(quest.name))
+        {
+            dataPlayer.playerData.completedQuests.Add(quest.name);
+            StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
+        }
+    }
+
 
     private void CheckUpdateAndComplite()
     {

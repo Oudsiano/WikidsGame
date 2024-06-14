@@ -43,7 +43,13 @@ public class QuestManager : MonoBehaviour
 
         if (_QuestsForThisScene != null)
         {
-            thisQuestsScene = new List<OneQuest>(_QuestsForThisScene.QuestsThisScene);
+            foreach (var quest in _QuestsForThisScene.QuestsThisScene)
+            {
+                if (!IGame.Instance.dataPLayer.playerData.completedQuests.Contains(quest.name))
+                {
+                    thisQuestsScene.Add(quest);
+                }
+            }
         }
 
         if (IGame.Instance.UIManager.QuestsContentScrollRect != null && IGame.Instance.UIManager.QuestsContentScrollRect.content != null)
@@ -73,6 +79,7 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
+
 
     public void StartNewQuest(OneQuest quest)
     {

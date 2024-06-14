@@ -75,7 +75,7 @@ public class PlayerData
     public int IDmaxRegionAvaliable;
 
     public string[] containsBug;
-
+    public List<string> completedQuests;
 
     public int helpIndex;
 

@@ -7109,6 +7109,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1696370488}
+    - targetCorrespondingSourceObject: {fileID: 6916854950030640452, guid: eaec74142d9304ce2974d156d260a179,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1696370489}
   m_SourcePrefab: {fileID: 100100000, guid: eaec74142d9304ce2974d156d260a179, type: 3}
 --- !u!4 &837515772 stripped
 Transform:
@@ -13555,6 +13559,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectToDestroy: {fileID: 987319732}
   objectToUpdate: {fileID: 0}
+--- !u!114 &1696370489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696370487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc42fd3bddb037944b2c5576500b24f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  specialEnemyName: Boss1Scene
 --- !u!4 &1696549502 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4013015832439052, guid: 5060cee4354d6e84599aac604f90b57a,
@@ -13913,6 +13930,7 @@ GameObject:
   - component: {fileID: 1787603830}
   - component: {fileID: 1787603831}
   - component: {fileID: 1787603832}
+  - component: {fileID: 1787603833}
   m_Layer: 0
   m_Name: StartPoint
   m_TagString: Untagged
@@ -13961,6 +13979,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicFileName: Lineage_II_-_The_Castle_of_Dion_OST_(SkySound.cc)
+--- !u!114 &1787603833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787603829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baad00200a2e93b4584f064e5e21a371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  QuestsThisScene:
+  - {fileID: 11400000, guid: d9c914114d6284ff6befc4351c806999, type: 2}
 --- !u!4 &1789105288 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4614316209816462, guid: b0039c0b258967342bdb96afc637b6cb,

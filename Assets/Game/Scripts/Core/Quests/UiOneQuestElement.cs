@@ -23,8 +23,8 @@ public class UiOneQuestElement : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text textAward;
 
     private bool compliteWaitAward = false;
-    private bool alreadyStarted = true; //Выдали ли нам квест
-    private bool fullComplite = false; //Полностю завершеный квест
+    private bool alreadyStarted = true; //?????? ?? ??? ?????
+    private bool fullComplite = false; //???????? ?????????? ?????
 
     private float currentProcess;
     private float targetProcess;
@@ -37,9 +37,9 @@ public class UiOneQuestElement : MonoBehaviour
     RectTransform rtimgProcess;
     Vector2 sizeDeltaImgProcess;
 
-    //Для начатых бесед условия
+    //??? ??????? ????? ???????
     public List<string> ListNeedStartConversations;
-    //для различных элементов лист выполнения условия
+    //??? ????????? ????????? ???? ?????????? ???????
     private List<bool> pointSuccess;
 
     public QuestType QuestType { get => questType; set => questType = value; }
@@ -76,10 +76,10 @@ public class UiOneQuestElement : MonoBehaviour
                 textAward.text = "";
                 break;
             case QuestAwardType.money:
-                textAward.text = $"Награда: {quest.countMoney} монет";
+                textAward.text = $"{quest.awardFirstWord} {quest.countMoney} {quest.awardLastWord}";
                 break;
             case QuestAwardType.item:
-                textAward.text = $"Награда: Предмет {quest.awardItem.name}";
+                textAward.text = $"{quest.awardFirstWord}  {quest.awardItem.name}";
                 break;
             default:
                 break;
@@ -139,7 +139,7 @@ public class UiOneQuestElement : MonoBehaviour
         {
             SetFinished();
         }
-        //TODO чекнуть завершение
+        //TODO ??????? ??????????
     }
 
     public void addOneProcess()

@@ -7973,6 +7973,7 @@ GameObject:
   - component: {fileID: 458569659}
   - component: {fileID: 458569660}
   - component: {fileID: 458569661}
+  - component: {fileID: 458569662}
   m_Layer: 0
   m_Name: StartPoint
   m_TagString: Untagged
@@ -8021,6 +8022,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicFileName: 05. Final Conflict
+--- !u!114 &458569662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458569658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baad00200a2e93b4584f064e5e21a371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  QuestsThisScene:
+  - {fileID: 11400000, guid: e4763dddb9076469e9a16f2b43040891, type: 2}
 --- !u!1001 &596988102
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8958,6 +8973,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2091507936}
+    - targetCorrespondingSourceObject: {fileID: 6916854950030640452, guid: 98d4e93adbb0e453284ad6b956d78a80,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2091507937}
   m_SourcePrefab: {fileID: 100100000, guid: 98d4e93adbb0e453284ad6b956d78a80, type: 3}
 --- !u!114 &1613434194 stripped
 MonoBehaviour:
@@ -9091,6 +9110,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectToDestroy: {fileID: 0}
   objectToUpdate: {fileID: 406690270}
+--- !u!114 &2091507937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091507935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc42fd3bddb037944b2c5576500b24f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  specialEnemyName: Boss2Scene
 --- !u!1001 &2689283885967
 PrefabInstance:
   m_ObjectHideFlags: 0

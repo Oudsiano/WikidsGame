@@ -28,11 +28,19 @@ public class QuestManager : MonoBehaviour
     private QuestsForThisScene _QuestsForThisScene;
 
     //public static event Action KillEnemy;
+    private bool alreadyDelegated;
+
+    public void Awake()
+    {
+
+        if (alreadyDelegated) return;        
+        SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+        alreadyDelegated = true;
+    }
 
     public void Init()
     {
         QuestsInScene = new List<UiOneQuestElement>();
-        SceneManager.sceneLoaded += SceneLoader_LevelChanged;
     }
 
     private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode)
@@ -45,10 +53,9 @@ public class QuestManager : MonoBehaviour
         {
             foreach (var quest in _QuestsForThisScene.QuestsThisScene)
             {
-                if (!IGame.Instance.dataPLayer.playerData.completedQuests.Contains(quest.name))
-                {
-                    thisQuestsScene.Add(quest);
-                }
+                if (IGame.Instance.dataPLayer.playerData.completedQuests == null) continue;
+                if (IGame.Instance.dataPLayer.playerData.completedQuests.Contains(quest.name)) continue;
+                thisQuestsScene.Add(quest);
             }
         }
 

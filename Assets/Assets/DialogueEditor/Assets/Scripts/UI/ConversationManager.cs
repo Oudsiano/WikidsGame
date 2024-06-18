@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 namespace DialogueEditor
 {
     public class ConversationManager : MonoBehaviour
@@ -34,11 +34,12 @@ namespace DialogueEditor
         public bool ScrollText;
         public float ScrollSpeed = 1;
         public Sprite BackgroundImage;
+
         public bool BackgroundImageSliced;
         public Sprite OptionImage;
         public bool OptionImageSliced;
         public bool AllowMouseInteraction;
-
+        public Sprite EndButtonImage;
         // Non-User facing 
         // Not exposed via custom inspector
         // 
@@ -72,7 +73,7 @@ namespace DialogueEditor
         public int m_targetScrollTextCount;
         private eState m_state;
         private float m_stateTime;
-        
+
         private Conversation m_conversation;
         private SpeechNode m_currentSpeech;
         private OptionNode m_selectedOption;
@@ -218,7 +219,7 @@ namespace DialogueEditor
                 LogWarning("parameter \'" + paramName + "\' does not exist.");
             }
         }
-        
+
         public void SetBool(string paramName, bool value)
         {
             eParamStatus status;
@@ -550,7 +551,7 @@ namespace DialogueEditor
             else
             {
                 SetState(eState.TransitioningOptionsOn);
-            }            
+            }
         }
 
 
@@ -655,8 +656,62 @@ namespace DialogueEditor
 #endif
         }
 
+
+
+        private void SetupEndConversationButton()
+        {
+            // Проверяем, является ли текущая сцена "OpenScene"
+            if (SceneManager.GetActiveScene().name == "OpenScene")
+            {
+                return; // Не показываем кнопку, если сцена "OpenScene"
+            }
+
+            // Создаем кнопку как дочерний элемент DialoguePanel
+            UIConversationButton endButton = GameObject.Instantiate(ButtonPrefab, DialoguePanel);
+
+            // Настраиваем свойства кнопки
+            endButton.SetupButton(UIConversationButton.eButtonType.End, null, endFont: m_conversation.EndConversationFont);
+
+            // Получаем RectTransform для настройки позиции и размера
+            RectTransform rectTransform = endButton.GetComponent<RectTransform>();
+
+            // Устанавливаем якоря и точку поворота в правый верхний угол DialoguePanel
+            rectTransform.anchorMin = new Vector2(1, 1);
+            rectTransform.anchorMax = new Vector2(1, 1);
+            rectTransform.pivot = new Vector2(1, 1);
+
+            // Задаем размер кнопки 100x100
+            rectTransform.sizeDelta = new Vector2(100, 100);
+
+            // Настраиваем позицию с небольшим смещением от угла
+            rectTransform.anchoredPosition = new Vector2(-10, -10);
+
+            // Устанавливаем изображение для кнопки "End"
+            if (EndButtonImage != null)
+            {
+                endButton.GetComponent<Image>().sprite = EndButtonImage; // Задаем изображение спрайта
+                endButton.GetComponent<Image>().type = OptionImageSliced ? Image.Type.Sliced : Image.Type.Simple; // Устанавливаем тип изображения
+            }
+
+            // Устанавливаем прозрачность на полностью видимую
+            endButton.SetAlpha(1);
+
+            // Активируем кнопку и убеждаемся, что она находится сверху
+            endButton.gameObject.SetActive(true);
+            endButton.transform.SetAsLastSibling();
+
+            // Добавляем кнопку в список опций для отслеживания
+            m_uiOptions.Add(endButton);
+        }
+
+
+
+
         private void CreateUIOptions()
         {
+            // Always setup the end conversation button first
+            SetupEndConversationButton();
+
             // Display new options
             if (m_currentSpeech.ConnectionType == Connection.eConnectionType.Option)
             {
@@ -667,6 +722,10 @@ namespace DialogueEditor
                     {
                         UIConversationButton uiOption = CreateButton();
                         uiOption.SetupButton(UIConversationButton.eButtonType.Option, connection.OptionNode);
+                        uiOption.SetImage(OptionImage, OptionImageSliced);
+                        uiOption.SetAlpha(0);
+                        uiOption.gameObject.SetActive(false);
+                        m_uiOptions.Add(uiOption);
                     }
                 }
             }
@@ -693,12 +752,20 @@ namespace DialogueEditor
                         {
                             uiOption.SetupButton(UIConversationButton.eButtonType.Speech, next, continueFont: m_conversation.ContinueFont);
                         }
-                        
+
+                        uiOption.SetImage(OptionImage, OptionImageSliced);
+                        uiOption.SetAlpha(0);
+                        uiOption.gameObject.SetActive(false);
+                        m_uiOptions.Add(uiOption);
                     }
                     else if (m_currentSpeech.ConnectionType == Connection.eConnectionType.None)
                     {
                         UIConversationButton uiOption = CreateButton();
                         uiOption.SetupButton(UIConversationButton.eButtonType.End, null, endFont: m_conversation.EndConversationFont);
+                        uiOption.SetImage(OptionImage, OptionImageSliced);
+                        uiOption.SetAlpha(0);
+                        uiOption.gameObject.SetActive(false);
+                        m_uiOptions.Add(uiOption);
                     }
                 }
 
@@ -761,8 +828,10 @@ namespace DialogueEditor
         private UIConversationButton CreateButton()
         {
             UIConversationButton button = GameObject.Instantiate(ButtonPrefab, OptionsPanel);
-            m_uiOptions.Add(button);
-            //OptionsPanel.gameObject.GetComponent<VerticalLayoutGroup>.
+            RectTransform rectTransform = button.GetComponent<RectTransform>();
+            rectTransform.anchorMin = new Vector2(0, 1);
+            rectTransform.anchorMax = new Vector2(0, 1);
+            rectTransform.pivot = new Vector2(0, 1);
             return button;
         }
 

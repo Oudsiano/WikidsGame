@@ -78,6 +78,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _btnTest;
 
 
+    private FollowCamera followCamera;
 
     private SceneLoader sceneLoader;
 
@@ -99,6 +100,8 @@ public class UIManager : MonoBehaviour
         uIBug.Init();
         _buttonMarket.onClick.AddListener(OnClickButtonMarket);
         _buttonBug.onClick.AddListener(OnClickButtonBug);
+        _btnQuestScr.onClick.AddListener(OnClickBtnQuest);
+        _btnCloseQuestScr.onClick.AddListener(OnClickBtnCloseQuest);
 
         ButtonShowMap.onClick.AddListener(OnClickButtonMap);
         _btnCloseMap.onClick.AddListener(OnClickBtnCloseMap);
@@ -122,11 +125,15 @@ public class UIManager : MonoBehaviour
         _btnOptions.onClick.AddListener(OnClickBtnOption);
         _btnCloseOptionScr.onClick.AddListener(OnCLickCloseOption);
         _btnTest.onClick.AddListener(OnClickBtnTest);
-
+        QuestsContentScrollRect.scrollSensitivity = 20.0f;
         SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
 
 
         SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+    }
+    private void Start()
+    {
+        followCamera = FindObjectOfType<FollowCamera>();
     }
 
     private void SceneLoader_LevelChanged(Scene arg0, LoadSceneMode arg1)
@@ -138,9 +145,10 @@ public class UIManager : MonoBehaviour
 
     private void OnCLickCloseOption()
     {
-        OptionScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false);
+        OptionScr.SetActive(false);
+        IGame.Instance.SavePlayerPosLikeaPause(false);
+        followCamera.UnlockCamera();
     }
-
     private void OnClickBtnTest()
     {
         uIBug.TryAddEquipToBug(IGame.Instance.QuestManager.allQuestsItems[0]);
@@ -148,7 +156,9 @@ public class UIManager : MonoBehaviour
 
     private void OnClickBtnOption()
     {
-        OptionScr.SetActive(true); IGame.Instance.SavePlayerPosLikeaPause(true);
+        OptionScr.SetActive(true);
+        IGame.Instance.SavePlayerPosLikeaPause(true);
+        followCamera.LockCamera();
     }
 
     public void UpdateIconMapPanel(string text)
@@ -207,9 +217,7 @@ public class UIManager : MonoBehaviour
         textNamePlayer.text = obj;
     }
 
-    private void Start()
-    {
-    }
+    
 
     private void ClosePlayerScr()
     {
@@ -329,6 +337,29 @@ public class UIManager : MonoBehaviour
     public void setEnergyCharger(string c)
     {
         energyCharger.text = c;
+    }
+    private void ShowQuestPanel()
+    {
+        QuestScr.SetActive(true);
+        IGame.Instance.SavePlayerPosLikeaPause(true);
+        followCamera.LockCamera();
+    }
+
+    private void HideQuestPanel()
+    {
+        QuestScr.SetActive(false);
+        IGame.Instance.SavePlayerPosLikeaPause(false);
+        followCamera.UnlockCamera();
+    }
+
+    private void OnClickBtnQuest()
+    {
+        ShowQuestPanel();
+    }
+
+    private void OnClickBtnCloseQuest()
+    {
+        HideQuestPanel();
     }
 
 }

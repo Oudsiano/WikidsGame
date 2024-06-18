@@ -72,7 +72,7 @@ namespace DialogueEditor
         public int m_targetScrollTextCount;
         private eState m_state;
         private float m_stateTime;
-        
+
         private Conversation m_conversation;
         private SpeechNode m_currentSpeech;
         private OptionNode m_selectedOption;
@@ -218,7 +218,7 @@ namespace DialogueEditor
                 LogWarning("parameter \'" + paramName + "\' does not exist.");
             }
         }
-        
+
         public void SetBool(string paramName, bool value)
         {
             eParamStatus status;
@@ -550,7 +550,7 @@ namespace DialogueEditor
             else
             {
                 SetState(eState.TransitioningOptionsOn);
-            }            
+            }
         }
 
 
@@ -655,8 +655,27 @@ namespace DialogueEditor
 #endif
         }
 
+        private void SetupEndConversationButton()
+        {
+            UIConversationButton endButton = CreateButton();
+            endButton.SetupButton(UIConversationButton.eButtonType.End, null, endFont: m_conversation.EndConversationFont);
+            RectTransform rectTransform = endButton.GetComponent<RectTransform>();
+            rectTransform.anchorMin = new Vector2(1, 1);
+            rectTransform.anchorMax = new Vector2(1, 1);
+            rectTransform.pivot = new Vector2(1, 1);
+            rectTransform.anchoredPosition = new Vector2(-10, -10); // Adjust the position as needed
+            endButton.SetImage(OptionImage, OptionImageSliced);
+            endButton.SetAlpha(1);
+            endButton.gameObject.SetActive(true);
+            endButton.transform.SetAsLastSibling(); // Ensure it is on top
+            m_uiOptions.Add(endButton);
+        }
+
         private void CreateUIOptions()
         {
+            // Always setup the end conversation button first
+            SetupEndConversationButton();
+
             // Display new options
             if (m_currentSpeech.ConnectionType == Connection.eConnectionType.Option)
             {
@@ -667,6 +686,10 @@ namespace DialogueEditor
                     {
                         UIConversationButton uiOption = CreateButton();
                         uiOption.SetupButton(UIConversationButton.eButtonType.Option, connection.OptionNode);
+                        uiOption.SetImage(OptionImage, OptionImageSliced);
+                        uiOption.SetAlpha(0);
+                        uiOption.gameObject.SetActive(false);
+                        m_uiOptions.Add(uiOption);
                     }
                 }
             }
@@ -693,12 +716,20 @@ namespace DialogueEditor
                         {
                             uiOption.SetupButton(UIConversationButton.eButtonType.Speech, next, continueFont: m_conversation.ContinueFont);
                         }
-                        
+
+                        uiOption.SetImage(OptionImage, OptionImageSliced);
+                        uiOption.SetAlpha(0);
+                        uiOption.gameObject.SetActive(false);
+                        m_uiOptions.Add(uiOption);
                     }
                     else if (m_currentSpeech.ConnectionType == Connection.eConnectionType.None)
                     {
                         UIConversationButton uiOption = CreateButton();
                         uiOption.SetupButton(UIConversationButton.eButtonType.End, null, endFont: m_conversation.EndConversationFont);
+                        uiOption.SetImage(OptionImage, OptionImageSliced);
+                        uiOption.SetAlpha(0);
+                        uiOption.gameObject.SetActive(false);
+                        m_uiOptions.Add(uiOption);
                     }
                 }
 
@@ -761,8 +792,10 @@ namespace DialogueEditor
         private UIConversationButton CreateButton()
         {
             UIConversationButton button = GameObject.Instantiate(ButtonPrefab, OptionsPanel);
-            m_uiOptions.Add(button);
-            //OptionsPanel.gameObject.GetComponent<VerticalLayoutGroup>.
+            RectTransform rectTransform = button.GetComponent<RectTransform>();
+            rectTransform.anchorMin = new Vector2(0, 1);
+            rectTransform.anchorMax = new Vector2(0, 1);
+            rectTransform.pivot = new Vector2(0, 1);
             return button;
         }
 

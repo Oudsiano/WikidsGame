@@ -32,19 +32,26 @@ public class QuestManager : MonoBehaviour
 
     public void Awake()
     {
-
-        if (alreadyDelegated) return;        
-        SceneManager.sceneLoaded += SceneLoader_LevelChanged;
-        alreadyDelegated = true;
+        //GenListQuests();
+        //SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+    }
+    private void OnDestroy()
+    {
+        //SceneManager.sceneLoaded -= SceneLoader_LevelChanged;
     }
 
     public void Init()
     {
+        SceneManager.sceneLoaded += SceneLoader_LevelChanged;
         QuestsInScene = new List<UiOneQuestElement>();
     }
 
     private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode)
     {
+        GenListQuests();
+    }
+    private void GenListQuests()
+    { 
         QuestsInScene = new List<UiOneQuestElement>();
         _QuestsForThisScene = FindObjectOfType<QuestsForThisScene>();
         thisQuestsScene = new List<OneQuest>();

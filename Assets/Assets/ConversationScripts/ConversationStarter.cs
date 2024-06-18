@@ -5,6 +5,7 @@ using DialogueEditor;
 
 public class ConversationStarter : MonoBehaviour
 {
+    public static bool IsDialogActive;
     public bool DialogStarted;
     [SerializeField] public DownloadTestData data;
     [SerializeField] public NPCConversation myConversation;
@@ -24,8 +25,10 @@ public class ConversationStarter : MonoBehaviour
         IGame.Instance.QuestManager.startedConversation(this);
 
         DataPlayer playerData = FindObjectOfType<DataPlayer>();
+        ConversationManager.OnConversationEnded += DialogEnded;  // ????????????? ?? ??????? ????????? ???????
         ConversationManager.Instance.StartConversation(myConversation);
         DialogStarted = true;
+        IsDialogActive = true;
         Debug.Log("Dialog Started");
         //TODO: Uncomment this and display the success count once the data object is properly initialized.
         //Debug.Log(data.countSuccessAnswers);
@@ -62,6 +65,8 @@ public class ConversationStarter : MonoBehaviour
     public void DialogEnded()
     {
         DialogStarted = false;
+        IsDialogActive = false;
+        ConversationManager.OnConversationEnded -= DialogEnded;  // ???????????? ?? ??????? ????????? ???????
     }
 
     public void UpdateSuccessState()

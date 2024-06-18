@@ -98,6 +98,8 @@ namespace RPG.Combat
         {
             if (IGame.Instance.IsPause) return;
 
+            if (ConversationStarter.IsDialogActive) return;
+
             timer += Time.deltaTime;
 
             if (!target) return;
@@ -169,6 +171,8 @@ namespace RPG.Combat
 
         public void Attack(GameObject combatTarget)
         {
+            if (ConversationStarter.IsDialogActive) return;
+
             actionScheduler.StartAction(this);
             target = combatTarget.GetComponent<Health>();
         }

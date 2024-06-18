@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 namespace DialogueEditor
 {
     public class ConversationManager : MonoBehaviour
@@ -34,11 +34,12 @@ namespace DialogueEditor
         public bool ScrollText;
         public float ScrollSpeed = 1;
         public Sprite BackgroundImage;
+
         public bool BackgroundImageSliced;
         public Sprite OptionImage;
         public bool OptionImageSliced;
         public bool AllowMouseInteraction;
-
+        public Sprite EndButtonImage;
         // Non-User facing 
         // Not exposed via custom inspector
         // 
@@ -655,21 +656,56 @@ namespace DialogueEditor
 #endif
         }
 
+
+
         private void SetupEndConversationButton()
         {
-            UIConversationButton endButton = CreateButton();
+            // Проверяем, является ли текущая сцена "OpenScene"
+            if (SceneManager.GetActiveScene().name == "OpenScene")
+            {
+                return; // Не показываем кнопку, если сцена "OpenScene"
+            }
+
+            // Создаем кнопку как дочерний элемент DialoguePanel
+            UIConversationButton endButton = GameObject.Instantiate(ButtonPrefab, DialoguePanel);
+
+            // Настраиваем свойства кнопки
             endButton.SetupButton(UIConversationButton.eButtonType.End, null, endFont: m_conversation.EndConversationFont);
+
+            // Получаем RectTransform для настройки позиции и размера
             RectTransform rectTransform = endButton.GetComponent<RectTransform>();
+
+            // Устанавливаем якоря и точку поворота в правый верхний угол DialoguePanel
             rectTransform.anchorMin = new Vector2(1, 1);
             rectTransform.anchorMax = new Vector2(1, 1);
             rectTransform.pivot = new Vector2(1, 1);
-            rectTransform.anchoredPosition = new Vector2(-10, -10); // Adjust the position as needed
-            endButton.SetImage(OptionImage, OptionImageSliced);
+
+            // Задаем размер кнопки 100x100
+            rectTransform.sizeDelta = new Vector2(100, 100);
+
+            // Настраиваем позицию с небольшим смещением от угла
+            rectTransform.anchoredPosition = new Vector2(-10, -10);
+
+            // Устанавливаем изображение для кнопки "End"
+            if (EndButtonImage != null)
+            {
+                endButton.GetComponent<Image>().sprite = EndButtonImage; // Задаем изображение спрайта
+                endButton.GetComponent<Image>().type = OptionImageSliced ? Image.Type.Sliced : Image.Type.Simple; // Устанавливаем тип изображения
+            }
+
+            // Устанавливаем прозрачность на полностью видимую
             endButton.SetAlpha(1);
+
+            // Активируем кнопку и убеждаемся, что она находится сверху
             endButton.gameObject.SetActive(true);
-            endButton.transform.SetAsLastSibling(); // Ensure it is on top
+            endButton.transform.SetAsLastSibling();
+
+            // Добавляем кнопку в список опций для отслеживания
             m_uiOptions.Add(endButton);
         }
+
+
+
 
         private void CreateUIOptions()
         {

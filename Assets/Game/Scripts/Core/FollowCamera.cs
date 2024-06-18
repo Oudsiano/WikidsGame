@@ -127,5 +127,16 @@ namespace RPG.Core
 
             OnCameraScale?.Invoke();
         }
+        public void LockCamera()
+        {
+            canRotate = false;
+            canZoom = false;
+        }
+
+        public void UnlockCamera()
+        {
+            canRotate = true;
+            canZoom = true;
+        }
     }
 }

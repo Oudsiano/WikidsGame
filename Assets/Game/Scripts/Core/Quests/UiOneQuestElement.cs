@@ -22,27 +22,21 @@ public class UiOneQuestElement : MonoBehaviour
     [Header("Award")]
     [SerializeField] private TMPro.TMP_Text textAward;
 
-    private bool compliteWaitAward = false;
-    private bool alreadyStarted = true; //?????? ?? ??? ?????
-    private bool fullComplite = false; //???????? ?????????? ?????
-
-    private float currentProcess;
-    private float targetProcess;
-
-    private QuestType questType;
+    public OneQuestData thisQuestData;
     public OneQuest quest;
+
 
 
 
     RectTransform rtimgProcess;
     Vector2 sizeDeltaImgProcess;
 
-    //??? ??????? ????? ???????
+    //Для начатых бесед условия
     public List<string> ListNeedStartConversations;
-    //??? ????????? ????????? ???? ?????????? ???????
+    //для различных элементов лист выполнения условия
     private List<bool> pointSuccess;
 
-    public QuestType QuestType { get => questType; set => questType = value; }
+    public QuestType QuestType { get => thisQuestData.questType; set => thisQuestData.questType = value; }
 
     public void setQuest(OneQuest _quest)
     {
@@ -53,14 +47,14 @@ public class UiOneQuestElement : MonoBehaviour
         textDescription.text = quest.questDescription;
 
         QuestType = quest.questType;
-        targetProcess = quest.questTargetCount;
+        thisQuestData.targetProcess = quest.questTargetCount;
 
         rtimgProcess = imgProcess.GetComponent<RectTransform>();
         sizeDeltaImgProcess = rtimgProcess.sizeDelta;
 
         if (quest.questType == QuestType.toSpeekNPC)
         {
-            targetProcess = quest.ListNeedConversationsStarter.Count;
+            thisQuestData.targetProcess = quest.ListNeedConversationsStarter.Count;
             pointSuccess = new List<bool>();
             ListNeedStartConversations = new List<string>();
             for (int i = 0; i < quest.ListNeedConversationsStarter.Count; i++)
@@ -84,22 +78,27 @@ public class UiOneQuestElement : MonoBehaviour
             default:
                 break;
         }
-
         SetUnfinushed();
 
         button.onClick.AddListener(OnClickBtn);
+
+        if (IGame.Instance.dataPLayer.playerData.startedQuests!= null && IGame.Instance.dataPLayer.playerData.startedQuests.ContainsKey(quest.name))
+        {
+            thisQuestData = IGame.Instance.dataPLayer.playerData.startedQuests[quest.name];
+            CheckUpdateAndComplite(false);
+        }
     }
 
     private void OnClickBtn()
     {
-        if (!compliteWaitAward)
+        if (!thisQuestData.compliteWaitAward)
         {
             RTbutton.DOShakeAnchorPos(1f, new Vector2(10, 0), vibrato: 8, randomness: 0, snapping: false, fadeOut: false)
             .OnComplete(() => RTbutton.anchoredPosition = Vector2.zero);
             return;
         }
 
-        if (fullComplite) return;
+        if (thisQuestData.fullComplite) return;
 
         switch (quest.questAwardType)
         {
@@ -115,7 +114,7 @@ public class UiOneQuestElement : MonoBehaviour
 
         MarkQuestAsComplete();
         FadeOutAndShrinkUIElement(this.gameObject);
-        fullComplite = true;
+        thisQuestData.fullComplite = true;
     }
 
     private void MarkQuestAsComplete()
@@ -124,43 +123,52 @@ public class UiOneQuestElement : MonoBehaviour
         if (!dataPlayer.playerData.completedQuests.Contains(quest.name))
         {
             dataPlayer.playerData.completedQuests.Add(quest.name);
-            StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
+            IGame.Instance.gameAPI.SaveUpdater();
+            IGame.Instance.gameAPI.SaveUpdater();
         }
     }
 
 
-    private void CheckUpdateAndComplite()
+    private void CheckUpdateAndComplite(bool withSave=true)
     {
+        if (withSave)
+        {
+            if (IGame.Instance.dataPLayer.playerData.startedQuests == null)
+                IGame.Instance.dataPLayer.playerData.startedQuests = new Dictionary<string, OneQuestData>();
+            thisQuestData.QuestName = quest.name;
+            IGame.Instance.dataPLayer.playerData.startedQuests[quest.name] = thisQuestData;
+            IGame.Instance.gameAPI.SaveUpdater();
+        }
+
         switch (QuestType)
         {
             case QuestType.killEnemy:
-                updateProcess(currentProcess, targetProcess);
+                updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
             case QuestType.toSpeekNPC:
-                updateProcess(currentProcess, targetProcess);
+                updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
             default:
-                updateProcess(currentProcess, targetProcess);
+                updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
         }
 
 
-        if (currentProcess >= targetProcess)
+        if (thisQuestData.currentProcess >= thisQuestData.targetProcess)
         {
             SetFinished();
         }
-        //TODO ??????? ??????????
     }
 
     public void addOneProcess()
     {
-        if (!alreadyStarted) return;
-        currentProcess++;
+        if (!thisQuestData.alreadyStarted) return;
+        thisQuestData.currentProcess++;
         CheckUpdateAndComplite();
     }
     public void startedConversation(ConversationStarter conversationStarter)
     {
-        if (!alreadyStarted) return;
+        if (!thisQuestData.alreadyStarted) return;
 
         for (int i = 0; i < ListNeedStartConversations.Count; i++)
         {
@@ -173,10 +181,10 @@ public class UiOneQuestElement : MonoBehaviour
                 }
             }
         }
-        currentProcess = 0;
+        thisQuestData.currentProcess = 0;
         foreach (var item in pointSuccess)
         {
-            if (item) currentProcess++;
+            if (item) thisQuestData.currentProcess++;
         }
         CheckUpdateAndComplite();
     }
@@ -189,7 +197,7 @@ public class UiOneQuestElement : MonoBehaviour
     }
     private void SetFinished()
     {
-        compliteWaitAward = true;
+        thisQuestData.compliteWaitAward = true;
         button.GetComponent<Image>().color = new Color(0.81f, 0.952f, 0.768f);
         imgCheckNo.gameObject.SetActive(false);
         imgCheck.gameObject.SetActive(true);
@@ -197,11 +205,11 @@ public class UiOneQuestElement : MonoBehaviour
 
     private void SetUnfinushed()
     {
-        compliteWaitAward = false;
+        thisQuestData.compliteWaitAward = false;
         button.GetComponent<Image>().color = new Color(0.9529412f, 0.8073038f, 0.7686275f);
         imgCheckNo.gameObject.SetActive(true);
         imgCheck.gameObject.SetActive(false);
-        fullComplite = false;
+        thisQuestData.fullComplite = false;
     }
 
     public void FadeOutAndShrinkUIElement(GameObject uiElement)

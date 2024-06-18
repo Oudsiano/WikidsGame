@@ -7,6 +7,85 @@ using TMPro;
 using DialogueEditor;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+
+
+
+public class SL_objs
+{
+    public Dictionary<string, object> objs;
+    public SL_objs(string _load)
+    {
+        objs = JsonConvert.DeserializeObject<Dictionary<string, object>>(_load);
+    }
+
+    private void unpars<T>(ref T _ob, string i)
+    {
+
+
+        if (objs.ContainsKey(i))
+        {
+            if (_ob is bool)
+            {
+                _ob = JsonConvert.DeserializeObject<T>(objs[i].ToString().ToLower());
+            }
+            else if (_ob is float)
+            {
+                _ob = JsonConvert.DeserializeObject<T>(objs[i].ToString().Replace(',', '.'));
+            }
+            else
+                _ob = JsonConvert.DeserializeObject<T>(objs[i].ToString());
+        }
+        else
+            Debug.Log("Загрузка пытается получить больше данных чем есть в файле.");
+    }
+
+    internal void load(ref List<string> _ob, string v)
+    {
+        unpars<List<string>>(ref _ob, v);
+    }
+
+    internal void load(ref double _ob, string v)
+    {
+        unpars<double>(ref _ob, v);
+    }
+    internal void load(ref int _ob, string v)
+    {
+        unpars<int>(ref _ob, v);
+    }
+    internal void load(ref long _ob, string v)
+    {
+        unpars<long>(ref _ob, v);
+    }
+    internal void load(ref string _ob, string v)
+    {
+        unpars<string>(ref _ob, v);
+    }
+    internal void load(ref bool _ob, string v)
+    {
+        unpars<bool>(ref _ob, v);
+    }
+
+    internal void load(ref Dictionary<string, string> _ob, string v)
+    {
+        unpars<Dictionary<string, string>>(ref _ob, v);
+    }
+
+    internal void load(ref Dictionary<string, int> _ob, string v)
+    {
+        unpars<Dictionary<string, int>>(ref _ob, v);
+    }
+    
+    internal void load(ref Dictionary<int, bool> _ob, string v)
+    {
+        unpars<Dictionary<int, bool>>(ref _ob, v);
+    }
+    internal void load(ref Dictionary<string, OneQuestData> _ob, string v)
+    {
+        unpars<Dictionary<string, OneQuestData>>(ref _ob, v);
+    }
+}
+
 
 [Serializable]
 public class ErrorResponse
@@ -93,6 +172,9 @@ public class GameAPI : MonoBehaviour
         {
             string json = request.downloadHandler.text;
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
+            SL_objs sl_obj = new SL_objs(json);
+            sl_obj.load(ref playerData.startedQuests, "startedQuests");
+
             dataPlayer.playerData = playerData;
 
             // Инициализация списка пройденных квестов
@@ -137,6 +219,9 @@ public class GameAPI : MonoBehaviour
         {
             string json = request.downloadHandler.text;
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
+
+            SL_objs sl_obj = new SL_objs(json);
+            sl_obj.load(ref playerData.startedQuests, "startedQuests");
             dataPlayer.playerData = playerData;
 
             int countSuccessAnswer = 0;
@@ -216,9 +301,13 @@ public class GameAPI : MonoBehaviour
         }
     }
 
-    public IEnumerator SaveGameData()
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //IT IS PRIVATE. USE IGame.Instance.gameAPI.SaveUpdater(); for save game
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private IEnumerator SaveGameData() 
     {
-        string json = JsonUtility.ToJson(IGame.Instance.dataPLayer.playerData);
+        //string json = JsonUtility.ToJson(IGame.Instance.dataPLayer.playerData);
+        string json = JsonConvert.SerializeObject(IGame.Instance.dataPLayer.playerData);
         Debug.Log("JSON to send: " + json);
 
         byte[] bodyRaw = Encoding.UTF8.GetBytes(json);

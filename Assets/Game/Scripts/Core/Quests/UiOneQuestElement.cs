@@ -181,7 +181,7 @@ public class UiOneQuestElement : MonoBehaviour
                 }
             }
         }
-        thisQuestData.currentProcess = 0;
+        //thisQuestData.currentProcess = 0;
         foreach (var item in pointSuccess)
         {
             if (item) thisQuestData.currentProcess++;

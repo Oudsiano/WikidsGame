@@ -39,6 +39,7 @@ public class SL_objs
                 if (obj != null)
                 {
                     string str1 = obj.ToString();
+                    if (str1.Length>2)
                     _ob = JsonConvert.DeserializeObject<T>(str1);
                 }
         }
@@ -179,8 +180,8 @@ public class GameAPI : MonoBehaviour
         {
             string json = request.downloadHandler.text;
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
-            //SL_objs sl_obj = new SL_objs(json);
-            //sl_obj.load(ref playerData.startedQuests, "startedQuests");
+            SL_objs sl_obj = new SL_objs(json);
+            sl_obj.load(ref playerData.startedQuests, "startedQuests");
 
             dataPlayer.playerData = playerData;
 

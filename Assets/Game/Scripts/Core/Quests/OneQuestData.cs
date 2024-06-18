@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Newtonsoft.Json;
 
 [System.Serializable]
 public class OneQuestData
@@ -20,4 +21,10 @@ public class OneQuestData
     public QuestType questType;
     public string QuestName;
 
+
+    [JsonConstructor]
+    public OneQuestData()
+    {
+
+    }
 }

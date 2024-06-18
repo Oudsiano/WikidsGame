@@ -76,7 +76,7 @@ public class PlayerData
 
     public string[] containsBug;
     public List<string> completedQuests;
-    public Dictionary<string, OneQuestData> startedQuests;
+    public Dictionary<string, OneQuestData> startedQuests = new Dictionary<string, OneQuestData>();
 
     public int helpIndex;
 

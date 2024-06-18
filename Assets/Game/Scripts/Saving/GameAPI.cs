@@ -34,7 +34,14 @@ public class SL_objs
                 _ob = JsonConvert.DeserializeObject<T>(objs[i].ToString().Replace(',', '.'));
             }
             else
-                _ob = JsonConvert.DeserializeObject<T>(objs[i].ToString());
+            {
+                object obj = objs[i];
+                if (obj != null)
+                {
+                    string str1 = obj.ToString();
+                    _ob = JsonConvert.DeserializeObject<T>(str1);
+                }
+        }
         }
         else
             Debug.Log("Загрузка пытается получить больше данных чем есть в файле.");
@@ -172,8 +179,8 @@ public class GameAPI : MonoBehaviour
         {
             string json = request.downloadHandler.text;
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
-            SL_objs sl_obj = new SL_objs(json);
-            sl_obj.load(ref playerData.startedQuests, "startedQuests");
+            //SL_objs sl_obj = new SL_objs(json);
+            //sl_obj.load(ref playerData.startedQuests, "startedQuests");
 
             dataPlayer.playerData = playerData;
 

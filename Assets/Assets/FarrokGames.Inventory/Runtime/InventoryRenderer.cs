@@ -54,7 +54,7 @@ namespace FarrokhGames.Inventory
             CounttextGo = new GameObject("CounttextItem");
             CounttextGo.transform.SetParent(CountimgBg.transform, false);
             CounttextUI = CounttextGo.AddComponent<TMPro.TextMeshProUGUI>();
-            var _texture2 = Resources.Load("CoinForPrice", typeof(Texture2D)) as Texture2D;
+            var _texture2 = Resources.Load("BGForCountItems", typeof(Texture2D)) as Texture2D;
             var _sprite2 = Sprite.Create(_texture2, new Rect(0, 0, _texture2.width, _texture2.height), new Vector2(0f, 0f), 1f);
             CountimgBg.sprite = _sprite2;
             var CounttextRt = CountimgBg.GetComponent<RectTransform>();
@@ -62,7 +62,7 @@ namespace FarrokhGames.Inventory
             CounttextRt.anchorMax = new Vector2(0, 1);
             CounttextRt.pivot = new Vector2(0, 0.5f);
             //CounttextRt.localPosition = new Vector2(20, -50);
-            CounttextUI.text = "";
+            SetCount(1);
             CounttextUI.alignment = TMPro.TextAlignmentOptions.Center;
             CounttextRt.anchoredPosition = new Vector2(20, -50);
             CounttextRt.sizeDelta = new Vector2(100, 50);
@@ -84,8 +84,17 @@ namespace FarrokhGames.Inventory
         public void SetCount(int _count)
         {
             count = _count;
-            CounttextUI.text = count.ToString();
-            CounttextUI.gameObject.SetActive(true);
+            if (_count > 1)
+            {
+                CounttextUI.text = count.ToString();
+                CounttextUI.gameObject.SetActive(true);
+                CountimgBg.gameObject.SetActive(true);
+            }
+            else
+            {
+                CounttextUI.gameObject.SetActive(false);
+                CountimgBg.gameObject.SetActive(false);
+            }
         }
 
         public TextMeshProUGUI PriceTextUI { get => PricetextUI; set => PricetextUI = value; }

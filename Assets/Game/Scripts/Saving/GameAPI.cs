@@ -201,10 +201,10 @@ public class GameAPI : MonoBehaviour
         {
             ErrorResponse errorResponse = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
 
-            if (errorResponse.message == "Game data not found")
+            if ((errorResponse.message == "Game data not found") || (errorResponse.message == "User not found"))
             {
                 IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName("Sword"));
-                SaveUpdater();
+                StartCoroutine(SaveGameData());
 
                 GameLoaded = true;
             }

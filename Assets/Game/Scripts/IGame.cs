@@ -114,9 +114,11 @@ public class IGame : MonoBehaviour
         BottleManager = FindAnyObjectByType<BottleManager>();
         SavePointsManager = new SavePointsManager();
         ArrowForPlayerManager = new ArrowForPlayerManager();
-        
+        questManager = FindAnyObjectByType<QuestManager>();
+
         saveGame = new SaveGame();
 
+        questManager.Init();
         CoinManager.Init();
         UIManager.Init();
         playerController.Init();

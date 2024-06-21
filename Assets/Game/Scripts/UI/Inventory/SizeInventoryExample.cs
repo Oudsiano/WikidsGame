@@ -21,6 +21,7 @@ namespace FarrokhGames.Inventory.Examples
         [SerializeField] private bool _isMarket = false;
         [SerializeField] private bool _dropedFromThere = false;
         [SerializeField] private float _priceMultiple = 1;
+        [SerializeField] private bool _showPricesThere = false;
 
         public InventoryManager inventory;
 
@@ -34,6 +35,7 @@ namespace FarrokhGames.Inventory.Examples
             inventory.isMarket = _isMarket;
             inventory.DropedFromThere = _dropedFromThere;
             inventory.PriceMultiple = _priceMultiple;
+            inventory.ShowPricesThere = _showPricesThere;
             // Fill inventory with random items
             if (_fillRandomly)
             {

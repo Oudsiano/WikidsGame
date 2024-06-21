@@ -14,7 +14,12 @@ namespace FarrokhGames.Inventory.Examples
         [SerializeField] private ItemType _type = ItemType.Consume;
         [SerializeField] private bool _canDrop = true;
         [SerializeField, HideInInspector] private Vector2Int _position = Vector2Int.zero;
+        [SerializeField] private bool _onlyOne = false;
+        [SerializeField, HideInInspector] private int _countItems = 1;
 
+        public int CountItems => _countItems;
+
+        public bool onlyOne => _onlyOne;
 
         public int price => PriceCoins;
 

@@ -12,6 +12,7 @@ namespace FarrokhGames.Inventory
         public bool isMarket;
         public float PriceMultiple;
         public bool DropedFromThere;
+        public bool ShowPricesThere;
 
         public InventoryManager(IInventoryProvider provider, int width, int height)
         {

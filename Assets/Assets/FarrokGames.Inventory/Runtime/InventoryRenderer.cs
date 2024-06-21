@@ -7,45 +7,68 @@ using UnityEngine.UI;
 
 namespace FarrokhGames.Inventory
 {
-    public class ItemWithPrice
+    public class ItemElementInGrid
     {
         public GameObject itemGO;
 
         public Image img;
 
-        public GameObject textGo;
-        public TMPro.TMP_Text text;
-        private TMPro.TextMeshProUGUI textUI;
+        public GameObject PricetextGo;
+        private TMPro.TextMeshProUGUI PricetextUI;
+
+
+        public Image CountimgBg;
+        public GameObject CounttextGo;
+        private TMPro.TextMeshProUGUI CounttextUI;
+
+
 
         private Image CoinImg;
 
         private int price = 0;
         private float multy = 1;
 
-        public ItemWithPrice()
+        private int count = 1;
+
+        public ItemElementInGrid()
         {
             itemGO = new GameObject("item");
             img = itemGO.AddComponent<Image>();
             img.transform.localScale = Vector3.one;
 
-            textGo = new GameObject("textItem");
-            textGo.transform.SetParent(itemGO.transform, false);
+            PricetextGo = new GameObject("PricetextItem");
+            PricetextGo.transform.SetParent(itemGO.transform, false);
+            PriceTextUI = PricetextGo.AddComponent<TMPro.TextMeshProUGUI>();
+            var PricetextRt = PricetextGo.GetComponent<RectTransform>();
+            PricetextRt.anchorMin = new Vector2(0.5f, 0);
+            PricetextRt.anchorMax = new Vector2(0.5f, 0);
+            PricetextRt.pivot = new Vector2(0.5f, 0.5f);
+            //PricetextRt.localPosition = new Vector2(0, 25);
+            PriceTextUI.text = "";
+            PriceTextUI.alignment = TMPro.TextAlignmentOptions.Center;
+            PricetextRt.anchoredPosition = new Vector2(-25, 25);
 
-            //text = textGo.AddComponent<TMPro.TMP_Text>();
-            //text.text = "test";
 
-            TextUI = textGo.AddComponent<TMPro.TextMeshProUGUI>();
-            var textRt = textGo.GetComponent<RectTransform>();
-            textRt.anchorMin = new Vector2(0.5f, 0);
-            textRt.anchorMax = new Vector2(0.5f, 0);
-            textRt.pivot = new Vector2(0.5f, 0.5f);
-            textRt.localPosition = new Vector2(0, 25);
-
-            TextUI.text = "";
-            TextUI.alignment = TMPro.TextAlignmentOptions.Center;
+            CountimgBg = new GameObject("CountimgBg").AddComponent<Image>();
+            CountimgBg.gameObject.transform.SetParent(itemGO.transform, false);
+            CounttextGo = new GameObject("CounttextItem");
+            CounttextGo.transform.SetParent(CountimgBg.transform, false);
+            CounttextUI = CounttextGo.AddComponent<TMPro.TextMeshProUGUI>();
+            var _texture2 = Resources.Load("CoinForPrice", typeof(Texture2D)) as Texture2D;
+            var _sprite2 = Sprite.Create(_texture2, new Rect(0, 0, _texture2.width, _texture2.height), new Vector2(0f, 0f), 1f);
+            CountimgBg.sprite = _sprite2;
+            var CounttextRt = CountimgBg.GetComponent<RectTransform>();
+            CounttextRt.anchorMin = new Vector2(0, 1);
+            CounttextRt.anchorMax = new Vector2(0, 1);
+            CounttextRt.pivot = new Vector2(0, 0.5f);
+            //CounttextRt.localPosition = new Vector2(20, -50);
+            CounttextUI.text = "";
+            CounttextUI.alignment = TMPro.TextAlignmentOptions.Center;
+            CounttextRt.anchoredPosition = new Vector2(20, -50);
+            CounttextRt.sizeDelta = new Vector2(100, 50);
 
             CoinImg = new GameObject("coin").AddComponent<Image>();
-            CoinImg.gameObject.transform.SetParent(textGo.transform, false);
+            CoinImg.gameObject.transform.SetParent(PricetextGo.transform, false);
 
 
             var _texture = Resources.Load("CoinForPrice", typeof(Texture2D)) as Texture2D;
@@ -55,16 +78,22 @@ namespace FarrokhGames.Inventory
             CoinImg.sprite = _sprite;
             CoinImg.transform.localPosition = new Vector2(50, 0);
             CoinImg.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 50);
-            textRt.anchoredPosition = new Vector2(-25, 25);
-            //CoinImg
+                        
         }
 
-        public TextMeshProUGUI TextUI { get => textUI; set => textUI = value; }
+        public void SetCount(int _count)
+        {
+            count = _count;
+            CounttextUI.text = count.ToString();
+            CounttextUI.gameObject.SetActive(true);
+        }
+
+        public TextMeshProUGUI PriceTextUI { get => PricetextUI; set => PricetextUI = value; }
 
         public void settextFromPrice(int _price)
         {
             price = _price;
-            textUI.text = ((int)(price * multy)).ToString();
+            PricetextUI.text = ((int)(price * multy)).ToString();
         }
 
         public void setVisPriceSector(float multiple)
@@ -73,13 +102,13 @@ namespace FarrokhGames.Inventory
             if (multiple > 0)
             {
 
-                textUI.text = ((int)(price * multy)).ToString();
-                TextUI.gameObject.SetActive(true);
+                PricetextUI.text = ((int)(price * multy)).ToString();
+                PriceTextUI.gameObject.SetActive(true);
                 CoinImg.gameObject.SetActive(true);
             }
             else
             {
-                TextUI.gameObject.SetActive(false);
+                PriceTextUI.gameObject.SetActive(false);
                 CoinImg.gameObject.SetActive(false);
             }
         }
@@ -110,9 +139,9 @@ namespace FarrokhGames.Inventory
         InventoryRenderMode _renderMode;
         private bool _haveListeners;
         private Pool<Image> _imagePool2;
-        private Pool<ItemWithPrice> _itemPool;
+        private Pool<ItemElementInGrid> _itemPool;
         private Image[] _grids;
-        private Dictionary<IInventoryItem, ItemWithPrice> _items = new Dictionary<IInventoryItem, ItemWithPrice>();
+        private Dictionary<IInventoryItem, ItemElementInGrid> _items = new Dictionary<IInventoryItem, ItemElementInGrid>();
 
         /*
          * Setup
@@ -127,16 +156,16 @@ namespace FarrokhGames.Inventory
             imageContainer.transform.localPosition = Vector3.zero;
             imageContainer.transform.localScale = Vector3.one;
 
-            // Create pool of images
-            _itemPool = new Pool<ItemWithPrice>(
+            // Create pool of items
+            _itemPool = new Pool<ItemElementInGrid>(
                 delegate
                 {
-                    var item = new ItemWithPrice();
+                    var item = new ItemElementInGrid();
 
-                    //if (((InventoryManager)inventory).isMarket)
+                    if (((InventoryManager)inventory).ShowPricesThere)
                         item.setVisPriceSector(((InventoryManager)inventory).PriceMultiple);
-                    //else
-                    //    item.setVisPriceSector(0);
+                    else
+                        item.setVisPriceSector(0);
 
                     item.itemGO.transform.SetParent(imageContainer);
                     item.itemGO.transform.localScale = Vector3.one;
@@ -350,7 +379,7 @@ namespace FarrokhGames.Inventory
             img.raycastTarget = raycastTarget;
             return img;
         }
-        private ItemWithPrice CreateItem(IInventoryItem _item, bool raycastTarget)
+        private ItemElementInGrid CreateItem(IInventoryItem _item, bool raycastTarget)
         {
             var item = _itemPool.Take();
             item.itemGO.SetActive(true);
@@ -376,7 +405,7 @@ namespace FarrokhGames.Inventory
             image.gameObject.SetActive(false);
             _imagePool2.Recycle(image);
         }
-        private void RecycleItems(ItemWithPrice item)
+        private void RecycleItems(ItemElementInGrid item)
         {
             //item.itemGO.gameObject.name = "Image";
             item.itemGO.gameObject.SetActive(false);

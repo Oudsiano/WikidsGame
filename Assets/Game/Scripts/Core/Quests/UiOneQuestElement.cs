@@ -128,6 +128,11 @@ public class UiOneQuestElement : MonoBehaviour
         }
     }
 
+    internal void FinishedTest(string iD)
+    {
+        if (QuestType == QuestType.completeSpecialTest)
+            addOneProcess();
+    }
 
     private void CheckUpdateAndComplite(bool withSave=true)
     {
@@ -146,6 +151,9 @@ public class UiOneQuestElement : MonoBehaviour
                 updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
             case QuestType.toSpeekNPC:
+                updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
+                break;
+            case QuestType.completeSpecialTest:
                 updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
             default:

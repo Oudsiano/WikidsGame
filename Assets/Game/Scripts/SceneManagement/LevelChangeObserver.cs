@@ -63,6 +63,21 @@ public class LevelChangeObserver : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    public allScenes GetCuurentSceneId()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        // Ищем объект OneScene, соответствующий текущей сцене
+        foreach (var sceneInfo in AllScenes)
+            if (sceneInfo.fileScene == currentSceneName)
+                return sceneInfo.IdScene;
+
+        // Если сцена не найдена в списке, можно вернуть null или выполнить другую логику
+        Debug.LogError("ErRrOrR Current scene info not found in AllScenes list: " + currentSceneName);
+        return allScenes.emptyScene;
+    }
+
+
     private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
         allScenes newLevel = allScenes.emptyScene;

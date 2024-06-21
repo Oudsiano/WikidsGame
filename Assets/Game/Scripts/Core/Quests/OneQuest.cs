@@ -23,6 +23,10 @@ public class OneQuest : ScriptableObject
     [Header("killSpecialEnemy block")]
     [SerializeField] public string specialEnemyName;
 
+
+    [Header("completeSpecialTest block")]
+    [SerializeField] public string IdTest;
+
     [Header("Award block")]
     [SerializeField] public QuestAwardType questAwardType;
     [SerializeField] public float countMoney;

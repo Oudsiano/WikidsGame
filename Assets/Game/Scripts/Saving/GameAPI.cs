@@ -241,9 +241,15 @@ public class GameAPI : MonoBehaviour
                     if (item != null && item.id == IDLesson)
                         foreach (OneTestQuestion item2 in item.tests)
                         {
+
                             if (item2.completed)
+                            {
+                                IGame.Instance.QuestManager.questFinished(item2.id.ToString());
                                 countSuccessAnswer++;
+                            }
                         }
+
+
                 }
 
             }
@@ -288,12 +294,16 @@ public class GameAPI : MonoBehaviour
                 {
                     foreach (var test in lesson.tests)
                     {
+                        if (test.completed)
+                        IGame.Instance.QuestManager.questFinished(test.id.ToString());
+
                         if (test.id == testId)
                         {
                             Debug.Log("game api work");
                             // Вызываем колбэк с результатом
                             callback(test.completed);
-                            yield break;
+                            
+                            //yield break; Убрал, чтобы не прерывать обсчет всего массива
                         }
                     }
                 }

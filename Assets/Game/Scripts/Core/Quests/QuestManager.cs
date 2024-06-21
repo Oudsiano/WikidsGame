@@ -10,6 +10,8 @@ public enum QuestType
     killEnemy,
     toSpeekNPC,
     killSpecialEnemy,
+    completeSpecialTest,
+
 }
 
 public enum QuestAwardType
@@ -26,6 +28,7 @@ public class QuestManager : MonoBehaviour
     private List<UiOneQuestElement> QuestsInScene;
 
     private QuestsForThisScene _QuestsForThisScene;
+    private AllQuestsInGame _AllQuestsInGame;
 
     //public static event Action KillEnemy;
     private bool alreadyDelegated;
@@ -53,10 +56,30 @@ public class QuestManager : MonoBehaviour
     private void GenListQuests()
     { 
         QuestsInScene = new List<UiOneQuestElement>();
-        _QuestsForThisScene = FindObjectOfType<QuestsForThisScene>();
+        //_QuestsForThisScene = FindObjectOfType<QuestsForThisScene>();
+
+        _AllQuestsInGame = FindObjectOfType<AllQuestsInGame>();
+
         thisQuestsScene = new List<OneQuest>();
 
-        if (_QuestsForThisScene != null)
+        if (_AllQuestsInGame!=null)
+        {
+            foreach (OneSceneListQuests OneList in _AllQuestsInGame.AllQuests)
+            {
+                if (OneList.SceneId == IGame.Instance.LevelChangeObserver.GetCuurentSceneId())
+                {
+                    foreach (var quest in OneList.QuestsThisScene)
+                    {
+                        if (IGame.Instance.dataPLayer.playerData.completedQuests == null) continue;
+                        if (IGame.Instance.dataPLayer.playerData.completedQuests.Contains(quest.name)) continue;
+                        thisQuestsScene.Add(quest);
+                    }
+                }
+            }
+        }
+
+
+        /*if (_QuestsForThisScene != null)
         {
             foreach (var quest in _QuestsForThisScene.QuestsThisScene)
             {
@@ -64,7 +87,7 @@ public class QuestManager : MonoBehaviour
                 if (IGame.Instance.dataPLayer.playerData.completedQuests.Contains(quest.name)) continue;
                 thisQuestsScene.Add(quest);
             }
-        }
+        }*/
 
         if (IGame.Instance.UIManager.QuestsContentScrollRect != null && IGame.Instance.UIManager.QuestsContentScrollRect.content != null)
         {
@@ -117,6 +140,20 @@ public class QuestManager : MonoBehaviour
             }
         }
         StartNewQuest(quest);
+    }
+
+    public void questFinished(string ID)
+    {
+        foreach (UiOneQuestElement item in QuestsInScene)
+        {
+                if (item.QuestType== QuestType.completeSpecialTest)
+                {
+                    if (ID == item.quest.IdTest)
+                    {
+                    item.FinishedTest(ID);
+                    }
+                }
+        }
     }
 
     public void newKill(string name = null)

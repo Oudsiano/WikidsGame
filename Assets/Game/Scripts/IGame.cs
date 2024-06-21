@@ -92,6 +92,7 @@ public class IGame : MonoBehaviour
             return questManager; 
         }
         set => questManager = value; }
+    
 
     /*[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private void Awake()

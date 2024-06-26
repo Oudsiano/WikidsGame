@@ -284,6 +284,7 @@ public class GameAPI : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            bool _calback = false;
             string json = request.downloadHandler.text;
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
             dataPlayer.playerData = playerData;
@@ -301,15 +302,15 @@ public class GameAPI : MonoBehaviour
                         {
                             Debug.Log("game api work");
                             // Вызываем колбэк с результатом
-                            callback(test.completed);
-                            
+                            _calback = true;
+
                             //yield break; Убрал, чтобы не прерывать обсчет всего массива
                         }
                     }
                 }
             }
             // Если тест не найден, вызываем колбэк с false
-            callback(false);
+            callback(_calback);
         }
         else
         {

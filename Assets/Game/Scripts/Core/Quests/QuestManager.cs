@@ -29,6 +29,9 @@ public class QuestManager : MonoBehaviour
 
     private QuestsForThisScene _QuestsForThisScene;
     private AllQuestsInGame _AllQuestsInGame;
+    private SceneWithTestsID sceneWithTestsID;
+
+    private List<int> needRepeatTestQuests = new List<int>();
 
     //public static event Action KillEnemy;
     private bool alreadyDelegated;
@@ -54,15 +57,16 @@ public class QuestManager : MonoBehaviour
         GenListQuests();
     }
     private void GenListQuests()
-    { 
+    {
         QuestsInScene = new List<UiOneQuestElement>();
         //_QuestsForThisScene = FindObjectOfType<QuestsForThisScene>();
 
         _AllQuestsInGame = FindObjectOfType<AllQuestsInGame>();
+        sceneWithTestsID = FindObjectOfType<SceneWithTestsID>();
 
         thisQuestsScene = new List<OneQuest>();
 
-        if (_AllQuestsInGame!=null)
+        if (_AllQuestsInGame != null)
         {
             foreach (OneSceneListQuests OneList in _AllQuestsInGame.AllQuests)
             {
@@ -73,6 +77,19 @@ public class QuestManager : MonoBehaviour
                         if (IGame.Instance.dataPLayer.playerData.completedQuests == null) continue;
                         if (IGame.Instance.dataPLayer.playerData.completedQuests.Contains(quest.name)) continue;
                         thisQuestsScene.Add(quest);
+                    }
+                }
+            }
+
+            foreach (int testID in needRepeatTestQuests)
+            {
+                foreach (var OneSceneWithTestID in sceneWithTestsID.sceneDataList)
+                {
+                    if (OneSceneWithTestID.numbers.Contains(testID))
+                    {
+                        //We need start quest with testID in scene OneSceneWithTestID.scene
+
+                        //TODO There we should prepare list for visible NPC with tests
                     }
                 }
             }
@@ -146,13 +163,13 @@ public class QuestManager : MonoBehaviour
     {
         foreach (UiOneQuestElement item in QuestsInScene)
         {
-                if (item.QuestType== QuestType.completeSpecialTest)
+            if (item.QuestType == QuestType.completeSpecialTest)
+            {
+                if (ID == item.quest.IdTest)
                 {
-                    if (ID == item.quest.IdTest)
-                    {
                     item.FinishedTest(ID);
-                    }
                 }
+            }
         }
     }
 
@@ -178,10 +195,10 @@ public class QuestManager : MonoBehaviour
             }
 
             if (item.QuestType == QuestType.killSpecialEnemy)
-            if (item.quest.specialEnemyName == name)
-            {
-                item.addOneProcess();
-            }
+                if (item.quest.specialEnemyName == name)
+                {
+                    item.addOneProcess();
+                }
         }
     }
 

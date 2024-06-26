@@ -55,6 +55,22 @@ public class UIBug : MonoBehaviour
 
     }
 
+    public bool AddEquipInBugIfNotExist(ItemDefinition item)
+    {
+        if (InventoryBag.inventory.Contains(item)) return false;
+
+        if (InventoryBag.inventory.CanAdd(item))
+        {
+            if (InventoryBag.inventory.TryAdd(item.CreateInstance()))
+            {
+                IGame.Instance.saveGame.SaveItemToBug(item);
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
     public void TryAddEquipToBug(ItemDefinition item)
     {
         notAvaliableEvents = true;

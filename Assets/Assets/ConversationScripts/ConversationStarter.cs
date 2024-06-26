@@ -11,6 +11,9 @@ public class ConversationStarter : MonoBehaviour
     [SerializeField] public NPCConversation myConversation;
     [SerializeField] public NPCConversation SecondConversation;
 
+    [Header("TestID")]
+    [SerializeField] public int TestID;
+
     public bool waitStartSecondDialog = false;
 
     public void StartDialog()
@@ -76,7 +79,11 @@ public class ConversationStarter : MonoBehaviour
 
     public void IsTestCompleted(int testId)
     {
-        FindObjectOfType<GameAPI>().IsTestCompleted(testId, (isCompleted) =>
+        if (TestID==0)
+        {
+            Debug.LogError("Not have TestID in inspector");
+        }
+        FindObjectOfType<GameAPI>().IsTestCompleted(TestID, (isCompleted) =>
         {
             if (isCompleted)
             {

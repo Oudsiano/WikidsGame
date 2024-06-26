@@ -1,4 +1,5 @@
-﻿using FarrokhGames.Shared;
+﻿using FarrokhGames.Inventory.Examples;
+using FarrokhGames.Shared;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -400,6 +401,7 @@ namespace FarrokhGames.Inventory
             item.img.type = Image.Type.Simple;
             item.img.raycastTarget = raycastTarget;
             item.settextFromPrice(_item.price);
+            item.SetCount(((ItemDefinition)_item).CountItems);
             //item.TextUI.text = _item.price.ToString();
 
             return item;

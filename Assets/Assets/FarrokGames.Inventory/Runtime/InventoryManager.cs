@@ -1,3 +1,4 @@
+using FarrokhGames.Inventory.Examples;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -268,7 +269,20 @@ namespace FarrokhGames.Inventory
         {
             if (!CanAdd(item))return false;
             Vector2Int point;
-            return GetFirstPointThatFitsItem(item, out point) && TryAddAt(item, point);
+
+            foreach (var F_item in allItems)
+            {
+                if (F_item.name==item.name)
+                {
+                    ((ItemDefinition)F_item).CountItems++;
+
+                    //onItemAdded?.Invoke(F_item);
+                    onRebuilt?.Invoke();
+                    return true;
+                }
+            }
+
+                return GetFirstPointThatFitsItem(item, out point) && TryAddAt(item, point);
         }
 
         /// <inheritdoc />

@@ -142,23 +142,31 @@ namespace RPG.SceneManagement
         {
             if (bonusWeapon != null)
             {
+                if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusWeapon.name)))
+                {
+                    IGame.Instance.UIManager.ShowNewWeapon();
+                    IGame.Instance.gameAPI.SaveUpdater();
+                
+
+
                 if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusWeapon.name))
                 {
                     IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusWeapon.name);
-                    IGame.Instance.playerController.GetFighter().EquipWeapon(bonusWeapon);
-                    IGame.Instance.UIManager.ShowNewWeapon();
-                    IGame.Instance.gameAPI.SaveUpdater();
+                }
                 }
             }
 
             if (bonusArmor != null)
             {
+                if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusArmor.name)))
+                {
+                    IGame.Instance.UIManager.ShowNewWeapon();
+                    IGame.Instance.gameAPI.SaveUpdater();
+                
                 if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusArmor.name))
                 {
                     IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusArmor.name);
-                    IGame.Instance.playerController.GetFighter().EquipItem(bonusArmor);
-                    IGame.Instance.UIManager.ShowNewArmor();
-                    IGame.Instance.gameAPI.SaveUpdater();
+                }
                 }
             }
         }

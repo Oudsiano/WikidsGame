@@ -75,6 +75,7 @@ public class PlayerData
     public int IDmaxRegionAvaliable;
 
     public string[] containsBug;
+    public List<OneItemForSave> containsBug2;
     public List<string> completedQuests;
     public Dictionary<string, OneQuestData> startedQuests = new Dictionary<string, OneQuestData>();
 

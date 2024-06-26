@@ -73,6 +73,7 @@ public class LevelChangeObserver : MonoBehaviour
                 return sceneInfo.IdScene;
 
         // Если сцена не найдена в списке, можно вернуть null или выполнить другую логику
+        if (currentSceneName!= "OpenScene")
         Debug.LogError("ErRrOrR Current scene info not found in AllScenes list: " + currentSceneName);
         return allScenes.emptyScene;
     }

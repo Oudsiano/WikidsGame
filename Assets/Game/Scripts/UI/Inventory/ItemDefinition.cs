@@ -17,7 +17,13 @@ namespace FarrokhGames.Inventory.Examples
         [SerializeField] private bool _onlyOne = false;
         [SerializeField, HideInInspector] private int _countItems = 1;
 
-        public int CountItems => _countItems;
+        public int CountItems {
+           get => _countItems;
+            set { 
+                _countItems = value; 
+
+            }
+        }
 
         public bool onlyOne => _onlyOne;
 

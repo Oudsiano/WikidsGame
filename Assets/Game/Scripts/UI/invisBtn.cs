@@ -41,7 +41,8 @@ public class invisBtn : MonoBehaviour
     {
         if (!timeAnimate) return;
 
-        timeBtn += Time.deltaTime;
+        if (!pauseClass.GetPauseState())
+            timeBtn += Time.deltaTime;
 
         if (timeBtn > 30)
         {

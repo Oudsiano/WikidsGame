@@ -65,6 +65,7 @@ public class UiMarketPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
+        pauseClass.IsOpenUI = false;
     }
 
     private void OnClickBtnConsume()

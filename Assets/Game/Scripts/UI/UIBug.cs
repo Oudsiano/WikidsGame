@@ -37,6 +37,7 @@ public class UIBug : MonoBehaviour
     {
         gameObject.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
+        pauseClass.IsOpenUI = false;
     }
 
     public bool TryTakeQuestItem(string itemName)

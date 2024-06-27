@@ -32,6 +32,7 @@ public class ConversationStarter : MonoBehaviour
         ConversationManager.Instance.StartConversation(myConversation);
         DialogStarted = true;
         IsDialogActive = true;
+        pauseClass.IsDialog = true;
         Debug.Log("Dialog Started");
         //TODO: Uncomment this and display the success count once the data object is properly initialized.
         //Debug.Log(data.countSuccessAnswers);
@@ -69,6 +70,7 @@ public class ConversationStarter : MonoBehaviour
     {
         DialogStarted = false;
         IsDialogActive = false;
+        pauseClass.IsDialog = false;
         ConversationManager.OnConversationEnded -= DialogEnded;  // ???????????? ?? ??????? ????????? ???????
     }
 

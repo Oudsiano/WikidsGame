@@ -147,6 +147,7 @@ public class UIManager : MonoBehaviour
     {
         OptionScr.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
+        pauseClass.IsOpenUI = false;
         followCamera.UnlockCamera();
     }
     private void OnClickBtnTest()
@@ -157,7 +158,8 @@ public class UIManager : MonoBehaviour
     private void OnClickBtnOption()
     {
         OptionScr.SetActive(true);
-        IGame.Instance.SavePlayerPosLikeaPause(true);
+        IGame.Instance.SavePlayerPosLikeaPause(true); 
+        pauseClass.IsOpenUI = true;
         followCamera.LockCamera();
     }
 
@@ -222,6 +224,7 @@ public class UIManager : MonoBehaviour
     private void ClosePlayerScr()
     {
         PlayerInfoScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false);
+        pauseClass.IsOpenUI = false;
     }
     private void onClickConfirmPLayersScr()
     {
@@ -234,6 +237,7 @@ public class UIManager : MonoBehaviour
     private void OnClickUserInfo()
     {
         IGame.Instance.SavePlayerPosLikeaPause(true);
+        pauseClass.IsOpenUI = true;
         PlayerInfoScr.SetActive(true);
         RegenPLayerInfoScr();
     }
@@ -249,6 +253,7 @@ public class UIManager : MonoBehaviour
     public void OnClickBtnCloseMap()
     {
         IGame.Instance.SavePlayerPosLikeaPause(false);
+        pauseClass.IsOpenUI = false;
         MapCanvas.SetActive(false);
 
         GameObject MapCamera = GameObject.Find("CameraForMainMap");
@@ -266,6 +271,7 @@ public class UIManager : MonoBehaviour
             MapCanvas.gameObject.SetActive(true);
         }
         IGame.Instance.SavePlayerPosLikeaPause(true);
+        pauseClass.IsOpenUI = true;
     }
     private void OnChangeMoney(double newValue)
     {
@@ -277,6 +283,7 @@ public class UIManager : MonoBehaviour
         uIBug.regen();
         uIBug.gameObject.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true);
+        pauseClass.IsOpenUI = true;
 
     }
 
@@ -292,6 +299,7 @@ public class UIManager : MonoBehaviour
 
 
         IGame.Instance.SavePlayerPosLikeaPause(true);
+        pauseClass.IsOpenUI = true;
     }
 
     private void closeAgainUI(bool force = false)
@@ -304,6 +312,7 @@ public class UIManager : MonoBehaviour
 
 
         IGame.Instance.SavePlayerPosLikeaPause(false);
+        pauseClass.IsOpenUI = false;
     }
 
     public void OnClickButtonMarket() => OpenMarket(0, int.MaxValue);
@@ -313,6 +322,7 @@ public class UIManager : MonoBehaviour
         UiMarketPanel.Regen(minPrice, maxPrice);
         UiMarketPanel.gameObject.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true);
+        pauseClass.IsOpenUI = true;
     }
 
     public void OnCLickCancelAgain() => closeAgainUI();
@@ -342,6 +352,7 @@ public class UIManager : MonoBehaviour
     {
         QuestScr.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true);
+        pauseClass.IsOpenUI = true;
         followCamera.LockCamera();
     }
 
@@ -349,6 +360,7 @@ public class UIManager : MonoBehaviour
     {
         QuestScr.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
+        pauseClass.IsOpenUI = false;
         followCamera.UnlockCamera();
     }
 

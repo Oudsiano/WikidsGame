@@ -302,7 +302,7 @@ public class GameAPI : MonoBehaviour
                         {
                             Debug.Log("game api work");
                             // Вызываем колбэк с результатом
-                            _calback = true;
+                            _calback = test.completed;
 
                             //yield break; Убрал, чтобы не прерывать обсчет всего массива
                         }

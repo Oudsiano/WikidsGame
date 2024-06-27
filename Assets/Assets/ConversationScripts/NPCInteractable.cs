@@ -62,6 +62,10 @@ public class NPCInteractable : MonoBehaviour
         if (conversationStarter != null)
         {
             conversationStarter.StartDialog();
+
+            NPC_for_testID _npc = conversationStarter.myConversation.GetComponent<NPC_for_testID>();
+            if (_npc!=null)
+                _npc.setParentGO(gameObject);
         }
     }
 

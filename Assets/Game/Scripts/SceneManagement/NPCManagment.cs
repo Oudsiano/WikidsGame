@@ -7,7 +7,7 @@ public class NPCManagment : MonoBehaviour
     private Dictionary<int, GameObject> _dicNPCTests;
 
     // Start is called before the first frame update
-    void Start()
+    public void FindAllNPCWithTests()
     {
         //Need find all NPC
 

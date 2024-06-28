@@ -23,6 +23,7 @@ public class NPC_for_testID : MonoBehaviour
     [SerializeField] public int coins=100;
 
     private IconForFarCamera _icon;
+    private OpenURL _thisOpenURL;
     private Transform splashOrangeTransform;
 
     private GameObject parentGO;
@@ -37,11 +38,20 @@ public class NPC_for_testID : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _thisOpenURL = GetComponent<OpenURL>();
+
+        var _oldOpenUrl = transform.parent.GetComponent<OpenURL>();
+        if (_oldOpenUrl != null)
+            if (_oldOpenUrl.urlToOpen.Length>2)
+            _thisOpenURL.urlToOpen = _oldOpenUrl.urlToOpen;
+
         _icon = transform.Find("Icon").GetComponent<IconForFarCamera>();
         _icon.description = IconText;
 
 
         Transform splashOrangeTransform = transform.Find("Splash_orange");
+
+
     }
 
     public void SuccessAnsver()

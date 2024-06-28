@@ -84,7 +84,9 @@ public class ConversationStarter : MonoBehaviour
         if (TestID==0)
         {
             Debug.LogError("Not have TestID in inspector");
+            TestID = testId;
         }
+
         FindObjectOfType<GameAPI>().IsTestCompleted(TestID, (isCompleted) =>
         {
             if (isCompleted)

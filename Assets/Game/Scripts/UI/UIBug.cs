@@ -40,14 +40,14 @@ public class UIBug : MonoBehaviour
         pauseClass.IsOpenUI = false;
     }
 
-    public bool TryTakeQuestItem(string itemName)
+    public bool TryTakeQuestItem(string itemName, bool needDelete=false)
     {
 
         foreach (var item in InventoryBag.inventory.allItems)
         {
             if (item.name == itemName)
             {
-                OnRemoved(item);
+                if (needDelete) OnRemoved(item);
                 Debug.Log("Предмет найдет. Возможно стоит еще прописать удаление");
                 return true;
             }

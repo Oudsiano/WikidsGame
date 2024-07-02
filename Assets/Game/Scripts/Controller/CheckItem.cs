@@ -15,4 +15,12 @@ public class CheckItem : MonoBehaviour
             ConversationManager.Instance.SetBool(nameParamInNPC, true);
         }
     }
+
+    public void ChekItemAndDelte()
+    {
+        if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(nameItem, true))
+        {
+            ConversationManager.Instance.SetBool(nameParamInNPC, true);
+        }
+    }
 }

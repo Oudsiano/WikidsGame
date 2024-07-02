@@ -69,7 +69,7 @@ namespace FarrokhGames.Inventory.Examples
         /// <summary>
         /// Creates a copy if this scriptable object
         /// </summary>
-        public IInventoryItem CreateInstance()
+        public ItemDefinition CreateInstance()
         {
             var clone = ScriptableObject.Instantiate(this);
             clone.name = clone.name.Substring(0, clone.name.Length - 7); // Remove (Clone) from name

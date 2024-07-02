@@ -270,7 +270,7 @@ namespace FarrokhGames.Inventory
             if (!CanAdd(item))return false;
             Vector2Int point;
 
-            foreach (var F_item in allItems)
+            /*foreach (var F_item in allItems)
             {
                 if (F_item.name==item.name)
                 {
@@ -280,7 +280,7 @@ namespace FarrokhGames.Inventory
                     onRebuilt?.Invoke();
                     return true;
                 }
-            }
+            }*/
 
                 return GetFirstPointThatFitsItem(item, out point) && TryAddAt(item, point);
         }

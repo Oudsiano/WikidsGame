@@ -77,7 +77,7 @@ public class SaveGame
         IGame.Instance.dataPLayer.playerData.weaponToLoad = EquipedWeapon.name;
 
         List<OneItemForSave> tempBug = new List<OneItemForSave>();
-        for (int i = BugItems.Count-1; i >= 0; i--)
+        /*for (int i = BugItems.Count-1; i >= 0; i--)
         {
             for (int i2  = i-1; i2 >= 0; i2--)
             {
@@ -89,10 +89,11 @@ public class SaveGame
             }
         }
         for (int i = BugItems.Count-1; i >= 0; i--)
-            if (BugItems[i].CountItems == 0) bugItems.RemoveAt(i);
+            if (BugItems[i].CountItems == 0) bugItems.RemoveAt(i);*/
 
-            foreach (var item in BugItems)
+        foreach (var item in BugItems)
         {
+            item.CountItems = 1;
 
             tempBug.Add(new OneItemForSave(item.CountItems, item.name));
         }

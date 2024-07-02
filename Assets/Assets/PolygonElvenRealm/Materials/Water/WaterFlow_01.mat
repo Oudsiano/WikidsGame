@@ -2,20 +2,27 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: WaterFlow_01
-  m_Shader: {fileID: 4800000, guid: 9b1e1d14d7778714391ae095571c3d4f, type: 3}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _VERTEXOFFSET_TOGGLE_ON
-  m_LightmapFlags: 2
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ALPHAPREMULTIPLY_ON
+  m_InvalidKeywords:
+  - _VERTEXOFFSET_TOGGLE_ON
+  m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -87,6 +94,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _AlphaCutoff: 0.5
     - _BumpScale: 1
@@ -132,7 +140,7 @@ Material:
     m_Colors:
     - _Color: {r: 0.19277322, g: 0.70831525, b: 0.7169812, a: 0.38431373}
     - _Color0: {r: 0.19335166, g: 0.745283, b: 0.6866668, a: 0}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _FresnelColour: {r: 0.9858491, g: 0.9888815, b: 1, a: 0}
     - _WaterColour: {r: 0.5403169, g: 0.5871752, b: 0.6132076, a: 1}
   m_BuildTextureStacks: []

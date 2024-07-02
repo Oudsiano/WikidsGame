@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!43 &-3768330502845888031
+--- !u!43 &-7273101955993121894
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,47 +165,13 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e927627221206e04dba83232f13d1949, type: 3}
-  m_Name: SM_Bld_Roof_Convex_Corner_Window_01_lods
-  m_EditorClassIdentifier: 
-  overrideDefaults: 0
-  importSettings:
-    generateOnImport: 1
-    meshSimplifier: Unity.AutoLOD.QuadricMeshSimplifier, Unity.AutoLOD.Editor, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    batcher: 
-    maxLODGenerated: 2
-    initialLODMaxPolyCount: 300000
-  lod0:
-  - {fileID: 0}
-  - {fileID: 0}
-  lod1:
-  - {fileID: 0}
-  - {fileID: 0}
-  lod2:
-  - {fileID: 0}
-  - {fileID: 0}
-  lod3: []
-  lod4: []
-  lod5: []
-  lod6: []
-  lod7: []
---- !u!43 &4145543818857585482
+--- !u!43 &-5488941043313330164
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SM_Bld_Roof_Convex_Corner_Window_01_Glass LOD1
+  m_Name: SM_Bld_Roof_Convex_Corner_Window_01 LOD1
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -350,8 +316,8 @@ Mesh:
       m_BitSize: 0
     m_UVInfo: 0
   m_LocalAABB:
-    m_Center: {x: -2.5, y: 1.428646, z: -0.17992964}
-    m_Extent: {x: 0.54865223, y: 0.8355397, z: 0.0034765676}
+    m_Center: {x: -2.49999, y: 1.5220982, z: 1.6457324}
+    m_Extent: {x: 2.6124902, y: 1.5997442, z: 1.645752}
   m_MeshUsageFlags: 0
   m_CookingOptions: 30
   m_BakedConvexCollisionMesh: 
@@ -364,7 +330,41 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!43 &7452933182397867676
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e927627221206e04dba83232f13d1949, type: 3}
+  m_Name: SM_Bld_Roof_Convex_Corner_Window_01_lods
+  m_EditorClassIdentifier: 
+  overrideDefaults: 0
+  importSettings:
+    generateOnImport: 1
+    meshSimplifier: Unity.AutoLOD.QuadricMeshSimplifier, Unity.AutoLOD.Editor, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    batcher: 
+    maxLODGenerated: 2
+    initialLODMaxPolyCount: 500000
+  lod0:
+  - {fileID: 0}
+  - {fileID: 0}
+  lod1:
+  - {fileID: 0}
+  - {fileID: 0}
+  lod2:
+  - {fileID: 0}
+  - {fileID: 0}
+  lod3: []
+  lod4: []
+  lod5: []
+  lod6: []
+  lod7: []
+--- !u!43 &55942468514867015
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -529,13 +529,13 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!43 &8274488837017685757
+--- !u!43 &6542330575728670793
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SM_Bld_Roof_Convex_Corner_Window_01 LOD1
+  m_Name: SM_Bld_Roof_Convex_Corner_Window_01_Glass LOD1
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -680,8 +680,8 @@ Mesh:
       m_BitSize: 0
     m_UVInfo: 0
   m_LocalAABB:
-    m_Center: {x: -2.49999, y: 1.5220982, z: 1.6457324}
-    m_Extent: {x: 2.6124902, y: 1.5997442, z: 1.645752}
+    m_Center: {x: -2.5, y: 1.428646, z: -0.17992964}
+    m_Extent: {x: 0.54865223, y: 0.8355397, z: 0.0034765676}
   m_MeshUsageFlags: 0
   m_CookingOptions: 30
   m_BakedConvexCollisionMesh: 

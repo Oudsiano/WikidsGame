@@ -11,7 +11,7 @@ public class GiveItem : MonoBehaviour
     public void TryAddItemItem()
     {
         if (Item!=null)
-        IGame.Instance.UIManager.uIBug.TryAddEquipToBug(Instantiate(Item));
+        IGame.Instance.UIManager.uIBug.TryAddEquipToBug(Item.CreateInstance());
     }
 
 }

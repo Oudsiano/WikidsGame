@@ -146,7 +146,7 @@ public class SaveGame
 
         foreach (var item in IGame.Instance.dataPLayer.playerData.containsBug2)
         {
-            ItemDefinition newI = (ItemDefinition)IGame.Instance.WeaponArmorManager.TryGetItemByName(item.name)
+            ItemDefinition newI = (ItemDefinition)IGame.Instance.WeaponArmorManager.TryGetItemByName(item.name.Replace("(Clone)", ""))
                 .CreateInstance();
             newI.CountItems = item.count;
 

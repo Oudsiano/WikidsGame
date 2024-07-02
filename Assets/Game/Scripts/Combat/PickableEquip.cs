@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using FarrokhGames.Inventory.Examples;
+using FarrokhGames.Inventory;
 using RPG.Combat;
 using RPG.Controller;
 using UnityEngine;
@@ -35,7 +35,7 @@ public class PickableEquip : MonoBehaviour
         if (item != null)
         {
             item.CreateInstance();
-            IGame.Instance.UIManager.uIBug.TryAddEquipToBug(item);
+            IGame.Instance.UIManager.uIBug.TryAddEquipToBug(item,1);
         }
         else
             Debug.LogError("mistake item");

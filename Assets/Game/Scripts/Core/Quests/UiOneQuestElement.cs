@@ -108,7 +108,7 @@ public class UiOneQuestElement : MonoBehaviour
                 IGame.Instance.saveGame.Coins += quest.countMoney;
                 break;
             case QuestAwardType.item:
-                IGame.Instance.UIManager.uIBug.TryAddEquipToBug(quest.awardItem);
+                IGame.Instance.UIManager.uIBug.TryAddEquipToBug(quest.awardItem,1);
                 break;
         }
 

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using RPG.Core;
 using TMPro;
 using FarrokhGames.Inventory;
-using FarrokhGames.Inventory.Examples;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
@@ -152,7 +151,7 @@ public class UIManager : MonoBehaviour
     }
     private void OnClickBtnTest()
     {
-        uIBug.TryAddEquipToBug(IGame.Instance.QuestManager.allQuestsItems[0]);
+        uIBug.TryAddEquipToBug(IGame.Instance.QuestManager.allQuestsItems[0],1);
     }
 
     private void OnClickBtnOption()

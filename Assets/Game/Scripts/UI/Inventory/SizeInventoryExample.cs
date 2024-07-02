@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FarrokhGames.Inventory.Examples
+namespace FarrokhGames.Inventory
 {
     /// <summary>
     /// Example Lobby class
@@ -16,8 +16,8 @@ namespace FarrokhGames.Inventory.Examples
         [SerializeField] private int _width = 8;
         [SerializeField] private int _height = 4;
         [SerializeField] private ItemDefinition[] _definitions = null;
-        [SerializeField] private bool _fillRandomly = true; // Should the inventory get filled with random items?
-        [SerializeField] private bool _fillEmpty = false; // Should the inventory get completely filled?
+        //[SerializeField] private bool _fillRandomly = true; // Should the inventory get filled with random items?
+        //[SerializeField] private bool _fillEmpty = false; // Should the inventory get completely filled?
         [SerializeField] private bool _isMarket = false;
         [SerializeField] private bool _dropedFromThere = false;
         [SerializeField] private float _priceMultiple = 1;
@@ -37,7 +37,7 @@ namespace FarrokhGames.Inventory.Examples
             inventory.PriceMultiple = _priceMultiple;
             inventory.ShowPricesThere = _showPricesThere;
             // Fill inventory with random items
-            if (_fillRandomly)
+            /*if (_fillRandomly)
             {
                 var tries = (_width * _height) / 3;
                 for (var i = 0; i < tries; i++)
@@ -53,7 +53,7 @@ namespace FarrokhGames.Inventory.Examples
                 {
                     inventory.TryAdd(_definitions[0].CreateInstance());
                 }
-            }
+            }*/
 
             // Sets the renderers's inventory to trigger drawing
             

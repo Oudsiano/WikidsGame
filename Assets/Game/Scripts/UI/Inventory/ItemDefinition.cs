@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-namespace FarrokhGames.Inventory.Examples
+namespace FarrokhGames.Inventory
 {
     /// <summary>
     /// Scriptable Object representing an Inventory Item
     /// </summary>
     [CreateAssetMenu(fileName = "Item", menuName = "Inventory/Item", order = 1)]
-    public class ItemDefinition : ScriptableObject, IInventoryItem
+    public class ItemDefinition : ScriptableObject, IItemDefinition2
     {
         [SerializeField] public int PriceCoins;
         [SerializeField] private Sprite _sprite = null;
@@ -69,7 +69,7 @@ namespace FarrokhGames.Inventory.Examples
         /// <summary>
         /// Creates a copy if this scriptable object
         /// </summary>
-        public IInventoryItem CreateInstance()
+        public ItemDefinition CreateInstance()
         {
             var clone = ScriptableObject.Instantiate(this);
             clone.name = clone.name.Substring(0, clone.name.Length - 7); // Remove (Clone) from name

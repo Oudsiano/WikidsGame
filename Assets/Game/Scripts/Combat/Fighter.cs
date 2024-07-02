@@ -1,4 +1,4 @@
-﻿using FarrokhGames.Inventory.Examples;
+﻿using FarrokhGames.Inventory;
 using RPG.Core;
 using RPG.Movement;
 using UnityEngine;

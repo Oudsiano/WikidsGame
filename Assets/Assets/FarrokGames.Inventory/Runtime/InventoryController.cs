@@ -6,12 +6,12 @@ namespace FarrokhGames.Inventory
 {
     public interface IInventoryController
     {
-        Action<IInventoryItem> onItemHovered { get; set; }
-        Action<IInventoryItem> onItemPickedUp { get; set; }
-        Action<IInventoryItem> onItemAdded { get; set; }
-        Action<IInventoryItem> onItemSwapped { get; set; }
-        Action<IInventoryItem> onItemReturned2 { get; set; }
-        Action<IInventoryItem> onItemDropped { get; set; }
+        Action<ItemDefinition> onItemHovered { get; set; }
+        Action<ItemDefinition> onItemPickedUp { get; set; }
+        Action<ItemDefinition> onItemAdded { get; set; }
+        Action<ItemDefinition> onItemSwapped { get; set; }
+        Action<ItemDefinition> onItemReturned2 { get; set; }
+        Action<ItemDefinition> onItemDropped { get; set; }
     }
 
     /// <summary>
@@ -22,221 +22,221 @@ namespace FarrokhGames.Inventory
         IPointerDownHandler, IBeginDragHandler, IDragHandler,
         IEndDragHandler, IPointerExitHandler, IPointerEnterHandler,
         IInventoryController
+    {
+        // The dragged item is static and shared by all controllers
+        // This way items can be moved between controllers easily
+        private static InventoryDraggedItem _draggedItem;
+
+        /// <inheritdoc />
+        public Action<ItemDefinition> onItemHovered { get; set; }
+
+        /// <inheritdoc />
+        public Action<ItemDefinition> onItemPickedUp { get; set; }
+
+        /// <inheritdoc />
+        public Action<ItemDefinition> onItemAdded { get; set; }
+
+        /// <inheritdoc />
+        public Action<ItemDefinition> onItemSwapped { get; set; }
+
+        /// <inheritdoc />
+        public Action<ItemDefinition> onItemReturned2 { get; set; }
+
+        /// <inheritdoc />
+        public Action<ItemDefinition> onItemDropped { get; set; }
+
+        private Canvas _canvas;
+        internal InventoryRenderer inventoryRenderer;
+        internal InventoryManager inventory => (InventoryManager)inventoryRenderer.inventory;
+
+        private ItemDefinition _itemToDrag;
+        private PointerEventData _currentEventData;
+        private ItemDefinition _lastHoveredItem;
+
+        /*
+         * Setup
+         */
+        void Awake()
         {
-            // The dragged item is static and shared by all controllers
-            // This way items can be moved between controllers easily
-            private static InventoryDraggedItem _draggedItem;
+            inventoryRenderer = GetComponent<InventoryRenderer>();
+            if (inventoryRenderer == null) { throw new NullReferenceException("Could not find a renderer. This is not allowed!"); }
 
-            /// <inheritdoc />
-            public Action<IInventoryItem> onItemHovered { get; set; }
+            // Find the canvas
+            var canvases = GetComponentsInParent<Canvas>();
+            if (canvases.Length == 0) { throw new NullReferenceException("Could not find a canvas."); }
+            _canvas = canvases[canvases.Length - 1];
+        }
 
-            /// <inheritdoc />
-            public Action<IInventoryItem> onItemPickedUp { get; set; }
+        /*
+         * Grid was clicked (IPointerDownHandler)
+         */
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if (_draggedItem != null) return;
+            // Get which item to drag (item will be null of none were found)
+            var grid = ScreenToGrid(eventData.position);
+            _itemToDrag = inventory.GetAtPoint(grid);
+        }
 
-            /// <inheritdoc />
-            public Action<IInventoryItem> onItemAdded { get; set; }
+        /*
+         * Dragging started (IBeginDragHandler)
+         */
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            inventoryRenderer.ClearSelection();
 
-            /// <inheritdoc />
-            public Action<IInventoryItem> onItemSwapped { get; set; }
+            if (_itemToDrag == null || _draggedItem != null) return;
 
-            /// <inheritdoc />
-            public Action<IInventoryItem> onItemReturned2 { get; set; }
+            var localPosition = ScreenToLocalPositionInRenderer(eventData.position);
+            var itemOffest = inventoryRenderer.GetItemOffset(_itemToDrag);
+            var offset = itemOffest - localPosition;
 
-            /// <inheritdoc />
-            public Action<IInventoryItem> onItemDropped { get; set; }
-
-            private Canvas _canvas;
-            internal InventoryRenderer inventoryRenderer;
-            internal InventoryManager inventory => (InventoryManager) inventoryRenderer.inventory;
-
-            private IInventoryItem _itemToDrag;
-            private PointerEventData _currentEventData;
-            private IInventoryItem _lastHoveredItem;
-
-            /*
-             * Setup
-             */
-            void Awake()
-            {
-                inventoryRenderer = GetComponent<InventoryRenderer>();
-                if (inventoryRenderer == null) { throw new NullReferenceException("Could not find a renderer. This is not allowed!"); }
-
-                // Find the canvas
-                var canvases = GetComponentsInParent<Canvas>();
-                if (canvases.Length == 0) { throw new NullReferenceException("Could not find a canvas."); }
-                _canvas = canvases[canvases.Length - 1];
-            }
-
-            /*
-             * Grid was clicked (IPointerDownHandler)
-             */
-            public void OnPointerDown(PointerEventData eventData)
-            {
-                if (_draggedItem != null) return;
-                // Get which item to drag (item will be null of none were found)
-                var grid = ScreenToGrid(eventData.position);
-                _itemToDrag = inventory.GetAtPoint(grid);
-            }
-
-            /*
-             * Dragging started (IBeginDragHandler)
-             */
-            public void OnBeginDrag(PointerEventData eventData)
-            {
-                inventoryRenderer.ClearSelection();
-
-                if (_itemToDrag == null || _draggedItem != null) return;
-                
-                var localPosition = ScreenToLocalPositionInRenderer(eventData.position);
-                var itemOffest = inventoryRenderer.GetItemOffset(_itemToDrag);
-                var offset = itemOffest - localPosition;
-
-                // Create a dragged item 
-                _draggedItem = new InventoryDraggedItem(
-                    _canvas,
-                    this,
-                    _itemToDrag.position,
-                    _itemToDrag,
-                    offset
-                );
+            // Create a dragged item 
+            _draggedItem = new InventoryDraggedItem(
+                _canvas,
+                this,
+                _itemToDrag.position,
+                _itemToDrag,
+                offset
+            );
 
 
-                onItemPickedUp?.Invoke(_itemToDrag);
+            onItemPickedUp?.Invoke(_itemToDrag);
             // Remove the item from inventory
-            inventory.TryRemove(_itemToDrag);
+            inventory.TryRemove(_itemToDrag, _itemToDrag.CountItems);
         }
 
-            /*
-             * Dragging is continuing (IDragHandler)
-             */
-            public void OnDrag(PointerEventData eventData)
+        /*
+         * Dragging is continuing (IDragHandler)
+         */
+        public void OnDrag(PointerEventData eventData)
+        {
+            _currentEventData = eventData;
+            if (_draggedItem != null)
             {
-                _currentEventData = eventData;
-                if (_draggedItem != null)
-                {
-                    // Update the items position
-                    //_draggedItem.Position = eventData.position;
-                }
-            }
-
-            /*
-             * Dragging stopped (IEndDragHandler)
-             */
-            public void OnEndDrag(PointerEventData eventData)
-            {
-                if (_draggedItem == null) return;
-                
-                _draggedItem.Drop(eventData.position, AfterDragEnd);
-
-                _draggedItem = null;
-                _currentEventData = null;
-            }
-
-            public void AfterDragEnd(InventoryDraggedItem.DropMode mode)
-            {
-                Debug.Log(mode);
-                switch (mode)
-                {
-                    case InventoryDraggedItem.DropMode.Added:
-                        onItemAdded?.Invoke(_itemToDrag);
-                        break;
-                    case InventoryDraggedItem.DropMode.Swapped:
-                        onItemSwapped?.Invoke(_itemToDrag);
-                        break;
-                    case InventoryDraggedItem.DropMode.Returned:
-                        onItemReturned2?.Invoke(_itemToDrag);
-                        break;
-                    case InventoryDraggedItem.DropMode.Dropped:
-                        onItemDropped?.Invoke(_itemToDrag);
-                        ClearHoveredItem();
-                        break;
-                }
-            }
-
-            /*
-             * Pointer left the inventory (IPointerExitHandler)
-             */
-            public void OnPointerExit(PointerEventData eventData)
-            {
-                if (_draggedItem != null)
-                {
-                    // Clear the item as it leaves its current controller
-                    _draggedItem.currentController = null;
-                    inventoryRenderer.ClearSelection();
-                }
-                else { ClearHoveredItem(); }
-                _currentEventData = null;
-            }
-
-            /*
-             * Pointer entered the inventory (IPointerEnterHandler)
-             */
-            public void OnPointerEnter(PointerEventData eventData)
-            {
-                if (_draggedItem != null)
-                {
-                    // Change which controller is in control of the dragged item
-                    _draggedItem.currentController = this;
-                }
-                _currentEventData = eventData;
-            }
-
-            /*
-             * Update loop
-             */
-            void Update()
-            {
-                if (_currentEventData == null) return;
-                
-                if (_draggedItem == null)
-                {
-                    // Detect hover
-                    var grid = ScreenToGrid(_currentEventData.position);
-                    var item = inventory.GetAtPoint(grid);
-                    if (item == _lastHoveredItem) return;
-                    onItemHovered?.Invoke(item);
-                    _lastHoveredItem = item;
-                }
-                else
-                {
-                    // Update position while dragging
-                    _draggedItem.position = _currentEventData.position;
-                }
-            }
-
-            /* 
-             * 
-             */
-            private void ClearHoveredItem()
-            {
-                if (_lastHoveredItem != null)
-                {
-                    onItemHovered?.Invoke(null);
-                }
-                _lastHoveredItem = null;
-            }
-
-            /*
-             * Get a point on the grid from a given screen point
-             */
-            internal Vector2Int ScreenToGrid(Vector2 screenPoint)
-            {
-                var pos = ScreenToLocalPositionInRenderer(screenPoint);
-                var sizeDelta = inventoryRenderer.rectTransform.sizeDelta;
-                pos.x += sizeDelta.x / 2;
-                pos.y += sizeDelta.y / 2;
-                return new Vector2Int(Mathf.FloorToInt(pos.x / inventoryRenderer.cellSize.x), Mathf.FloorToInt(pos.y / inventoryRenderer.cellSize.y));
-            }
-
-            private Vector2 ScreenToLocalPositionInRenderer(Vector2 screenPosition)
-            {
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                    inventoryRenderer.rectTransform,
-                    screenPosition,
-                    _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera,
-                    out var localPosition
-                );
-                return localPosition;
+                // Update the items position
+                //_draggedItem.Position = eventData.position;
             }
         }
+
+        /*
+         * Dragging stopped (IEndDragHandler)
+         */
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            if (_draggedItem == null) return;
+
+            _draggedItem.Drop(eventData.position, AfterDragEnd);
+
+            _draggedItem = null;
+            _currentEventData = null;
+        }
+
+        public void AfterDragEnd(InventoryDraggedItem.DropMode mode)
+        {
+            Debug.Log(mode);
+            switch (mode)
+            {
+                case InventoryDraggedItem.DropMode.Added:
+                    onItemAdded?.Invoke(_itemToDrag);
+                    break;
+                case InventoryDraggedItem.DropMode.Swapped:
+                    onItemSwapped?.Invoke(_itemToDrag);
+                    break;
+                case InventoryDraggedItem.DropMode.Returned:
+                    onItemReturned2?.Invoke(_itemToDrag);
+                    break;
+                case InventoryDraggedItem.DropMode.Dropped:
+                    onItemDropped?.Invoke(_itemToDrag);
+                    ClearHoveredItem();
+                    break;
+            }
+        }
+
+        /*
+         * Pointer left the inventory (IPointerExitHandler)
+         */
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (_draggedItem != null)
+            {
+                // Clear the item as it leaves its current controller
+                _draggedItem.currentController = null;
+                inventoryRenderer.ClearSelection();
+            }
+            else { ClearHoveredItem(); }
+            _currentEventData = null;
+        }
+
+        /*
+         * Pointer entered the inventory (IPointerEnterHandler)
+         */
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (_draggedItem != null)
+            {
+                // Change which controller is in control of the dragged item
+                _draggedItem.currentController = this;
+            }
+            _currentEventData = eventData;
+        }
+
+        /*
+         * Update loop
+         */
+        void Update()
+        {
+            if (_currentEventData == null) return;
+
+            if (_draggedItem == null)
+            {
+                // Detect hover
+                var grid = ScreenToGrid(_currentEventData.position);
+                var item = inventory.GetAtPoint(grid);
+                if (item == _lastHoveredItem) return;
+                onItemHovered?.Invoke(item);
+                _lastHoveredItem = item;
+            }
+            else
+            {
+                // Update position while dragging
+                _draggedItem.position = _currentEventData.position;
+            }
+        }
+
+        /* 
+         * 
+         */
+        private void ClearHoveredItem()
+        {
+            if (_lastHoveredItem != null)
+            {
+                onItemHovered?.Invoke(null);
+            }
+            _lastHoveredItem = null;
+        }
+
+        /*
+         * Get a point on the grid from a given screen point
+         */
+        internal Vector2Int ScreenToGrid(Vector2 screenPoint)
+        {
+            var pos = ScreenToLocalPositionInRenderer(screenPoint);
+            var sizeDelta = inventoryRenderer.rectTransform.sizeDelta;
+            pos.x += sizeDelta.x / 2;
+            pos.y += sizeDelta.y / 2;
+            return new Vector2Int(Mathf.FloorToInt(pos.x / inventoryRenderer.cellSize.x), Mathf.FloorToInt(pos.y / inventoryRenderer.cellSize.y));
+        }
+
+        private Vector2 ScreenToLocalPositionInRenderer(Vector2 screenPosition)
+        {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                inventoryRenderer.rectTransform,
+                screenPosition,
+                _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera,
+                out var localPosition
+            );
+            return localPosition;
+        }
+    }
 }

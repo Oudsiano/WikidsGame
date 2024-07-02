@@ -1,4 +1,3 @@
-using FarrokhGames.Inventory.Examples;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -76,7 +75,7 @@ namespace FarrokhGames.Inventory
 
         private void Rebuild(bool silent)
         {
-            allItems = new IInventoryItem[_provider.inventoryItemCount];
+            allItems = new ItemDefinition[_provider.inventoryItemCount];
             for (var i = 0; i < _provider.inventoryItemCount; i++)
             {
                 allItems[i] = _provider.GetInventoryItem(i);
@@ -109,31 +108,31 @@ namespace FarrokhGames.Inventory
         }
 
         /// <inheritdoc />
-        public IInventoryItem[] allItems { get; private set; }
+        public ItemDefinition[] allItems { get; private set; }
 
         /// <inheritdoc />
         public Action onRebuilt { get; set; }
         
         /// <inheritdoc />
-        public Action<IInventoryItem> onItemDropped { get; set; }
+        public Action<ItemDefinition> onItemDropped { get; set; }
 
         /// <inheritdoc />
-        public Action<IInventoryItem> onItemDroppedFailed { get; set; }
+        public Action<ItemDefinition> onItemDroppedFailed { get; set; }
         
         /// <inheritdoc />
-        public Action<IInventoryItem> onItemAdded { get; set; }
+        public Action<ItemDefinition, int> onItemAdded { get; set; }
         
         /// <inheritdoc />
-        public Action<IInventoryItem> onItemAddedFailed { get; set; }
+        public Action<ItemDefinition> onItemAddedFailed { get; set; }
 
         /// <inheritdoc />
-        public Action<IInventoryItem> onItemRemoved { get; set; }
+        public Action<ItemDefinition, int> onItemRemoved { get; set; }
         
         /// <inheritdoc />
         public Action onResized { get; set; }
 
         /// <inheritdoc />
-        public IInventoryItem GetAtPoint(Vector2Int point)
+        public ItemDefinition GetAtPoint(Vector2Int point)
         {
             // Single item override
             if (_provider.inventoryRenderMode == InventoryRenderMode.Single && _provider.isInventoryFull && allItems.Length > 0)
@@ -149,9 +148,9 @@ namespace FarrokhGames.Inventory
         }
 
         /// <inheritdoc />
-        public IInventoryItem[] GetAtPoint(Vector2Int point, Vector2Int size)
+        public ItemDefinition[] GetAtPoint(Vector2Int point, Vector2Int size)
         {
-            var posibleItems = new IInventoryItem[size.x * size.y];
+            var posibleItems = new ItemDefinition[size.x * size.y];
             var c = 0;
             for (var x = 0; x < size.x; x++)
             {
@@ -165,17 +164,17 @@ namespace FarrokhGames.Inventory
         }
 
         /// <inheritdoc />
-        public bool TryRemove(IInventoryItem item)
+        public bool TryRemove(ItemDefinition item, int count)
         {
             if (!CanRemove(item)) return false;
             if (!_provider.RemoveInventoryItem(item)) return false;
             Rebuild(true);
-            onItemRemoved?.Invoke(item);
+            onItemRemoved?.Invoke(item,count);
             return true;
         }
 
         /// <inheritdoc />
-        public bool TryDrop(IInventoryItem item)
+        public bool TryDrop(ItemDefinition item)
         {
             if ( !CanDrop(item) || !_provider.DropInventoryItem(item)) 
 			{
@@ -187,7 +186,7 @@ namespace FarrokhGames.Inventory
             return true;
         }
 
-		internal bool TryForceDrop(IInventoryItem item)
+		internal bool TryForceDrop(ItemDefinition item)
 		{
 			if(!item.canDrop)
 			{
@@ -199,7 +198,7 @@ namespace FarrokhGames.Inventory
 		}
 
         /// <inheritdoc />
-        public bool CanAddAt(IInventoryItem item, Vector2Int point)
+        public bool CanAddAt(ItemDefinition item, Vector2Int point)
         {
             if (!_provider.CanAddInventoryItem(item) || _provider.isInventoryFull)
             {
@@ -230,7 +229,7 @@ namespace FarrokhGames.Inventory
         }
 
         /// <inheritdoc />
-        public bool TryAddAt(IInventoryItem item, Vector2Int point)
+        public bool TryAddAt(ItemDefinition item, Vector2Int point, int count)
         {
             if (!CanAddAt(item, point) || !_provider.AddInventoryItem(item)) 
 			{
@@ -249,12 +248,12 @@ namespace FarrokhGames.Inventory
                     throw new NotImplementedException($"InventoryRenderMode.{_provider.inventoryRenderMode.ToString()} have not yet been implemented");
             }
             Rebuild(true);
-            onItemAdded?.Invoke(item);
+            onItemAdded?.Invoke(item,count);
             return true;
         }
 
         /// <inheritdoc />
-        public bool CanAdd(IInventoryItem item)
+        public bool CanAdd(ItemDefinition item)
         {
             Vector2Int point;
             if (GetFirstPointThatFitsItem(item, out point))
@@ -265,7 +264,7 @@ namespace FarrokhGames.Inventory
         }
 
         /// <inheritdoc />
-        public bool TryAdd(IInventoryItem item)
+        public bool TryAdd(ItemDefinition item, int count)
         {
             if (!CanAdd(item))return false;
             Vector2Int point;
@@ -282,11 +281,11 @@ namespace FarrokhGames.Inventory
                 }
             }
 
-                return GetFirstPointThatFitsItem(item, out point) && TryAddAt(item, point);
+                return GetFirstPointThatFitsItem(item, out point) && TryAddAt(item, point, count);
         }
 
         /// <inheritdoc />
-        public bool CanSwap(IInventoryItem item)
+        public bool CanSwap(ItemDefinition item)
         {
             return _provider.inventoryRenderMode == InventoryRenderMode.Single &&
                 DoesItemFit(item) &&
@@ -308,24 +307,24 @@ namespace FarrokhGames.Inventory
         {
             foreach (var item in allItems)
             {
-                TryRemove(item);
+                TryRemove(item, item.CountItems);
             }
         }
 
         /// <inheritdoc />
-        public bool Contains(IInventoryItem item) => allItems.Contains(item);
+        public bool Contains(ItemDefinition item) => allItems.Contains(item);
         
 
         /// <inheritdoc />
-        public bool CanRemove(IInventoryItem item) => Contains(item) && _provider.CanRemoveInventoryItem(item);
+        public bool CanRemove(ItemDefinition item) => Contains(item) && _provider.CanRemoveInventoryItem(item);
 
         /// <inheritdoc />
-        public bool CanDrop(IInventoryItem item) => Contains(item) && _provider.CanDropInventoryItem(item) && item.canDrop;
+        public bool CanDrop(ItemDefinition item) => Contains(item) && _provider.CanDropInventoryItem(item) && item.canDrop;
         
         /*
          * Get first free point that will fit the given item
          */
-        private bool GetFirstPointThatFitsItem(IInventoryItem item, out Vector2Int point)
+        private bool GetFirstPointThatFitsItem(ItemDefinition item, out Vector2Int point)
         {
             if (DoesItemFit(item))
             {
@@ -345,12 +344,12 @@ namespace FarrokhGames.Inventory
         /* 
          * Returns true if given items physically fits within this inventory
          */
-        private bool DoesItemFit(IInventoryItem item) => item.width <= width && item.height <= height;
+        private bool DoesItemFit(ItemDefinition item) => item.width <= width && item.height <= height;
 
         /*
          * Returns the center post position for a given item within this inventory
          */
-        private Vector2Int GetCenterPosition(IInventoryItem item)
+        private Vector2Int GetCenterPosition(ItemDefinition item)
         {
             return new Vector2Int(
                 (_size.x - item.width) / 2,

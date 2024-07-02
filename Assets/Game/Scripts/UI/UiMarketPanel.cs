@@ -1,5 +1,4 @@
 using FarrokhGames.Inventory;
-using FarrokhGames.Inventory.Examples;
 using RPG.Combat;
 using System;
 using System.Collections;
@@ -36,7 +35,7 @@ public class UiMarketPanel : MonoBehaviour
     private Action<Vector2Int> _accept;
     private Action _decline;
     private Vector2Int _grid;
-    private IInventoryItem _item;
+    private ItemDefinition _item;
 
     private float angleTryOnEquip;
     private Weapon oldWeaponWhenTryOn;
@@ -110,9 +109,9 @@ public class UiMarketPanel : MonoBehaviour
 
         notAvaliableEvents = true;
         InventoryBag.inventory.Clear();
-        foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
+        foreach (ItemDefinition item in IGame.Instance.saveGame.getBugList())
         {
-            InventoryBag.inventory.TryAdd(item);
+            InventoryBag.inventory.TryAdd(item, item.CountItems);
         }
 
 
@@ -121,7 +120,7 @@ public class UiMarketPanel : MonoBehaviour
         notAvaliableEvents = false;
     }
 
-    public void SellItem(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
+    public void SellItem(Action<Vector2Int> accept, Action decline, Vector2Int grid, ItemDefinition item)
     {
         IGame.Instance.saveGame.Coins += (int)(item.price * InventoryBag.inventory.PriceMultiple);
         accept?.Invoke(grid);
@@ -150,7 +149,7 @@ public class UiMarketPanel : MonoBehaviour
     {
         coinCountText.text = newValue.ToString();
     }
-    private void HandleItemRemoved(IInventoryItem obj)
+    private void HandleItemRemoved(ItemDefinition obj, int count)
     {
         if (notAvaliableEvents) return;
         foreach (ItemDefinition item in InventoryAll.inventory.allItems)
@@ -162,36 +161,36 @@ public class UiMarketPanel : MonoBehaviour
         }
     }
 
-    private void HandleItemBugRemoved(IInventoryItem obj)
+    private void HandleItemBugRemoved(ItemDefinition obj, int count)
     {
         if (notAvaliableEvents) return;
-        foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
+        foreach (ItemDefinition item in IGame.Instance.saveGame.getBugList())
         {
             if (item.sprite == obj.sprite)
             {
-                IGame.Instance.saveGame.BugItems.Remove(item);
+                IGame.Instance.saveGame.RemoveItemFromBug(item.name, count);
                 return;
             }
         }
     }
 
-    private void HandleItemBugAdded(IInventoryItem obj)
+    private void HandleItemBugAdded(ItemDefinition obj, int count)
     {
         if (notAvaliableEvents) return;
         foreach (var item in IGame.Instance.WeaponArmorManager.AllWeaponsInGame)
         {
             if (item.sprite == obj.sprite)
-                IGame.Instance.saveGame.BugItems.Add(item);
+                IGame.Instance.saveGame.AddItemToBug(item.name, count);
         }
         foreach (var item in IGame.Instance.WeaponArmorManager.AllArmorsInGame)
         {
             if (item.sprite == obj.sprite)
-                IGame.Instance.saveGame.BugItems.Add(item);
+                IGame.Instance.saveGame.AddItemToBug(item.name, count);
         }
     }
 
 
-    private void HandleItemAdded(IInventoryItem obj)
+    private void HandleItemAdded(ItemDefinition obj, int count)
     {
         if (notAvaliableEvents) return;
 
@@ -207,7 +206,7 @@ public class UiMarketPanel : MonoBehaviour
         }
     }
 
-    private void HandleItemPickedUp(IInventoryItem obj)
+    private void HandleItemPickedUp(ItemDefinition obj, int count)
     {
 
 
@@ -242,14 +241,14 @@ public class UiMarketPanel : MonoBehaviour
 
                     if (!find)
                         if (item.price>=minPrice && item.price<=maxPrice)
-                        InventoryAll.inventory.TryAdd(item);
+                        InventoryAll.inventory.TryAdd(item,1);
                 }
             }
         }
         notAvaliableEvents = false;
     }
 
-    public void InitConfirmMarketUI(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
+    public void InitConfirmMarketUI(Action<Vector2Int> accept, Action decline, Vector2Int grid, ItemDefinition item)
     {
         _accept = accept;
         _decline = decline;

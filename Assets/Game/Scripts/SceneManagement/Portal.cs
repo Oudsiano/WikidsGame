@@ -142,7 +142,7 @@ namespace RPG.SceneManagement
         {
             if (bonusWeapon != null)
             {
-                if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusWeapon.name)))
+                if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusWeapon.name),1))
                 {
                     IGame.Instance.UIManager.ShowNewWeapon();
                     IGame.Instance.gameAPI.SaveUpdater();
@@ -158,7 +158,7 @@ namespace RPG.SceneManagement
 
             if (bonusArmor != null)
             {
-                if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusArmor.name)))
+                if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusArmor.name),1))
                 {
                     IGame.Instance.UIManager.ShowNewWeapon();
                     IGame.Instance.gameAPI.SaveUpdater();

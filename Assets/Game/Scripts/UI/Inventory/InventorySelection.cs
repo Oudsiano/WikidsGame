@@ -2,7 +2,7 @@
 using RPG.Combat;
 using UnityEngine;
 
-namespace FarrokhGames.Inventory.Examples
+namespace FarrokhGames.Inventory
 {
     public class InventorySelection : MonoBehaviour
     {
@@ -32,7 +32,7 @@ namespace FarrokhGames.Inventory.Examples
                 }
         }
 
-        private void HandleItemHover(IInventoryItem item)
+        private void HandleItemHover(ItemDefinition item)
         {
             if (item != null)
             {

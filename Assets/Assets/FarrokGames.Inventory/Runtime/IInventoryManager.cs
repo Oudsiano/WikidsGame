@@ -8,27 +8,27 @@ namespace FarrokhGames.Inventory
         /// <summary>
         /// Invoked when an item is added to the inventory
         /// </summary>
-        Action<IInventoryItem> onItemAdded { get; set; }
+        Action<ItemDefinition, int> onItemAdded { get; set; }
         
         /// <summary>
         /// Invoked when an item was not able to be added to the inventory
         /// </summary>
-        Action<IInventoryItem> onItemAddedFailed { get; set; }
+        Action<ItemDefinition> onItemAddedFailed { get; set; }
 
         /// <summary>
         /// Invoked when an item is removed to the inventory
         /// </summary>
-        Action<IInventoryItem> onItemRemoved { get; set; }
+        Action<ItemDefinition, int> onItemRemoved { get; set; }
 
         /// <summary>
         /// Invoked when an item is removed from the inventory and should be placed on the ground.
         /// </summary>
-        Action<IInventoryItem> onItemDropped { get; set; }
+        Action<ItemDefinition> onItemDropped { get; set; }
         
         /// <summary>
         /// Invoked when an item was unable to be placed on the ground (most likely to its canDrop being set to false)
         /// </summary>
-        Action<IInventoryItem> onItemDroppedFailed { get; set; }
+        Action<ItemDefinition> onItemDroppedFailed { get; set; }
         
         /// <summary>
         /// Invoked when the inventory is rebuilt from scratch
@@ -58,12 +58,12 @@ namespace FarrokhGames.Inventory
         /// <summary>
         /// Returns all items inside this inventory
         /// </summary>
-        IInventoryItem[] allItems { get; }
+        ItemDefinition[] allItems { get; }
 
         /// <summary>
         /// Returns true if given item is present in this inventory
         /// </summary>
-        bool Contains(IInventoryItem item);
+        bool Contains(ItemDefinition item);
 
         /// <summary>
         /// Returns true if this inventory is full
@@ -73,50 +73,50 @@ namespace FarrokhGames.Inventory
         /// <summary>
         /// Returns true if its possible to add given item
         /// </summary>
-        bool CanAdd(IInventoryItem item);
+        bool CanAdd(ItemDefinition item);
 
         /// <summary>
         /// Add given item to the inventory. Returns true
         /// if successful
         /// </summary>
-        bool TryAdd(IInventoryItem item);
+        bool TryAdd(ItemDefinition item, int count);
 
         /// <summary>
         /// Returns true if its possible to add item at location
         /// </summary>
-        bool CanAddAt(IInventoryItem item, Vector2Int point);
+        bool CanAddAt(ItemDefinition item, Vector2Int point);
 
         /// <summary>
         /// Tries to add item att location and returns true if successful
         /// </summary>
-        bool TryAddAt(IInventoryItem item, Vector2Int point);
+        bool TryAddAt(ItemDefinition item, Vector2Int point, int count);
 
         /// <summary>
         /// Returns true if its possible to remove this item
         /// </summary>
-        bool CanRemove(IInventoryItem item);
+        bool CanRemove(ItemDefinition item);
 
         /// <summary>
         /// Returns true ifits possible to swap this item
         /// </summary>
-        bool CanSwap(IInventoryItem item);
+        bool CanSwap(ItemDefinition item);
 
         /// <summary>
         /// Removes given item from this inventory. Returns
         /// true if successful.
         /// </summary>
-        bool TryRemove(IInventoryItem item);
+        bool TryRemove(ItemDefinition item, int count);
 
         /// <summary>
         /// Returns true if its possible to drop this item
         /// </summary>
-        bool CanDrop(IInventoryItem item);
+        bool CanDrop(ItemDefinition item);
 
         /// <summary>
         /// Removes an item from this inventory. Returns true
         /// if successful.
         /// </summary>
-        bool TryDrop(IInventoryItem item);
+        bool TryDrop(ItemDefinition item);
 
         /// <summary>
         /// Drops all items from this inventory
@@ -136,11 +136,11 @@ namespace FarrokhGames.Inventory
         /// <summary>
         /// Get an item at given point within this inventory
         /// </summary>
-        IInventoryItem GetAtPoint(Vector2Int point);
+        ItemDefinition GetAtPoint(Vector2Int point);
 
         /// <summary>
         /// Returns all items under given rectangle
         /// </summary>
-        IInventoryItem[] GetAtPoint(Vector2Int point, Vector2Int size);
+        ItemDefinition[] GetAtPoint(Vector2Int point, Vector2Int size);
     }
 }

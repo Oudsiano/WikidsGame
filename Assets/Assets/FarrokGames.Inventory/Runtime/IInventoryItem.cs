@@ -1,9 +1,8 @@
-using FarrokhGames.Inventory.Examples;
 using UnityEngine;
 
 namespace FarrokhGames.Inventory
 {
-    public interface IInventoryItem
+    public interface IItemDefinition2
     {
         /// <summary>
         /// The sprite of this item
@@ -48,7 +47,7 @@ namespace FarrokhGames.Inventory
         /// Returns the lower left corner position of an item 
         /// within its inventory
         /// </summary>
-        internal static Vector2Int GetMinPoint(this IInventoryItem item)
+        internal static Vector2Int GetMinPoint(this ItemDefinition item)
         {
             return item.position;
         }
@@ -57,7 +56,7 @@ namespace FarrokhGames.Inventory
         /// Returns the top right corner position of an item 
         /// within its inventory
         /// </summary>
-        internal static Vector2Int GetMaxPoint(this IInventoryItem item)
+        internal static Vector2Int GetMaxPoint(this ItemDefinition item)
         {
             return item.position + new Vector2Int(item.width, item.height);
         }
@@ -65,7 +64,7 @@ namespace FarrokhGames.Inventory
         /// <summary>
         /// Returns true if this item overlaps the given point within an inventory
         /// </summary>
-        internal static bool Contains(this IInventoryItem item, Vector2Int inventoryPoint)
+        internal static bool Contains(this ItemDefinition item, Vector2Int inventoryPoint)
         {
             for (var iX = 0; iX < item.width; iX++)
             {
@@ -81,7 +80,7 @@ namespace FarrokhGames.Inventory
         /// <summary>
         /// Returns true of this item overlaps a given item
         /// </summary>
-        internal static bool Overlaps(this IInventoryItem item, IInventoryItem otherItem)
+        internal static bool Overlaps(this ItemDefinition item, ItemDefinition otherItem)
         {
             for (var iX = 0; iX < item.width; iX++)
             {

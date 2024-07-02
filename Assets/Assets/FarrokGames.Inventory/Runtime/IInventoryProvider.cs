@@ -24,43 +24,43 @@ namespace FarrokhGames.Inventory
         /// <summary>
         /// Returns the inventory item at given index
         /// </summary>
-        IInventoryItem GetInventoryItem(int index);
+        ItemDefinition GetInventoryItem(int index);
 
         /// <summary>
         /// Returns true if given inventory item is allowed inside 
         /// this inventory
         /// </summary>
-        bool CanAddInventoryItem(IInventoryItem item);
+        bool CanAddInventoryItem(ItemDefinition item);
 
         /// <summary>
         /// Returns true if given inventory item is allowed to 
         /// be removed from this inventory
         /// </summary>
-        bool CanRemoveInventoryItem(IInventoryItem item);
+        bool CanRemoveInventoryItem(ItemDefinition item);
 
         /// <summary>
         /// Returns true if given inventory item is allowed to 
         /// be dropped on the ground
         /// </summary>
-        bool CanDropInventoryItem(IInventoryItem item);
+        bool CanDropInventoryItem(ItemDefinition item);
 
         /// <summary>
         /// Invoked when an inventory item is added to the 
         /// inventory. Returns true if successful.
         /// </summary>
-        bool AddInventoryItem(IInventoryItem item);
+        bool AddInventoryItem(ItemDefinition item);
 
         /// <summary>
         /// Invoked when an inventory item is removed to the 
         /// inventory. Returns true if successful.
         /// </summary>
-        bool RemoveInventoryItem(IInventoryItem item);
+        bool RemoveInventoryItem(ItemDefinition item);
 
         /// <summary>
         /// Invoked when an inventory item is removed from the 
         /// inventory and should be placed on the ground.
         /// Returns true if successful.
         /// </summary>
-        bool DropInventoryItem(IInventoryItem item);
+        bool DropInventoryItem(ItemDefinition item);
     }
 }

@@ -1,4 +1,4 @@
-namespace FarrokhGames.Inventory.Examples
+namespace FarrokhGames.Inventory
 {
     public enum ItemType
     {

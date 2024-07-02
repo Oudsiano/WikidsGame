@@ -1,5 +1,4 @@
 ﻿using FarrokhGames.Inventory;
-using FarrokhGames.Inventory.Examples;
 using UnityEngine;
 
 namespace RPG.Combat

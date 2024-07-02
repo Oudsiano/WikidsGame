@@ -1,5 +1,4 @@
-﻿using FarrokhGames.Inventory.Examples;
-using FarrokhGames.Shared;
+﻿using FarrokhGames.Shared;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -151,7 +150,7 @@ namespace FarrokhGames.Inventory
         private Pool<Image> _imagePool2;
         private Pool<ItemElementInGrid> _itemPool;
         private Image[] _grids;
-        private Dictionary<IInventoryItem, ItemElementInGrid> _items = new Dictionary<IInventoryItem, ItemElementInGrid>();
+        private Dictionary<ItemDefinition, ItemElementInGrid> _items = new Dictionary<ItemDefinition, ItemElementInGrid>();
 
         /*
          * Setup
@@ -329,14 +328,14 @@ namespace FarrokhGames.Inventory
             // Add all items
             foreach (var item in inventory.allItems)
             {
-                HandleItemAdded(item);
+                HandleItemAdded(item, item.CountItems);
             }
         }
 
         /*
         Handler for when inventory.OnItemAdded is invoked
         */
-        private void HandleItemAdded(IInventoryItem item)
+        private void HandleItemAdded(ItemDefinition item, int count)
         {
             var itemThis = CreateItem(item, false);
 
@@ -355,7 +354,11 @@ namespace FarrokhGames.Inventory
         /*
         Handler for when inventory.OnItemRemoved is invoked
         */
-        private void HandleItemRemoved(IInventoryItem item)
+        private void HandleItemRemoved(ItemDefinition item)
+        {
+            HandleItemRemoved(item, item.CountItems);
+        }
+        private void HandleItemRemoved(ItemDefinition item, int count)
         {
             if (_items.ContainsKey(item))
             {
@@ -389,7 +392,7 @@ namespace FarrokhGames.Inventory
             img.raycastTarget = raycastTarget;
             return img;
         }
-        private ItemElementInGrid CreateItem(IInventoryItem _item, bool raycastTarget)
+        private ItemElementInGrid CreateItem(ItemDefinition _item, bool raycastTarget)
         {
             var item = _itemPool.Take();
             item.itemGO.SetActive(true);
@@ -429,7 +432,7 @@ namespace FarrokhGames.Inventory
         /// <param name="item">Item to select</param>
         /// <param name="blocked">Should the selection be rendered as blocked</param>
         /// <param name="color">The color of the selection</param>
-        public void SelectItem(IInventoryItem item, bool blocked, Color color)
+        public void SelectItem(ItemDefinition item, bool blocked, Color color)
         {
             if (item == null) { return; }
             ClearSelection();
@@ -476,7 +479,7 @@ namespace FarrokhGames.Inventory
         /*
         Returns the appropriate offset of an item to make it fit nicely in the grid
         */
-        internal Vector2 GetItemOffset(IInventoryItem item)
+        internal Vector2 GetItemOffset(ItemDefinition item)
         {
             var x = (-(inventory.width * 0.5f) + item.position.x + item.width * 0.5f) * cellSize.x;
             var y = (-(inventory.height * 0.5f) + item.position.y + item.height * 0.5f) * cellSize.y;

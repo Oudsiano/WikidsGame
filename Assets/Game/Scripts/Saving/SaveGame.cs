@@ -1,4 +1,4 @@
-﻿using FarrokhGames.Inventory.Examples;
+﻿using FarrokhGames.Inventory;
 using RPG.Combat;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ public class SaveGame
     public Armor EquipedArmor { get => equipedArmor; set { equipedArmor = value; } }
     public double Coins { get => coins; set { coins = value; IGame.Instance.CoinManager.Coins.SetCount(value); } }
 
-    public List<ItemDefinition> BugItems
+    private List<ItemDefinition> BugItems
     {
         get => bugItems;
         set => bugItems = value;
@@ -52,23 +52,52 @@ public class SaveGame
         EquipedWeapon = new Weapon();
     }
 
-    public void SaveItemToBug(ItemDefinition item)
+    /*public void SaveItemToBug(string name, int count)
     {
         BugItems.Add(item);
-    }
+    }*/
 
-    public void RemoveItemFromBug(ItemDefinition item)
+    public void AddItemToBug(string name, int count)
     {
-        if (BugItems.Contains(item))
+        ItemDefinition item = IGame.Instance.WeaponArmorManager.TryGetItemByName(name);
+        if (item == null)
+            Debug.LogError("Error. Try find not exist item");
+
+
+        ItemDefinition itemBug = BugItems.Find(item => item.name == name);
+
+        if (itemBug == null)
         {
-            BugItems.Remove(item);
+            BugItems.Add(item); 
+            BugItems[BugItems.IndexOf(item)].CountItems = count;
         }
         else
-        {
-            Debug.LogError("Потенциально ошибка");
-        }
+            BugItems[BugItems.IndexOf(item)].CountItems += count;
+
     }
 
+    public void RemoveItemFromBug(string name, int count)
+    {
+        //Проблема. Когда мы подниаем предмет в руку и начинаем нести, то тут в сумке его уже нет
+        ItemDefinition item = BugItems.Find(item => item.name == name);
+
+        if (item == null)
+            Debug.LogError("Error. Try find not exist item");
+
+        if (BugItems[BugItems.IndexOf(item)].CountItems >= count)
+            BugItems[BugItems.IndexOf(item)].CountItems -= count;
+        else
+            Debug.LogError("Not enough count");
+
+        if (BugItems[BugItems.IndexOf(item)].CountItems == 0)
+            BugItems.Remove(item);
+
+    }
+
+    public List<ItemDefinition> getBugList()
+    {
+        return bugItems;
+    }
 
 
     public void MakeSave()
@@ -77,9 +106,9 @@ public class SaveGame
         IGame.Instance.dataPLayer.playerData.weaponToLoad = EquipedWeapon.name;
 
         List<OneItemForSave> tempBug = new List<OneItemForSave>();
-        for (int i = BugItems.Count-1; i >= 0; i--)
+        for (int i = BugItems.Count - 1; i >= 0; i--)
         {
-            for (int i2  = i-1; i2 >= 0; i2--)
+            for (int i2 = i - 1; i2 >= 0; i2--)
             {
                 if (BugItems[i].name == BugItems[i2].name)
                 {
@@ -88,10 +117,10 @@ public class SaveGame
                 }
             }
         }
-        for (int i = BugItems.Count-1; i >= 0; i--)
+        for (int i = BugItems.Count - 1; i >= 0; i--)
             if (BugItems[i].CountItems == 0) bugItems.RemoveAt(i);
 
-            foreach (var item in BugItems)
+        foreach (var item in BugItems)
         {
 
             tempBug.Add(new OneItemForSave(item.CountItems, item.name));

@@ -1,5 +1,4 @@
 using FarrokhGames.Inventory;
-using FarrokhGames.Inventory.Examples;
 using RPG.Combat;
 using System;
 using System.Collections;
@@ -56,15 +55,15 @@ public class UIBug : MonoBehaviour
 
     }
 
-    public bool AddEquipInBugIfNotExist(ItemDefinition item)
+    public bool AddEquipInBugIfNotExist(ItemDefinition item, int count)
     {
         if (InventoryBag.inventory.Contains(item)) return false;
 
         if (InventoryBag.inventory.CanAdd(item))
         {
-            if (InventoryBag.inventory.TryAdd(item.CreateInstance()))
+            if (InventoryBag.inventory.TryAdd(item.CreateInstance(),count))
             {
-                IGame.Instance.saveGame.SaveItemToBug(item);
+                IGame.Instance.saveGame.AddItemToBug(item.name, 1);
                 return true;
             }
             return false;
@@ -72,7 +71,7 @@ public class UIBug : MonoBehaviour
         return false;
     }
 
-    public void TryAddEquipToBug(ItemDefinition item)
+    public void TryAddEquipToBug(ItemDefinition item, int count)
     {
         notAvaliableEvents = true;
 
@@ -80,8 +79,8 @@ public class UIBug : MonoBehaviour
 
             if (InventoryBag.inventory.CanAdd(item))
         {
-            InventoryBag.inventory.TryAdd(item.CreateInstance());
-            IGame.Instance.saveGame.SaveItemToBug(item);
+            InventoryBag.inventory.TryAdd(item.CreateInstance(), count);
+            IGame.Instance.saveGame.AddItemToBug(item.name, 1);
         }
         else
         {
@@ -109,17 +108,17 @@ public class UIBug : MonoBehaviour
     {
         notAvaliableEvents = true;
         InventoryBag.inventory.Clear();
-        foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
+        foreach (ItemDefinition item in IGame.Instance.saveGame.getBugList())
         {
-            InventoryBag.inventory.TryAdd(item);
+            InventoryBag.inventory.TryAdd(item, item.CountItems);
         }
 
         InventoryWeapon.inventory.Clear();
         if (IGame.Instance.saveGame.EquipedWeapon.sprite != null)
-            InventoryWeapon.inventory.TryAdd(IGame.Instance.saveGame.EquipedWeapon.CreateInstance());
+            InventoryWeapon.inventory.TryAdd(IGame.Instance.saveGame.EquipedWeapon.CreateInstance(),1);
         InventoryArmor.inventory.Clear();
         if (IGame.Instance.saveGame.EquipedArmor.sprite != null)
-            InventoryArmor.inventory.TryAdd(IGame.Instance.saveGame.EquipedArmor.CreateInstance());
+            InventoryArmor.inventory.TryAdd(IGame.Instance.saveGame.EquipedArmor.CreateInstance(),1);
 
         notAvaliableEvents = false;
     }
@@ -143,55 +142,55 @@ public class UIBug : MonoBehaviour
         regen();
     }
 
-    private void OnAddedDropPlace(IInventoryItem obj)
+    private void OnAddedDropPlace(ItemDefinition obj, int count)
     {
         DropItemNearPlayer((ItemDefinition)obj);
     }
 
-    private void OnDrop(IInventoryItem obj)
+    private void OnDrop(ItemDefinition obj)
     {
         DropItemNearPlayer((ItemDefinition)obj);
     }
 
-    private void OnRemovedArmor(IInventoryItem obj)
+    private void OnRemovedArmor(ItemDefinition obj, int count)
     {
         if (notAvaliableEvents) return;
         IGame.Instance.WeaponArmorManager.TryGetArmorByName(obj.name).UnEquip();
         IGame.Instance.saveGame.MakeSave();
     }
 
-    private void OnAddedArmor(IInventoryItem obj)
+    private void OnAddedArmor(ItemDefinition obj, int count)
     {
         if (notAvaliableEvents) return;
         IGame.Instance.WeaponArmorManager.TryGetArmorByName(obj.name).EquipIt();
         IGame.Instance.saveGame.MakeSave();
     }
 
-    private void OnRemovedWeapon(IInventoryItem obj)
+    private void OnRemovedWeapon(ItemDefinition obj, int count)
     {
         if (notAvaliableEvents) return;
         IGame.Instance.playerController.GetFighter().UnequipWeapon();
         IGame.Instance.saveGame.MakeSave();
     }
 
-    private void OnAddedWeapon(IInventoryItem obj)
+    private void OnAddedWeapon(ItemDefinition obj, int count)
     {
         if (notAvaliableEvents) return;
         IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(obj.name));
         IGame.Instance.saveGame.MakeSave();
     }
 
-    private void OnRemoved(IInventoryItem obj)
+    private void OnRemoved(ItemDefinition obj, int count)
     {
         if (notAvaliableEvents) return;
-        IGame.Instance.saveGame.BugItems.Remove((ItemDefinition)obj);
+        IGame.Instance.saveGame.RemoveItemFromBug(obj.name, count);
         IGame.Instance.saveGame.MakeSave();
     }
 
-    private void OnAdded(IInventoryItem obj)
+    private void OnAdded(ItemDefinition obj, int count)
     {
         if (notAvaliableEvents) return;
-        IGame.Instance.saveGame.BugItems.Add((ItemDefinition)obj);
+        IGame.Instance.saveGame.AddItemToBug(obj.name, count);
         IGame.Instance.saveGame.MakeSave();
     }
 

@@ -30,7 +30,7 @@ namespace FarrokhGames.Inventory
         /// <summary>
         /// Returns the item-instance that is being dragged
         /// </summary>
-        public IInventoryItem item { get; private set; }
+        public ItemDefinition item { get; private set; }
 
         /// <summary>
         /// Gets or sets the InventoryController currently in control of this item
@@ -60,7 +60,7 @@ namespace FarrokhGames.Inventory
             Canvas canvas,
             InventoryController originalController,
             Vector2Int originPoint,
-            IInventoryItem item,
+            ItemDefinition item,
             Vector2 offset)
         {
             this.originalController = originalController;
@@ -137,7 +137,7 @@ namespace FarrokhGames.Inventory
                     }
                     else
                     {
-                        currentController.inventory.TryAddAt(item, grid); // Place the item in a new location
+                        currentController.inventory.TryAddAt(item, grid, item.CountItems); // Place the item in a new location
                         mode = DropMode.Added;
                         _actionAfterDrop(mode);
                     }
@@ -146,16 +146,16 @@ namespace FarrokhGames.Inventory
                 else if (!originalController.inventory.isMarket && CanSwap())
                 {
                     var otherItem = currentController.inventory.allItems[0];
-                    currentController.inventory.TryRemove(otherItem);
-                    originalController.inventory.TryAdd(otherItem);
-                    currentController.inventory.TryAdd(item);
+                    currentController.inventory.TryRemove(otherItem, otherItem.CountItems);
+                    originalController.inventory.TryAdd(otherItem, otherItem.CountItems);
+                    currentController.inventory.TryAdd(item, item.CountItems);
                     mode = DropMode.Swapped;
                     _actionAfterDrop(mode);
                 }
                 // Could not add or swap, return the item
                 else
                 {
-                    originalController.inventory.TryAddAt(item, originPoint); // Return the item to its previous location
+                    originalController.inventory.TryAddAt(item, originPoint, item.CountItems); // Return the item to its previous location
                     mode = DropMode.Returned;
                     _actionAfterDrop(mode);
                 }
@@ -167,12 +167,12 @@ namespace FarrokhGames.Inventory
                 mode = DropMode.Dropped;
                 if (!originalController.inventory.TryForceDrop(item)) // Drop the item on the ground
                 {
-                    originalController.inventory.TryAddAt(item, originPoint);
+                    originalController.inventory.TryAddAt(item, originPoint, item.CountItems);
                 }
             }
             else
             {
-                originalController.inventory.TryAddAt(item, originPoint); // Return the item to its previous location
+                originalController.inventory.TryAddAt(item, originPoint, item.CountItems); // Return the item to its previous location
                 mode = DropMode.Returned;
                 _actionAfterDrop(mode);
             }
@@ -182,13 +182,13 @@ namespace FarrokhGames.Inventory
 
         public void OnMarketAccept(Vector2Int grid)
         {
-            currentController.inventory.TryAddAt(item, grid); // Place the item in a new location
+            currentController.inventory.TryAddAt(item, grid, item.CountItems); // Place the item in a new location
             _dropModeForAction = DropMode.Added;
         }
 
         public void OnMarketDecline()
         {
-            originalController.inventory.TryAddAt(item, originPoint); // Return the item to its previous location
+            originalController.inventory.TryAddAt(item, originPoint, item.CountItems); // Return the item to its previous location
             _dropModeForAction = DropMode.Returned;
             _actionAfterDrop(_dropModeForAction);
         }
@@ -201,7 +201,7 @@ namespace FarrokhGames.Inventory
         /*
          * Returns the offset between dragged item and the grid 
          */
-        private Vector2 GetDraggedItemOffset(InventoryRenderer renderer, IInventoryItem item)
+        private Vector2 GetDraggedItemOffset(InventoryRenderer renderer, ItemDefinition item)
         {
             var scale = new Vector2(
                 Screen.width / _canvasRect.sizeDelta.x,

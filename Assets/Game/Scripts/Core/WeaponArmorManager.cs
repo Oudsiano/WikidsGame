@@ -4,7 +4,7 @@ using UnityEngine;
 using RPG.Core;
 using RPG.Movement;
 using RPG.Combat;
-using FarrokhGames.Inventory.Examples;
+using FarrokhGames.Inventory;
 
 public class WeaponArmorManager : MonoBehaviour
 {

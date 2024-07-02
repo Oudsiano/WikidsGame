@@ -47,6 +47,7 @@ public class UIBug : MonoBehaviour
         {
             if (item.name == itemName)
             {
+                OnRemoved(item);
                 Debug.Log("Предмет найдет. Возможно стоит еще прописать удаление");
                 return true;
             }
@@ -71,6 +72,7 @@ public class UIBug : MonoBehaviour
         }
         return false;
     }
+
 
     public void TryAddEquipToBug(ItemDefinition item)
     {

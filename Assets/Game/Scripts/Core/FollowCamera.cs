@@ -34,7 +34,7 @@ namespace RPG.Core
         // Пределы масштабирования
         [SerializeField] private float minZoom = 5f;
         [SerializeField] private float maxZoom = 20f;
-        private float zoomTotal = 10f; // Общее изменение масштаба
+        private float zoomTotal = -50; // Общее изменение масштаба
 
         private float zoomAmt; // Количество изменения масштаба
 
@@ -109,14 +109,15 @@ namespace RPG.Core
             // Прибавляем это изменение к общему изменению масштаба
             zoomTotal += zoomAmt;
             // Ограничиваем общее изменение масштаба
-            zoomTotal = Mathf.Clamp(zoomTotal, minZoom, Mathf.Min(maxZoom, 13)); // Ограничение zoomTotal не более 13
+            zoomTotal = Mathf.Clamp(zoomTotal, minZoom, maxZoom); // Ограничение zoomTotal не более 13
 
             // Получаем новую позицию для масштабирования
             Vector3 newZoomPos = mainCam.transform.position + (mainCam.transform.forward * zoomAmt);
 
             // Масштабируем камеру, если она находится в пределах допустимого масштабирования
-            if (zoomTotal > minZoom && zoomTotal < Mathf.Min(maxZoom, 13))
+            if (zoomTotal > minZoom && zoomTotal < maxZoom)
             {
+                newZoomPos = target.position + (mainCam.transform.forward * (zoomTotal*0.3f));
                 mainCam.transform.position = newZoomPos;
 
                 OnupdateEulerAngles?.Invoke(transform.localEulerAngles);

@@ -131,7 +131,7 @@ namespace RPG.Core
                 OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
                 OnCameraDistance?.Invoke(Math.Abs(zoomTotal));
 
-                Debug.Log($"Zoom Total: {zoomTotal}"); // Отладочное сообщение для отслеживания zoomTotal
+                //Debug.Log($"Zoom Total: {zoomTotal}"); // Отладочное сообщение для отслеживания zoomTotal
             }
 
             OnCameraScale?.Invoke();
@@ -163,16 +163,9 @@ namespace RPG.Core
                 if (hit.transform.gameObject.name != "Player")
                 {
                     ZoomUpdate(0.2f);
-                    Debug.Log(hit.transform.gameObject.name);
+                    //Debug.Log(hit.transform.gameObject.name);
                 }
-                // Перемещение камеры ближе к цели
-                //mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, hit.point - direction * 0.5f, Time.deltaTime * cameraSpeed);
             }
-            /*else
-            {
-                // Восстановление исходной позиции камеры, если препятствий нет
-                mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, originalPosition, Time.deltaTime * cameraSpeed);
-            }*/
         }
     }
 }

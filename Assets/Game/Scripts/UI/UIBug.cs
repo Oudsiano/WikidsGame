@@ -48,13 +48,23 @@ public class UIBug : MonoBehaviour
             if (item.name == itemName)
             {
                 if (needDelete) OnRemoved(item);
-                Debug.Log("Предмет найдет. Возможно стоит еще прописать удаление");
+                //Debug.Log("Предмет найдет. Возможно стоит еще прописать удаление");
                 return true;
             }
         }
 
         return false;
 
+    }
+    public void NeedDeleteItem(string itemName)
+    {
+        foreach (var item in InventoryBag.inventory.allItems)
+        {
+            if (item.name == itemName)
+            {
+                OnRemoved(item);
+            }
+        }
     }
 
     public bool AddEquipInBugIfNotExist(ItemDefinition item)

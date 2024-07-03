@@ -19,6 +19,7 @@ public class IGame : MonoBehaviour
     public SavePointsManager SavePointsManager;
     public ArrowForPlayerManager ArrowForPlayerManager;
     private QuestManager questManager;
+    public NPCManagment NPCManagment;
 
     [SerializeField] public UIManager UIManager;
     [SerializeField] public CoinManager CoinManager;
@@ -116,9 +117,11 @@ public class IGame : MonoBehaviour
         SavePointsManager = new SavePointsManager();
         ArrowForPlayerManager = new ArrowForPlayerManager();
         questManager = FindAnyObjectByType<QuestManager>();
+        NPCManagment = gameObject.AddComponent<NPCManagment>();
 
         saveGame = new SaveGame();
 
+        NPCManagment.Init();
         questManager.Init();
         CoinManager.Init();
         UIManager.Init();

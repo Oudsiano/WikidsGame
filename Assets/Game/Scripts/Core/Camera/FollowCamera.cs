@@ -152,13 +152,15 @@ namespace RPG.Core
 
         void Update()
         {
-            float cameraSpeed = 5f;
+            Vector3 targetPos = target.position + new Vector3Int(0, 1, 0);
 
-            var direction = (target.position - mainCam.transform.position).normalized;
+            var direction = (targetPos - mainCam.transform.position).normalized;
             RaycastHit hit;
 
+            //Debug.DrawRay(targetPos, direction * 200, Color.red);
+
             // Проверка, есть ли препятствие между камерой и целью
-            if (Physics.Raycast(mainCam.transform.position, direction, out hit, Vector3.Distance(mainCam.transform.position, target.position), obstacleMask))
+            if (Physics.Raycast(mainCam.transform.position, direction, out hit, Vector3.Distance(mainCam.transform.position, targetPos), obstacleMask))
             {
                 if (hit.transform.gameObject.name != "Player")
                 {

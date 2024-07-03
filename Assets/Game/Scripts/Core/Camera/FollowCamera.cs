@@ -34,9 +34,12 @@ namespace RPG.Core
         // Пределы масштабирования
         [SerializeField] private float minZoom = 5f;
         [SerializeField] private float maxZoom = 20f;
-        private float zoomTotal = -50; // Общее изменение масштаба
+        private float zoomTotal = -35; // Общее изменение масштаба
 
         private float zoomAmt; // Количество изменения масштаба
+
+
+        public LayerMask obstacleMask; // Слой, который обозначает препятствия
 
         // Метод вызывается перед первым обновлением кадра
         void Start()
@@ -104,6 +107,11 @@ namespace RPG.Core
 
             if (MSW == 0) return;
 
+            ZoomUpdate(MSW);
+        }
+
+        public void ZoomUpdate(float MSW)
+        {
             // Получаем количество изменения масштаба
             zoomAmt = MSW * zoomSpeed * Time.deltaTime;
             // Прибавляем это изменение к общему изменению масштаба
@@ -117,7 +125,7 @@ namespace RPG.Core
             // Масштабируем камеру, если она находится в пределах допустимого масштабирования
             if (zoomTotal > minZoom && zoomTotal < maxZoom)
             {
-                newZoomPos = target.position + (mainCam.transform.forward * (zoomTotal*0.3f));
+                newZoomPos = target.position + (mainCam.transform.forward * (zoomTotal * 0.3f));
                 mainCam.transform.position = newZoomPos;
 
                 OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
@@ -128,6 +136,8 @@ namespace RPG.Core
 
             OnCameraScale?.Invoke();
         }
+
+
         public void LockCamera()
         {
             canRotate = false;
@@ -138,6 +148,31 @@ namespace RPG.Core
         {
             canRotate = true;
             canZoom = true;
+        }
+
+        void Update()
+        {
+            float cameraSpeed = 5f;
+
+            var direction = (target.position - mainCam.transform.position).normalized;
+            RaycastHit hit;
+
+            // Проверка, есть ли препятствие между камерой и целью
+            if (Physics.Raycast(mainCam.transform.position, direction, out hit, Vector3.Distance(mainCam.transform.position, target.position), obstacleMask))
+            {
+                if (hit.transform.gameObject.name != "Player")
+                {
+                    ZoomUpdate(0.2f);
+                    Debug.Log(hit.transform.gameObject.name);
+                }
+                // Перемещение камеры ближе к цели
+                //mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, hit.point - direction * 0.5f, Time.deltaTime * cameraSpeed);
+            }
+            /*else
+            {
+                // Восстановление исходной позиции камеры, если препятствий нет
+                mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, originalPosition, Time.deltaTime * cameraSpeed);
+            }*/
         }
     }
 }

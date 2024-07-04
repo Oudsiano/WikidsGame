@@ -40,6 +40,7 @@ namespace RPG.Core
 
 
         public LayerMask obstacleMask; // Слой, который обозначает препятствия
+        private float autoZoomForReturn;
 
         // Метод вызывается перед первым обновлением кадра
         void Start()
@@ -47,6 +48,7 @@ namespace RPG.Core
             mainCam = Camera.main; // Получаем главную камеру
             defaultCameraTransform = transform; // Сохраняем начальное положение камеры
             target = MainPlayer.Instance.transform; // Получаем цель (обычно игрока)
+            autoZoomForReturn = zoomTotal;
             RotationMovement();
         }
 
@@ -108,6 +110,7 @@ namespace RPG.Core
             if (MSW == 0) return;
 
             ZoomUpdate(MSW);
+            autoZoomForReturn = zoomTotal;
         }
 
         public void ZoomUpdate(float MSW)
@@ -117,9 +120,20 @@ namespace RPG.Core
             // Прибавляем это изменение к общему изменению масштаба
             zoomTotal += zoomAmt;
             // Ограничиваем общее изменение масштаба
-            zoomTotal = Mathf.Clamp(zoomTotal, minZoom, maxZoom); // Ограничение zoomTotal не более 13
+            zoomTotal = Mathf.Clamp(zoomTotal, minZoom, maxZoom); 
 
             // Получаем новую позицию для масштабирования
+            CommonZoom();
+        }
+
+        private void ZoomUpdateByZoomTotal(float delta)
+        {
+            zoomTotal += delta;
+            CommonZoom();
+        }
+
+        private void CommonZoom()
+        {
             Vector3 newZoomPos = mainCam.transform.position + (mainCam.transform.forward * zoomAmt);
 
             // Масштабируем камеру, если она находится в пределах допустимого масштабирования
@@ -127,6 +141,7 @@ namespace RPG.Core
             {
                 newZoomPos = target.position + (mainCam.transform.forward * (zoomTotal * 0.3f));
                 mainCam.transform.position = newZoomPos;
+                //Debug.Log(mainCam.transform.position);
 
                 OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
                 OnCameraDistance?.Invoke(Math.Abs(zoomTotal));
@@ -152,20 +167,27 @@ namespace RPG.Core
 
         void Update()
         {
+            float step = 1f;
             Vector3 targetPos = target.position + new Vector3Int(0, 1, 0);
 
             var direction = (targetPos - mainCam.transform.position).normalized;
             RaycastHit hit;
-
-            //Debug.DrawRay(targetPos, direction * 200, Color.red);
-
+            
             // Проверка, есть ли препятствие между камерой и целью
             if (Physics.Raycast(mainCam.transform.position, direction, out hit, Vector3.Distance(mainCam.transform.position, targetPos), obstacleMask))
             {
                 if (hit.transform.gameObject.name != "Player")
                 {
-                    ZoomUpdate(0.2f);
+                    ZoomUpdateByZoomTotal(step);
                     //Debug.Log(hit.transform.gameObject.name);
+                }
+            }
+            else if(zoomTotal > autoZoomForReturn)
+            {
+                Vector3 tempV2 = target.position + (mainCam.transform.forward * ((zoomTotal - step * 2) * 0.3f));
+                if (!(Physics.Raycast(tempV2, direction, out hit, Vector3.Distance(mainCam.transform.position, targetPos), obstacleMask)))
+                {
+                    ZoomUpdateByZoomTotal(-step);
                 }
             }
         }

@@ -660,10 +660,11 @@ namespace DialogueEditor
 
         private void SetupEndConversationButton()
         {
-            // Проверяем, является ли текущая сцена "OpenScene"
-            if (SceneManager.GetActiveScene().name == "OpenScene")
+            // Проверяем, является ли текущая сцена "OpenScene" или "EndScene"
+
+            if (SceneManager.GetActiveScene().name == "OpenScene" || SceneManager.GetActiveScene().name == "EndScene")
             {
-                return; // Не показываем кнопку, если сцена "OpenScene"
+                return; // Не показываем кнопку, если сцена "OpenScene" или "EndScene"
             }
 
             // Создаем кнопку как дочерний элемент DialoguePanel

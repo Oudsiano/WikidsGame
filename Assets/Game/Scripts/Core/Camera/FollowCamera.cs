@@ -176,12 +176,12 @@ namespace RPG.Core
         {
             float step = 1f;
             Vector3 targetPos = target.position + new Vector3Int(0, 1, 0);
-
-            var direction = (targetPos - mainCam.transform.position).normalized;
+            Vector3 tempV1 = target.position + (mainCam.transform.forward * ((zoomTotal - step) * 0.3f));
+            var direction = (targetPos - tempV1).normalized;
             RaycastHit hit;
 
             // Проверка, есть ли препятствие между камерой и целью
-            if (Physics.Raycast(mainCam.transform.position, direction, out hit, Vector3.Distance(mainCam.transform.position, targetPos), obstacleMask))
+            if (Physics.Raycast(tempV1, direction, out hit, Vector3.Distance(tempV1, targetPos), obstacleMask))
             {
                 if (hit.transform.gameObject.name != "Player")
                 {

@@ -42,13 +42,20 @@ namespace RPG.Core
         public LayerMask obstacleMask; // Слой, который обозначает препятствия
         private float autoZoomForReturn;
 
+        public float AutoZoomForReturn { get => autoZoomForReturn; set 
+            {
+                autoZoomForReturn = value;
+                Debug.Log(autoZoomForReturn);
+            } 
+        }
+
         // Метод вызывается перед первым обновлением кадра
         void Start()
         {
             mainCam = Camera.main; // Получаем главную камеру
             defaultCameraTransform = transform; // Сохраняем начальное положение камеры
             target = MainPlayer.Instance.transform; // Получаем цель (обычно игрока)
-            autoZoomForReturn = zoomTotal;
+            AutoZoomForReturn = zoomTotal;
             RotationMovement();
         }
 
@@ -110,7 +117,7 @@ namespace RPG.Core
             if (MSW == 0) return;
 
             ZoomUpdate(MSW);
-            autoZoomForReturn = zoomTotal;
+            AutoZoomForReturn = zoomTotal;
         }
 
         public void ZoomUpdate(float MSW)
@@ -120,7 +127,7 @@ namespace RPG.Core
             // Прибавляем это изменение к общему изменению масштаба
             zoomTotal += zoomAmt;
             // Ограничиваем общее изменение масштаба
-            zoomTotal = Mathf.Clamp(zoomTotal, minZoom, maxZoom); 
+            zoomTotal = Mathf.Clamp(zoomTotal, minZoom, maxZoom);
 
             // Получаем новую позицию для масштабирования
             CommonZoom();
@@ -134,10 +141,10 @@ namespace RPG.Core
 
         private void CommonZoom()
         {
-            Vector3 newZoomPos = mainCam.transform.position + (mainCam.transform.forward * zoomAmt);
-
-            // Масштабируем камеру, если она находится в пределах допустимого масштабирования
-            if (zoomTotal > minZoom && zoomTotal < maxZoom)
+            Vector3 newZoomPos;//= mainCam.transform.position + (mainCam.transform.forward * zoomAmt);
+            if (zoomTotal < minZoom) zoomTotal = minZoom;
+            if (zoomTotal > maxZoom) zoomTotal = maxZoom;
+                // Масштабируем камеру, если она находится в пределах допустимого масштабирования
             {
                 newZoomPos = target.position + (mainCam.transform.forward * (zoomTotal * 0.3f));
                 mainCam.transform.position = newZoomPos;
@@ -172,7 +179,7 @@ namespace RPG.Core
 
             var direction = (targetPos - mainCam.transform.position).normalized;
             RaycastHit hit;
-            
+
             // Проверка, есть ли препятствие между камерой и целью
             if (Physics.Raycast(mainCam.transform.position, direction, out hit, Vector3.Distance(mainCam.transform.position, targetPos), obstacleMask))
             {
@@ -182,7 +189,7 @@ namespace RPG.Core
                     //Debug.Log(hit.transform.gameObject.name);
                 }
             }
-            else if(zoomTotal > autoZoomForReturn)
+            else if (zoomTotal > AutoZoomForReturn)
             {
                 Vector3 tempV2 = target.position + (mainCam.transform.forward * ((zoomTotal - step * 2) * 0.3f));
                 if (!(Physics.Raycast(tempV2, direction, out hit, Vector3.Distance(mainCam.transform.position, targetPos), obstacleMask)))

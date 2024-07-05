@@ -25,7 +25,7 @@ public class OneQuest : ScriptableObject
 
 
     [Header("completeSpecialTest block")]
-    [SerializeField] public string IdTest;
+    [SerializeField] public List<string> IdTests;
 
     [Header("Award block")]
     [SerializeField] public QuestAwardType questAwardType;

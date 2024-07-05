@@ -176,7 +176,7 @@ namespace RPG.Core
         {
             float step = 1f;
             Vector3 targetPos = target.position + new Vector3Int(0, 1, 0);
-            Vector3 tempV1 = target.position + (mainCam.transform.forward * ((zoomTotal - step) * 0.3f));
+            Vector3 tempV1 = target.position + (mainCam.transform.forward * ((zoomTotal - step*2) * 0.3f));
             var direction = (targetPos - tempV1).normalized;
             RaycastHit hit;
 
@@ -191,7 +191,7 @@ namespace RPG.Core
             }
             else if (zoomTotal > AutoZoomForReturn)
             {
-                Vector3 tempV2 = target.position + (mainCam.transform.forward * ((zoomTotal - step * 2) * 0.3f));
+                Vector3 tempV2 = target.position + (mainCam.transform.forward * ((zoomTotal - step * 3) * 0.3f));
                 if (!(Physics.Raycast(tempV2, direction, out hit, Vector3.Distance(mainCam.transform.position, targetPos), obstacleMask)))
                 {
                     ZoomUpdateByZoomTotal(-step);

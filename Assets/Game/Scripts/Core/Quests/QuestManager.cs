@@ -165,10 +165,16 @@ public class QuestManager : MonoBehaviour
         {
             if (item.QuestType == QuestType.completeSpecialTest)
             {
-                if (ID == item.quest.IdTest)
+                int thereCount = 0;
+                foreach (var itemId in item.quest.IdTests)
                 {
-                    item.FinishedTest(ID);
+                    if (ID == itemId)
+                    {
+                        thereCount++;
+                    }
                 }
+
+                item.FinishedTestCount(thereCount);
             }
         }
     }

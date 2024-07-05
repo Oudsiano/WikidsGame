@@ -128,10 +128,10 @@ public class UiOneQuestElement : MonoBehaviour
         }
     }
 
-    internal void FinishedTest(string iD)
+    internal void FinishedTestCount(int count)
     {
         if (QuestType == QuestType.completeSpecialTest)
-            addOneProcess();
+            setProgress(count);
     }
 
     private void CheckUpdateAndComplite(bool withSave=true)
@@ -168,6 +168,12 @@ public class UiOneQuestElement : MonoBehaviour
         }
     }
 
+    public void setProgress(int count)
+    {
+        if (!thisQuestData.alreadyStarted) return;
+        thisQuestData.currentProcess = count;
+        CheckUpdateAndComplite();
+    }
     public void addOneProcess()
     {
         if (!thisQuestData.alreadyStarted) return;

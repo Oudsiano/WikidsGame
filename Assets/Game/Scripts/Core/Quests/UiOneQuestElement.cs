@@ -87,6 +87,12 @@ public class UiOneQuestElement : MonoBehaviour
             thisQuestData = IGame.Instance.dataPLayer.playerData.startedQuests[quest.name];
             CheckUpdateAndComplite(false);
         }
+
+        if (quest.questType == QuestType.completeSpecialTest)
+        {
+            if (quest.IdTests.Count > quest.questTargetCount)
+                Debug.LogError("AshIBkA!!! IdTests.Count>questTargetCount");
+        }
     }
 
     private void OnClickBtn()

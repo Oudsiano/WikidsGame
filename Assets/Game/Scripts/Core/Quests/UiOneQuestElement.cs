@@ -48,8 +48,12 @@ public class UiOneQuestElement : MonoBehaviour
 
         QuestType = quest.questType;
         thisQuestData.targetProcess = quest.questTargetCount;
+        if (quest.questType == QuestType.completeSpecialTest)
+        {
+            thisQuestData.targetProcess = quest.IdTests.Count;
+        }
 
-        rtimgProcess = imgProcess.GetComponent<RectTransform>();
+            rtimgProcess = imgProcess.GetComponent<RectTransform>();
         sizeDeltaImgProcess = rtimgProcess.sizeDelta;
 
         if (quest.questType == QuestType.toSpeekNPC)
@@ -88,11 +92,6 @@ public class UiOneQuestElement : MonoBehaviour
             CheckUpdateAndComplite(false);
         }
 
-        if (quest.questType == QuestType.completeSpecialTest)
-        {
-            if (quest.IdTests.Count > quest.questTargetCount)
-                Debug.LogError("AshIBkA!!! IdTests.Count>questTargetCount");
-        }
     }
 
     private void OnClickBtn()

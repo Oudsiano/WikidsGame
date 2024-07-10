@@ -7,6 +7,7 @@ using System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using static LevelChangeObserver;
+using System.Linq;
 
 public class LocationChange : MonoBehaviour
 {
@@ -52,7 +53,7 @@ public class LocationChange : MonoBehaviour
             trigger.triggers.Add(entryExit);
         }
 
-        setUpMaxRegion(IGame.Instance.dataPLayer.playerData.IDmaxRegionAvaliable);
+        setUpMaxRegion(IGame.Instance.dataPLayer.playerData.FinishedRegionsIDs);
         Debug.Log("awake changeLoc");
 
         if (textID != null)
@@ -64,24 +65,15 @@ public class LocationChange : MonoBehaviour
         Loading.gameObject.SetActive(false);
     }
 
-    public void setUpMaxRegion(int n)
+    public void setUpMaxRegion(List<int> n)
     {
-        List<allScenes> posTempList = new List<allScenes>(IGame.Instance.LevelChangeObserver.DAllScenes.Keys);
-        allScenes maxID = posTempList[n];
-
-        /*if (n + 1 < posTempList.Count)
-            maxID = posTempList[n + 1];*/
-
-
-        int findedIndex = 0;
-        for (int i = 0; i < regions.Count; i++)
+        int findedIndex = -1;
+        for (int i = regions.Count-1; i >= 0; i--)
         {
-            if (regions[i].loadedScene == maxID)
-                if (findedIndex < i)
-                    findedIndex = i;
+            if (n.Contains((int)regions[i].loadedScene))
+                findedIndex = i;
         }
 
-        if (n>1) //0 и 1 это не сцены а заглушки. Соответственно если 0 или 1, то значит у нас первая сцена и смещения не делаем. Иначе стараемся сделать смещение
         if ((findedIndex+1)<regions.Count)
         {
             findedIndex++;

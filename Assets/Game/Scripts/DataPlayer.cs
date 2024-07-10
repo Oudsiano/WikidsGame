@@ -72,7 +72,7 @@ public class PlayerData
     public int armorIdToload;
     public OneLeson[] progress;
     public int chargeEnergy;
-    public int IDmaxRegionAvaliable;
+    public List<int> FinishedRegionsIDs;
 
     public string[] containsBug;
     public List<OneItemForSave> containsBug2;

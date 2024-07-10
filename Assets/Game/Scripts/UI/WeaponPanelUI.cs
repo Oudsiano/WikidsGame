@@ -47,11 +47,12 @@ public class WeaponPanelUI : MonoBehaviour
     {
         if (IGame.Instance.dataPLayer.playerData.chargeEnergy > 0)
         {
-            FireballText.text = "Fireball (" + IGame.Instance.dataPLayer.playerData.chargeEnergy.ToString() + ")";
+            FireballText.text = "Fireball";// (" + IGame.Instance.dataPLayer.playerData.chargeEnergy.ToString() + ")";
             FireballBTN.gameObject.SetActive(true);
         }
         else
         {
+            ResetWeaponToDefault();
             FireballBTN.gameObject.SetActive(false);
         }
     }

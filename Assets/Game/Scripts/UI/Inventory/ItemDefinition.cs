@@ -16,12 +16,15 @@ namespace FarrokhGames.Inventory.Examples
         [SerializeField, HideInInspector] private Vector2Int _position = Vector2Int.zero;
         [SerializeField] private bool _onlyOne = false;
         [SerializeField, HideInInspector] private int _countItems = 1;
+        [Header("Item Description")]
+        [SerializeField] [TextArea] private string itemDescription; // Переименовано для уникальности
 
-        public int CountItems {
-           get => _countItems;
-            set { 
-                _countItems = value; 
-
+        public int CountItems
+        {
+            get => _countItems;
+            set
+            {
+                _countItems = value;
             }
         }
 
@@ -64,7 +67,10 @@ namespace FarrokhGames.Inventory.Examples
         /// <inheritdoc />
         public bool canDrop => _canDrop;
 
-
+        /// <summary>
+        /// Public property to access the description
+        /// </summary>
+        public string Description => itemDescription;
 
         /// <summary>
         /// Creates a copy if this scriptable object

@@ -94,8 +94,11 @@ namespace RPG.SceneManagement
                 }
 
 
-                if (dataPlayer.playerData.IDmaxRegionAvaliable < posNew)
-                    dataPlayer.playerData.IDmaxRegionAvaliable = posNew;
+                if (!dataPlayer.playerData.FinishedRegionsIDs.Contains(posNew))
+                    dataPlayer.playerData.FinishedRegionsIDs.Add(posNew);
+
+                //if (dataPlayer.playerData.IDmaxRegionAvaliable < posNew)
+                //    dataPlayer.playerData.IDmaxRegionAvaliable = posNew;
             }
             else
                 Debug.LogError("DataPlayer object not found!"); // Выводит ошибку, если объект DataPlayer не найден в сцене

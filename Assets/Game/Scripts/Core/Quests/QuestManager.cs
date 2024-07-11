@@ -56,6 +56,19 @@ public class QuestManager : MonoBehaviour
     {
         GenListQuests();
     }
+
+    public bool ShowBackImgForBtn()
+    {
+        foreach (var item in QuestsInScene)
+        {
+            if (item.thisQuestData.compliteWaitAward)
+                if (!item.thisQuestData.fullComplite)
+                return true;
+        }
+
+            return false;
+    }
+
     private void GenListQuests()
     {
         QuestsInScene = new List<UiOneQuestElement>();
@@ -89,7 +102,7 @@ public class QuestManager : MonoBehaviour
                     {
                         //We need start quest with testID in scene OneSceneWithTestID.scene
 
-                        //TODO There we should prepare list for visible NPC with tests
+                        //TODO: There we should prepare list for visible NPC with tests
                     }
                 }
             }
@@ -108,9 +121,12 @@ public class QuestManager : MonoBehaviour
 
         if (IGame.Instance.UIManager.QuestsContentScrollRect != null && IGame.Instance.UIManager.QuestsContentScrollRect.content != null)
         {
+            GameObject NotExitQuests = new GameObject();
             foreach (Transform child in IGame.Instance.UIManager.QuestsContentScrollRect.content)
             {
-                if (child.name != "EmptySpace")
+                if (child.name == "NotExitQuests")
+                    NotExitQuests = child.gameObject;
+                if ((child.name != "EmptySpace") && (child.name != "NotExitQuests"))
                 {
                     Destroy(child.gameObject);
                 }
@@ -131,7 +147,20 @@ public class QuestManager : MonoBehaviour
                     Debug.LogError("UiOneQuestElement component is missing on newQuest object");
                 }
             }
+
+            if (QuestsInScene.Count == 0)
+            {
+                NotExitQuests.SetActive(true);
+                IGame.Instance.UIManager.UpdateGreyBtnQuest(true);
+            }
+            else
+            {
+                NotExitQuests.SetActive(false);
+                IGame.Instance.UIManager.UpdateGreyBtnQuest(false);
+            }
+
         }
+        IGame.Instance.UIManager.UpdateQuestBackImg();
     }
 
 

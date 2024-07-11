@@ -61,7 +61,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text IconMapText;
 
     [Header("QuestSector")]
+    [SerializeField] private Image _btnQuestBack;
     [SerializeField] private Button _btnQuestScr;
+    [SerializeField] private Button _btnQuestScrGray;
     [SerializeField] private Button _btnCloseQuestScr;
     [SerializeField] private GameObject QuestScr;
     [SerializeField] public GameObject OneQuestPref;
@@ -101,6 +103,7 @@ public class UIManager : MonoBehaviour
         _buttonMarket.onClick.AddListener(OnClickButtonMarket);
         _buttonBug.onClick.AddListener(OnClickButtonBug);
         _btnQuestScr.onClick.AddListener(OnClickBtnQuest);
+        _btnQuestScrGray.onClick.AddListener(OnClickBtnQuest);
         _btnCloseQuestScr.onClick.AddListener(OnClickBtnCloseQuest);
 
         ButtonShowMap.onClick.AddListener(OnClickButtonMap);
@@ -120,6 +123,7 @@ public class UIManager : MonoBehaviour
         _sliderMusic.onValueChanged.AddListener(OnChangeMusicVolume);
 
         _btnQuestScr.onClick.AddListener(() => { QuestScr.SetActive(true); IGame.Instance.SavePlayerPosLikeaPause(true); });
+        _btnQuestScrGray.onClick.AddListener(() => { QuestScr.SetActive(true); IGame.Instance.SavePlayerPosLikeaPause(true); });
         _btnCloseQuestScr.onClick.AddListener(() => { QuestScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false); });
 
         _btnOptions.onClick.AddListener(OnClickBtnOption);
@@ -374,4 +378,22 @@ public class UIManager : MonoBehaviour
         HideQuestPanel();
     }
 
+    public void UpdateGreyBtnQuest(bool showGray)
+    {
+        if (showGray)
+            _btnQuestScrGray.gameObject.SetActive(true);
+        else
+            _btnQuestScrGray.gameObject.SetActive(false);
+    }
+
+    public void UpdateQuestBackImg()
+    {
+        _btnQuestBack.enabled = IGame.Instance.QuestManager.ShowBackImgForBtn();
+    }
+
+    private void Update()
+    {
+        if (_btnQuestBack.enabled)
+            _btnQuestBack.transform.Rotate(Vector3.forward, 25 * Time.deltaTime);
+    }
 }

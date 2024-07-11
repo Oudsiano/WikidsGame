@@ -120,6 +120,7 @@ public class UiOneQuestElement : MonoBehaviour
         MarkQuestAsComplete();
         FadeOutAndShrinkUIElement(this.gameObject);
         thisQuestData.fullComplite = true;
+        IGame.Instance.UIManager.UpdateQuestBackImg();
     }
 
     private void MarkQuestAsComplete()
@@ -170,6 +171,7 @@ public class UiOneQuestElement : MonoBehaviour
         if (thisQuestData.currentProcess >= thisQuestData.targetProcess)
         {
             SetFinished();
+            IGame.Instance.UIManager.UpdateQuestBackImg();
         }
     }
 

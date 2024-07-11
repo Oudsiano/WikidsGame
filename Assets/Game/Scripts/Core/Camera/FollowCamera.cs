@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Пространство имен для ядра игры
 namespace RPG.Core
@@ -38,15 +39,17 @@ namespace RPG.Core
 
         private float zoomAmt; // Количество изменения масштаба
 
-
         public LayerMask obstacleMask; // Слой, который обозначает препятствия
         private float autoZoomForReturn;
 
-        public float AutoZoomForReturn { get => autoZoomForReturn; set 
+        public float AutoZoomForReturn
+        {
+            get => autoZoomForReturn;
+            set
             {
                 autoZoomForReturn = value;
                 Debug.Log(autoZoomForReturn);
-            } 
+            }
         }
 
         // Метод вызывается перед первым обновлением кадра
@@ -144,7 +147,7 @@ namespace RPG.Core
             Vector3 newZoomPos;//= mainCam.transform.position + (mainCam.transform.forward * zoomAmt);
             if (zoomTotal < minZoom) zoomTotal = minZoom;
             if (zoomTotal > maxZoom) zoomTotal = maxZoom;
-                // Масштабируем камеру, если она находится в пределах допустимого масштабирования
+            // Масштабируем камеру, если она находится в пределах допустимого масштабирования
             {
                 newZoomPos = target.position + (mainCam.transform.forward * (zoomTotal * 0.3f));
                 mainCam.transform.position = newZoomPos;
@@ -158,7 +161,6 @@ namespace RPG.Core
 
             OnCameraScale?.Invoke();
         }
-
 
         public void LockCamera()
         {
@@ -176,10 +178,9 @@ namespace RPG.Core
         {
             if (pauseClass.GetPauseState()) return;
 
-
             float step = 1f;
             Vector3 targetPos = target.position + new Vector3Int(0, 1, 0);
-            Vector3 tempV1 = target.position + (mainCam.transform.forward * ((zoomTotal - step*2) * 0.3f));
+            Vector3 tempV1 = target.position + (mainCam.transform.forward * ((zoomTotal - step * 2) * 0.3f));
             var direction = (targetPos - tempV1).normalized;
             RaycastHit hit;
 
@@ -200,6 +201,45 @@ namespace RPG.Core
                     ZoomUpdateByZoomTotal(-step);
                 }
             }
+        }
+
+        // Метод для установки MaxZoom
+        public void MaxZoom()
+        {
+            zoomTotal = -20;
+            CommonZoom();
+        }
+
+        // Метод для установки MinZoom в зависимости от текущей сцены
+        public void MinZoom()
+        {
+            string currentScene = SceneManager.GetActiveScene().name;
+            switch (currentScene)
+            {
+                case "BattleScene":
+                    zoomTotal = -500;
+                    break;
+                case "Holl":
+                    zoomTotal = -50;
+                    break;
+                case "Library":
+                    zoomTotal = -50;
+                    break;
+                case "SceneFive":
+                    zoomTotal = -50;
+                    break;
+                case "BattleScene1":
+                    zoomTotal = -500;
+                    break;
+                case "BS_3":
+                    zoomTotal = -500;
+                    break;
+
+                default:
+                    zoomTotal = -35; // Значение по умолчанию
+                    break;
+            }
+            CommonZoom();
         }
     }
 }

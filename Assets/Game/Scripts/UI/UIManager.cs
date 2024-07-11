@@ -79,10 +79,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider _sliderMusic;
     [SerializeField] private Button _btnTest;
 
+    [Header("Zoom Buttons")]
+    [SerializeField] private Button _buttonMaxZoom;
+    [SerializeField] private Button _buttonMinZoom;
 
     private FollowCamera followCamera;
 
     private SceneLoader sceneLoader;
+
 
     public SceneLoader SceneLoader { get => sceneLoader; set => sceneLoader = value; }
 
@@ -132,6 +136,8 @@ public class UIManager : MonoBehaviour
         QuestsContentScrollRect.scrollSensitivity = 20.0f;
         SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
 
+        _buttonMaxZoom.onClick.AddListener(OnClickMaxZoom);
+        _buttonMinZoom.onClick.AddListener(OnClickMinZoom);
 
         SceneManager.sceneLoaded += SceneLoader_LevelChanged;
     }
@@ -396,4 +402,31 @@ public class UIManager : MonoBehaviour
         if (_btnQuestBack.enabled)
             _btnQuestBack.transform.Rotate(Vector3.forward, 25 * Time.deltaTime);
     }
+    private void OnClickMaxZoom()
+    {
+        if (followCamera != null)
+        {
+            Debug.Log("MaxZoom button clicked");
+            followCamera.MaxZoom();
+        }
+        else
+        {
+            Debug.LogWarning("FollowCamera not found");
+        }
+    }
+    private void OnClickMinZoom()
+    {
+        if (followCamera != null)
+        {
+            Debug.Log("MinZoom button clicked");
+            followCamera.MinZoom();
+        }
+        else
+        {
+            Debug.LogWarning("FollowCamera not found");
+        }
+    }
+
+
+
 }

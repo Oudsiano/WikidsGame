@@ -25,14 +25,16 @@ namespace RPG.Combat
 
         private const string weaponNameForHand = "weapon";
 
+        public GameObject WeaponPrefab { get => weaponPrefab; set => weaponPrefab = value; }
+
         public void SpawnToPlayer(Transform rightHandPos, Transform lefthandPos, Animator anim)
         {
             DestroyWeaponOnPlayer(rightHandPos, lefthandPos, anim);
 
-            if (weaponPrefab)
+            if (WeaponPrefab)
             {
                 Transform handPos = FindTransformOfHand(rightHandPos, lefthandPos);
-                GameObject wepInScene = Instantiate(weaponPrefab, handPos);
+                GameObject wepInScene = Instantiate(WeaponPrefab, handPos);
                 wepInScene.transform.localScale = Vector3.one * 1 / wepInScene.transform.lossyScale.x;
                 wepInScene.name = weaponNameForHand;
             }

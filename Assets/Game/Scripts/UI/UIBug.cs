@@ -4,6 +4,7 @@ using RPG.Combat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -109,11 +110,38 @@ public class UIBug : MonoBehaviour
         float posX = IGame.Instance.playerController.transform.localPosition.x + UnityEngine.Random.Range(-10, 10) * 0.1f;
         float posY = IGame.Instance.playerController.transform.localPosition.y + UnityEngine.Random.Range(-10, 10) * 0.1f;
 
-        Instantiate(IGame.Instance.WeaponArmorManager.dafaultPrefab,
-            new Vector3(posX, posY+1, IGame.Instance.playerController.transform.localPosition.z ),
-            Quaternion.Euler(0, 0, 0))
-            .GetComponent<PickableEquip>().SetItem(item);
 
+        if (item.Type == ItemType.Weapons)
+        {
+            Weapon _tempW = IGame.Instance.WeaponArmorManager.TryGetWeaponByName(item.Name);
+            GameObject newObj = Instantiate(_tempW.WeaponPrefab,
+                new Vector3(posX, posY + 1, IGame.Instance.playerController.transform.localPosition.z),
+                Quaternion.Euler(0, 0, 0));
+
+            PickableEquip _tempPE = newObj.GetComponent<PickableEquip>();
+
+            if (_tempPE == null)
+                _tempPE = newObj.AddComponent<PickableEquip>();
+
+            SphereCollider sphereCollider = newObj.AddComponent<SphereCollider>();
+            sphereCollider.isTrigger = true;
+            sphereCollider.center = new Vector3(0, 0, 0);
+            sphereCollider.radius = 0.6684607f;
+
+            RotationObjects rotationObjects = newObj.AddComponent<RotationObjects>();
+            rotationObjects.rotationAxis = new Vector3(0, 1, 0);
+            rotationObjects.rotationDuration = 5;
+            rotationObjects.easeType = DG.Tweening.Ease.Linear;
+
+            _tempPE.SetItem(item);
+        }
+        else
+        {
+            Instantiate(IGame.Instance.WeaponArmorManager.dafaultPrefab,
+                new Vector3(posX, posY + 1, IGame.Instance.playerController.transform.localPosition.z),
+                Quaternion.Euler(0, 0, 0))
+                .GetComponent<PickableEquip>().SetItem(item);
+        }
         notAvaliableEvents = false;
     }
 
@@ -163,6 +191,36 @@ public class UIBug : MonoBehaviour
     private void OnDrop(IInventoryItem obj)
     {
         DropItemNearPlayer((ItemDefinition)obj);
+        DisplayPromotionMessage();
+    }
+
+    private void DisplayPromotionMessage()
+    {
+        // Создание текста на экране
+        GameObject canvasGO = GameObject.Find("Canvas");
+        if (canvasGO == null)
+        {
+            canvasGO = new GameObject("Canvas");
+            Canvas canvas = canvasGO.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvasGO.AddComponent<CanvasScaler>();
+            canvasGO.AddComponent<GraphicRaycaster>();
+        }
+        GameObject promotionTextGO = new GameObject("PromotionTextUI");
+        promotionTextGO.transform.SetParent(canvasGO.transform);
+
+        RectTransform rectTransform = promotionTextGO.AddComponent<RectTransform>();
+        rectTransform.anchoredPosition = Vector2.zero;
+        rectTransform.sizeDelta = new Vector2(600, 200);
+
+        TMPro.TextMeshProUGUI text = promotionTextGO.AddComponent<TMPro.TextMeshProUGUI>();
+        text.text = "Шашка превращена в дамку: " + gameObject.name;
+        text.fontSize = 48;
+        text.color = Color.red;
+        text.alignment = TextAlignmentOptions.Center;
+
+        // Удаление текста через 2 секунды
+        Destroy(promotionTextGO, 2.0f);
     }
 
     private void OnRemovedArmor(IInventoryItem obj)

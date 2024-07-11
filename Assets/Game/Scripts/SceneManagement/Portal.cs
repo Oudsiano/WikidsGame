@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using RPG.Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static LevelChangeObserver;
 
 // Пространство имен для управления сценами игры
@@ -87,7 +90,7 @@ namespace RPG.SceneManagement
                 int posNew = 0;
                 foreach (var item in posTempList)
                 {
-                    if (item== (allScenes)sceneComponent.IdScene )
+                    if (item == (allScenes)sceneComponent.IdScene)
                     {
                         posNew = (int)sceneComponent.IdScene;
                     }
@@ -143,19 +146,25 @@ namespace RPG.SceneManagement
 
         private void SetBonusWeaponAndArmor()
         {
+            if (IGame.Instance.dataPLayer.playerData.FinishedRegionsIDs.Contains((int)sceneComponent.IdScene))
+                return;
+
             if (bonusWeapon != null)
             {
                 if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusWeapon.name)))
                 {
                     IGame.Instance.UIManager.ShowNewWeapon();
                     IGame.Instance.gameAPI.SaveUpdater();
-                
 
-
-                if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusWeapon.name))
-                {
-                    IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusWeapon.name);
+                    if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusWeapon.name))
+                    {
+                        IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusWeapon.name);
+                    }
                 }
+                else
+                {
+                    if (bonusWeapon.price > 0)
+                        SellItemDisplay(bonusWeapon.price / 4);
                 }
             }
 
@@ -163,17 +172,75 @@ namespace RPG.SceneManagement
             {
                 if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusArmor.name)))
                 {
-                    IGame.Instance.UIManager.ShowNewWeapon();
+                    IGame.Instance.UIManager.ShowNewArmor();
                     IGame.Instance.gameAPI.SaveUpdater();
-                
-                if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusArmor.name))
-                {
-                    IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusArmor.name);
+
+                    if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusArmor.name))
+                    {
+                        IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusArmor.name);
+                    }
                 }
+                else
+                {
+                    if (bonusArmor.price > 0)
+                        SellItemDisplay(bonusArmor.price / 4);
                 }
             }
         }
 
+        private void SellItemDisplay(int coins)
+        {
+            IGame.Instance.CoinManager.Coins.ChangeCount(coins);
 
+            TextMeshProUGUI messageText;
+            Canvas canvas;
+            GameObject panel;
+
+            // Создание Canvas
+            GameObject canvasObj = new GameObject("Canvas");
+            canvas = canvasObj.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 100; // Установка sortOrder
+            canvasObj.AddComponent<CanvasScaler>();
+            canvasObj.AddComponent<GraphicRaycaster>();
+
+            // Создание панели
+            panel = new GameObject("MessagePanel");
+            panel.transform.SetParent(canvas.transform, false);
+            RectTransform rectTransform = panel.AddComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(800, 300);
+            panel.AddComponent<CanvasRenderer>();
+            Image image = panel.AddComponent<Image>();
+            image.color = new Color(0.5f, 0.5f, 0.5f, 0.5f); // Серый полупрозрачный цвет
+
+            // Создание текста
+            GameObject textObj = new GameObject("MessageText");
+            textObj.transform.SetParent(panel.transform, false);
+            messageText = textObj.AddComponent<TextMeshProUGUI>();
+            messageText.text = "Вы получили бонусные деньги за прохождение " + coins;
+            messageText.alignment = TextAlignmentOptions.Center;
+            messageText.color = Color.black;
+            RectTransform textRectTransform = textObj.GetComponent<RectTransform>();
+            textRectTransform.sizeDelta = new Vector2(500, textRectTransform.sizeDelta.y);
+            textRectTransform.anchoredPosition = Vector2.zero;
+
+            // Запуск анимации для исчезновения и удаления панели
+            DOVirtual.DelayedCall(3, () =>
+            {
+                // Плавное исчезновение за 2 секунды
+                Image panelImage = panel.GetComponent<Image>();
+                TextMeshProUGUI textMesh = messageText;
+
+                // Анимация исчезновения панели
+                panelImage.DOFade(0, 2);
+
+                // Анимация исчезновения текста
+                textMesh.DOFade(0, 2).OnComplete(() =>
+                {
+                    // Удаление панели после завершения анимации
+                    Destroy(panel);
+                });
+            });
+        }
     }
 }

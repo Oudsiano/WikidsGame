@@ -94,7 +94,6 @@ public class UIManager : MonoBehaviour
     {
         SceneLoader = FindObjectOfType<SceneLoader>();
 
-
         _buttonAgain.onClick.AddListener(OnClickAgainRegen);
         _buttonGoToSceneZero.onClick.AddListener(OnClickGoToSceneZero);
         _buttonCancelAgain.onClick.AddListener(OnCLickCancelAgain);
@@ -139,8 +138,18 @@ public class UIManager : MonoBehaviour
         _buttonMaxZoom.onClick.AddListener(OnClickMaxZoom);
         _buttonMinZoom.onClick.AddListener(OnClickMinZoom);
 
+        // Hide zoom buttons for specific scenes
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (currentScene == "Library" || currentScene == "Holl" || currentScene == "SceneFive")
+        {
+            _buttonMaxZoom.gameObject.SetActive(false);
+            _buttonMinZoom.gameObject.SetActive(false);
+        }
+
         SceneManager.sceneLoaded += SceneLoader_LevelChanged;
     }
+
+
     private void Start()
     {
         followCamera = FindObjectOfType<FollowCamera>();

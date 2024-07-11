@@ -191,37 +191,9 @@ public class UIBug : MonoBehaviour
     private void OnDrop(IInventoryItem obj)
     {
         DropItemNearPlayer((ItemDefinition)obj);
-        DisplayPromotionMessage();
     }
+    
 
-    private void DisplayPromotionMessage()
-    {
-        // Создание текста на экране
-        GameObject canvasGO = GameObject.Find("Canvas");
-        if (canvasGO == null)
-        {
-            canvasGO = new GameObject("Canvas");
-            Canvas canvas = canvasGO.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasGO.AddComponent<CanvasScaler>();
-            canvasGO.AddComponent<GraphicRaycaster>();
-        }
-        GameObject promotionTextGO = new GameObject("PromotionTextUI");
-        promotionTextGO.transform.SetParent(canvasGO.transform);
-
-        RectTransform rectTransform = promotionTextGO.AddComponent<RectTransform>();
-        rectTransform.anchoredPosition = Vector2.zero;
-        rectTransform.sizeDelta = new Vector2(600, 200);
-
-        TMPro.TextMeshProUGUI text = promotionTextGO.AddComponent<TMPro.TextMeshProUGUI>();
-        text.text = "Шашка превращена в дамку: " + gameObject.name;
-        text.fontSize = 48;
-        text.color = Color.red;
-        text.alignment = TextAlignmentOptions.Center;
-
-        // Удаление текста через 2 секунды
-        Destroy(promotionTextGO, 2.0f);
-    }
 
     private void OnRemovedArmor(IInventoryItem obj)
     {

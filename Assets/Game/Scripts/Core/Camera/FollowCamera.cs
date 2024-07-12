@@ -203,43 +203,18 @@ namespace RPG.Core
             }
         }
 
-        // Метод для установки MaxZoom
         public void MaxZoom()
         {
-            zoomTotal = -20;
+            zoomTotal = maxZoom;
             CommonZoom();
+            AutoZoomForReturn = zoomTotal;
         }
 
-        // Метод для установки MinZoom в зависимости от текущей сцены
         public void MinZoom()
         {
-            string currentScene = SceneManager.GetActiveScene().name;
-            switch (currentScene)
-            {
-                case "BattleScene":
-                    zoomTotal = -500;
-                    break;
-                case "Holl":
-                    zoomTotal = -50;
-                    break;
-                case "Library":
-                    zoomTotal = -50;
-                    break;
-                case "SceneFive":
-                    zoomTotal = -50;
-                    break;
-                case "BattleScene1":
-                    zoomTotal = -500;
-                    break;
-                case "BS_3":
-                    zoomTotal = -500;
-                    break;
-
-                default:
-                    zoomTotal = -35; // Значение по умолчанию
-                    break;
-            }
+            zoomTotal = minZoom;
             CommonZoom();
+            AutoZoomForReturn = zoomTotal;
         }
     }
 }

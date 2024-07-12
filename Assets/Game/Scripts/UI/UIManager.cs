@@ -9,6 +9,7 @@ using FarrokhGames.Inventory;
 using FarrokhGames.Inventory.Examples;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using static LevelChangeObserver;
 
 public class UIManager : MonoBehaviour
 {
@@ -138,13 +139,7 @@ public class UIManager : MonoBehaviour
         _buttonMaxZoom.onClick.AddListener(OnClickMaxZoom);
         _buttonMinZoom.onClick.AddListener(OnClickMinZoom);
 
-        // Hide zoom buttons for specific scenes
-        string currentScene = SceneManager.GetActiveScene().name;
-        if (currentScene == "Library" || currentScene == "Holl" || currentScene == "SceneFive")
-        {
-            _buttonMaxZoom.gameObject.SetActive(false);
-            _buttonMinZoom.gameObject.SetActive(false);
-        }
+
 
         SceneManager.sceneLoaded += SceneLoader_LevelChanged;
     }
@@ -160,6 +155,19 @@ public class UIManager : MonoBehaviour
         GameObject MapCamera = GameObject.Find("CameraForMainMap");
         if (MapCamera != null)
             MapCamera.GetComponent<Camera>().enabled = false;
+
+        SceneComponent sceneComponent = FindObjectOfType<SceneComponent>();
+        if (sceneComponent != null)
+        
+        {
+            if ((sceneComponent.IdScene == allScenes.library) ||
+                 (sceneComponent.IdScene == allScenes.holl) ||
+                 (sceneComponent.IdScene == allScenes.town1))
+            {
+                _buttonMaxZoom.gameObject.SetActive(false);
+                _buttonMinZoom.gameObject.SetActive(false);
+            }
+        }
     }
 
     private void OnCLickCloseOption()
@@ -411,31 +419,6 @@ public class UIManager : MonoBehaviour
         if (_btnQuestBack.enabled)
             _btnQuestBack.transform.Rotate(Vector3.forward, 25 * Time.deltaTime);
     }
-    private void OnClickMaxZoom()
-    {
-        if (followCamera != null)
-        {
-            Debug.Log("MaxZoom button clicked");
-            followCamera.MaxZoom();
-        }
-        else
-        {
-            Debug.LogWarning("FollowCamera not found");
-        }
-    }
-    private void OnClickMinZoom()
-    {
-        if (followCamera != null)
-        {
-            Debug.Log("MinZoom button clicked");
-            followCamera.MinZoom();
-        }
-        else
-        {
-            Debug.LogWarning("FollowCamera not found");
-        }
-    }
-
-
-
+    private void OnClickMaxZoom() => followCamera.MaxZoom();
+    private void OnClickMinZoom() => followCamera.MinZoom();
 }

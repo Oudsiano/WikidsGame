@@ -59,8 +59,12 @@ namespace DialogueEditor
             if (NodeSerializedDataList == null)
                 NodeSerializedDataList = new List<NodeEventHolder>();
 
+            if (id == 6)
+                    id = 6;
+
             // Look through list to find by ID
             for (int i = 0; i < NodeSerializedDataList.Count; i++)
+                if (NodeSerializedDataList[i]!=null)
                 if (NodeSerializedDataList[i].NodeID == id)
                     return NodeSerializedDataList[i];
 

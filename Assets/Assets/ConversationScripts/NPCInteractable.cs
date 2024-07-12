@@ -10,7 +10,7 @@ public class NPCInteractable : MonoBehaviour
 {
 
     public InteractableType interactionType;
-
+    public bool posibleInteract = true;
     private ConversationStarter conversationStarter;
 
     [SerializeField] private List<GameObject> InvisibleWhenCorrectAnswer= new List<GameObject>();
@@ -56,6 +56,8 @@ public class NPCInteractable : MonoBehaviour
 
     public void InteractWithNPC()
     {
+        if (!posibleInteract) return;
+
         Debug.Log("Interacting with NPC");
 
         // Вызов метода StartDialog() из ConversationStarter, если компонент присутствует 

@@ -49,7 +49,6 @@ public class NPC_for_testID : MonoBehaviour
         _icon.description = IconText;
 
 
-        Transform splashOrangeTransform = transform.Find("Splash_orange");
 
 
     }
@@ -57,7 +56,7 @@ public class NPC_for_testID : MonoBehaviour
     public void SuccessAnsver()
     {
         AddCoinsToPlayer();
-        DeactivateCollider();
+        DeactivateInteract();
     }
 
 
@@ -66,20 +65,13 @@ public class NPC_for_testID : MonoBehaviour
         IGame.Instance.saveGame.Coins += coins;
     }
 
-    public void DeactivateCollider()
+    public void DeactivateInteract()
     {
+        NPCInteractable interract = parentGO.GetComponent<NPCInteractable>();
+        interract.posibleInteract = false;
 
-        // Отключаем коллайдер
-        Collider collider = parentGO.GetComponent<Collider>();
-        if (collider != null)
-        {
-            collider.enabled = false;
-        }
-        else
-        {
-            Debug.LogWarning("Collider not found on the target object.");
-        }
 
+        Transform splashOrangeTransform = transform.Find("Splash_orange");
         // Отключаем дочерний объект с именем "Splash_orange"
         if (splashOrangeTransform != null)
         {

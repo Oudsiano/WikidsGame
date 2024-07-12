@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class NPCManagment : MonoBehaviour
 {
     private Dictionary<int, GameObject> _dicNPCTests;
+    public List<int> notComplite;
 
     // Start is called before the first frame update
 
@@ -29,11 +30,46 @@ public class NPCManagment : MonoBehaviour
 
         foreach (NPC_for_testID item in conversationStarters)
         {
-            if (item.TestID>0)
+            if (item.TestID > 0)
             {
                 _dicNPCTests[item.TestID] = item.gameObject;
             }
         }
+    }
+
+    public bool checkAllTestsComplite()
+    {
+        notComplite = new List<int>();
+
+        FindAllNPCWithTests();
+
+        foreach (int itemTestId in _dicNPCTests.Keys)
+        {
+            bool complete = false;
+            foreach (OneLeson lesson in IGame.Instance.dataPLayer.playerData.progress)
+            {
+                foreach (OneTestQuestion test in lesson.tests)
+                {
+                    if (_dicNPCTests.ContainsKey(test.id))
+                    {
+                        if (test.id == itemTestId)
+                            complete = test.completed;
+                    }
+                }
+            }
+
+            if (!complete)
+            {
+                notComplite.Add(itemTestId);
+
+            }
+
+        }
+
+        if (notComplite.Count > 0)
+            return false;
+        else
+            return true;
     }
 
     public void updateAllNPCinScene()
@@ -55,6 +91,6 @@ public class NPCManagment : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

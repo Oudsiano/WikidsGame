@@ -55,12 +55,17 @@ namespace RPG.SceneManagement
         // Обработчик события входа в область портала
         private void OnTriggerEnter(Collider other)
         {
-
-
             // Проверяем, что в область портала входит игрок и что переход между сценами не происходит в данный момент
             if (other.gameObject == MainPlayer.Instance.gameObject)
             {
                 IGame.Instance.UIManager.HelpInFirstScene.EndStudy5();
+
+                if (!IGame.Instance.NPCManagment.checkAllTestsComplite())
+                {
+                    Debug.Log("Рано портироваться, ты еще не сделал все тесты" + string.Join(", ", IGame.Instance.NPCManagment.notComplite));
+                    TextDisplay(0, "Рано портироваться, ты еще не сделал все тесты");
+                    return;
+                }
 
                 if (sceneToLoad != sceneComponent.IdScene)
                     StartCoroutine(Transition()); // Запускаем переход между сценами
@@ -164,7 +169,7 @@ namespace RPG.SceneManagement
                 else
                 {
                     if (bonusWeapon.price > 0)
-                        SellItemDisplay(bonusWeapon.price / 4);
+                        TextDisplay(bonusWeapon.price / 4, "Вы получили бонусные деньги за прохождение");
                 }
             }
 
@@ -183,12 +188,12 @@ namespace RPG.SceneManagement
                 else
                 {
                     if (bonusArmor.price > 0)
-                        SellItemDisplay(bonusArmor.price / 4);
+                        TextDisplay(bonusArmor.price / 4, "Вы получили бонусные деньги за прохождение");
                 }
             }
         }
 
-        private void SellItemDisplay(int coins)
+        private void TextDisplay(int coins, string text)
         {
             IGame.Instance.CoinManager.Coins.ChangeCount(coins);
 
@@ -217,7 +222,10 @@ namespace RPG.SceneManagement
             GameObject textObj = new GameObject("MessageText");
             textObj.transform.SetParent(panel.transform, false);
             messageText = textObj.AddComponent<TextMeshProUGUI>();
-            messageText.text = "Вы получили бонусные деньги за прохождение " + coins;
+            if (coins!=0)
+            messageText.text = text + " " + coins;
+            else
+            messageText.text = text;
             messageText.alignment = TextAlignmentOptions.Center;
             messageText.color = Color.black;
             RectTransform textRectTransform = textObj.GetComponent<RectTransform>();

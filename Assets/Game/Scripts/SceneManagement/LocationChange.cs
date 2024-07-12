@@ -71,7 +71,10 @@ public class LocationChange : MonoBehaviour
         for (int i = regions.Count-1; i >= 0; i--)
         {
             if (n.Contains((int)regions[i].loadedScene))
+            {
                 findedIndex = i;
+                break;
+            }
         }
 
         if ((findedIndex+1)<regions.Count)

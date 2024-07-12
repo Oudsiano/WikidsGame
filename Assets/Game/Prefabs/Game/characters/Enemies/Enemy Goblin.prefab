@@ -136,6 +136,11 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 6347889442636374521}
+    - target: {fileID: 3915948677719093955, guid: 37bc44cce0831404eb1918df3847c8d7,
+        type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4914815531715153832, guid: 37bc44cce0831404eb1918df3847c8d7,
         type: 3}
       propertyPath: m_IsActive
@@ -278,6 +283,9 @@ MonoBehaviour:
   maxDwellTime: 5
   currentDwellTime: 0
   timeSinceLastSawPlayer: Infinity
+  timeSinceLastHit: Infinity
+  startDistanceForShowIcon: 125
+  maxOpacity: 0.3
 --- !u!114 &5398448963245149938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +302,7 @@ MonoBehaviour:
   leftHandPosition: {fileID: 2973571062712168064}
   defaultWeapon: {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
   equippedWeapon: {fileID: 0}
-  FireballWeapon: {fileID: 0}
+  fireballWeapon: {fileID: 0}
   timer: 0
   target: {fileID: 0}
 --- !u!114 &6932246844250427147
@@ -479,7 +487,7 @@ PrefabInstance:
     - target: {fileID: 3216936111280399918, guid: af6f645f2ad334ea98d885d0d7bff103,
         type: 3}
       propertyPath: m_MaxValue
-      value: 15
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3216936111280399918, guid: af6f645f2ad334ea98d885d0d7bff103,
         type: 3}

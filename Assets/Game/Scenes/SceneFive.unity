@@ -13372,6 +13372,31 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1810814315222895038}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1654837875 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8515812231192659091, guid: a407eb1df71844cf4aa367f1520f98da,
+    type: 3}
+  m_PrefabInstance: {fileID: 5784559278371689201}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1654837876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654837875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00abedce3cdbbba46bf2d86c9518c9f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event:
+    m_PersistentCalls:
+      m_Calls: []
+  NodeID: 7
+  TMPFont: {fileID: 0}
+  Icon: {fileID: 0}
+  Audio: {fileID: 0}
 --- !u!4 &1654873031 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4147856562052404, guid: 2f9f7196dbd6f6846bba6eaa7cb39096,
@@ -49084,10 +49109,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1635384813517931096, guid: a407eb1df71844cf4aa367f1520f98da, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8515812231192659091, guid: a407eb1df71844cf4aa367f1520f98da,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1654837876}
   m_SourcePrefab: {fileID: 100100000, guid: a407eb1df71844cf4aa367f1520f98da, type: 3}
 --- !u!1001 &5789373549896120128
 PrefabInstance:

@@ -167,6 +167,11 @@ public class UIManager : MonoBehaviour
                 _buttonMaxZoom.gameObject.SetActive(false);
                 _buttonMinZoom.gameObject.SetActive(false);
             }
+            else
+            {
+                _buttonMaxZoom.gameObject.SetActive(true);
+                _buttonMinZoom.gameObject.SetActive(true);
+            }
         }
     }
 

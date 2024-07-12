@@ -9,4 +9,9 @@ public class SceneComponent : MonoBehaviour
 
     //[SerializeField] public GameObject TheCore;
 
+
+    [Header("Camera New Params")]
+    [SerializeField] public int newMinZoomCamera;
+    [SerializeField] public int newMaxZoomCamera;
+
 }

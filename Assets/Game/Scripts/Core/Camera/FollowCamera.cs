@@ -60,6 +60,21 @@ namespace RPG.Core
             target = MainPlayer.Instance.transform; // Получаем цель (обычно игрока)
             AutoZoomForReturn = zoomTotal;
             RotationMovement();
+
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            SceneComponent sceneComponent = FindObjectOfType<SceneComponent>();
+            if (sceneComponent != null)
+            {
+                if (sceneComponent.newMinZoomCamera != 0)
+                    minZoom = sceneComponent.newMinZoomCamera; 
+                if (sceneComponent.newMaxZoomCamera != 0)
+                    maxZoom = sceneComponent.newMaxZoomCamera;
+            }
         }
 
         // Метод вызывается один раз за кадр, после Update
@@ -177,6 +192,7 @@ namespace RPG.Core
         void Update()
         {
             if (pauseClass.GetPauseState()) return;
+            if (zoomTotal < minZoom) MinZoom();
 
             float step = 1f;
             Vector3 targetPos = target.position + new Vector3Int(0, 1, 0);

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using static LevelChangeObserver;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 public class LocationChange : MonoBehaviour
 {
@@ -16,6 +17,20 @@ public class LocationChange : MonoBehaviour
     {
         public Button Button;
         public allScenes loadedScene;
+
+        public void SetRed()
+        {
+            Button.GetComponent<Image>().color = new Color32(0xFF, 0x73, 0x5F, 0xFF);
+        }
+        internal void SetGreen()
+        {
+            Button.GetComponent<Image>().color = new Color32(0x94, 0xFF, 0x5F, 0xFF);
+        }
+
+        internal void SetNormal()
+        {
+            Button.GetComponent<Image>().color = new Color32(0xff, 0xFF, 0xfF, 0xFF);
+        }
     }
 
     [SerializeField]
@@ -23,13 +38,17 @@ public class LocationChange : MonoBehaviour
 
     [SerializeField] private GameObject Loading;
     [SerializeField] private TMP_Text hoverTextDisplay; // Поле для отображения текста при наведении
+    [SerializeField] private TMP_Text TestsTextDisplay;
     [SerializeField] private MultiLineText multiLineText; // Ссылка на компонент с многострочным текстом
 
     [SerializeField] private TMP_Text textID;
 
+    private SceneWithTestsID sceneWithTestsID;
+    private List<string> ListNeedTests;
+
     public void Awake()
     {
-        
+
         if (multiLineText.hoverTexts.Length != regions.Count)
         {
             Debug.LogError("The number of hover texts does not match the number of regions.");
@@ -53,11 +72,15 @@ public class LocationChange : MonoBehaviour
             trigger.triggers.Add(entryExit);
         }
 
+
+        sceneWithTestsID = FindObjectOfType<SceneWithTestsID>();
+        updateColors();
         setUpMaxRegion(IGame.Instance.dataPLayer.playerData.FinishedRegionsIDs);
         Debug.Log("awake changeLoc");
 
         if (textID != null)
             textID.text = IGame.Instance.dataPLayer.playerData.id.ToString();
+
     }
 
     private void Start()
@@ -68,7 +91,7 @@ public class LocationChange : MonoBehaviour
     public void setUpMaxRegion(List<int> n)
     {
         int findedIndex = -1;
-        for (int i = regions.Count-1; i >= 0; i--)
+        for (int i = regions.Count - 1; i >= 0; i--)
         {
             if (n.Contains((int)regions[i].loadedScene))
             {
@@ -77,7 +100,7 @@ public class LocationChange : MonoBehaviour
             }
         }
 
-        if ((findedIndex+1)<regions.Count)
+        if ((findedIndex + 1) < regions.Count)
         {
             findedIndex++;
         }
@@ -87,7 +110,45 @@ public class LocationChange : MonoBehaviour
             if (i <= findedIndex)
                 regions[i].Button.interactable = true;
             else
+            {
                 regions[i].Button.interactable = false;
+                regions[i].SetNormal();
+            }
+
+            if (i == findedIndex)
+                regions[i].SetNormal();
+        }
+    }
+
+    private void updateColors()
+    {
+        // Получаем данные игрока один раз, чтобы не вызывать его многократно в цикле.
+        var playerData = IGame.Instance.dataPLayer.playerData.progress;
+
+        foreach (OneBtnChangeRegion region in regions)
+        {
+            // По умолчанию устанавливаем цвет в зеленый.
+            region.SetGreen();
+
+            // Находим соответствующую сцену для текущего региона.
+            var sceneData = sceneWithTestsID.sceneDataList
+                .FirstOrDefault(scene => scene.scene == region.loadedScene);
+
+            if (sceneData != null && playerData != null)
+            {
+                // Проверяем тесты текущей сцены.
+                var incompleteTestFound = sceneData.numbers
+                    .Any(testScene => playerData
+                        .Any(lesson => lesson.tests
+                            .Any(test => test.id == testScene && !test.completed)));
+
+                // Если найден незавершенный тест, устанавливаем цвет в красный.
+                if (incompleteTestFound)
+                {
+                    region.SetRed();
+                    continue;
+                }
+            }
         }
     }
 
@@ -108,9 +169,75 @@ public class LocationChange : MonoBehaviour
 
     private void OnPointerEnter(int index)
     {
-        if (index >= 0 && index < multiLineText.hoverTexts.Length)
+        
+
+            String needTests = "";
+        ListNeedTests = new List<string>();
+        if (index >= 0 && index < regions.Count)
         {
-            hoverTextDisplay.text = multiLineText.hoverTexts[index];
+
+            if (regions[index].Button.interactable==true)
+            {
+                foreach (SceneData scene in sceneWithTestsID.sceneDataList)
+                {
+                    if (scene.scene == regions[index].loadedScene)
+                    {
+                        foreach (int testScene in scene.numbers)
+                        {
+                            if (IGame.Instance.dataPLayer.playerData.progress != null)
+                            {
+                                foreach (OneLeson item in IGame.Instance.dataPLayer.playerData.progress)
+                                {
+                                    foreach (OneTestQuestion item2 in item.tests)
+                                    {
+                                        if (testScene == item2.id)
+                                            if (!item2.completed)
+                                            {
+                                                ListNeedTests.Add(item2.title);
+                                            }
+                                    }
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+
+                var grouped = ListNeedTests
+                .Select(s => new
+                {
+                    Original = s,
+                    Key = Regex.Replace(s, @" Тест \d+| Итоговый тест \d+", ""),
+                    TestType = Regex.Match(s, @"(Тест|Итоговый тест)").Value,
+                    TestNumber = int.Parse(Regex.Match(s, @"\d+$").Value)
+                })
+                .GroupBy(x => new { x.Key, x.TestType })
+                .Select(g => new
+                {
+                    Key = g.Key.Key,
+                    TestType = g.Key.TestType,
+                    TestNumbers = g.Select(x => x.TestNumber).OrderBy(n => n).ToList()
+                });
+
+                foreach (var group in grouped)
+                {
+                    string tests = string.Join(", ", group.TestNumbers);
+                    string testWord = group.TestNumbers.Count > 1 ? "Тесты" : "Тест";
+                    if (group.TestType == "Итоговый тест")
+                        testWord = group.TestNumbers.Count > 1 ? "Итоговые тесты" : "Итоговый тест";
+
+                    Debug.Log($"{group.Key}. {testWord} {tests}");
+
+                    needTests += $"{group.Key}. {testWord} {tests} \n";
+
+                }
+                TestsTextDisplay.text = needTests;
+                //Debug.Log(string.Join("\n", ListNeedTests));
+            }
+
+            if (index >= 0 && index < multiLineText.hoverTexts.Length)
+                hoverTextDisplay.text = multiLineText.hoverTexts[index];
         }
         else
         {
@@ -121,5 +248,6 @@ public class LocationChange : MonoBehaviour
     private void OnPointerExit()
     {
         hoverTextDisplay.text = string.Empty;
+        TestsTextDisplay.text = string.Empty;
     }
 }

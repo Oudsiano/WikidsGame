@@ -33,8 +33,10 @@ namespace RPG.Core
         private float camYRotation = 0;
 
         // Пределы масштабирования
-        [SerializeField] private float minZoom = 5f;
-        [SerializeField] private float maxZoom = 20f;
+        [SerializeField] private float minZoomDefault = -500f;
+        [SerializeField] private float maxZoomDefault = -20f;
+        private float minZoom;
+        private float maxZoom;
         private float zoomTotal = -35; // Общее изменение масштаба
 
         private float zoomAmt; // Количество изменения масштаба
@@ -55,6 +57,9 @@ namespace RPG.Core
         // Метод вызывается перед первым обновлением кадра
         void Start()
         {
+            maxZoom = maxZoomDefault;
+            minZoom = minZoomDefault;
+
             mainCam = Camera.main; // Получаем главную камеру
             defaultCameraTransform = transform; // Сохраняем начальное положение камеры
             target = MainPlayer.Instance.transform; // Получаем цель (обычно игрока)
@@ -67,6 +72,8 @@ namespace RPG.Core
 
         private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
+            minZoom = minZoomDefault;
+            maxZoom = maxZoomDefault;
             SceneComponent sceneComponent = FindObjectOfType<SceneComponent>();
             if (sceneComponent != null)
             {
@@ -201,7 +208,7 @@ namespace RPG.Core
             RaycastHit hit;
 
             // Проверка, есть ли препятствие между камерой и целью
-            if (Physics.Raycast(tempV1, direction, out hit, Vector3.Distance(tempV1, targetPos), obstacleMask))
+            if (Physics.Raycast(tempV1, direction, out hit, Vector3.Distance(tempV1, targetPos)-7, obstacleMask))
             {
                 if (hit.transform.gameObject.name != "Player")
                 {

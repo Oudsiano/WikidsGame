@@ -117,6 +117,11 @@ namespace RPG.Core
                 }
 
                 Destroy(healthBar.gameObject);
+                LineRenderer lineRenderer = GetComponentInChildren<LineRenderer>();
+                if (lineRenderer != null)
+                {
+                    Destroy(lineRenderer.gameObject);
+                }
                 Destroy(this.gameObject, 5f); // Уничтожаем объект через 5 секунд после смерти
                 IGame.Instance.CoinManager.MakeGoldOnSceneWithCount(25, this.gameObject.transform.position);
 

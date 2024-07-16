@@ -76,7 +76,6 @@ public class LocationChange : MonoBehaviour
         sceneWithTestsID = FindObjectOfType<SceneWithTestsID>();
         updateColors();
         setUpMaxRegion(IGame.Instance.dataPLayer.playerData.FinishedRegionsIDs);
-        Debug.Log("awake changeLoc");
 
         if (textID != null)
             textID.text = IGame.Instance.dataPLayer.playerData.id.ToString();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RPG.Core;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class SavePointsManager
@@ -73,44 +74,71 @@ public class SavePoint : MonoBehaviour
         NotActiveSprite.SetActive(true);
         health = FindObjectOfType<Health>();
     }
-
-    // Обработчик события входа в область портала
-    private void OnTriggerEnter(Collider other)
+    void Update()
     {
-        // Проверяем, что в область портала входит игрок и что переход между сценами не происходит в данный момент
-        if (other.gameObject == MainPlayer.Instance.gameObject)
+        // Проверяем, был ли произведен клик
+        if (Input.GetMouseButtonDown(0))
         {
-            playerPosition = other.transform.position;
-            dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
-                                                         // Сохраняем позицию игрока
-            savePointUpdated.gameObject.SetActive(true);
-            Debug.Log("включили партикл при сохранении");
-            health.Restore();
-            dataPlayer.SavePlayerPosition(spawnPoint);
+            // Создаем луч из точки на экране в мир
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-            if (dataPlayer != null)
+            // Проверяем, попал ли луч в какой-то объект с коллайдером
+            if (Physics.Raycast(ray, out hit))
             {
-                while (dataPlayer.playerData.stateSpawnPoints.Count < spawnPoint + 1) dataPlayer.playerData.stateSpawnPoints.Add(false);
-                dataPlayer.playerData.stateSpawnPoints[spawnPoint] = true;
-
-                // Если объект найден, продолжаем с сохранением игры
-                IGame.Instance.gameAPI.SaveUpdater();
-                //StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
-
-                SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
-
-                IGame.Instance.playerController.GetHealth().Restore();
-
-                gameObject.GetComponent<Collider>().enabled = false;
+                // Проверяем, этот ли объект был нажат
+                if (hit.transform == transform)
+                {
+                    // Действия при клике на объект
+                    Activate();
+                }
             }
-            else
-            {
-                // Если объект не найден, выводим ошибку
-                Debug.LogError("DataPlayer object not found!");
-            }
-            // Дополнительно можно сохранить другие параметры игрока, такие как например его здоровье, экипировку и т.д.
         }
     }
+
+
+
+    /*private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == MainPlayer.Instance.gameObject)
+        {
+            Activate();
+        }
+    }*/
+
+
+    private void Activate()
+    {
+        dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
+                                                     // Сохраняем позицию игрока
+        savePointUpdated.gameObject.SetActive(true);
+        Debug.Log("включили партикл при сохранении");
+        health.Restore();
+        dataPlayer.SavePlayerPosition(spawnPoint);
+
+        if (dataPlayer != null)
+        {
+            while (dataPlayer.playerData.stateSpawnPoints.Count < spawnPoint + 1) dataPlayer.playerData.stateSpawnPoints.Add(false);
+            dataPlayer.playerData.stateSpawnPoints[spawnPoint] = true;
+
+            // Если объект найден, продолжаем с сохранением игры
+            IGame.Instance.gameAPI.SaveUpdater();
+            //StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
+
+            SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
+
+            IGame.Instance.playerController.GetHealth().Restore();
+
+            gameObject.GetComponent<Collider>().enabled = false;
+        }
+        else
+        {
+            // Если объект не найден, выводим ошибку
+            Debug.LogError("DataPlayer object not found!");
+        }
+        // Дополнительно можно сохранить другие параметры игрока, такие как например его здоровье, экипировку и т.д.
+    }
+
 
     // Метод для получения сохранённой позиции игрока
 

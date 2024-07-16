@@ -22,7 +22,7 @@ public class Armor : ItemDefinition
     public float ArmorValue { get => armor; set => armor = value; }
     public armorID ArmorName { get => armorName; set => armorName = value; }
 
-    public string Description { get => description; set => description = value; } // Свойство для описания
+    //public string Description { get => description; set => description = value; } // Свойство для описания
 
     public void EquipIt()
     {

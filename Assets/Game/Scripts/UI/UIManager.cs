@@ -132,7 +132,6 @@ public class UIManager : MonoBehaviour
 
         _btnOptions.onClick.AddListener(OnClickBtnOption);
         _btnCloseOptionScr.onClick.AddListener(OnCLickCloseOption);
-        _btnTest.onClick.AddListener(OnClickBtnTest);
         QuestsContentScrollRect.scrollSensitivity = 20.0f;
         SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
 

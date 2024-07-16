@@ -134,10 +134,9 @@ public class UiOneQuestElement : MonoBehaviour
         }
     }
 
-    internal void FinishedTestCount(int count)
+    internal void CheckTestCount()
     {
-        if (QuestType == QuestType.completeSpecialTest)
-            setProgress(count);
+        CheckUpdateAndComplite(false);
     }
 
     private void CheckUpdateAndComplite(bool withSave=true)
@@ -160,7 +159,25 @@ public class UiOneQuestElement : MonoBehaviour
                 updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
             case QuestType.completeSpecialTest:
-                updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
+                thisQuestData.currentProcess = 0;
+                foreach (string itemId in quest.IdTests)
+                {
+                    int testId;
+                    if (int.TryParse(itemId, out testId))
+                    {
+                        if (IGame.Instance.dataPLayer.isTestComplete(testId))
+                        {
+                            thisQuestData.currentProcess++;
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("V perechislenii testov oshibka");
+                    }
+                }
+
+
+                    updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
             default:
                 updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);

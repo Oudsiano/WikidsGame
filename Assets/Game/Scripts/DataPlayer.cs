@@ -34,6 +34,20 @@ public class DataPlayer : MonoBehaviour
         }
         return newArray;
     }
+
+    public bool isTestComplete(int idTest)
+    {
+        if (playerData.progress == null || playerData.progress.Length == 0)
+            return false;
+
+        foreach (OneLeson lesson in playerData.progress)
+            if (lesson.tests != null)
+                foreach (OneTestQuestion test in lesson.tests)
+                    if (test.id == idTest)
+                        return test.completed;
+
+        return false;
+    }
 }
 
 [System.Serializable]

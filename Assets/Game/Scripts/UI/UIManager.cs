@@ -181,6 +181,7 @@ public class UIManager : MonoBehaviour
         pauseClass.IsOpenUI = false;
         followCamera.UnlockCamera();
     }
+    //TODO: we can delete it
     private void OnClickBtnTest()
     {
         uIBug.TryAddEquipToBug(IGame.Instance.QuestManager.allQuestsItems[0]);

@@ -194,16 +194,7 @@ public class QuestManager : MonoBehaviour
         {
             if (item.QuestType == QuestType.completeSpecialTest)
             {
-                int thereCount = 0;
-                foreach (var itemId in item.quest.IdTests)
-                {
-                    if (ID == itemId)
-                    {
-                        thereCount++;
-                    }
-                }
-
-                item.FinishedTestCount(thereCount);
+                item.CheckTestCount();
             }
         }
     }

@@ -73,6 +73,17 @@ public class SavePoint : MonoBehaviour
         SavePointsManager.AllSavePoints[spawnPoint] = this;
         NotActiveSprite.SetActive(true);
         health = FindObjectOfType<Health>();
+
+        if (transform.localScale != Vector3.one)
+        {
+            Debug.LogError("Scale is not (1, 1, 1)");
+        }
+
+        BoxCollider collider = GetComponent<BoxCollider>();
+        if (collider != null && collider.size != Vector3.one)
+        {
+            Debug.LogError("Box Collider size is not (1, 1, 1)");
+        }
     }
     void Update()
     {

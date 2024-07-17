@@ -39,7 +39,7 @@ namespace RPG.Core
         private float minZoom;
         private float maxZoom;
         private float zoomTotal = -35; // Общее изменение масштаба
-
+        
         private float zoomAmt; // Количество изменения масштаба
 
         public LayerMask obstacleMask; // Слой, который обозначает препятствия
@@ -51,7 +51,6 @@ namespace RPG.Core
             set
             {
                 autoZoomForReturn = value;
-                Debug.Log(autoZoomForReturn);
             }
         }
 
@@ -226,25 +225,36 @@ namespace RPG.Core
                 }
             }
         }
-
         public void MaxZoom()
         {
+            float targetZoom = zoomTotal + 100f;
+            if (targetZoom > maxZoom)
+            {
+                targetZoom = maxZoom;
+            }
+
             DOTween.To(() => zoomTotal, x =>
             {
                 zoomTotal = x;
                 AutoZoomForReturn = zoomTotal;
                 CommonZoom();
-            }, maxZoom, 2f);
+            }, targetZoom, 0.5f);
         }
 
         public void MinZoom()
         {
+            float targetZoom = zoomTotal - 100f;
+            if (targetZoom < minZoom)
+            {
+                targetZoom = minZoom;
+            }
+
             DOTween.To(() => zoomTotal, x =>
             {
                 zoomTotal = x;
                 AutoZoomForReturn = zoomTotal;
                 CommonZoom();
-            }, minZoom, 2f);
+            }, targetZoom, 0.5f);
         }
     }
 }

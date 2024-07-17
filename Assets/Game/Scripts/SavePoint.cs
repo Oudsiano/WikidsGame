@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using RPG.Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SavePointsManager
 {
@@ -141,6 +144,7 @@ public class SavePoint : MonoBehaviour
             IGame.Instance.playerController.GetHealth().Restore();
 
             gameObject.GetComponent<Collider>().enabled = false;
+            showText("Активированна точка сохранения!");
         }
         else
         {
@@ -153,4 +157,58 @@ public class SavePoint : MonoBehaviour
 
     // Метод для получения сохранённой позиции игрока
 
+    private void showText(string text)
+    {
+        TextMeshProUGUI messageText;
+        Canvas canvas;
+        GameObject panel;
+
+        // Создание Canvas
+        GameObject canvasObj = new GameObject("Canvas");
+        canvas = canvasObj.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 100; // Установка sortOrder
+        canvasObj.AddComponent<CanvasScaler>();
+        canvasObj.AddComponent<GraphicRaycaster>();
+
+        // Создание панели
+        panel = new GameObject("MessagePanel");
+        panel.transform.SetParent(canvas.transform, false);
+        RectTransform rectTransform = panel.AddComponent<RectTransform>();
+        rectTransform.anchoredPosition = new Vector2(250, -25);
+        rectTransform.sizeDelta = new Vector2(300, 150);
+        panel.AddComponent<CanvasRenderer>();
+        Image image = panel.AddComponent<Image>();
+        image.color = new Color(0.6745f, 0.6980f, 0.5569f, 0.5f);
+
+        // Создание текста
+        GameObject textObj = new GameObject("MessageText");
+        textObj.transform.SetParent(panel.transform, false);
+        messageText = textObj.AddComponent<TextMeshProUGUI>();
+        messageText.text = text;
+        messageText.fontSize = 20;
+        messageText.alignment = TextAlignmentOptions.Center;
+        messageText.color = Color.black;
+        RectTransform textRectTransform = textObj.GetComponent<RectTransform>();
+        textRectTransform.sizeDelta = new Vector2(250, textRectTransform.sizeDelta.y);
+        textRectTransform.anchoredPosition = Vector2.zero;
+
+        // Запуск анимации для исчезновения и удаления панели
+        DOVirtual.DelayedCall(2, () =>
+        {
+            // Плавное исчезновение за 2 секунды
+            Image panelImage = panel.GetComponent<Image>();
+            TextMeshProUGUI textMesh = messageText;
+
+            // Анимация исчезновения панели
+            panelImage.DOFade(0, 1);
+
+            // Анимация исчезновения текста
+            textMesh.DOFade(0, 1).OnComplete(() =>
+            {
+                // Удаление панели после завершения анимации
+                Destroy(panel);
+            });
+        });
+    }
 }

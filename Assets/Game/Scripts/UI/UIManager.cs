@@ -84,6 +84,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _buttonMaxZoom;
     [SerializeField] private Button _buttonMinZoom;
 
+    [Header("Fast Test UI")]
+    [SerializeField] private UIFastTest fastTestUI;
+
     private FollowCamera followCamera;
 
     private SceneLoader sceneLoader;
@@ -93,6 +96,8 @@ public class UIManager : MonoBehaviour
 
     public void Init()
     {
+        fastTestUI.gameObject.SetActive(false);
+
         SceneLoader = FindObjectOfType<SceneLoader>();
 
         _buttonAgain.onClick.AddListener(OnClickAgainRegen);

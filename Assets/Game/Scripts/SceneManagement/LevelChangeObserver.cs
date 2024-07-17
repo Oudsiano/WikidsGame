@@ -38,16 +38,11 @@ public class LevelChangeObserver : MonoBehaviour
 
     public Dictionary<allScenes, string> DAllScenes;
 
-    /*Vector3[] spawnPointsSavePoint = new Vector3[]
-    {
-        new Vector3(196.570007f,-23.9200001f,36.7700005f),
-        new Vector3(151.440002f,-18.0779991f,-20.8799992f),
-        new Vector3(125.93f,-15.4200001f,-87.1699982f),
-        new Vector3(79.8099976f,-16.1599998f,3.08999991f),
-        new Vector3(27.9099998f,-24.5699997f,100.440002f)
-    };*/
+    private Dictionary<allScenes, bool> dictForInfected = new Dictionary<allScenes, bool>(); //типа зеленые/красные кнопки в сыборе локации сюда запишутся дополнительно
 
     [SerializeField] DataPlayer data;
+
+    public Dictionary<allScenes, bool> DictForInfected { get => dictForInfected; set => dictForInfected = value; }
 
     public void Init()
     {

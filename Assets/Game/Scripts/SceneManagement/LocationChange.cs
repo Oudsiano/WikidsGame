@@ -46,6 +46,8 @@ public class LocationChange : MonoBehaviour
     private SceneWithTestsID sceneWithTestsID;
     private List<string> ListNeedTests;
 
+    
+
     public void Awake()
     {
 
@@ -128,6 +130,7 @@ public class LocationChange : MonoBehaviour
         {
             // По умолчанию устанавливаем цвет в зеленый.
             region.SetGreen();
+            IGame.Instance.LevelChangeObserver.DictForInfected[region.loadedScene] = false;
 
             // Находим соответствующую сцену для текущего региона.
             var sceneData = sceneWithTestsID.sceneDataList
@@ -145,6 +148,7 @@ public class LocationChange : MonoBehaviour
                 if (incompleteTestFound)
                 {
                     region.SetRed();
+                    IGame.Instance.LevelChangeObserver.DictForInfected[region.loadedScene] = true;
                     continue;
                 }
             }

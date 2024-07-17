@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -228,16 +229,22 @@ namespace RPG.Core
 
         public void MaxZoom()
         {
-            zoomTotal = maxZoom;
-            CommonZoom();
-            AutoZoomForReturn = zoomTotal;
+            DOTween.To(() => zoomTotal, x =>
+            {
+                zoomTotal = x;
+                AutoZoomForReturn = zoomTotal;
+                CommonZoom();
+            }, maxZoom, 2f);
         }
 
         public void MinZoom()
         {
-            zoomTotal = minZoom;
-            CommonZoom();
-            AutoZoomForReturn = zoomTotal;
+            DOTween.To(() => zoomTotal, x =>
+            {
+                zoomTotal = x;
+                AutoZoomForReturn = zoomTotal;
+                CommonZoom();
+            }, minZoom, 2f);
         }
     }
 }

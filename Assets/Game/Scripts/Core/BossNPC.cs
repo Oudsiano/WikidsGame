@@ -10,6 +10,10 @@ public class BossNPC : MonoBehaviour
     private List<LineRenderer> lines = new List<LineRenderer>();
     private NPCInteractable _NPCInteractable;
 
+    [Header("IndexFastTests")]
+    public int stratIndexFastTests;
+    public int endIndexFastTests;
+
     private void Awake()
     {
         _NPCInteractable = GetComponent<NPCInteractable>();
@@ -36,6 +40,10 @@ public class BossNPC : MonoBehaviour
 
         foreach (GameObject enemy in Enemies)
         {
+            Health _he = enemy.GetComponent<Health>();
+            if (_he == null) Debug.LogError("Очевидная ошибка. Скорее всего никогда не произойдет");
+            _he.BossNPC = this;
+
             GameObject lineObject = new GameObject("LineRenderer");
             lineObject.transform.SetParent(enemy.transform); 
             LineRenderer line = lineObject.AddComponent<LineRenderer>();
@@ -80,6 +88,19 @@ public class BossNPC : MonoBehaviour
             }
         }
     }
+
+    public bool ShowFastTestIfNeed(Health targetKillAterTest)
+    {
+        if (Mathf.Abs (endIndexFastTests - stratIndexFastTests)!=0)
+        {
+            IGame.Instance.UIManager.RegenFastTestUI(stratIndexFastTests, endIndexFastTests, targetKillAterTest);
+            return true;
+        }
+
+
+        return false; //тест не показали
+    }
+
     private void UpdateEnemyStatus()
     {
         bool hasEnemies = false;
@@ -98,6 +119,7 @@ public class BossNPC : MonoBehaviour
         }
     }
 
+    #region Line
 
     private void DrawParabolicLine(Vector3 enemyPosition, Vector3 bossPosition, LineRenderer line)
     {
@@ -124,4 +146,5 @@ public class BossNPC : MonoBehaviour
         point += tt * end;
         return point;
     }
+    #endregion
 }

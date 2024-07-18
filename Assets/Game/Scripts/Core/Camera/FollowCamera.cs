@@ -93,6 +93,8 @@ namespace RPG.Core
         // Метод для управления камерой
         private void cameraMovement()
         {
+            if (pauseClass.GetPauseState()) return;
+
             // Переключаем отслеживание игрока при нажатии клавиши LeftControl
             if (Input.GetKeyDown(KeyCode.LeftControl))
                 trackPlayer = !trackPlayer;
@@ -182,18 +184,6 @@ namespace RPG.Core
             }
 
             OnCameraScale?.Invoke();
-        }
-
-        public void LockCamera()
-        {
-            canRotate = false;
-            canZoom = false;
-        }
-
-        public void UnlockCamera()
-        {
-            canRotate = true;
-            canZoom = true;
         }
 
         void Update()

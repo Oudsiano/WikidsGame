@@ -20,6 +20,7 @@ public class IGame : MonoBehaviour
     public ArrowForPlayerManager ArrowForPlayerManager;
     private QuestManager questManager;
     public NPCManagment NPCManagment;
+    public FastTestsManager FastTestsManager;
 
     [SerializeField] public UIManager UIManager;
     [SerializeField] public CoinManager CoinManager;
@@ -118,6 +119,7 @@ public class IGame : MonoBehaviour
         ArrowForPlayerManager = new ArrowForPlayerManager();
         questManager = FindAnyObjectByType<QuestManager>();
         NPCManagment = gameObject.AddComponent<NPCManagment>();
+        FastTestsManager = new FastTestsManager();
 
         saveGame = new SaveGame();
 
@@ -127,6 +129,7 @@ public class IGame : MonoBehaviour
         UIManager.Init();
         playerController.Init();
         ArrowForPlayerManager.Init();
+        FastTestsManager.init();
     }
 
     public void SavePlayerPosLikeaPause(bool p)

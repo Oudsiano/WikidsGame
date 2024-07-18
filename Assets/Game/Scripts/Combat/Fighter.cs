@@ -200,7 +200,7 @@ namespace RPG.Combat
 
             if (IsBehindTarget() && !target.GetComponent<MainPlayer>() && !target.GetComponent<Boss>()) // Проверка, если атака сзади и цель не игрок и не босс
             {
-                target.TakeDamage(target.GetCurrentHealth()); // Убить цель мгновенно
+                target.AttackFromBehind(false);
             }
             else
             {

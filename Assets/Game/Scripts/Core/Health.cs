@@ -15,12 +15,15 @@ namespace RPG.Core
         private bool removed = false; // Флаг, указывающий, что существо было удалено
         private int isAtackedInlast5sec = 0;
         private bool isPlayer = false;
+        private BossNPC bossNPC; //if exist
         public Slider healthBar; // Ссылка на полосу здоровья в пользовательском интерфейсе
 
         // Событие, которое будет вызываться при смерти персонажа
         public event Action OnDeath;
 
         public GameObject redHalfCircle;
+
+        public BossNPC BossNPC { get => bossNPC; set => bossNPC = value; }
 
         void Start()
         {
@@ -54,6 +57,28 @@ namespace RPG.Core
         {
             currentHealth = Mathf.Min(currentHealth + heal, maxHealth);
         }
+
+
+        public void MissFastTest()
+        {
+            Fighter fighter = GetComponent<Fighter>();
+            if (fighter != null)
+            {
+                fighter.target = IGame.Instance.playerController.GetHealth();
+            }
+        }
+
+
+        public void AttackFromBehind(bool alreadyNeedKill)
+        {
+            if (!alreadyNeedKill)
+            if ((bossNPC != null) && (bossNPC.ShowFastTestIfNeed(this)))
+                return;
+
+            TakeDamage(GetCurrentHealth());
+        }
+
+        
 
         // Метод для нанесения урона существу
         public void TakeDamage(float damage)

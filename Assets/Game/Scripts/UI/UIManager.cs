@@ -84,6 +84,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _buttonMaxZoom;
     [SerializeField] private Button _buttonMinZoom;
 
+
     [Header("Fast Test UI")]
     [SerializeField] private UIFastTest fastTestUI;
 
@@ -178,13 +179,13 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
+    public void RegenFastTestUI(int stratIndexFastTests, int endIndexFastTests, Health targetKillAterTest)
+    => fastTestUI.ShowTest(stratIndexFastTests, endIndexFastTests, targetKillAterTest);
     private void OnCLickCloseOption()
     {
         OptionScr.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
         pauseClass.IsOpenUI = false;
-        followCamera.UnlockCamera();
     }
     //TODO: we can delete it
     private void OnClickBtnTest()
@@ -197,7 +198,6 @@ public class UIManager : MonoBehaviour
         OptionScr.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true); 
         pauseClass.IsOpenUI = true;
-        followCamera.LockCamera();
     }
 
     public void UpdateIconMapPanel(string text)
@@ -390,7 +390,6 @@ public class UIManager : MonoBehaviour
         QuestScr.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true);
         pauseClass.IsOpenUI = true;
-        followCamera.LockCamera();
     }
 
     private void HideQuestPanel()
@@ -398,7 +397,6 @@ public class UIManager : MonoBehaviour
         QuestScr.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
         pauseClass.IsOpenUI = false;
-        followCamera.UnlockCamera();
     }
 
     private void OnClickBtnQuest()

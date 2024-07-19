@@ -132,10 +132,6 @@ public class UIManager : MonoBehaviour
         _sliderSound.onValueChanged.AddListener(OnChangeSoundVolume);
         _sliderMusic.onValueChanged.AddListener(OnChangeMusicVolume);
 
-        _btnQuestScr.onClick.AddListener(() => { QuestScr.SetActive(true); IGame.Instance.SavePlayerPosLikeaPause(true); pauseClass.IsOpenUI = true; });
-        _btnQuestScrGray.onClick.AddListener(() => { QuestScr.SetActive(true); IGame.Instance.SavePlayerPosLikeaPause(true); pauseClass.IsOpenUI = true; });
-        _btnCloseQuestScr.onClick.AddListener(() => { QuestScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false); pauseClass.IsOpenUI = true; });
-
         _btnOptions.onClick.AddListener(OnClickBtnOption);
         _btnCloseOptionScr.onClick.AddListener(OnCLickCloseOption);
         QuestsContentScrollRect.scrollSensitivity = 20.0f;

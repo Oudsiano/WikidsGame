@@ -109,7 +109,7 @@ public class FastTestsManager
             "Романы и рассказы",
             "Энциклопедии",
             "Научные труды",
-            2 //Correct answer
+            1 //Correct answer
             );
         AllFastTests.Add(currentTest);
         //сцена 1 3 и 4 NPC

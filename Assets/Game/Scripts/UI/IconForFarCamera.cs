@@ -24,6 +24,8 @@ public class IconForFarCamera : MonoBehaviour
     [SerializeField] bool isMovable = false;
     SphereCollider sphereCollider;
 
+    [SerializeField] float scaleThis = 3f;
+
     private void Awake()
     {
         FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
@@ -128,13 +130,12 @@ public class IconForFarCamera : MonoBehaviour
                 newColor.a = Mathf.Min(((obj - startDistanceForShowIcon) / 50f), 1);
                 thisImg.color = newColor;
 
-                float _scale = (obj - startDistanceForShowIcon) / 100f + 1;
-
+                float _scale = ((obj - startDistanceForShowIcon) / 100f + 1) * scaleThis / thisImg.sprite.bounds.size.magnitude;
                 thisImg.transform.localScale = new Vector3(_scale, _scale, _scale);
             }
             else
             {
-                _OnMouseExit(); 
+                _OnMouseExit();
                 thisImg.gameObject.SetActive(false);
             }
         }

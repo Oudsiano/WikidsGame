@@ -96,7 +96,7 @@ namespace RPG.Combat
 
         void Update()
         {
-            if (IGame.Instance.IsPause) return;
+            if (pauseClass.GetPauseState()) return;
 
             if (ConversationStarter.IsDialogActive) return;
 

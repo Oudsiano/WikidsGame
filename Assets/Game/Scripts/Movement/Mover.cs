@@ -34,7 +34,16 @@ namespace RPG.Movement
         // Метод, вызываемый каждый кадр
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (!isPlayer && thisNavAgent.isActiveAndEnabled)
+            {
+                if (pauseClass.GetPauseState())
+                    thisNavAgent.isStopped = true;
+                else
+                        if (thisNavAgent.isStopped)
+                    thisNavAgent.isStopped = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 Strafe(Vector3.back);
             }
@@ -48,17 +57,17 @@ namespace RPG.Movement
                 }
 
 
-                //Вынес вызов диалогового окна в сам скрипт NPCInteractable
-                /*
-                // Если есть цель для взаимодействия и мы достигли ее, выполняем взаимодействие
-                if (target != null)
-                {
-                    if (!ConversationManager.Instance.IsConversationActive)
-                        if ((transform.position - target.transform.position).magnitude < 2f)
-                        {
-                            target.InteractWithNPC(); // Вызываем метод взаимодействия с NPC
-                        }
-                }*/
+            //Вынес вызов диалогового окна в сам скрипт NPCInteractable
+            /*
+            // Если есть цель для взаимодействия и мы достигли ее, выполняем взаимодействие
+            if (target != null)
+            {
+                if (!ConversationManager.Instance.IsConversationActive)
+                    if ((transform.position - target.transform.position).magnitude < 2f)
+                    {
+                        target.InteractWithNPC(); // Вызываем метод взаимодействия с NPC
+                    }
+            }*/
         }
 
         private void Strafe(Vector3 direction)
@@ -69,8 +78,8 @@ namespace RPG.Movement
 
             MoveTo(targetPosition); // Перемещаем персонажа к целевой позиции        }
         }
-            // Метод для начала действия перемещения к определенной точке
-            public void StartMoveAction(Vector3 pos)
+        // Метод для начала действия перемещения к определенной точке
+        public void StartMoveAction(Vector3 pos)
         {
             actionScheduler.StartAction(this); // Устанавливаем текущее действие как перемещение
             MoveTo(pos); // Вызываем метод перемещения к заданной точке
@@ -139,7 +148,8 @@ namespace RPG.Movement
                 if (EventSystem.current.IsPointerOverGameObject())
                 {
                     return; // Если да, то выходим из метода
-                } else
+                }
+                else
                 {
                     AudioManager.instance.PlaySound("Walk");
                 }

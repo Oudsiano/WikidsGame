@@ -111,7 +111,7 @@ namespace RPG.Controller
 
         private void Update()
         {
-            if (IGame.Instance.IsPause) return;
+            if (pauseClass.GetPauseState()) return;
 
             if (health.IsDead())
                 return;

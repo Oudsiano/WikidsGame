@@ -1,3 +1,4 @@
+using DG.Tweening;
 using RPG.Core;
 using System;
 using System.Collections;
@@ -21,6 +22,8 @@ public class UIFastTest : MonoBehaviour
     private OneFastTest currentTest;
     private bool isCorrect;
 
+    CanvasGroup canvasGroup;
+
     private void Awake()
     {
         btnClose.onClick.AddListener(OnClickClose);
@@ -29,6 +32,12 @@ public class UIFastTest : MonoBehaviour
         btn2.onClick.AddListener(() => OnAnswerClick(2));
         btn3.onClick.AddListener(() => OnAnswerClick(3));
         btn4.onClick.AddListener(() => OnAnswerClick(4));
+
+        canvasGroup = gameObject.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
     }
 
     public void SetTexts(string mainText, string btnText1, string btnText2, string btnText3, string btnText4)
@@ -47,12 +56,15 @@ public class UIFastTest : MonoBehaviour
 
     private void ResetButton(Button button)
     {
+        canvasGroup.alpha = 1;
         button.interactable = true;
         button.GetComponent<Image>().color = Color.white;
     }
 
     public void ShowTest(int stratIndexFastTests, int endIndexFastTests, Health targetKillAfterTest)
     {
+        pauseClass.IsOpenUI = true;
+        IGame.Instance.SavePlayerPosLikeaPause(true);
         gameObject.SetActive(true);
 
         this.targetKillAfterTest = targetKillAfterTest;
@@ -107,6 +119,7 @@ public class UIFastTest : MonoBehaviour
         }
 
         DisableButtons();
+        canvasGroup.DOFade(0, 0.3f).SetDelay(2f).OnComplete(OnClickClose);
     }
 
     private Button GetButtonByIndex(int index)

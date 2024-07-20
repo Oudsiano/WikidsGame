@@ -119,6 +119,8 @@ public class SaveGame
 
         BugItems.Clear();
         EquipedArmor = IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPLayer.playerData.armorIdToload);
+        if (IGame.Instance.dataPLayer.playerData.weaponToLoad == "Basic Bow")
+            IGame.Instance.dataPLayer.playerData.weaponToLoad = "";
         EquipedWeapon = IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPLayer.playerData.weaponToLoad);
 
         if (IGame.Instance.dataPLayer.playerData.playerName != "")
@@ -143,6 +145,8 @@ public class SaveGame
                         );
                 }
         }
+
+        IGame.Instance.dataPLayer.playerData.containsBug2.RemoveAll(item => item.name == "Basic Bow");
 
         foreach (var item in IGame.Instance.dataPLayer.playerData.containsBug2)
         {

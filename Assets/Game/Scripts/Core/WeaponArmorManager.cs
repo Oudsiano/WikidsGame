@@ -5,6 +5,7 @@ using RPG.Core;
 using RPG.Movement;
 using RPG.Combat;
 using FarrokhGames.Inventory.Examples;
+using System.Linq;
 
 public class WeaponArmorManager : MonoBehaviour
 {
@@ -24,6 +25,11 @@ public class WeaponArmorManager : MonoBehaviour
     public Armor GerArmorById(armorID armrId)
     {
         return allArmorsInGame.Find((item) => item.ArmorName == armrId);
+    }
+
+    public bool IsWeaponInGame(string name)
+    {
+        return allWeaponsInGame.Any(item => item.name == name);
     }
 
     public Weapon TryGetWeaponByName(string _name)

@@ -32,14 +32,21 @@ public class PickableEquip : MonoBehaviour
 
     private void PickUpIt()
     {
-        if (item != null)
+        if (IGame.Instance.WeaponArmorManager.IsWeaponInGame(item.name))
         {
-            item.CreateInstance();
-            IGame.Instance.UIManager.uIBug.TryAddEquipToBug(item);
+
+            if (item != null)
+            {
+                item.CreateInstance();
+                IGame.Instance.UIManager.uIBug.TryAddEquipToBug(item);
+            }
+            else
+                Debug.LogError("mistake item");
         }
         else
-            Debug.LogError("mistake item");
-
+        {
+            Debug.LogWarning("Этого предмета нет в списке предметов в WeaponArmorManager");
+        }
         // Получаем компонент Fighter у объекта, который столкнулся с пикапом
         //IGame.Instance.playerController.GetFighter().EquipItem(item);
 

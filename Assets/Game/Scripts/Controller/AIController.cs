@@ -34,8 +34,8 @@ namespace RPG.Controller
 
         private float lastHealth;
 
-        [SerializeField] private float startDistanceForShowIcon = 125f;
-        [SerializeField] private float maxOpacity = 0.3f;  // Добавлено поле для максимальной непрозрачности
+        private float startDistanceForShowIcon = 200f;
+        private float maxOpacity = 0.2f;  // Добавлено поле для максимальной непрозрачности
 
         private void Awake()
         {
@@ -63,11 +63,11 @@ namespace RPG.Controller
             halfCircle.layer = LayerMask.NameToLayer("Enemy");
             halfCircle.transform.parent = transform;
             halfCircle.transform.localPosition = new Vector3(0, 1, 0);
-            halfCircle.transform.localEulerAngles = new Vector3(0, 0, 180);
+            halfCircle.transform.localEulerAngles = new Vector3(0, 22, 180);
 
             halfCircleRenderer = halfCircle.AddComponent<MeshRenderer>();
             halfCircleFilter = halfCircle.AddComponent<MeshFilter>();
-            halfCircleFilter.mesh = CreateHalfCircleMesh(chaseDistance, 20);
+            halfCircleFilter.mesh = CreateHalfCircleMesh(chaseDistance, 14);
 
             halfCircleRenderer.material = new Material(Shader.Find("Standard"));
             halfCircleRenderer.material.color = new Color(1, 0, 0, maxOpacity); // Используем maxOpacity
@@ -88,7 +88,7 @@ namespace RPG.Controller
             int[] triangles = new int[segments * 3];
 
             vertices[0] = Vector3.zero;
-            float angleStep = Mathf.PI / segments;
+            float angleStep = Mathf.PI*0.75f / segments;
             for (int i = 0; i <= segments; i++)
             {
                 float angle = i * angleStep;
@@ -177,7 +177,7 @@ namespace RPG.Controller
             Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
             float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
 
-            if (angleBetween <= 90f)
+            if (angleBetween <= 120f)
             {
                 return true;
             }
@@ -189,7 +189,7 @@ namespace RPG.Controller
             Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
             float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
 
-            return angleBetween > 135f; // Угол, определяющий, что игрок позади (например, > 135 градусов)
+            return angleBetween > 90; // Угол, определяющий, что игрок позади (например, > 135 градусов)
         }
 
         private void PatrolBehavior()
@@ -263,11 +263,11 @@ namespace RPG.Controller
                 {
                     halfCircle.SetActive(true);
                     Color newColor = halfCircleRenderer.material.color;
-                    newColor.a = Mathf.Min(((startDistanceForShowIcon - obj) / 50f), maxOpacity);
+                    newColor.a = Mathf.Min(((startDistanceForShowIcon - obj) / 100f), maxOpacity);
                     halfCircleRenderer.material.color = newColor;
 
-                    float _scale = (startDistanceForShowIcon - obj) / 100f + 1;
-                    halfCircle.transform.localScale = new Vector3(_scale, _scale, _scale);
+                    //float _scale = (startDistanceForShowIcon - obj) / 100f + 1;
+                    //halfCircle.transform.localScale = new Vector3(_scale, _scale, _scale);
                 }
                 else
                 {

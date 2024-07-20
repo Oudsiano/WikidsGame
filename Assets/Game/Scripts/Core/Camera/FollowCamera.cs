@@ -180,7 +180,7 @@ namespace RPG.Core
                 OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
                 OnCameraDistance?.Invoke(Math.Abs(zoomTotal));
 
-                //Debug.Log($"Zoom Total: {zoomTotal}"); // Отладочное сообщение для отслеживания zoomTotal
+                Debug.Log($"Zoom Total: {zoomTotal}"); // Отладочное сообщение для отслеживания zoomTotal
             }
 
             OnCameraScale?.Invoke();

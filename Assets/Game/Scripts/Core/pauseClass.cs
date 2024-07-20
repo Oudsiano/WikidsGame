@@ -9,7 +9,17 @@ public class pauseClass
     private static bool isOpenUI;
     private static bool isDialog;
 
-    public static bool IsOpenUI { get => isOpenUI; set => isOpenUI = value; }
+    public static bool IsOpenUI
+    {
+        get
+        {
+            return isOpenUI;
+        }
+        set
+        {
+            isOpenUI = value;
+        }
+    }
     public static bool IsDialog { get => isDialog; set => isDialog = value; }
 
     public static bool GetPauseState()

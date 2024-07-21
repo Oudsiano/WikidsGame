@@ -47,8 +47,8 @@ public class FastTestsManager
             "Темы о магии и волшебстве",
             "Темы о патриотизме, крепостничестве, и опричнине",
             "Темы о волшебстве,рабстве и романтике",
-            3, 
-            2100
+            3,
+            7933
             );
         AllFastTests.Add(currentTest);
 
@@ -59,7 +59,8 @@ public class FastTestsManager
             "Корона и трон",
             "Шапка Мономаха и скипетр",
             "Корона и мантия",
-            3 
+            3,
+            7933
             );
         AllFastTests.Add(currentTest);
 
@@ -70,7 +71,8 @@ public class FastTestsManager
             "В предсказаниях будущего",
             "В рассказах о героических подвигах",
             "В хитрости и лени",
-            1 
+            1,
+            7933
             );
         AllFastTests.Add(currentTest);
 
@@ -81,7 +83,8 @@ public class FastTestsManager
             "Царь Иван Грозный",
             "Зосима Соловецкий",
             "Соловей Зосимский",
-            3 
+            3,
+            7933
             );
         AllFastTests.Add(currentTest);
 
@@ -92,7 +95,8 @@ public class FastTestsManager
             "Музыкальные традиции",
             "Бросание топора",
             "Обучение грамоте",
-            4 
+            4,
+            7933
             );
         AllFastTests.Add(currentTest);
 
@@ -103,7 +107,8 @@ public class FastTestsManager
             "Б",
             "Я",
             "Э",
-            1 
+            1,
+            7933
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -113,7 +118,8 @@ public class FastTestsManager
             "Романы и рассказы",
             "Энциклопедии",
             "Научные труды",
-            2 
+            2,
+            7933
             );
         AllFastTests.Add(currentTest);
         //сцена 1 3 и 4 NPC
@@ -124,7 +130,8 @@ public class FastTestsManager
             "Пасхалии – таблицы с указанием дат Пасхи и других праздников",
             "Телеграф",
             "Телефон",
-            2 
+            2,
+            7934
             );
         AllFastTests.Add(currentTest);
 
@@ -135,7 +142,8 @@ public class FastTestsManager
             "Физика для расчета температуры плавления и состава металлов",
             "География",
             "Медицинские знания",
-            2 
+            2,
+            7934
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -145,7 +153,8 @@ public class FastTestsManager
             "Для выращивания растений",
             "Для солеваров, аптекарей и иконописцев",
             "Для зельеварения",
-            3 
+            3,
+            7934
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -155,7 +164,8 @@ public class FastTestsManager
             "Знание истории",
             "Знание географии",
             "Знание искусства",
-            3 
+            3,
+            7934
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -165,7 +175,8 @@ public class FastTestsManager
             "Для ораторских выступлений",
             "Для создания законов",
             "Для составления поэтических описаний",
-            1 
+            1,
+            7934
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -175,7 +186,8 @@ public class FastTestsManager
             "«Роспись, как зачать делать новая труба в новом месте»",
             "«Искусство кулинарии»",
             "«Искусство зельеварения»",
-            2 
+            2,
+            7934
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -185,7 +197,8 @@ public class FastTestsManager
             "Ф.И. Карпов",
             "Василий Поздняков",
             "Геннадий Аристов",
-            3 
+            3,
+            7934
             );
         AllFastTests.Add(currentTest);
         //сцена 1 5 и 6 NPC
@@ -196,7 +209,8 @@ public class FastTestsManager
             "Никоновский",
             "Лицевой",
             "Николаевский",
-            3 
+            3,
+            7935
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -206,7 +220,8 @@ public class FastTestsManager
             "Церковь Вознесения в Коломенском",
             "Собор Василия Блаженного",
             "Собор Николаевский",
-            2 
+            2,
+            7935
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -216,7 +231,8 @@ public class FastTestsManager
             "Хоромы",
             "Купола",
             "Дворцы",
-            2 
+            2,
+            7935
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -226,7 +242,8 @@ public class FastTestsManager
             "Московский Кремль",
             "Собор Василия Блаженного",
             "Исакиевский собор",
-            3 
+            3,
+            7935
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -236,7 +253,8 @@ public class FastTestsManager
             "Марок",
             "Феофан Грек",
             "Дионисий",
-            4 
+            4,
+            7935
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -246,7 +264,8 @@ public class FastTestsManager
             "Италия",
             "Англия и Испания",
             "Греция и Турция",
-            2 
+            2,
+            7935
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -256,7 +275,8 @@ public class FastTestsManager
             "Италия",
             "Англия и Испания",
             "Греция и Турция",
-            2 
+            2,
+            7935
             );
         AllFastTests.Add(currentTest);
         //сцена 1 NPC 7 и 8
@@ -267,7 +287,8 @@ public class FastTestsManager
             "Создание двигателя",
             "Стоглавый собор",
             "Взятие Казани",
-            4 
+            4,
+            7936
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -277,7 +298,8 @@ public class FastTestsManager
             "Книжные миниатюры",
             "Строения Кремля",
             "Взятие Казани",
-            1 
+            1,
+            7936
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -287,7 +309,8 @@ public class FastTestsManager
             "Штриховка и литография",
             "Филигрань и эмаль",
             "Заготовка и крашение",
-            3 
+            3,
+            7936
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -297,7 +320,8 @@ public class FastTestsManager
             "Прокопий Чирин",
             "Рублев",
             "Дионисий",
-            2 
+            2,
+            7936
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -307,7 +331,8 @@ public class FastTestsManager
             "Шитые изделия из шёлка",
             "Металлические ограды",
             "Золотые украшения",
-            2 
+            2,
+            7936
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -317,7 +342,8 @@ public class FastTestsManager
             "Шитые изделия из шёлка",
             "Металлические ограды",
             "Золотые украшения",
-            2 
+            2,
+            7936
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -327,7 +353,8 @@ public class FastTestsManager
             "Перец и чеснок",
             "Чеснок и лук",
             "Заморские пряности, такие как шафран и корица",
-            4 
+            4,
+            7936
             );
         AllFastTests.Add(currentTest);
         //сцена 1 NPC 9 и 10
@@ -339,7 +366,8 @@ public class FastTestsManager
             "Черепица",
             "Солома",
             "Сукно и бараньи меха",
-            3 
+            3,
+            7937
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -349,7 +377,8 @@ public class FastTestsManager
             "Горница и клети",
             "Телевизор",
             "Иконы, украшения, одежда",
-            4 
+            4,
+            7937
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -359,7 +388,8 @@ public class FastTestsManager
             "Балалайка, гусли, гудок",
             "Труба и виолончель",
             "Губная гармошка",
-            2 
+            2,
+            7937
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -369,7 +399,8 @@ public class FastTestsManager
             "Проводы зимы и лета",
             "Праздничный базар",
             "Девишник и сватовство",
-            4 
+            4,
+            7937
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -379,7 +410,8 @@ public class FastTestsManager
             "Свирельщик",
             "Дудочник",
             "Гармонист",
-            1 
+            1,
+            7937
             );
         AllFastTests.Add(currentTest);
         //сцена 2 NPC 1 и 2
@@ -391,7 +423,8 @@ public class FastTestsManager
             "Пётр I",
             "Иван Грозный",
             "Николай 2",
-            1 
+            1,
+            8325
             );
         AllFastTests.Add(currentTest);
 
@@ -402,7 +435,8 @@ public class FastTestsManager
             "2",
             "1",
             "4",
-            4 
+            4,
+            8325
             );
         AllFastTests.Add(currentTest);
 
@@ -413,7 +447,8 @@ public class FastTestsManager
             "Софья",
             "Анна",
             "Диана",
-            2 
+            2,
+            8325
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -423,7 +458,8 @@ public class FastTestsManager
             "Король",
             "Император",
             "Герцог",
-            1 
+            1,
+            8325
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -433,7 +469,8 @@ public class FastTestsManager
             "Боярская дума",
             "Сенат",
             "Госдума",
-            2 
+            2,
+            8325
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -443,7 +480,8 @@ public class FastTestsManager
             "200",
             "161",
             "97",
-            4 
+            4,
+            8325
             );
         AllFastTests.Add(currentTest);
         //сцена 2 NPC 3 и 4
@@ -454,7 +492,8 @@ public class FastTestsManager
             "Посадские люди и дворяне",
             "Купцы и ремесленники",
             "Бояре",
-            2 
+            2,
+            8326
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -464,7 +503,8 @@ public class FastTestsManager
             "В 1649 году",
             "В 1648 году",
             "В 1652 году",
-            1 
+            1,
+            8326
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -474,7 +514,8 @@ public class FastTestsManager
             "Ямской приказ",
             "Разрядный приказ",
             "Земский приказ",
-            2 
+            2,
+            8326
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -484,7 +525,8 @@ public class FastTestsManager
             "Ямской приказ",
             "Разрядный приказ",
             "Земский приказ",
-            3 
+            3,
+            8326
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -494,7 +536,8 @@ public class FastTestsManager
             "В 1649 году",
             "В 1647 году",
             "В 1646 году",
-            2 
+            2,
+            8326
             );
         AllFastTests.Add(currentTest);
         //сцена 2 NPC 5 и 6
@@ -505,7 +548,8 @@ public class FastTestsManager
             "Судебный процесс завершился неудачей",
             "Судебный процесс прошел быстро",
             "Судебный процесс не приведет к решению",
-            1 
+            1,
+            8327
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -515,7 +559,8 @@ public class FastTestsManager
             "Пять",
             "Четыре",
             "Две",
-            1 
+            1,
+            8327
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -525,7 +570,8 @@ public class FastTestsManager
             "37 тыс.",
             "27 тыс.",
             "15 тыс.",
-            2 
+            2,
+            8327
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -535,7 +581,8 @@ public class FastTestsManager
             "Она поддерживала власть царя",
             "Она противостояла власти царя",
             "Она имела нейтралитет",
-            2 
+            2,
+            8327
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -545,7 +592,8 @@ public class FastTestsManager
             "Учёт земель России",
             "Улучшение судопроизводства",
             "Война с турцией",
-            1 
+            1,
+            8327
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -555,7 +603,8 @@ public class FastTestsManager
             "Богатства и власти",
             "Скандалов и взяточничества",
             "Отсутсвия порядка",
-            1 
+            1,
+            8327
             );
         AllFastTests.Add(currentTest);
         //сцена 2 NPC 7 и 8
@@ -567,7 +616,8 @@ public class FastTestsManager
             "Никон",
             "Протопоп Аввакум",
             "Царь Алексей Михайлович",
-            1 
+            1,
+            8328
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -577,7 +627,8 @@ public class FastTestsManager
             "Старая церковь",
             "Новая церковь",
             "Царское движение",
-            2 
+            2,
+            8328
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -587,7 +638,8 @@ public class FastTestsManager
             "Последовательность молитв изменена",
             "Удалены крестные ходы",
             "Изменен порядок пения молитв",
-            1 
+            1,
+            8328
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -597,7 +649,8 @@ public class FastTestsManager
             "В изгнание",
             "В монастыри",
             "В ссылку",
-            4 
+            4,
+            8328
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -607,7 +660,8 @@ public class FastTestsManager
             "Покинул Россию",
             "Заявил, что царь Алексей Михайлович не благочестивейший и не православнейший",
             "Принял сторону Никона",
-            3 
+            3,
+            8328
             );
         AllFastTests.Add(currentTest);
         //сцена 2 NPC 9 и 10
@@ -618,7 +672,8 @@ public class FastTestsManager
             "Алексей Михайлович",
             "Протопоп",
             "Нет правильного ответа",
-            4 
+            4,
+            8329
             );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -628,7 +683,8 @@ public class FastTestsManager
            "Изменение политики патриарха",
            "Открытие нового монастыря",
            "Отказ царя ходить на службы, которые вёл Никон",
-           4 
+           4,
+            8329
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -638,7 +694,8 @@ public class FastTestsManager
            "1681",
            "1675",
            "1663",
-           1 
+           1,
+            8329
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -648,7 +705,8 @@ public class FastTestsManager
            "Протестантизм",
            "Католицизм",
            "Раскольничество",
-           4 
+           4,
+            8329
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -658,7 +716,8 @@ public class FastTestsManager
            "1900",
            "1800",
            "1671",
-           1 
+           1,
+            8329
            );
         AllFastTests.Add(currentTest);
         //сцена 2 NPC 11 и 12
@@ -669,7 +728,8 @@ public class FastTestsManager
            "посуда, игрушки, книги",
            "стекло, металл, дерево",
            "пластмасса и пенопласт",
-           1 
+           1,
+            8330
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -679,7 +739,8 @@ public class FastTestsManager
            "Сибирь, Кавказ, Украина",
            "Урал, Олонецкий и Тульско-Каширский край",
            "Поволжье и Алтай",
-           3 
+           3,
+            8330
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -689,7 +750,8 @@ public class FastTestsManager
            "Вологда, Вятка, Великий Устюг, Орёл, Воронеж, Елец, Нижний Новгород",
            "Казань, Самара, Ростов-на-Дону",
            "Новосибирск и Астрахань",
-           2 
+           2,
+            8330
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -699,7 +761,8 @@ public class FastTestsManager
            "купцы и ремесленники",
            "крестьяне",
            "крепостные",
-           1 
+           1,
+            8330
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -709,7 +772,8 @@ public class FastTestsManager
            "плата повинностей",
            "единица измерения",
            "плата за перевозку груза",
-           2 
+           2,
+            8330
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -719,7 +783,8 @@ public class FastTestsManager
            "торговые реформы",
            "финансовые реформы",
            "реформы в торговле землей",
-           1 
+           1,
+            8330
            );
         AllFastTests.Add(currentTest);
         //сцена 2 NPC 13 и 14
@@ -730,7 +795,8 @@ public class FastTestsManager
            "25 июля 1662 года",
            "15 мая 1670 года",
            "22 мая 1670 года",
-           1 
+           1,
+            8331
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -740,7 +806,8 @@ public class FastTestsManager
            "Притеснение приказных людей",
            "Война с Речью Посполитой",
            "Война с Турцией",
-           2 
+           2,
+            8331
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -750,7 +817,8 @@ public class FastTestsManager
            "Рязань",
            "Коломенское",
            "Царицын",
-           3 
+           3,
+            8331
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -760,7 +828,8 @@ public class FastTestsManager
            "Обесценивание медных монет",
            "Война с Персией",
            "Отсутвие обмена медных монет",
-           2 
+           2,
+            8331
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -770,7 +839,8 @@ public class FastTestsManager
            "Иван Грозный",
            "Степан Разин",
            "Петр I",
-           3 
+           3,
+            8331
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -780,7 +850,8 @@ public class FastTestsManager
            "1669",
            "1668",
            "1670",
-           2 
+           2,
+            8331
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -790,7 +861,8 @@ public class FastTestsManager
            "Победа на Каспийском море",
            "Разгром в Астрахани",
            "Побег царя",
-           3 
+           3,
+            8331
            );
         AllFastTests.Add(currentTest);
         //сцена 2 NPC 15 и 16
@@ -802,7 +874,8 @@ public class FastTestsManager
            "Иван Грозный",
            "Степан Разин",
            "Лже Дмитрий",
-           3 
+           3,
+            8332
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -812,7 +885,8 @@ public class FastTestsManager
            "1654 год",
            "1660 год",
            "1658 год",
-           1 
+           1,
+            8332
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -822,7 +896,8 @@ public class FastTestsManager
            "князь Волконский",
            "Шеин",
            "Степан Разин",
-           2 
+           2,
+            8332
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -832,7 +907,8 @@ public class FastTestsManager
            "Русско-польская война",
            "Русско-шведская война",
            "Русско-персидская война",
-           2 
+           2,
+            8332
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -842,7 +918,8 @@ public class FastTestsManager
            "Началось освободительное движение под предводительством Богдана Хмельницкого",
            "Был заключен Бахчисарайский мир",
            "Русско-Турецкая война",
-           2 
+           2,
+            8332
            );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -852,7 +929,8 @@ public class FastTestsManager
           "бояре",
           "новые слои населения",
           "купцы",
-          3 
+          3,
+            8332
           );
         AllFastTests.Add(currentTest);
         //сцена 2 NPC 17 и 18,19 и 20
@@ -863,7 +941,8 @@ public class FastTestsManager
           "Вмешательство Франции и Германии",
           "Соглашение с Швецией и Турцией",
           "Давление Германии и Швеции",
-          1 
+          1,
+            8333
           );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -873,7 +952,8 @@ public class FastTestsManager
           "Восстание на Украине",
           "Соглашение с Швецией и Турцией",
           "Заключение мира с Речью Посполитой",
-          4 
+          4,
+            8333
           );
         AllFastTests.Add(currentTest);
 
@@ -884,7 +964,8 @@ public class FastTestsManager
           "С. Дежнёв",
           "А. Попов",
           "И. Курганов",
-          2 
+          2,
+            8333
           );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -894,7 +975,8 @@ public class FastTestsManager
           "1689 год",
           "1685 год",
           "1673 год",
-          2 
+          2,
+            8333
           );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -904,7 +986,8 @@ public class FastTestsManager
          "Земледелие и скотоводство",
          "Горное дело",
          "Ремесло",
-         1 
+         1,
+            8333
          );
         AllFastTests.Add(currentTest);
         //сцена 3 NPC 1 и 2
@@ -916,7 +999,8 @@ public class FastTestsManager
          "Иван",
          "Пётр",
          "Николай",
-         1 
+         1,
+            8512
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -926,7 +1010,8 @@ public class FastTestsManager
          "Латинский и польский",
          "Турецкий и польский",
          "Английский и немецкий",
-         2 
+         2,
+            8512
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -936,7 +1021,8 @@ public class FastTestsManager
          "1682",
          "1676",
          "1654",
-         3 
+         3,
+            8512
          );
         AllFastTests.Add(currentTest);
 
@@ -947,7 +1033,8 @@ public class FastTestsManager
          "Олег Хмельницкий",
          "Николай 2",
          "Боярин князь Голицын",
-         4 
+         4,
+            8512
          );
         AllFastTests.Add(currentTest);
 
@@ -958,7 +1045,8 @@ public class FastTestsManager
          "Марфа Апраксина",
          "Софья Ивановна",
          "Ольга Голицина",
-         1 
+         1,
+            8512
          );
         AllFastTests.Add(currentTest);
 
@@ -969,7 +1057,8 @@ public class FastTestsManager
          "Стрельцы потребовали 16 военных командиров",
          "Медный Бунт",
          "Упрощение сбора налогов",
-         2 
+         2,
+            8512
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -979,7 +1068,8 @@ public class FastTestsManager
          "Стрельцы потребовали 16 военных командиров",
          "Медный Бунт",
          "Упрощение сбора налогов",
-         2 
+         2,
+            8512
          );
         AllFastTests.Add(currentTest);
         //сцена 3 NPC 3 и 4
@@ -990,7 +1080,8 @@ public class FastTestsManager
          "Патреон Беновский",
          "Софья Алексеевна",
          "Ф.Л. Шакловитый",
-         3 
+         3,
+            8513
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1000,7 +1091,8 @@ public class FastTestsManager
          "Восстание Пугачева",
          "Бунт Стеньки Разина",
          "Медный бунт",
-         1 
+         1,
+            8513
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1010,7 +1102,8 @@ public class FastTestsManager
          "Славяно-греко-латинская академия",
          "Петербургская академия наук",
          "Суворовское училище",
-         2 
+         2,
+            8513
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1020,7 +1113,8 @@ public class FastTestsManager
          "князь Дмитрий Пожарский",
          "князь Долгорукий",
          "князь Василий Голицын",
-         4 
+         4,
+            8513
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1030,7 +1124,8 @@ public class FastTestsManager
          "Систему самоуправления",
          "Монархическую власть",
          "Коммунизм",
-         1 
+         1,
+            8513
          );
         AllFastTests.Add(currentTest);
         //сцена 3 NPC 5 и 6
@@ -1041,7 +1136,8 @@ public class FastTestsManager
          "1690",
          "1682",
          "1697",
-         3 
+         3,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1051,7 +1147,8 @@ public class FastTestsManager
          "Основание Санкт-Петербурга",
          "Заключение «Вечного мира» с Польшей",
          "Война с Персией",
-         3 
+         3,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1061,7 +1158,8 @@ public class FastTestsManager
          "Доступ к Черному морю",
          "Контроль над Балтийским морем",
          "Контроль над Каспийским морем",
-         1 
+         1,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1071,7 +1169,8 @@ public class FastTestsManager
          "Судоводство",
          "Военные игры и «потехи»",
          "Изучение иностранных языков",
-         3 
+         3,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1081,7 +1180,8 @@ public class FastTestsManager
          "С купечеством",
          "С московской знатью",
          "С иностранцами-неправославными",
-         4
+         4,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1091,7 +1191,8 @@ public class FastTestsManager
          "Успешный",
          "Привел к значительному расширению территории",
          "Опустошение казны",
-         1
+         1,
+            8514
          );
         AllFastTests.Add(currentTest);
         //сцена 3 NPC 7 и 8
@@ -1103,7 +1204,8 @@ public class FastTestsManager
          "1703 год",
          "1678 год",
          "1670 год",
-         1
+         1,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1113,7 +1215,8 @@ public class FastTestsManager
          "Иван Грозный",
          "Алексей Михайлович",
          "Пётр I",
-         4
+         4,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1123,7 +1226,8 @@ public class FastTestsManager
          "Ложная тревога в Кремле",
          "Строительство Санкт-Петербурга",
          "Победа над Речью Посполитой",
-         2
+         2,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1133,7 +1237,8 @@ public class FastTestsManager
          "Отказались поддержать заговор",
          "Ушли в Преображенское",
          "Удерживали нейтралитет",
-         2
+         2,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1143,7 +1248,8 @@ public class FastTestsManager
          "В Новодевичий монастырь",
          "В Троице-Сергиев монастырь",
          "В Кремль",
-         3
+         3,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1153,7 +1259,8 @@ public class FastTestsManager
          "Софья стала регентом",
          "Софья победила в борьбе за власть",
          "Софья погибла",
-         1
+         1,
+            8514
          );
         AllFastTests.Add(currentTest);
         currentTest = new OneFastTest(
@@ -1163,7 +1270,8 @@ public class FastTestsManager
          "Победа в Северной войне",
          "Основание Санкт-Петербурга",
          "Казнь Шакловитого и его сообщников",
-         4
+         4,
+            8514
          );
         AllFastTests.Add(currentTest);
     }

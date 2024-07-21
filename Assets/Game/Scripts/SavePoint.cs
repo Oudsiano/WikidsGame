@@ -143,8 +143,9 @@ public class SavePoint : MonoBehaviour
 
             IGame.Instance.playerController.GetHealth().Restore();
 
-            gameObject.GetComponent<Collider>().enabled = false;
-            showText("Активированна точка сохранения!");
+            //gameObject.GetComponent<Collider>().enabled = false;
+            //if (spawnPoint!=0)
+            FindAndFadeFastTextSavePoint("Активированна точка сохранения!");
         }
         else
         {
@@ -157,58 +158,50 @@ public class SavePoint : MonoBehaviour
 
     // Метод для получения сохранённой позиции игрока
 
-    private void showText(string text)
+    public void FindAndFadeFastTextSavePoint(string newText)
     {
-        TextMeshProUGUI messageText;
-        Canvas canvas;
-        GameObject panel;
+        GameObject fastTextSavePoint = FindInactiveObjectByName("FastTextSavePoint");
 
-        // Создание Canvas
-        GameObject canvasObj = new GameObject("Canvas");
-        canvas = canvasObj.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 100; // Установка sortOrder
-        canvasObj.AddComponent<CanvasScaler>();
-        canvasObj.AddComponent<GraphicRaycaster>();
-
-        // Создание панели
-        panel = new GameObject("MessagePanel");
-        panel.transform.SetParent(canvas.transform, false);
-        RectTransform rectTransform = panel.AddComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(250, -25);
-        rectTransform.sizeDelta = new Vector2(300, 150);
-        panel.AddComponent<CanvasRenderer>();
-        Image image = panel.AddComponent<Image>();
-        image.color = new Color(0.6745f, 0.6980f, 0.5569f, 0.5f);
-
-        // Создание текста
-        GameObject textObj = new GameObject("MessageText");
-        textObj.transform.SetParent(panel.transform, false);
-        messageText = textObj.AddComponent<TextMeshProUGUI>();
-        messageText.text = text;
-        messageText.fontSize = 20;
-        messageText.alignment = TextAlignmentOptions.Center;
-        messageText.color = Color.black;
-        RectTransform textRectTransform = textObj.GetComponent<RectTransform>();
-        textRectTransform.sizeDelta = new Vector2(250, textRectTransform.sizeDelta.y);
-        textRectTransform.anchoredPosition = Vector2.zero;
-
-        // Запуск анимации для исчезновения и удаления панели
-        DOVirtual.DelayedCall(2, () =>
+        if (fastTextSavePoint != null)
         {
-            // Плавное исчезновение за 2 секунды
-            Image panelImage = panel.GetComponent<Image>();
-            TextMeshProUGUI textMesh = messageText;
-
-            // Анимация исчезновения панели
-            panelImage.DOFade(0, 1);
-
-            // Анимация исчезновения текста
-            textMesh.DOFade(0, 1).OnComplete(() =>
+            Transform messageTextTransform = fastTextSavePoint.transform.Find("MessageText");
+            if (messageTextTransform != null)
             {
-                // Удаление панели после завершения анимации
-                Destroy(panel);
+                TextMeshProUGUI textMeshPro = messageTextTransform.GetComponent<TextMeshProUGUI>();
+                if (textMeshPro != null)
+                {
+                    textMeshPro.text = newText;
+                }
+            }
+
+            CanvasGroup canvasGroup = fastTextSavePoint.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = fastTextSavePoint.AddComponent<CanvasGroup>();
+            }
+
+            canvasGroup.DOKill();
+
+            fastTextSavePoint.SetActive(true);
+            canvasGroup.alpha = 1; // Ensure alpha is reset to 1 before fading
+            canvasGroup.DOFade(0, 1).SetDelay(2).OnComplete(() =>
+            {
+                fastTextSavePoint.SetActive(false);
+                canvasGroup.alpha = 1; // Reset alpha for next use
             });
-        });
+        }
+    }
+
+    private GameObject FindInactiveObjectByName(string name)
+    {
+        Transform[] allObjects = Resources.FindObjectsOfTypeAll<Transform>();
+        foreach (Transform obj in allObjects)
+        {
+            if (obj.name == name && obj.hideFlags == HideFlags.None)
+            {
+                return obj.gameObject;
+            }
+        }
+        return null;
     }
 }

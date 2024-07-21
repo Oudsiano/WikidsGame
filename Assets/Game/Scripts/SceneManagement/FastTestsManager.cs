@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
 using UnityEngine;
+using RPG.Core;
 
 public class OneFastTest
 {
@@ -17,7 +18,7 @@ public class OneFastTest
     public int TestIndex { get; set; }
 
     // Конструктор
-    public OneFastTest(int id, string questionText, string answer1, string answer2, string answer3, string answer4, int correctAnswerIndex, int testIndex = 0)
+    public OneFastTest(int id, string questionText, string answer1, string answer2, string answer3, string answer4, int correctAnswerIndex, int testIndex)
     {
         Id = id;
         QuestionText = questionText;
@@ -33,7 +34,8 @@ public class OneFastTest
 public class FastTestsManager
 {
 
-    public List<OneFastTest> AllFastTests;
+    private List<OneFastTest> AllFastTests;
+    public List<OneFastTest> AvaliableTestsNow;
 
     public void init()
     {
@@ -1276,5 +1278,45 @@ public class FastTestsManager
         AllFastTests.Add(currentTest);
     }
 
+    public void GenAvaliableTests()
+    {
+        if (AvaliableTestsNow == null)
+            AvaliableTestsNow = new List<OneFastTest>();
 
+        AvaliableTestsNow.Clear();
+
+        foreach (var lesson in IGame.Instance.dataPlayer.playerData.progress)
+        {
+            foreach (var testQuestion in lesson.tests)
+            {
+                if (testQuestion.completed)
+                {
+                    var matchingTests = AllFastTests.Where(test => test.TestIndex == testQuestion.id);
+
+                    AvaliableTestsNow.AddRange(matchingTests);
+                }
+            }
+        }
+
+        foreach (var test in AllFastTests)
+        {
+            if (IGame.Instance.dataPlayer.playerData.wasSuccessTests.Contains(test.TestIndex))
+            {
+                if (!AvaliableTestsNow.Contains(test))
+                AvaliableTestsNow.Add(test);
+            }
+        }
+
+        Debug.Log(AvaliableTestsNow.Count);
+    }
+
+    public void WasAttaked(Health target)
+    {
+        if (AvaliableTestsNow.Count > 0)
+        {
+            IGame.Instance.UIManager.RegenFastTestUI(0, AvaliableTestsNow.Count, target);
+        }
+        else target.MissFastTest();
+
+    }
 }

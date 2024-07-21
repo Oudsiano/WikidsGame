@@ -71,14 +71,16 @@ namespace RPG.Core
 
         public void AttackFromBehind(bool alreadyNeedKill)
         {
-            if (!alreadyNeedKill)
-            if ((bossNPC != null) && (bossNPC.ShowFastTestIfNeed(this)))
+            if (alreadyNeedKill)
+            {
+                TakeDamage(GetCurrentHealth());
                 return;
-
-            TakeDamage(GetCurrentHealth());
+            }
+            if (!isPlayer)
+                IGame.Instance.FastTestsManager.WasAttaked(this);
         }
 
-        
+
 
         // Метод для нанесения урона существу
         public void TakeDamage(float damage)

@@ -86,9 +86,9 @@ public class UiOneQuestElement : MonoBehaviour
 
         button.onClick.AddListener(OnClickBtn);
 
-        if (IGame.Instance.dataPLayer.playerData.startedQuests!= null && IGame.Instance.dataPLayer.playerData.startedQuests.ContainsKey(quest.name))
+        if (IGame.Instance.dataPlayer.playerData.startedQuests!= null && IGame.Instance.dataPlayer.playerData.startedQuests.ContainsKey(quest.name))
         {
-            thisQuestData = IGame.Instance.dataPLayer.playerData.startedQuests[quest.name];
+            thisQuestData = IGame.Instance.dataPlayer.playerData.startedQuests[quest.name];
             CheckUpdateAndComplite(false);
         }
 
@@ -125,7 +125,7 @@ public class UiOneQuestElement : MonoBehaviour
 
     private void MarkQuestAsComplete()
     {
-        var dataPlayer = IGame.Instance.dataPLayer;
+        var dataPlayer = IGame.Instance.dataPlayer;
         if (!dataPlayer.playerData.completedQuests.Contains(quest.name))
         {
             dataPlayer.playerData.completedQuests.Add(quest.name);
@@ -143,10 +143,10 @@ public class UiOneQuestElement : MonoBehaviour
     {
         if (withSave)
         {
-            if (IGame.Instance.dataPLayer.playerData.startedQuests == null)
-                IGame.Instance.dataPLayer.playerData.startedQuests = new Dictionary<string, OneQuestData>();
+            if (IGame.Instance.dataPlayer.playerData.startedQuests == null)
+                IGame.Instance.dataPlayer.playerData.startedQuests = new Dictionary<string, OneQuestData>();
             thisQuestData.QuestName = quest.name;
-            IGame.Instance.dataPLayer.playerData.startedQuests[quest.name] = thisQuestData;
+            IGame.Instance.dataPlayer.playerData.startedQuests[quest.name] = thisQuestData;
             IGame.Instance.gameAPI.SaveUpdater();
         }
 
@@ -165,7 +165,7 @@ public class UiOneQuestElement : MonoBehaviour
                     int testId;
                     if (int.TryParse(itemId, out testId))
                     {
-                        if (IGame.Instance.dataPLayer.isTestComplete(testId))
+                        if (IGame.Instance.dataPlayer.isTestComplete(testId))
                         {
                             thisQuestData.currentProcess++;
                         }

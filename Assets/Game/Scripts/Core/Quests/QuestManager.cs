@@ -87,8 +87,8 @@ public class QuestManager : MonoBehaviour
                 {
                     foreach (var quest in OneList.QuestsThisScene)
                     {
-                        if (IGame.Instance.dataPLayer.playerData.completedQuests == null) continue;
-                        if (IGame.Instance.dataPLayer.playerData.completedQuests.Contains(quest.name)) continue;
+                        if (IGame.Instance.dataPlayer.playerData.completedQuests == null) continue;
+                        if (IGame.Instance.dataPlayer.playerData.completedQuests.Contains(quest.name)) continue;
                         thisQuestsScene.Add(quest);
                     }
                 }

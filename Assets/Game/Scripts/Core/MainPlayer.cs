@@ -37,15 +37,15 @@ namespace RPG.Core
 
         public void ChangeCountEnegry(int change)
         {
-            IGame.Instance.dataPLayer.playerData.chargeEnergy += change;
-            IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPLayer.playerData.chargeEnergy.ToString());
+            IGame.Instance.dataPlayer.playerData.chargeEnergy += change;
+            IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPlayer.playerData.chargeEnergy.ToString());
             IGame.Instance.playerController.WeaponPanelUI.ResetFireballCount();
         }
 
         public void ResetCountEergy()
         {
-            IGame.Instance.dataPLayer.playerData.chargeEnergy=0;
-            IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPLayer.playerData.chargeEnergy.ToString());
+            IGame.Instance.dataPlayer.playerData.chargeEnergy=0;
+            IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPlayer.playerData.chargeEnergy.ToString());
             IGame.Instance.playerController.WeaponPanelUI.ResetFireballCount();
         }
     }

@@ -115,11 +115,11 @@ namespace RPG.Controller
 
         public void EquipWeaponAndArmorAfterLoad()
         {
-            if (IGame.Instance.dataPLayer.playerData.weaponToLoad.Length > 1)
+            if (IGame.Instance.dataPlayer.playerData.weaponToLoad.Length > 1)
             {
-                fighter.EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPLayer.playerData.weaponToLoad));
+                fighter.EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPlayer.playerData.weaponToLoad));
             }
-            IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPLayer.playerData.armorIdToload).EquipIt();
+            IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPlayer.playerData.armorIdToload).EquipIt();
         }
 
         // Метод Update вызывается один раз за кадр

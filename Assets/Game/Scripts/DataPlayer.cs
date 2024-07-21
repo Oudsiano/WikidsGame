@@ -93,6 +93,8 @@ public class PlayerData
     public List<string> completedQuests;
     public Dictionary<string, OneQuestData> startedQuests = new Dictionary<string, OneQuestData>();
 
+    public List<int> wasSuccessTests;
+
     public int helpIndex;
 
     public float soundVol=1;

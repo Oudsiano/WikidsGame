@@ -54,7 +54,7 @@ public class HelpInFirstScene : MonoBehaviour
     public void Study1Show(allScenes s)
     {
         if (s != allScenes.battle1) return;
-        if (IGame.Instance.dataPLayer.playerData.helpIndex !=0) return;
+        if (IGame.Instance.dataPlayer.playerData.helpIndex !=0) return;
 
         if (Panel == null)
         {
@@ -72,16 +72,16 @@ public class HelpInFirstScene : MonoBehaviour
     {
         text1.SetActive(false);
         Panel.SetActive(false);
-        if (IGame.Instance.dataPLayer.playerData.helpIndex != 0) return;
-        IGame.Instance.dataPLayer.playerData.helpIndex = 1;
+        if (IGame.Instance.dataPlayer.playerData.helpIndex != 0) return;
+        IGame.Instance.dataPlayer.playerData.helpIndex = 1;
         Study2();
     }
 
 
     public void Study2()
     {
-        if (IGame.Instance.dataPLayer.playerData.sceneToLoad != (int)allScenes.battle1) return;
-        if (IGame.Instance.dataPLayer.playerData.helpIndex != 1) return;
+        if (IGame.Instance.dataPlayer.playerData.sceneToLoad != (int)allScenes.battle1) return;
+        if (IGame.Instance.dataPlayer.playerData.helpIndex != 1) return;
         restTexts();
         text2.SetActive(true);
         Panel.SetActive(true);
@@ -90,12 +90,12 @@ public class HelpInFirstScene : MonoBehaviour
     {
         Panel.SetActive(false);
         text2.SetActive(false);
-        if (IGame.Instance.dataPLayer.playerData.helpIndex != 1) return;
-        IGame.Instance.dataPLayer.playerData.helpIndex = 2;
+        if (IGame.Instance.dataPlayer.playerData.helpIndex != 1) return;
+        IGame.Instance.dataPlayer.playerData.helpIndex = 2;
     }
     public void Study3()
     {
-        if (IGame.Instance.dataPLayer.playerData.helpIndex != 2) return;
+        if (IGame.Instance.dataPlayer.playerData.helpIndex != 2) return;
         restTexts();
         text3.SetActive(true);
         Panel.SetActive(true);
@@ -105,12 +105,12 @@ public class HelpInFirstScene : MonoBehaviour
     {
         Panel.SetActive(false);
         text3.SetActive(false);
-        if (IGame.Instance.dataPLayer.playerData.helpIndex != 2) return;
-        IGame.Instance.dataPLayer.playerData.helpIndex = 3;
+        if (IGame.Instance.dataPlayer.playerData.helpIndex != 2) return;
+        IGame.Instance.dataPlayer.playerData.helpIndex = 3;
     }
     public void Study4()
     {
-        if (IGame.Instance.dataPLayer.playerData.helpIndex != 3) return;
+        if (IGame.Instance.dataPlayer.playerData.helpIndex != 3) return;
         restTexts();
         text4.SetActive(true);
         Panel.SetActive(true);
@@ -119,8 +119,8 @@ public class HelpInFirstScene : MonoBehaviour
     {
         Panel.SetActive(false);
         text4.SetActive(false);
-        if (IGame.Instance.dataPLayer.playerData.helpIndex != 3) return;
-        IGame.Instance.dataPLayer.playerData.helpIndex = 4;
+        if (IGame.Instance.dataPlayer.playerData.helpIndex != 3) return;
+        IGame.Instance.dataPlayer.playerData.helpIndex = 4;
     }
     public void Study5()
     {
@@ -128,7 +128,7 @@ public class HelpInFirstScene : MonoBehaviour
         restTexts();
         text5.SetActive(true);
         Panel.SetActive(true);
-        IGame.Instance.dataPLayer.playerData.helpIndex = 5;
+        IGame.Instance.dataPlayer.playerData.helpIndex = 5;
     }
     public void EndStudy5()
     {

@@ -34,7 +34,7 @@ namespace RPG.Controller
 
         private float lastHealth;
 
-        private float startDistanceForShowIcon = 200f;
+        private float startDistanceForShowIcon = 300f;
         private float maxOpacity = 0.2f;  // Добавлено поле для максимальной непрозрачности
 
         private void Awake()

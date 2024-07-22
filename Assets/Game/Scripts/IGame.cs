@@ -8,7 +8,7 @@ public class IGame : MonoBehaviour
 {
     private static IGame instance;
 
-    public DataPlayer dataPLayer;
+    public DataPlayer dataPlayer;
     public GameAPI gameAPI;
     public SaveGame saveGame;
 
@@ -108,7 +108,7 @@ public class IGame : MonoBehaviour
 
     private void Init()
     {
-        dataPLayer = FindObjectOfType<DataPlayer>();
+        dataPlayer = FindObjectOfType<DataPlayer>();
         gameAPI = FindObjectOfType<GameAPI>();
         playerController = FindObjectOfType<PlayerController>();
         BottleManager = FindAnyObjectByType<BottleManager>();

@@ -20,7 +20,7 @@ public class NPC_for_testID : MonoBehaviour
 
 
     [Header("SuccessCoins")]
-    [SerializeField] public int coins=100;
+    [SerializeField] public int coins = 100;
 
     private IconForFarCamera _icon;
     private OpenURL _thisOpenURL;
@@ -42,8 +42,8 @@ public class NPC_for_testID : MonoBehaviour
 
         var _oldOpenUrl = transform.parent.GetComponent<OpenURL>();
         if (_oldOpenUrl != null)
-            if (_oldOpenUrl.urlToOpen.Length>2)
-            _thisOpenURL.urlToOpen = _oldOpenUrl.urlToOpen;
+            if (_oldOpenUrl.urlToOpen.Length > 2)
+                _thisOpenURL.urlToOpen = _oldOpenUrl.urlToOpen;
 
         _icon = transform.Find("Icon").GetComponent<IconForFarCamera>();
         _icon.description = IconText;
@@ -90,18 +90,19 @@ public class NPC_for_testID : MonoBehaviour
         {
             Debug.LogError("Not have TestID in inspector");
         }
+
+        
+
         FindObjectOfType<GameAPI>().IsTestCompleted(TestID, (isCompleted) =>
         {
+            ConversationManager.Instance.SetBool("ThisTestCompleted", isCompleted);
+
             if (isCompleted)
-            {
-                Debug.Log("test completed znachenie update");
-                ConversationManager.Instance.SetBool("ThisTestCompleted", true);
-            }
-            else
-            {
-                Debug.Log("test not completed znachenie update");
-                ConversationManager.Instance.SetBool("ThisTestCompleted", false);
-            }
+                if (!IGame.Instance.dataPlayer.playerData.wasSuccessTests.Contains(TestID))
+                {
+                    IGame.Instance.dataPlayer.playerData.wasSuccessTests.Add(TestID);
+                    IGame.Instance.FastTestsManager.GenAvaliableTests();
+                }
         });
     }
 }

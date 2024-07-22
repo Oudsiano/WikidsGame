@@ -210,10 +210,10 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateParamsUI()
     {
-        _toggleSound.isOn = IGame.Instance.dataPLayer.playerData.soundOn;
-        _toggleMusic.isOn = IGame.Instance.dataPLayer.playerData.musicOn;
-        _sliderSound.value = IGame.Instance.dataPLayer.playerData.soundVol;
-        _sliderMusic.value = IGame.Instance.dataPLayer.playerData.musicVol;
+        _toggleSound.isOn = IGame.Instance.dataPlayer.playerData.soundOn;
+        _toggleMusic.isOn = IGame.Instance.dataPlayer.playerData.musicOn;
+        _sliderSound.value = IGame.Instance.dataPlayer.playerData.soundVol;
+        _sliderMusic.value = IGame.Instance.dataPlayer.playerData.musicVol;
     }
 
     private void OnChangeMusicVolume(float arg0)
@@ -325,7 +325,7 @@ public class UIManager : MonoBehaviour
         _againUI.SetActive(true);
         KeyBoardsEvents.escState = KeyBoardsEvents.EscState.againScr;
 
-        if (IGame.Instance.dataPLayer.playerData.health > 0)
+        if (IGame.Instance.dataPlayer.playerData.health > 0)
             _buttonCancelAgain.gameObject.SetActive(true);
         else
             _buttonCancelAgain.gameObject.SetActive(false);
@@ -337,7 +337,7 @@ public class UIManager : MonoBehaviour
 
     private void closeAgainUI(bool force = false)
     {
-        if ((IGame.Instance.dataPLayer.playerData.health > 0) || (force))
+        if ((IGame.Instance.dataPlayer.playerData.health > 0) || (force))
         {
             _againUI.SetActive(false);
             KeyBoardsEvents.escState = KeyBoardsEvents.EscState.none;

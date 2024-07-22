@@ -133,7 +133,7 @@ namespace RPG.Combat
             {
                 if (isPlayer && isFireballNow)
                 {
-                    if (IGame.Instance.dataPLayer.playerData.chargeEnergy > 0)
+                    if (IGame.Instance.dataPlayer.playerData.chargeEnergy > 0)
                     {
                         MainPlayer.Instance.ChangeCountEnegry(-1);
                         ShootFireball();
@@ -189,7 +189,7 @@ namespace RPG.Combat
             Vector3 directionToPlayer = (transform.position - target.transform.position).normalized;
             float angleBetween = Vector3.Angle(target.transform.forward, directionToPlayer);
 
-            return angleBetween > 135f; // Угол, определяющий, что атака со спины (например, > 135 градусов)
+            return angleBetween > 120f; // Угол, определяющий, что атака со спины (например, > 135 градусов)
         }
 
         public void Hit()

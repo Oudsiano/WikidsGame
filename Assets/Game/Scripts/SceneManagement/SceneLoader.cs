@@ -38,13 +38,13 @@ namespace RPG.Core
 
         public void UpdateCurrentLevel()
         {
-            LoadLevel((allScenes)IGame.Instance.dataPLayer.playerData.sceneToLoad);
+            LoadLevel((allScenes)IGame.Instance.dataPlayer.playerData.sceneToLoad);
         }
 
         public void TryChangeLevel(allScenes IdNewLevel)
         {
             SavePointsManager.ResetDict();
-            IGame.Instance.dataPLayer.playerData.spawnPoint = 0;
+            IGame.Instance.dataPlayer.playerData.spawnPoint = 0;
             LoadLevel(IdNewLevel);
         }
 

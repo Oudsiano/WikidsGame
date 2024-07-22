@@ -151,7 +151,7 @@ namespace RPG.SceneManagement
 
         private void SetBonusWeaponAndArmor()
         {
-            if (IGame.Instance.dataPLayer.playerData.FinishedRegionsIDs.Contains((int)sceneComponent.IdScene))
+            if (IGame.Instance.dataPlayer.playerData.FinishedRegionsIDs.Contains((int)sceneComponent.IdScene))
                 return;
 
             if (bonusWeapon != null)
@@ -161,9 +161,9 @@ namespace RPG.SceneManagement
                     IGame.Instance.UIManager.ShowNewWeapon();
                     IGame.Instance.gameAPI.SaveUpdater();
 
-                    if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusWeapon.name))
+                    if (!IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Contains(bonusWeapon.name))
                     {
-                        IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusWeapon.name);
+                        IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Add(bonusWeapon.name);
                     }
                 }
                 else
@@ -180,9 +180,9 @@ namespace RPG.SceneManagement
                     IGame.Instance.UIManager.ShowNewArmor();
                     IGame.Instance.gameAPI.SaveUpdater();
 
-                    if (!IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Contains(bonusArmor.name))
+                    if (!IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Contains(bonusArmor.name))
                     {
-                        IGame.Instance.dataPLayer.playerData.alreadyExistWeapons.Add(bonusArmor.name);
+                        IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Add(bonusArmor.name);
                     }
                 }
                 else

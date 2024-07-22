@@ -37,7 +37,7 @@ public class SavePointsManager
     public static void ResetDict()
     {
         allSavePoints = new Dictionary<int, SavePoint>();
-        IGame.Instance.dataPLayer.playerData.stateSpawnPoints = new List<bool> { false };
+        IGame.Instance.dataPlayer.playerData.stateSpawnPoints = new List<bool> { false };
     }
 
 }

@@ -10,10 +10,7 @@ public class BossNPC : MonoBehaviour
     private List<LineRenderer> lines = new List<LineRenderer>();
     private NPCInteractable _NPCInteractable;
 
-    [Header("IndexFastTests")]
-    public int stratIndexFastTests;
-    public int endIndexFastTests;
-
+    
     private void Awake()
     {
         _NPCInteractable = GetComponent<NPCInteractable>();
@@ -87,18 +84,6 @@ public class BossNPC : MonoBehaviour
                 lines.RemoveAt(i);
             }
         }
-    }
-
-    public bool ShowFastTestIfNeed(Health targetKillAterTest)
-    {
-        if (Mathf.Abs (endIndexFastTests - stratIndexFastTests)!=0)
-        {
-            IGame.Instance.UIManager.RegenFastTestUI(stratIndexFastTests, endIndexFastTests, targetKillAterTest);
-            return true;
-        }
-
-
-        return false; //тест не показали
     }
 
     private void UpdateEnemyStatus()

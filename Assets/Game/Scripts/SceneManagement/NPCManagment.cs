@@ -46,7 +46,7 @@ public class NPCManagment : MonoBehaviour
         foreach (int itemTestId in _dicNPCTests.Keys)
         {
             bool complete = false;
-            foreach (OneLeson lesson in IGame.Instance.dataPLayer.playerData.progress)
+            foreach (OneLeson lesson in IGame.Instance.dataPlayer.playerData.progress)
             {
                 foreach (OneTestQuestion test in lesson.tests)
                 {
@@ -76,7 +76,7 @@ public class NPCManagment : MonoBehaviour
     {
         FindAllNPCWithTests();
 
-        foreach (OneLeson lesson in IGame.Instance.dataPLayer.playerData.progress)
+        foreach (OneLeson lesson in IGame.Instance.dataPlayer.playerData.progress)
         {
             foreach (OneTestQuestion test in lesson.tests)
             {

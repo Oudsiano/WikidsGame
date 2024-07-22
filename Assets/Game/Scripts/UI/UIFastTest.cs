@@ -63,24 +63,26 @@ public class UIFastTest : MonoBehaviour
 
     public void ShowTest(int stratIndexFastTests, int endIndexFastTests, Health targetKillAfterTest)
     {
-        pauseClass.IsOpenUI = true;
-        IGame.Instance.SavePlayerPosLikeaPause(true);
-        gameObject.SetActive(true);
+        isCorrect = false;
 
         this.targetKillAfterTest = targetKillAfterTest;
 
-        var allTests = IGame.Instance.FastTestsManager.AllFastTests;
+        var allTests = IGame.Instance.FastTestsManager.AvaliableTestsNow;
         bool testFound = false;
         int attempts = 0;
         int maxAttempts = 5;
 
         while (!testFound && attempts < maxAttempts)
         {
-            int randomId = UnityEngine.Random.Range(stratIndexFastTests, endIndexFastTests + 1);
-            currentTest = allTests.Find(test => test.Id == randomId);
+            int randomId = UnityEngine.Random.Range(stratIndexFastTests, endIndexFastTests);
+            currentTest = allTests[randomId];
 
             if (currentTest != null)
             {
+                pauseClass.IsOpenUI = true;
+                IGame.Instance.SavePlayerPosLikeaPause(true);
+                gameObject.SetActive(true);
+
                 SetTexts(
                     currentTest.QuestionText,
                     currentTest.Answer1,
@@ -88,6 +90,7 @@ public class UIFastTest : MonoBehaviour
                     currentTest.Answer3,
                     currentTest.Answer4
                 );
+
                 testFound = true;
             }
             else
@@ -95,10 +98,9 @@ public class UIFastTest : MonoBehaviour
                 attempts++;
             }
         }
-
-        if (!testFound)
+        if (!testFound)        
         {
-            Debug.LogError($"No test found after {maxAttempts} attempts.");
+            Debug.Log($"No test found after {maxAttempts} attempts.");
             // Можно добавить логику обработки, если тест не найден после нескольких попыток
         }
     }

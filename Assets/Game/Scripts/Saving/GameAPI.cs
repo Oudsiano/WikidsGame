@@ -122,7 +122,7 @@ public class GameAPI : MonoBehaviour
 
     public void Start()
     {
-        dataPlayer = IGame.Instance.dataPLayer;
+        dataPlayer = IGame.Instance.dataPlayer;
 
         IDUpdater();
 
@@ -193,7 +193,8 @@ public class GameAPI : MonoBehaviour
 
             Debug.Log("Data downloaded successfully");
             IGame.Instance.saveGame.MakeLoad();
-
+            
+            IGame.Instance.FastTestsManager.GenAvaliableTests();
             gameGet = true;
             GameLoaded = true;
         }
@@ -234,9 +235,9 @@ public class GameAPI : MonoBehaviour
 
             int countSuccessAnswer = 0;
 
-            if (IGame.Instance.dataPLayer.playerData.progress != null)
+            if (IGame.Instance.dataPlayer.playerData.progress != null)
             {
-                foreach (OneLeson item in IGame.Instance.dataPLayer.playerData.progress)
+                foreach (OneLeson item in IGame.Instance.dataPlayer.playerData.progress)
                 {
                     if (item != null && item.id == IDLesson)
                         foreach (OneTestQuestion item2 in item.tests)
@@ -265,6 +266,8 @@ public class GameAPI : MonoBehaviour
             Debug.Log("Успешные ответы: " + countSuccessAnswers);
 
             Debug.Log("Data downloaded successfully");
+
+            IGame.Instance.FastTestsManager.GenAvaliableTests();
         }
         else
         {
@@ -309,6 +312,9 @@ public class GameAPI : MonoBehaviour
                     }
                 }
             }
+
+
+            IGame.Instance.FastTestsManager.GenAvaliableTests();
             // Если тест не найден, вызываем колбэк с false
             callback(_calback);
         }
@@ -326,7 +332,7 @@ public class GameAPI : MonoBehaviour
     private IEnumerator SaveGameData() 
     {
         //string json = JsonUtility.ToJson(IGame.Instance.dataPLayer.playerData);
-        string json = JsonConvert.SerializeObject(IGame.Instance.dataPLayer.playerData);
+        string json = JsonConvert.SerializeObject(IGame.Instance.dataPlayer.playerData);
         Debug.Log("JSON to send: " + json);
 
         byte[] bodyRaw = Encoding.UTF8.GetBytes(json);

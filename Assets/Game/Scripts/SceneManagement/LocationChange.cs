@@ -77,10 +77,10 @@ public class LocationChange : MonoBehaviour
 
         sceneWithTestsID = FindObjectOfType<SceneWithTestsID>();
         updateColors();
-        setUpMaxRegion(IGame.Instance.dataPLayer.playerData.FinishedRegionsIDs);
+        setUpMaxRegion(IGame.Instance.dataPlayer.playerData.FinishedRegionsIDs);
 
         if (textID != null)
-            textID.text = IGame.Instance.dataPLayer.playerData.id.ToString();
+            textID.text = IGame.Instance.dataPlayer.playerData.id.ToString();
 
     }
 
@@ -124,7 +124,7 @@ public class LocationChange : MonoBehaviour
     private void updateColors()
     {
         // Получаем данные игрока один раз, чтобы не вызывать его многократно в цикле.
-        var playerData = IGame.Instance.dataPLayer.playerData.progress;
+        var playerData = IGame.Instance.dataPlayer.playerData.progress;
 
         foreach (OneBtnChangeRegion region in regions)
         {
@@ -157,11 +157,11 @@ public class LocationChange : MonoBehaviour
 
     private void OnClick(allScenes sceneId)
     {
-        IGame.Instance.dataPLayer.SetSceneToLoad(sceneId);
+        IGame.Instance.dataPlayer.SetSceneToLoad(sceneId);
         Loading.gameObject.SetActive(true);
         IGame.Instance.gameAPI.SaveUpdater();
         //Invoke("LoadSceneAfterDelay", 2f); 
-        SceneLoader.Instance.TryChangeLevel((LevelChangeObserver.allScenes)IGame.Instance.dataPLayer.playerData.sceneToLoad);
+        SceneLoader.Instance.TryChangeLevel((LevelChangeObserver.allScenes)IGame.Instance.dataPlayer.playerData.sceneToLoad);
         AudioManager.instance.PlaySound("ClickButton");
     }
     /*
@@ -187,9 +187,9 @@ public class LocationChange : MonoBehaviour
                     {
                         foreach (int testScene in scene.numbers)
                         {
-                            if (IGame.Instance.dataPLayer.playerData.progress != null)
+                            if (IGame.Instance.dataPlayer.playerData.progress != null)
                             {
-                                foreach (OneLeson item in IGame.Instance.dataPLayer.playerData.progress)
+                                foreach (OneLeson item in IGame.Instance.dataPlayer.playerData.progress)
                                 {
                                     foreach (OneTestQuestion item2 in item.tests)
                                     {

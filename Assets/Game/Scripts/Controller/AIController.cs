@@ -188,8 +188,8 @@ namespace RPG.Controller
         {
             Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
             float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
-
-            return angleBetween > 90; // Угол, определяющий, что игрок позади (например, > 135 градусов)
+            
+            return angleBetween > 120; // Угол, определяющий, что игрок позади (например, > 135 градусов)
         }
 
         private void PatrolBehavior()

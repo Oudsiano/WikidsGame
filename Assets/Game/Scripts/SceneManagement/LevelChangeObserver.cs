@@ -86,7 +86,7 @@ public class LevelChangeObserver : MonoBehaviour
         }
         if (SavePointsManager.AllSavePoints.Count > 0)
         {
-            Vector3 posThere = SavePointsManager.AllSavePoints[IGame.Instance.dataPLayer.playerData.spawnPoint].transform.position;
+            Vector3 posThere = SavePointsManager.AllSavePoints[IGame.Instance.dataPlayer.playerData.spawnPoint].transform.position;
             UpdatePlayerLocation(posThere);
         }
         else
@@ -102,7 +102,7 @@ public class LevelChangeObserver : MonoBehaviour
             //UpdatePlayerLocation(spawnPoints[newLevel]);
         }
 
-        SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPLayer,true);
+        SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPlayer,true);
         MainPlayer.Instance.ResetCountEergy();
 
         IGame.Instance.gameAPI.SaveUpdater();

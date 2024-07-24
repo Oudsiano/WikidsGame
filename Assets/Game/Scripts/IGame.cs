@@ -19,6 +19,7 @@ public class IGame : MonoBehaviour
     private QuestManager questManager;
     public NPCManagment NPCManagment;
     public FastTestsManager FastTestsManager;
+    public CursorManager CursorManager;
 
     [SerializeField] public UIManager UIManager;
     [SerializeField] public CoinManager CoinManager;
@@ -117,6 +118,7 @@ public class IGame : MonoBehaviour
         questManager = FindAnyObjectByType<QuestManager>();
         NPCManagment = gameObject.AddComponent<NPCManagment>();
         FastTestsManager = new FastTestsManager();
+        CursorManager = FindAnyObjectByType<CursorManager>();
 
         saveGame = new SaveGame();
 

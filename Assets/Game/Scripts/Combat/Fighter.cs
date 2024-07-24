@@ -43,6 +43,16 @@ namespace RPG.Combat
                 EquipWeapon(defaultWeapon);
         }
 
+        void OnMouseEnter()
+        {
+            if (!isPlayer)
+            IGame.Instance.CursorManager.SetCursorSword();
+        }
+        private void OnMouseExit()
+        {
+            IGame.Instance.CursorManager.SetCursorFinger();
+        }
+
         public void SetFireball()
         {
             isFireballNow = true;

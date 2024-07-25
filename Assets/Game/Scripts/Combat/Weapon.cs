@@ -93,6 +93,8 @@ namespace RPG.Combat
         {
             var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
             proj.SetTarget(target, weaponDamage);
+
+            AudioManager.instance.PlaySound("Shot");
         }
 
         public bool IsFireball()

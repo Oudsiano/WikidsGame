@@ -27,6 +27,15 @@ public class NPCInteractable : MonoBehaviour
 
     }
 
+    void OnMouseEnter()
+    {
+        IGame.Instance.CursorManager.SetCursorManuscript();
+    }
+    private void OnMouseExit()
+    {
+        IGame.Instance.CursorManager.SetCursorFinger();
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonUp(0))

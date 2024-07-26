@@ -52,6 +52,15 @@ namespace RPG.SceneManagement
             }
         }
 
+        void OnMouseEnter()
+        {
+            IGame.Instance.CursorManager.SetCursorExit();
+        }
+        private void OnMouseExit()
+        {
+            IGame.Instance.CursorManager.SetCursorDefault();
+        }
+
         // Обработчик события входа в область портала
         private void OnTriggerEnter(Collider other)
         {

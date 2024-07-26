@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 581956150848942886}
   - component: {fileID: 2709808747186178527}
   - component: {fileID: 6769118257297250539}
+  - component: {fileID: 6741871750945002596}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -55,7 +56,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.32
+  m_Radius: 0.53
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6769118257297250539
 MonoBehaviour:
@@ -71,6 +72,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   count: 25
   textCount: {fileID: 0}
+--- !u!64 &6741871750945002596
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2582003138604579103}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 43477107189564414, guid: 6331fd5ded3d21644a2170889957d3a1, type: 2}
 --- !u!1001 &4898976579189458205
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -137,6 +160,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 449654, guid: 5e966a5749f9b264a9eee5c9fffdfde9, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 64431832818140508, guid: 5e966a5749f9b264a9eee5c9fffdfde9,
+        type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

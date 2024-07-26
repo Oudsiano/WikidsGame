@@ -88,6 +88,16 @@ public class SavePoint : MonoBehaviour
             Debug.LogError("Box Collider size is not (1, 1, 1)");
         }
     }
+
+    void OnMouseEnter()
+    {
+        IGame.Instance.CursorManager.SetCursorSave();
+    }
+    private void OnMouseExit()
+    {
+        IGame.Instance.CursorManager.SetCursorDefault();
+    }
+
     void Update()
     {
         // Проверяем, был ли произведен клик

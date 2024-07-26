@@ -50,7 +50,7 @@ namespace RPG.Combat
         }
         private void OnMouseExit()
         {
-            IGame.Instance.CursorManager.SetCursorFinger();
+            IGame.Instance.CursorManager.SetCursorDefault();
         }
 
         public void SetFireball()

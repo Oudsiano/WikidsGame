@@ -33,7 +33,7 @@ public class NPCInteractable : MonoBehaviour
     }
     private void OnMouseExit()
     {
-        IGame.Instance.CursorManager.SetCursorFinger();
+        IGame.Instance.CursorManager.SetCursorDefault();
     }
 
     void Update()

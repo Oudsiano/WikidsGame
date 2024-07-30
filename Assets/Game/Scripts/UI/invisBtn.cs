@@ -24,7 +24,7 @@ public class invisBtn : MonoBehaviour
         BG.color = new Color(0.6036846f, 0.9622642f, 0.606497f, 0.509804f);
         sector.fillAmount = 0;
 
-        // ?????????, ??? ????? ???????????? ?????????
+        // Load a font that supports Cyrillic characters
         TMPro.TMP_FontAsset font = Resources.Load<TMPro.TMP_FontAsset>("Fonts & Materials/YourCyrillicSupportingFont");
         text.font = font;
     }
@@ -32,8 +32,18 @@ public class invisBtn : MonoBehaviour
     private void onClick()
     {
         if (timeAnimate) return;
-        timeBtn = 0;
-        timeAnimate = true;
+
+        if (IGame.Instance.saveGame.Coins >= 15)
+        {
+            IGame.Instance.saveGame.Coins -= 15;
+            timeBtn = 0;
+            Debug.Log("Нажали на кнопку инвиза");
+            timeAnimate = true;
+        }
+        else
+        {
+            Debug.Log("Недостаточно монет для инвиза");
+        }
     }
 
     // Update is called once per frame
@@ -49,7 +59,6 @@ public class invisBtn : MonoBehaviour
             timeAnimate = false;
             BG.color = new Color(0.6036846f, 0.9622642f, 0.606497f, 0.509804f);
             text.text = $"{textBtn}";
-            ;
             sector.fillAmount = 0;
             IGame.Instance.playerController.SetInvisByBtn(false);
         }

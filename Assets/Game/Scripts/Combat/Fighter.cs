@@ -45,9 +45,12 @@ namespace RPG.Combat
 
         void OnMouseEnter()
         {
-            if (!isPlayer)
-            IGame.Instance.CursorManager.SetCursorSword();
+            if (!isPlayer && !GetComponent<Health>().IsDead())
+            {
+                IGame.Instance.CursorManager.SetCursorSword();
+            }
         }
+
         private void OnMouseExit()
         {
             IGame.Instance.CursorManager.SetCursorDefault();

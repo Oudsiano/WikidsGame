@@ -22,6 +22,8 @@ public class UIFastTest : MonoBehaviour
     private OneFastTest currentTest;
     private bool isCorrect;
 
+    private UIManager uiManager; // ?????? ?? UIManager
+
     CanvasGroup canvasGroup;
 
     private void Awake()
@@ -38,6 +40,12 @@ public class UIFastTest : MonoBehaviour
         {
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
+    }
+
+    // ????? ??? ????????? UIManager
+    public void SetUIManager(UIManager manager)
+    {
+        uiManager = manager;
     }
 
     public void SetTexts(string mainText, string btnText1, string btnText2, string btnText3, string btnText4)
@@ -60,11 +68,28 @@ public class UIFastTest : MonoBehaviour
         button.interactable = true;
         button.GetComponent<Image>().color = Color.white;
     }
+
     public void ShowTestForAddedArrow(int stratIndexFastTests, int endIndexFastTests, int arrowCountToAdd)
     {
-        isCorrect = false;
+        if (IGame.Instance == null)
+        {
+            Debug.LogError("IGame.Instance is null");
+            return;
+        }
+
+        if (IGame.Instance.FastTestsManager == null)
+        {
+            Debug.LogError("FastTestsManager is null");
+            return;
+        }
 
         var allTests = IGame.Instance.FastTestsManager.AvaliableTestsNow;
+        if (allTests == null || allTests.Count == 0)
+        {
+            Debug.LogError("No tests available");
+            return;
+        }
+
         bool testFound = false;
         int attempts = 0;
         int maxAttempts = 5;
@@ -95,22 +120,27 @@ public class UIFastTest : MonoBehaviour
                 attempts++;
             }
         }
+
         if (!testFound)
         {
             Debug.Log($"No test found after {maxAttempts} attempts.");
-            // ????? ???????? ?????? ?????????, ???? ???? ?? ?????? ????? ?????????? ???????
-        }
-        else
-        {
-            // ?????????? ????? ????? ????????? ?????? ?????
-            AddArrows(arrowCountToAdd);
         }
     }
 
     private void AddArrows(int count)
     {
-            Debug.Log($"{count} arrows added to the inventory.");
+        if (uiManager != null)
+        {
+            uiManager.IncreaseWeaponCharges(); // ????? ?????? ????? ????????? UIManager
+        }
+        else
+        {
+            Debug.LogError("uiManager is null");
+        }
+
+        Debug.Log($"{count} arrows added to the inventory.");
     }
+
 
     public void ShowTest(int stratIndexFastTests, int endIndexFastTests, Health targetKillAfterTest)
     {
@@ -149,14 +179,13 @@ public class UIFastTest : MonoBehaviour
                 attempts++;
             }
         }
-        if (!testFound)        
+
+        if (!testFound)
         {
             Debug.Log($"No test found after {maxAttempts} attempts.");
             // ????? ???????? ?????? ?????????, ???? ???? ?? ?????? ????? ?????????? ???????
         }
     }
-
-
 
     private void OnAnswerClick(int answerIndex)
     {
@@ -173,6 +202,11 @@ public class UIFastTest : MonoBehaviour
 
         DisableButtons();
         canvasGroup.DOFade(0, 0.3f).SetDelay(2f).OnComplete(OnClickClose);
+
+        if (isCorrect)
+        {
+            AddArrows(1); // ?????????? ????? ??? ?????????? ??????
+        }
     }
 
     private Button GetButtonByIndex(int index)

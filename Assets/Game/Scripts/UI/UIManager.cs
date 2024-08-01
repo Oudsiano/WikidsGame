@@ -137,6 +137,9 @@ public class UIManager : MonoBehaviour
 
         _buttonIncreaseCharges.onClick.AddListener(OnButtonIncreaseChargesClick);
         SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+
+        // ?????????? ?????? ?? UIManager ? UIFastTest
+        fastTestUI.SetUIManager(this);
     }
 
     private void Start()

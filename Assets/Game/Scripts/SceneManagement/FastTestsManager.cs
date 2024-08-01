@@ -1292,7 +1292,6 @@ public class FastTestsManager
                 if (testQuestion.completed)
                 {
                     var matchingTests = AllFastTests.Where(test => test.TestIndex == testQuestion.id);
-
                     AvaliableTestsNow.AddRange(matchingTests);
                 }
             }
@@ -1303,8 +1302,14 @@ public class FastTestsManager
             if (IGame.Instance.dataPlayer.playerData.wasSuccessTests.Contains(test.TestIndex))
             {
                 if (!AvaliableTestsNow.Contains(test))
-                AvaliableTestsNow.Add(test);
+                    AvaliableTestsNow.Add(test);
             }
+        }
+
+        // Добавьте хотя бы один тест, если список пуст
+        if (AvaliableTestsNow.Count == 0 && AllFastTests.Count > 0)
+        {
+            AvaliableTestsNow.Add(AllFastTests[0]);
         }
 
         Debug.Log(AvaliableTestsNow.Count);

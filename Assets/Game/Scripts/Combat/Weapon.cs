@@ -23,9 +23,18 @@ namespace RPG.Combat
         [Header("Description")]
         [SerializeField] [TextArea] private string description;
 
+        [Header("Charges")]
+        [SerializeField] private int maxCharges = 10;
+        private int currentCharges;
+
         private const string weaponNameForHand = "weapon";
 
         public GameObject WeaponPrefab { get => weaponPrefab; set => weaponPrefab = value; }
+
+        public void InitializeWeapon()
+        {
+            currentCharges = maxCharges;
+        }
 
         public void SpawnToPlayer(Transform rightHandPos, Transform lefthandPos, Animator anim)
         {
@@ -91,10 +100,36 @@ namespace RPG.Combat
 
         public void SpawnProjectile(Transform target, Transform rightHand, Transform leftHand)
         {
-            var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
-            proj.SetTarget(target, weaponDamage);
+            if (ConsumeCharge())
+            {
+                var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
+                proj.SetTarget(target, weaponDamage);
 
-            AudioManager.instance.PlaySound("Shot");
+                AudioManager.instance.PlaySound("Shot");
+            }
+            else
+            {
+                Debug.Log("Out of charges!");
+                // Здесь можно добавить логику для уведомления игрока, что заряды закончились
+            }
+        }
+
+        public bool ConsumeCharge()
+        {
+            if (currentCharges > 0)
+            {
+                currentCharges--;
+                Debug.Log("Charges left: " + currentCharges);
+                return true;
+            }
+            Debug.Log("No charges left!");
+            return false;
+        }
+
+        public void ReloadCharges(int charges)
+        {
+            currentCharges = Mathf.Min(currentCharges + charges, maxCharges);
+            Debug.Log("Charges reloaded. Current charges: " + currentCharges);
         }
 
         public bool IsFireball()
@@ -104,7 +139,7 @@ namespace RPG.Combat
 
         public bool IsRanged()
         {
-            return projectile;
+            return projectile != null;
         }
 
         // Воспроизводит VFX эффект при попадании оружия и удаляет его после проигрывания
@@ -116,5 +151,10 @@ namespace RPG.Combat
                 Destroy(vfx, vfx.GetComponent<ParticleSystem>().main.duration); // Уничтожаем VFX после завершения
             }
         }
+        public int GetCurrentCharges()
+        {
+            return currentCharges;
+        }
+
     }
 }

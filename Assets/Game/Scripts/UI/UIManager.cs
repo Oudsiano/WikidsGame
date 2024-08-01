@@ -10,7 +10,7 @@ using FarrokhGames.Inventory.Examples;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using static LevelChangeObserver;
-
+using RPG.Combat;
 public class UIManager : MonoBehaviour
 {
     public DeathUI DeathUI;
@@ -22,7 +22,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _buttonCancelAgain;
 
     [Header("CoinUI")]
-
     [SerializeField] private TMPro.TextMeshProUGUI textCoin;
     [SerializeField] private TMPro.TextMeshProUGUI energyCharger;
 
@@ -30,7 +29,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] public HelpInFirstScene HelpInFirstScene;
 
     [Header("MarketUI")]
-
     [SerializeField] private Button _buttonMarket;
     [SerializeField] public UiMarketPanel UiMarketPanel;
 
@@ -46,7 +44,6 @@ public class UIManager : MonoBehaviour
     [Header("PLayerBtns")]
     [SerializeField] private GameObject newWeaponScr;
     [SerializeField] private GameObject newArmorScr;
-
     [SerializeField] private Button UserInfoBtn;
     [SerializeField] private TMPro.TMP_Text textNamePlayer;
 
@@ -55,7 +52,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_InputField _playerNameInputField;
     [SerializeField] private Button _btnClosePLayerInfoScr;
     [SerializeField] private Button _btnComfirmPLayerInfoScr;
-
 
     [Header("Information Icon")]
     [SerializeField] private GameObject IconMapPanel;
@@ -84,21 +80,21 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _buttonMaxZoom;
     [SerializeField] private Button _buttonMinZoom;
 
-
     [Header("Fast Test UI")]
     [SerializeField] private UIFastTest fastTestUI;
 
+    [Header("Weapon Charges")]
+    [SerializeField] private Button _buttonIncreaseCharges;
+    [SerializeField] private Weapon weapon; // ?????? ?? ?????? ??????
+
     private FollowCamera followCamera;
-
     private SceneLoader sceneLoader;
-
 
     public SceneLoader SceneLoader { get => sceneLoader; set => sceneLoader = value; }
 
     public void Init()
     {
         fastTestUI.gameObject.SetActive(false);
-
         SceneLoader = FindObjectOfType<SceneLoader>();
 
         _buttonAgain.onClick.AddListener(OnClickAgainRegen);
@@ -120,7 +116,6 @@ public class UIManager : MonoBehaviour
         _btnCloseMap.onClick.AddListener(OnClickBtnCloseMap);
 
         UserInfoBtn.onClick.AddListener(OnClickUserInfo);
-
         _btnClosePLayerInfoScr.onClick.AddListener(ClosePlayerScr);
         _btnComfirmPLayerInfoScr.onClick.AddListener(onClickConfirmPLayersScr);
 
@@ -140,11 +135,9 @@ public class UIManager : MonoBehaviour
         _buttonMaxZoom.onClick.AddListener(OnClickMaxZoom);
         _buttonMinZoom.onClick.AddListener(OnClickMinZoom);
 
-
-
+        _buttonIncreaseCharges.onClick.AddListener(OnButtonIncreaseChargesClick);
         SceneManager.sceneLoaded += SceneLoader_LevelChanged;
     }
-
 
     private void Start()
     {
@@ -159,7 +152,6 @@ public class UIManager : MonoBehaviour
 
         SceneComponent sceneComponent = FindObjectOfType<SceneComponent>();
         if (sceneComponent != null)
-        
         {
             if ((sceneComponent.IdScene == allScenes.library) ||
                  (sceneComponent.IdScene == allScenes.holl) ||
@@ -175,15 +167,28 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
+    private void OnButtonIncreaseChargesClick()
+    {
+        // ??????? ????????? ? ???????? ??????? ??? ?????? ? ?????????? ????? ??? ??????????
+        int stratIndexFastTests = 0;
+        int endIndexFastTests = 10; // ?????? ????????, ???????? ?? ???????? ????????
+        int arrowCountToAdd = 1;
+
+        // ????? ?????? ??? ?????? ????? ? ?????????? ?????? ? ?????? ??????????? ??????
+        fastTestUI.ShowTestForAddedArrow(stratIndexFastTests, endIndexFastTests, arrowCountToAdd);
+    }
+
     public void RegenFastTestUI(int stratIndexFastTests, int endIndexFastTests, Health targetKillAterTest)
-    => fastTestUI.ShowTest(stratIndexFastTests, endIndexFastTests, targetKillAterTest);
+        => fastTestUI.ShowTest(stratIndexFastTests, endIndexFastTests, targetKillAterTest);
+
     private void OnCLickCloseOption()
     {
         OptionScr.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
         pauseClass.IsOpenUI = false;
     }
-    //TODO: we can delete it
+
     private void OnClickBtnTest()
     {
         uIBug.TryAddEquipToBug(IGame.Instance.QuestManager.allQuestsItems[0]);
@@ -192,7 +197,7 @@ public class UIManager : MonoBehaviour
     private void OnClickBtnOption()
     {
         OptionScr.SetActive(true);
-        IGame.Instance.SavePlayerPosLikeaPause(true); 
+        IGame.Instance.SavePlayerPosLikeaPause(true);
         pauseClass.IsOpenUI = true;
     }
 
@@ -208,6 +213,7 @@ public class UIManager : MonoBehaviour
             IconMapPanel.SetActive(false);
         }
     }
+
     public void UpdateParamsUI()
     {
         _toggleSound.isOn = IGame.Instance.dataPlayer.playerData.soundOn;
@@ -219,7 +225,6 @@ public class UIManager : MonoBehaviour
     private void OnChangeMusicVolume(float arg0)
     {
         SoundManager.SetMusicVolume(arg0);
-
         AudioManager.instance.MusicVol = arg0;
     }
 
@@ -245,25 +250,23 @@ public class UIManager : MonoBehaviour
         {
             textNamePlayer.text = "??????? ???";
             return;
-
         }
 
         _playerNameInputField.text = obj;
         textNamePlayer.text = obj;
     }
 
-    
-
     private void ClosePlayerScr()
     {
-        PlayerInfoScr.SetActive(false); IGame.Instance.SavePlayerPosLikeaPause(false);
+        PlayerInfoScr.SetActive(false);
+        IGame.Instance.SavePlayerPosLikeaPause(false);
         pauseClass.IsOpenUI = false;
     }
+
     private void onClickConfirmPLayersScr()
     {
         IGame.Instance.saveGame.PlayerName = _playerNameInputField.text;
         IGame.Instance.saveGame.MakeSave();
-
         ClosePlayerScr();
     }
 
@@ -306,6 +309,7 @@ public class UIManager : MonoBehaviour
         IGame.Instance.SavePlayerPosLikeaPause(true);
         pauseClass.IsOpenUI = true;
     }
+
     private void OnChangeMoney(double newValue)
     {
         textCoin.text = newValue.ToString();
@@ -317,7 +321,6 @@ public class UIManager : MonoBehaviour
         uIBug.gameObject.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true);
         pauseClass.IsOpenUI = true;
-
     }
 
     public void ShowAgainUi()
@@ -330,7 +333,6 @@ public class UIManager : MonoBehaviour
         else
             _buttonCancelAgain.gameObject.SetActive(false);
 
-
         IGame.Instance.SavePlayerPosLikeaPause(true);
         pauseClass.IsOpenUI = true;
     }
@@ -342,7 +344,6 @@ public class UIManager : MonoBehaviour
             _againUI.SetActive(false);
             KeyBoardsEvents.escState = KeyBoardsEvents.EscState.none;
         }
-
 
         IGame.Instance.SavePlayerPosLikeaPause(false);
         pauseClass.IsOpenUI = false;
@@ -364,11 +365,9 @@ public class UIManager : MonoBehaviour
     {
         closeAgainUI(true);
         IGame.Instance.gameAPI.SaveUpdater();
-
         SceneLoader.TryChangeLevel(LevelChangeObserver.allScenes.regionSCene);
         AudioManager.instance.PlaySound("ButtonClick");
     }
-
 
     private void OnClickAgainRegen()
     {
@@ -381,6 +380,7 @@ public class UIManager : MonoBehaviour
     {
         energyCharger.text = c;
     }
+
     private void ShowQuestPanel()
     {
         QuestScr.SetActive(true);
@@ -418,11 +418,18 @@ public class UIManager : MonoBehaviour
         _btnQuestBack.enabled = IGame.Instance.QuestManager.ShowBackImgForBtn();
     }
 
+    public void IncreaseWeaponCharges()
+    {
+        weapon.ReloadCharges(1);
+        Debug.Log("Charges increased by 1. Current charges: " + weapon.GetCurrentCharges());
+    }
+
     private void Update()
     {
         if (_btnQuestBack.enabled)
             _btnQuestBack.transform.Rotate(Vector3.forward, 25 * Time.deltaTime);
     }
+
     private void OnClickMaxZoom() => followCamera.MaxZoom();
     private void OnClickMinZoom() => followCamera.MinZoom();
 }

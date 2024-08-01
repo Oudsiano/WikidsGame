@@ -60,6 +60,57 @@ public class UIFastTest : MonoBehaviour
         button.interactable = true;
         button.GetComponent<Image>().color = Color.white;
     }
+    public void ShowTestForAddedArrow(int stratIndexFastTests, int endIndexFastTests, int arrowCountToAdd)
+    {
+        isCorrect = false;
+
+        var allTests = IGame.Instance.FastTestsManager.AvaliableTestsNow;
+        bool testFound = false;
+        int attempts = 0;
+        int maxAttempts = 5;
+
+        while (!testFound && attempts < maxAttempts)
+        {
+            int randomId = UnityEngine.Random.Range(stratIndexFastTests, endIndexFastTests);
+            currentTest = allTests[randomId];
+
+            if (currentTest != null)
+            {
+                pauseClass.IsOpenUI = true;
+                IGame.Instance.SavePlayerPosLikeaPause(true);
+                gameObject.SetActive(true);
+
+                SetTexts(
+                    currentTest.QuestionText,
+                    currentTest.Answer1,
+                    currentTest.Answer2,
+                    currentTest.Answer3,
+                    currentTest.Answer4
+                );
+
+                testFound = true;
+            }
+            else
+            {
+                attempts++;
+            }
+        }
+        if (!testFound)
+        {
+            Debug.Log($"No test found after {maxAttempts} attempts.");
+            // ????? ???????? ?????? ?????????, ???? ???? ?? ?????? ????? ?????????? ???????
+        }
+        else
+        {
+            // ?????????? ????? ????? ????????? ?????? ?????
+            AddArrows(arrowCountToAdd);
+        }
+    }
+
+    private void AddArrows(int count)
+    {
+            Debug.Log($"{count} arrows added to the inventory.");
+    }
 
     public void ShowTest(int stratIndexFastTests, int endIndexFastTests, Health targetKillAfterTest)
     {
@@ -101,7 +152,7 @@ public class UIFastTest : MonoBehaviour
         if (!testFound)        
         {
             Debug.Log($"No test found after {maxAttempts} attempts.");
-            // Можно добавить логику обработки, если тест не найден после нескольких попыток
+            // ????? ???????? ?????? ?????????, ???? ???? ?? ?????? ????? ?????????? ???????
         }
     }
 

@@ -111,6 +111,7 @@ namespace RPG.Combat
             {
                 Debug.Log("Out of charges!");
                 // Здесь можно добавить логику для уведомления игрока, что заряды закончились
+                OnOutOfCharges();
             }
         }
 
@@ -120,10 +121,25 @@ namespace RPG.Combat
             {
                 currentCharges--;
                 Debug.Log("Charges left: " + currentCharges);
+                if (currentCharges == 0)
+                {
+                    OnOutOfCharges();
+                }
                 return true;
             }
             Debug.Log("No charges left!");
+            OnOutOfCharges();
             return false;
+        }
+
+        private void OnOutOfCharges()
+        {
+            // Получаем ссылку на WeaponPanelUI и вызываем ResetWeaponToDefault
+            WeaponPanelUI weaponPanelUI = FindObjectOfType<WeaponPanelUI>();
+            if (weaponPanelUI != null)
+            {
+                weaponPanelUI.ResetWeaponToDefault();
+            }
         }
 
         public void ReloadCharges(int charges)
@@ -142,7 +158,6 @@ namespace RPG.Combat
             return projectile != null;
         }
 
-        // Воспроизводит VFX эффект при попадании оружия и удаляет его после проигрывания
         public void PlayHitVFX(Vector3 position)
         {
             if (hitVFX != null)
@@ -151,10 +166,10 @@ namespace RPG.Combat
                 Destroy(vfx, vfx.GetComponent<ParticleSystem>().main.duration); // Уничтожаем VFX после завершения
             }
         }
+
         public int GetCurrentCharges()
         {
             return currentCharges;
         }
-
     }
 }

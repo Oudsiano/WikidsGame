@@ -14,6 +14,7 @@ namespace RPG.Combat
         [SerializeField] private Weapon defaultWeapon = null;
         [SerializeField] private Weapon equippedWeapon = null;
         [SerializeField] private Weapon fireballWeapon = null;
+        [SerializeField] private Weapon bowWeapon = null;
         private bool isPlayer;
         private bool isFireballNow = false;
 
@@ -70,6 +71,15 @@ namespace RPG.Combat
             isFireballNow = false;
             if (equippedWeapon != null)
                 equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
+        }
+        public void SetBow()
+        {
+            if (anim == null)
+                Awake();
+
+            isFireballNow = false;
+            if (bowWeapon != null)
+                bowWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
 
         public void EquipItem(ItemDefinition item)

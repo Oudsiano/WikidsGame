@@ -34,14 +34,22 @@ public class PickableEquip : MonoBehaviour
     {
         if (IGame.Instance.WeaponArmorManager.IsWeaponInGame(item.name))
         {
+            if (IGame.Instance.WeaponArmorManager.IsWeaponInGame(item.name))
 
-            if (item != null)
             {
-                item.CreateInstance();
-                IGame.Instance.UIManager.uIBug.TryAddEquipToBug(item);
+
+                if (item != null)
+                {
+                    item.CreateInstance();
+                    IGame.Instance.UIManager.uIBug.TryAddEquipToBug(item);
+                }
+                else
+                    Debug.LogError("mistake item");
             }
             else
-                Debug.LogError("mistake item");
+            {
+                Debug.LogWarning("Этого предмета нет в списке предметов в WeaponArmorManager");
+            }
         }
         else
         {

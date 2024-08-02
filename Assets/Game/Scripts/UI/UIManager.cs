@@ -83,6 +83,11 @@ public class UIManager : MonoBehaviour
     [Header("Fast Test UI")]
     [SerializeField] private UIFastTest fastTestUI;
 
+    [Header("PanelUI")]
+    [SerializeField] private GameObject _panelToActivate; // Панель, которую нужно активировать
+    [SerializeField] private Button _buttonActivatePanel; // Кнопка для активации панели
+    [SerializeField] private Button _buttonClosePanel; // Кнопка для закрытия па
+
     [Header("Weapon Charges")]
     [SerializeField] private Button _buttonIncreaseCharges;
     [SerializeField] private Weapon weapon; // ?????? ?? ?????? ??????
@@ -134,6 +139,12 @@ public class UIManager : MonoBehaviour
 
         _buttonMaxZoom.onClick.AddListener(OnClickMaxZoom);
         _buttonMinZoom.onClick.AddListener(OnClickMinZoom);
+
+        // Добавляем слушателя на кнопку активации панели
+        _buttonActivatePanel.onClick.AddListener(OnClickActivatePanel);
+
+        // Добавляем слушателя на кнопку закрытия панели
+        _buttonClosePanel.onClick.AddListener(OnClickClosePanel);
 
         _buttonIncreaseCharges.onClick.AddListener(OnButtonIncreaseChargesClick);
         SceneManager.sceneLoaded += SceneLoader_LevelChanged;
@@ -426,7 +437,17 @@ public class UIManager : MonoBehaviour
         weapon.ReloadCharges(1);
         Debug.Log("Charges increased by 1. Current charges: " + weapon.GetCurrentCharges());
     }
+    private void OnClickActivatePanel()
+    {
+        // Активируем панель
+        _panelToActivate.SetActive(true);
+    }
 
+    private void OnClickClosePanel()
+    {
+        // Деактивируем панель
+        _panelToActivate.SetActive(false);
+    }
     private void Update()
     {
         if (_btnQuestBack.enabled)

@@ -1322,6 +1322,5 @@ public class FastTestsManager
             IGame.Instance.UIManager.RegenFastTestUI(0, AvaliableTestsNow.Count, target);
         }
         else target.MissFastTest();
-
     }
 }

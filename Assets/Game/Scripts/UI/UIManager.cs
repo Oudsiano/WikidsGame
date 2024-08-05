@@ -91,7 +91,7 @@ public class UIManager : MonoBehaviour
     [Header("Weapon Charges")]
     [SerializeField] private Button _buttonIncreaseCharges;
     [SerializeField] private Weapon weapon; // ?????? ?? ?????? ??????
-
+    [SerializeField] public TMPro.TMP_Text arrowCharges;
     private FollowCamera followCamera;
     private SceneLoader sceneLoader;
 
@@ -436,7 +436,10 @@ public class UIManager : MonoBehaviour
     {
         weapon.ReloadCharges(1);
         Debug.Log("Charges increased by 1. Current charges: " + weapon.GetCurrentCharges());
+        arrowCharges.text = weapon.GetCurrentCharges().ToString();
     }
+
+
     private void OnClickActivatePanel()
     {
         // Активируем панель

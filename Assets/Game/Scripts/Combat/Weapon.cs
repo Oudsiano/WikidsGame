@@ -29,11 +29,15 @@ namespace RPG.Combat
 
         private const string weaponNameForHand = "weapon";
 
+        private UIManager uiManager; // Добавляем ссылку на UIManager
+
         public GameObject WeaponPrefab { get => weaponPrefab; set => weaponPrefab = value; }
 
         public void InitializeWeapon()
         {
             currentCharges = maxCharges;
+            uiManager = FindObjectOfType<UIManager>(); // Инициализируем ссылку на UIManager
+            UpdateArrowChargesUI(); // Обновляем UI при инициализации
         }
 
         public void SpawnToPlayer(Transform rightHandPos, Transform lefthandPos, Animator anim)
@@ -121,6 +125,8 @@ namespace RPG.Combat
             {
                 currentCharges--;
                 Debug.Log("Charges left: " + currentCharges);
+                UpdateArrowChargesUI(); // Обновляем UI после выстрела
+
                 if (currentCharges == 0)
                 {
                     OnOutOfCharges();
@@ -146,6 +152,7 @@ namespace RPG.Combat
         {
             currentCharges = Mathf.Min(currentCharges + charges, maxCharges);
             Debug.Log("Charges reloaded. Current charges: " + currentCharges);
+            UpdateArrowChargesUI(); // Обновляем UI после перезарядки
         }
 
         public bool IsFireball()
@@ -170,6 +177,14 @@ namespace RPG.Combat
         public int GetCurrentCharges()
         {
             return currentCharges;
+        }
+
+        private void UpdateArrowChargesUI()
+        {
+            if (uiManager != null)
+            {
+                uiManager.arrowCharges.text = currentCharges.ToString();
+            }
         }
     }
 }

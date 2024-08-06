@@ -56,6 +56,7 @@ public class UIManager : MonoBehaviour
     [Header("Information Icon")]
     [SerializeField] private GameObject IconMapPanel;
     [SerializeField] private TMPro.TMP_Text IconMapText;
+    [SerializeField] private GameObject TestNotAvaible;
 
     [Header("QuestSector")]
     [SerializeField] private Image _btnQuestBack;
@@ -151,6 +152,10 @@ public class UIManager : MonoBehaviour
 
         // ?????????? ?????? ?? UIManager ? UIFastTest
         fastTestUI.SetUIManager(this);
+        if (weapon != null)
+        {
+            weapon.OnShotFired += UpdateArrowCharges;
+        }
     }
 
     private void Start()
@@ -439,7 +444,22 @@ public class UIManager : MonoBehaviour
         arrowCharges.text = weapon.GetCurrentCharges().ToString();
     }
 
-
+    private void OnDestroy()
+    {
+        // Отписка от события при уничтожении объекта
+        if (weapon != null)
+        {
+            weapon.OnShotFired -= UpdateArrowCharges;
+        }
+    }
+    private void UpdateArrowCharges()
+    {
+        // Обновление текста количества стрел
+        if (arrowCharges != null)
+        {
+            arrowCharges.text = weapon.GetCurrentCharges().ToString();
+        }
+    }
     private void OnClickActivatePanel()
     {
         // Активируем панель
@@ -456,7 +476,34 @@ public class UIManager : MonoBehaviour
         if (_btnQuestBack.enabled)
             _btnQuestBack.transform.Rotate(Vector3.forward, 25 * Time.deltaTime);
     }
+    private IEnumerator ShowTestNotAvailable()
+    {
+        // Активируем объект
+        TestNotAvaible.SetActive(true);
 
+        // Ждем 2 секунды
+        yield return new WaitForSeconds(2);
+
+        // Делаем объект прозрачным за 2 секунды
+        CanvasGroup canvasGroup = TestNotAvaible.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = TestNotAvaible.AddComponent<CanvasGroup>();
+        }
+        for (float t = 0; t < 1; t += Time.deltaTime / 2)
+        {
+            canvasGroup.alpha = 1 - t;
+            yield return null;
+        }
+
+        // Деактивируем объект
+        TestNotAvaible.SetActive(false);
+    }
+
+    public void TriggerTestNotAvailable()
+    {
+        StartCoroutine(ShowTestNotAvailable());
+    }
     private void OnClickMaxZoom() => followCamera.MaxZoom();
     private void OnClickMinZoom() => followCamera.MinZoom();
 }

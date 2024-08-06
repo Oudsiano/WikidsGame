@@ -10,9 +10,13 @@ public class TestTableGenerator : MonoBehaviour
 {
     public TMP_Text outputText; // TMP_Text ??? ??????????? ???????
     public ScrollRect scrollRect; // ScrollRect ??? ????????? ?????????
+    private UIManager uiManager;
 
     private void Start()
     {
+        // ???????? ?????? ?? UIManager
+        uiManager = FindObjectOfType<UIManager>();
+
         // ????????? ???????? ???????
         DataTable testTable = GenerateTestTable();
 
@@ -45,6 +49,10 @@ public class TestTableGenerator : MonoBehaviour
         else
         {
             Debug.LogError("No tests available");
+            if (uiManager != null)
+            {
+                uiManager.TriggerTestNotAvailable();
+            }
         }
 
         return table;
@@ -84,3 +92,4 @@ public class TestTableGenerator : MonoBehaviour
         outputText.text = result;
     }
 }
+

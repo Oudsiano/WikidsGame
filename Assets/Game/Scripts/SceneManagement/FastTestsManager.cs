@@ -4,6 +4,8 @@ using System.Linq;
 using System.Collections;
 using UnityEngine;
 using RPG.Core;
+using TMPro;
+using DG.Tweening;
 
 public class OneFastTest
 {
@@ -1317,10 +1319,36 @@ public class FastTestsManager
 
     public void WasAttaked(Health target)
     {
+        if (AvaliableTestsNow == null)
+        {
+            Debug.LogError("AvaliableTestsNow is null");
+            IGame.Instance.UIManager.DisplayEmptyTestMessage(); // Вызов нового метода
+            return;
+        }
+
+        if (IGame.Instance == null)
+        {
+            Debug.LogError("IGame.Instance is null");
+            return;
+        }
+
+        if (IGame.Instance.UIManager == null)
+        {
+            Debug.LogError("IGame.Instance.UIManager is null");
+            return;
+        }
+
         if (AvaliableTestsNow.Count > 0)
         {
             IGame.Instance.UIManager.RegenFastTestUI(0, AvaliableTestsNow.Count, target);
         }
-        else target.MissFastTest();
+        else
+        {
+            target.MissFastTest();
+            Debug.Log("Нет доступных тестов");
+        }
     }
+
+
+
 }

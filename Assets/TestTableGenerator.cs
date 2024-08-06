@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,10 +50,8 @@ public class TestTableGenerator : MonoBehaviour
         else
         {
             Debug.LogError("No tests available");
-            if (uiManager != null)
-            {
-                uiManager.TriggerTestNotAvailable();
-            }
+            FindAndFadeFastTextSavePoint("??? ????????? ??????");
+            Debug.Log("?????");
         }
 
         return table;
@@ -91,5 +90,52 @@ public class TestTableGenerator : MonoBehaviour
         // ????????? ??????????? ?????? ? ????????? ?????????
         outputText.text = result;
     }
+    public void FindAndFadeFastTextSavePoint(string newText)
+    {
+        GameObject fastTextSavePoint = FindInactiveObjectByName("NotAvaibleTest");
+
+        if (fastTextSavePoint != null)
+        {
+            Transform messageTextTransform = fastTextSavePoint.transform.Find("MessageText");
+            if (messageTextTransform != null)
+            {
+                TextMeshProUGUI textMeshPro = messageTextTransform.GetComponent<TextMeshProUGUI>();
+                if (textMeshPro != null)
+                {
+                    textMeshPro.text = newText;
+                }
+            }
+
+            CanvasGroup canvasGroup = fastTextSavePoint.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = fastTextSavePoint.AddComponent<CanvasGroup>();
+            }
+
+            canvasGroup.DOKill();
+
+            fastTextSavePoint.SetActive(true);
+            canvasGroup.alpha = 1; // Ensure alpha is reset to 1 before fading
+            canvasGroup.DOFade(0, 1).SetDelay(2).OnComplete(() =>
+            {
+                fastTextSavePoint.SetActive(false);
+                canvasGroup.alpha = 1; // Reset alpha for next use
+            });
+        }
+    }
+
+    private GameObject FindInactiveObjectByName(string name)
+    {
+        Transform[] allObjects = Resources.FindObjectsOfTypeAll<Transform>();
+        foreach (Transform obj in allObjects)
+        {
+            if (obj.name == name && obj.hideFlags == HideFlags.None)
+            {
+                return obj.gameObject;
+            }
+        }
+        return null;
+    }
+
 }
 

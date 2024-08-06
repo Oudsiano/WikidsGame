@@ -11,6 +11,8 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using static LevelChangeObserver;
 using RPG.Combat;
+using DG.Tweening;
+
 public class UIManager : MonoBehaviour
 {
     public DeathUI DeathUI;
@@ -57,6 +59,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject IconMapPanel;
     [SerializeField] private TMPro.TMP_Text IconMapText;
     [SerializeField] private GameObject TestNotAvaible;
+    [SerializeField] private GameObject ForAttackTest;
+
 
     [Header("QuestSector")]
     [SerializeField] private Image _btnQuestBack;
@@ -476,34 +480,39 @@ public class UIManager : MonoBehaviour
         if (_btnQuestBack.enabled)
             _btnQuestBack.transform.Rotate(Vector3.forward, 25 * Time.deltaTime);
     }
-    private IEnumerator ShowTestNotAvailable()
+
+    public void DisplayEmptyTestMessage()
     {
-        // Активируем объект
-        TestNotAvaible.SetActive(true);
+        Debug.Log("Тесты пусты");
 
-        // Ждем 2 секунды
-        yield return new WaitForSeconds(2);
-
-        // Делаем объект прозрачным за 2 секунды
-        CanvasGroup canvasGroup = TestNotAvaible.GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
+        // Убедитесь, что объект ForAttackTest существует
+        if (ForAttackTest != null)
         {
-            canvasGroup = TestNotAvaible.AddComponent<CanvasGroup>();
-        }
-        for (float t = 0; t < 1; t += Time.deltaTime / 2)
-        {
-            canvasGroup.alpha = 1 - t;
-            yield return null;
-        }
+            // Найдите CanvasGroup, если он уже существует, или добавьте его, если его нет
+            CanvasGroup canvasGroup = ForAttackTest.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = ForAttackTest.AddComponent<CanvasGroup>();
+            }
 
-        // Деактивируем объект
-        TestNotAvaible.SetActive(false);
+            // Убедитесь, что все предыдущие анимации остановлены
+            canvasGroup.DOKill();
+
+            // Активируйте объект и установите прозрачность на 1
+            ForAttackTest.SetActive(true);
+            canvasGroup.alpha = 1;
+
+            // Начните анимацию исчезновения
+            canvasGroup.DOFade(0, 1).SetDelay(2).OnComplete(() =>
+            {
+                // Деактивируйте объект и восстановите прозрачность
+                ForAttackTest.SetActive(false);
+                canvasGroup.alpha = 1;
+            });
+        }
     }
 
-    public void TriggerTestNotAvailable()
-    {
-        StartCoroutine(ShowTestNotAvailable());
-    }
+
     private void OnClickMaxZoom() => followCamera.MaxZoom();
     private void OnClickMinZoom() => followCamera.MinZoom();
 }

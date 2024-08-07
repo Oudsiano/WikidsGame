@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 [System.Serializable]
 public enum QuestType
 {
@@ -11,7 +12,7 @@ public enum QuestType
     toSpeekNPC,
     killSpecialEnemy,
     completeSpecialTest,
-
+    killArcher,
 }
 
 public enum QuestAwardType
@@ -33,17 +34,16 @@ public class QuestManager : MonoBehaviour
 
     private List<int> needRepeatTestQuests = new List<int>();
 
-    //public static event Action KillEnemy;
     private bool alreadyDelegated;
 
     public void Awake()
     {
-        //GenListQuests();
-        //SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+        Init();
     }
+
     private void OnDestroy()
     {
-        //SceneManager.sceneLoaded -= SceneLoader_LevelChanged;
+        SceneManager.sceneLoaded -= SceneLoader_LevelChanged;
     }
 
     public void Init()
@@ -63,17 +63,14 @@ public class QuestManager : MonoBehaviour
         {
             if (item.thisQuestData.compliteWaitAward)
                 if (!item.thisQuestData.fullComplite)
-                return true;
+                    return true;
         }
-
-            return false;
+        return false;
     }
 
     private void GenListQuests()
     {
         QuestsInScene = new List<UiOneQuestElement>();
-        //_QuestsForThisScene = FindObjectOfType<QuestsForThisScene>();
-
         _AllQuestsInGame = FindObjectOfType<AllQuestsInGame>();
         sceneWithTestsID = FindObjectOfType<SceneWithTestsID>();
 
@@ -107,17 +104,6 @@ public class QuestManager : MonoBehaviour
                 }
             }
         }
-
-
-        /*if (_QuestsForThisScene != null)
-        {
-            foreach (var quest in _QuestsForThisScene.QuestsThisScene)
-            {
-                if (IGame.Instance.dataPLayer.playerData.completedQuests == null) continue;
-                if (IGame.Instance.dataPLayer.playerData.completedQuests.Contains(quest.name)) continue;
-                thisQuestsScene.Add(quest);
-            }
-        }*/
 
         if (IGame.Instance.UIManager.QuestsContentScrollRect != null && IGame.Instance.UIManager.QuestsContentScrollRect.content != null)
         {
@@ -158,11 +144,9 @@ public class QuestManager : MonoBehaviour
                 NotExitQuests.SetActive(false);
                 IGame.Instance.UIManager.UpdateGreyBtnQuest(false);
             }
-
         }
         IGame.Instance.UIManager.UpdateQuestBackImg();
     }
-
 
     public void StartNewQuest(OneQuest quest)
     {
@@ -175,9 +159,9 @@ public class QuestManager : MonoBehaviour
             QuestsInScene.Add(questElement);
         }
     }
+
     public void StartNewQuestIfNot(OneQuest quest)
     {
-        //if quest not exist before
         foreach (var item in QuestsInScene)
         {
             if (item.quest.name == quest.name)
@@ -220,11 +204,15 @@ public class QuestManager : MonoBehaviour
                 item.addOneProcess();
             }
 
-            if (item.QuestType == QuestType.killSpecialEnemy)
-                if (item.quest.specialEnemyName == name)
-                {
-                    item.addOneProcess();
-                }
+            if (item.QuestType == QuestType.killSpecialEnemy && item.quest.specialEnemyName == name)
+            {
+                item.addOneProcess();
+            }
+
+            if (item.QuestType == QuestType.killArcher && name == "Archer") // ???????? ??? ?????? ???? ??????
+            {
+                item.addOneProcess();
+            }
         }
     }
 

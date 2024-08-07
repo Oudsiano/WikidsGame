@@ -25,15 +25,10 @@ public class UiOneQuestElement : MonoBehaviour
     public OneQuestData thisQuestData;
     public OneQuest quest;
 
-
-
-
     RectTransform rtimgProcess;
     Vector2 sizeDeltaImgProcess;
 
-    //Для начатых бесед условия
     public List<string> ListNeedStartConversations;
-    //для различных элементов лист выполнения условия
     private List<bool> pointSuccess;
 
     public QuestType QuestType { get => thisQuestData.questType; set => thisQuestData.questType = value; }
@@ -53,7 +48,7 @@ public class UiOneQuestElement : MonoBehaviour
             thisQuestData.targetProcess = quest.IdTests.Count;
         }
 
-            rtimgProcess = imgProcess.GetComponent<RectTransform>();
+        rtimgProcess = imgProcess.GetComponent<RectTransform>();
         sizeDeltaImgProcess = rtimgProcess.sizeDelta;
 
         if (quest.questType == QuestType.toSpeekNPC)
@@ -82,16 +77,15 @@ public class UiOneQuestElement : MonoBehaviour
             default:
                 break;
         }
-        SetUnfinushed();
+        SetUnfinished();
 
         button.onClick.AddListener(OnClickBtn);
 
-        if (IGame.Instance.dataPlayer.playerData.startedQuests!= null && IGame.Instance.dataPlayer.playerData.startedQuests.ContainsKey(quest.name))
+        if (IGame.Instance.dataPlayer.playerData.startedQuests != null && IGame.Instance.dataPlayer.playerData.startedQuests.ContainsKey(quest.name))
         {
             thisQuestData = IGame.Instance.dataPlayer.playerData.startedQuests[quest.name];
-            CheckUpdateAndComplite(false);
+            CheckUpdateAndComplete(false);
         }
-
     }
 
     private void OnClickBtn()
@@ -130,16 +124,15 @@ public class UiOneQuestElement : MonoBehaviour
         {
             dataPlayer.playerData.completedQuests.Add(quest.name);
             IGame.Instance.gameAPI.SaveUpdater();
-            IGame.Instance.gameAPI.SaveUpdater();
         }
     }
 
     internal void CheckTestCount()
     {
-        CheckUpdateAndComplite(false);
+        CheckUpdateAndComplete(false);
     }
 
-    private void CheckUpdateAndComplite(bool withSave=true)
+    private void CheckUpdateAndComplete(bool withSave = true)
     {
         if (withSave)
         {
@@ -153,6 +146,7 @@ public class UiOneQuestElement : MonoBehaviour
         switch (QuestType)
         {
             case QuestType.killEnemy:
+            case QuestType.killArcher: // ????????? ?????? ???? ??????
                 updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
             case QuestType.toSpeekNPC:
@@ -172,18 +166,15 @@ public class UiOneQuestElement : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogError("V perechislenii testov oshibka");
+                        Debug.LogError("?????? ? ???????????? ??????");
                     }
                 }
-
-
-                    updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
+                updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
             default:
                 updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
         }
-
 
         if (thisQuestData.currentProcess >= thisQuestData.targetProcess)
         {
@@ -196,14 +187,16 @@ public class UiOneQuestElement : MonoBehaviour
     {
         if (!thisQuestData.alreadyStarted) return;
         thisQuestData.currentProcess = count;
-        CheckUpdateAndComplite();
+        CheckUpdateAndComplete();
     }
+
     public void addOneProcess()
     {
         if (!thisQuestData.alreadyStarted) return;
         thisQuestData.currentProcess++;
-        CheckUpdateAndComplite();
+        CheckUpdateAndComplete();
     }
+
     public void startedConversation(ConversationStarter conversationStarter)
     {
         if (!thisQuestData.alreadyStarted) return;
@@ -219,12 +212,12 @@ public class UiOneQuestElement : MonoBehaviour
                 }
             }
         }
-        //thisQuestData.currentProcess = 0;
+
         foreach (var item in pointSuccess)
         {
             if (item) thisQuestData.currentProcess++;
         }
-        CheckUpdateAndComplite();
+        CheckUpdateAndComplete();
     }
 
     private void updateProcess(float c, float t)
@@ -233,6 +226,7 @@ public class UiOneQuestElement : MonoBehaviour
         sizeDeltaImgProcess.x = Mathf.Min(c / t * 900, 900);
         rtimgProcess.sizeDelta = sizeDeltaImgProcess;
     }
+
     private void SetFinished()
     {
         thisQuestData.compliteWaitAward = true;
@@ -241,7 +235,7 @@ public class UiOneQuestElement : MonoBehaviour
         imgCheck.gameObject.SetActive(true);
     }
 
-    private void SetUnfinushed()
+    private void SetUnfinished()
     {
         thisQuestData.compliteWaitAward = false;
         button.GetComponent<Image>().color = new Color(0.9529412f, 0.8073038f, 0.7686275f);
@@ -267,11 +261,9 @@ public class UiOneQuestElement : MonoBehaviour
             uiElement.SetActive(false);
         });
 
-        sequence.OnUpdate(()=>
+        sequence.OnUpdate(() =>
         {
             vertLGrroup.SetLayoutVertical();
         });
     }
-
-
 }

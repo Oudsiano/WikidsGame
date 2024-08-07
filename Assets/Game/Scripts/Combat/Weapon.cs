@@ -100,22 +100,19 @@ namespace RPG.Combat
             return description;
         }
 
-        public void SpawnProjectile(Transform target, Transform rightHand, Transform leftHand)
+        public void SpawnProjectile(Transform target, Transform rightHand, Transform leftHand, bool isPlayer)
         {
-            if (ConsumeCharge())
-            {
-                var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
-                proj.SetTarget(target, weaponDamage);
-
-                AudioManager.instance.PlaySound("Shot");
-                OnShotFired?.Invoke(); // Вызов события
-            }
-            else
+            if (isPlayer && !ConsumeCharge())
             {
                 Debug.Log("Out of charges!");
-                // Здесь можно добавить логику для уведомления игрока, что заряды закончились
-                OnOutOfCharges();
+                return;
             }
+
+            var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
+            proj.SetTarget(target, weaponDamage);
+
+            AudioManager.instance.PlaySound("Shot");
+            OnShotFired?.Invoke(); // Вызов события
         }
 
         public bool ConsumeCharge()

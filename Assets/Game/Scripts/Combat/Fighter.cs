@@ -72,6 +72,7 @@ namespace RPG.Combat
             if (equippedWeapon != null)
                 equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
+
         public void SetBow()
         {
             if (anim == null)
@@ -173,7 +174,7 @@ namespace RPG.Combat
                 anim.SetTrigger("attack");
 
                 if (equippedWeapon.IsRanged())
-                    equippedWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition);
+                    equippedWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition, isPlayer);
 
                 timer = 0;
             }
@@ -183,7 +184,7 @@ namespace RPG.Combat
         {
             anim.ResetTrigger("stopAttack");
             anim.SetTrigger("attack");
-            fireballWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition);
+            fireballWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition, isPlayer);
         }
 
         public void Cancel()

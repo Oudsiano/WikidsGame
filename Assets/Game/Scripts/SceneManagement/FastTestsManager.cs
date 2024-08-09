@@ -122,7 +122,7 @@ public class FastTestsManager
             "Романы и рассказы",
             "Энциклопедии",
             "Научные труды",
-            2,
+            1,
             7933
             );
         AllFastTests.Add(currentTest);

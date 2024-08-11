@@ -5,6 +5,7 @@ using RPG.Core;
 using RPG.Movement;
 using RPG.Combat;
 using FarrokhGames.Inventory.Examples;
+using System.Linq;
 
 public class WeaponArmorManager : MonoBehaviour
 {
@@ -19,13 +20,21 @@ public class WeaponArmorManager : MonoBehaviour
     public List<Weapon> AllWeaponsInGame { get => allWeaponsInGame; set => allWeaponsInGame = value; }
     public List<Armor> AllArmorsInGame { get => allArmorsInGame; set => allArmorsInGame = value; }
 
+    public PickableEquip dafaultPrefab;
+
     public Armor GerArmorById(armorID armrId)
     {
         return allArmorsInGame.Find((item) => item.ArmorName == armrId);
     }
 
+    public bool IsWeaponInGame(string name)
+    {
+        return allWeaponsInGame.Any(item => item.name == name);
+    }
+
     public Weapon TryGetWeaponByName(string _name)
     {
+        if (_name == "" || _name==null) _name = "Unarmed";
         foreach (var item in allWeaponsInGame)
         {
             if (item.name == _name)
@@ -55,6 +64,11 @@ public class WeaponArmorManager : MonoBehaviour
                 return item;
         }
         foreach (var item in allArmorsInGame)
+        {
+            if (item.name == _name)
+                return item;
+        }
+        foreach (var item in IGame.Instance.QuestManager.allQuestsItems)
         {
             if (item.name == _name)
                 return item;

@@ -4,9 +4,8 @@ using RPG.Movement;
 using RPG.Combat;
 using RPG.Core;
 using DialogueEditor;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine.SceneManagement;
 
 namespace RPG.Controller
 {
@@ -19,15 +18,20 @@ namespace RPG.Controller
         private Health health; // Компонент, отвечающий за здоровье игрока
 
         public PlayerArmorManager playerArmorManager;
-
+        [SerializeField] GameObject invizVFXPrefab;
+        [SerializeField] GameObject exitInvizVFXPrefab;
+        [SerializeField] AudioSource invizAudioSource; // Звуковой компонент для входа в невидимость
+        [SerializeField] AudioSource exitInvizAudioSource; // Звуковой компонент для выхода из невидимости
         public WeaponPanelUI WeaponPanelUI;
-        public PlayerUIManager PlayerUIManager;
 
         public GameObject modularCharacter;
 
         private int enemyLayer = 9; // Номер слоя для врагов
 
         private List<Fighter> allEnemyes;
+        private bool _currentInvisState = false; // невидимость (Стелс) выключена
+
+        private GameObject activeInvizVFX; // Текущий активный VFX объект для невидимости
 
         // Метод Start вызывается перед первым обновлением кадра
         public void Init()
@@ -38,44 +42,91 @@ namespace RPG.Controller
             health = GetComponent<Health>();
             playerArmorManager = FindObjectOfType<PlayerArmorManager>();
 
-
             WeaponPanelUI = FindObjectOfType<WeaponPanelUI>();
-            PlayerUIManager = FindObjectOfType<PlayerUIManager>();
-
             WeaponPanelUI.Init();
-            PlayerUIManager.Init();
 
-            RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
+            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+            IGame.Instance.saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }
 
-        private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)
+        private void SaveGame_OnOnLoadItems()
+        {
+            fighter.EquipItem(IGame.Instance.saveGame.EquipedArmor);
+            fighter.EquipItem(IGame.Instance.saveGame.EquipedWeapon);
+        }
+
+        private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode)
         {
             IGame.Instance.saveGame.MakeLoad();
-
-            //Начало работы над автоатакой. Типа сначала получаем всех врагов, а потом будем смотреть, есть ли кто рядом. Но сейчас пока задача отложенна ради более важных
-            //allEnemyes = new List<Fighter>();
-            //allEnemyes = FindObjectsOfType<Fighter>().ToList();
-
             EquipWeaponAndArmorAfterLoad();
         }
 
         public Health GetHealth() => health;
         public Fighter GetFighter() => fighter;
 
+        public bool GetPlayerInvis()
+        {
+            return _currentInvisState;
+        }
 
+        public void SetInvisByBtn(bool invis)
+        {
+            if (_currentInvisState == invis) return;
+            _currentInvisState = invis;
+            if (invis)
+            {
+                // Создание VFX для входа в невидимость
+                activeInvizVFX = PlayVFX(invizVFXPrefab);
+                if (invizAudioSource != null)
+                {
+                    invizAudioSource.Play();
+                }
+            }
+            else
+            {
+                // Уничтожение VFX для невидимости и создание VFX для выхода из невидимости
+                if (activeInvizVFX != null)
+                {
+                    Destroy(activeInvizVFX);
+                }
+                PlayVFX(exitInvizVFXPrefab);
+                if (exitInvizAudioSource != null)
+                {
+                    exitInvizAudioSource.Play();
+                }
+            }
+        }
+
+        private GameObject PlayVFX(GameObject vfxPrefab)
+        {
+            if (vfxPrefab == null) return null;
+            GameObject vfxInstance = Instantiate(vfxPrefab, transform.position, transform.rotation, transform);
+            ParticleSystem vfx = vfxInstance.GetComponent<ParticleSystem>();
+            if (vfx != null)
+            {
+                vfx.Play();
+                if (!vfx.main.loop)
+                {
+                    Destroy(vfxInstance, vfx.main.duration);
+                }
+            }
+            return vfxInstance;
+        }
 
         public void EquipWeaponAndArmorAfterLoad()
         {
-            if (IGame.Instance.dataPLayer.playerData.weaponToLoad.Length > 1)
+            if (IGame.Instance.dataPlayer.playerData.weaponToLoad.Length > 1)
             {
-                fighter.EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPLayer.playerData.weaponToLoad));
+                fighter.EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPlayer.playerData.weaponToLoad));
             }
-            IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPLayer.playerData.armorIdToload).EquipIt();
+            IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPlayer.playerData.armorIdToload).EquipIt();
         }
 
         // Метод Update вызывается один раз за кадр
         void Update()
         {
+            if (pauseClass.GetPauseState()) return;
+
             // Если игрок мертв, прекращаем выполнение метода
             if (health.IsDead())
                 return;
@@ -158,7 +209,6 @@ namespace RPG.Controller
                             readyToGo = false;
 
                     if (readyToGo)
-
                         mover.StartMoveAction(hit.point);
                 }
 

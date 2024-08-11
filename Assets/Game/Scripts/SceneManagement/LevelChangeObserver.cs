@@ -11,6 +11,7 @@ public class LevelChangeObserver : MonoBehaviour
 {
     public enum allScenes
     {
+        //Сцены только дописывать в конец. Не менять порядок, не удалять, даже если их больше нет в игре.
         emptyScene,
         regionSCene,
         battle1,
@@ -19,6 +20,7 @@ public class LevelChangeObserver : MonoBehaviour
         holl,
         battleScene1,
         BS3,
+        VikingScene,
 
     }
 
@@ -36,16 +38,11 @@ public class LevelChangeObserver : MonoBehaviour
 
     public Dictionary<allScenes, string> DAllScenes;
 
-    /*Vector3[] spawnPointsSavePoint = new Vector3[]
-    {
-        new Vector3(196.570007f,-23.9200001f,36.7700005f),
-        new Vector3(151.440002f,-18.0779991f,-20.8799992f),
-        new Vector3(125.93f,-15.4200001f,-87.1699982f),
-        new Vector3(79.8099976f,-16.1599998f,3.08999991f),
-        new Vector3(27.9099998f,-24.5699997f,100.440002f)
-    };*/
+    private Dictionary<allScenes, bool> dictForInfected = new Dictionary<allScenes, bool>(); //типа зеленые/красные кнопки в сыборе локации сюда запишутся дополнительно
 
     [SerializeField] DataPlayer data;
+
+    public Dictionary<allScenes, bool> DictForInfected { get => dictForInfected; set => dictForInfected = value; }
 
     public void Init()
     {
@@ -61,6 +58,22 @@ public class LevelChangeObserver : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    public allScenes GetCuurentSceneId()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        // Ищем объект OneScene, соответствующий текущей сцене
+        foreach (var sceneInfo in AllScenes)
+            if (sceneInfo.fileScene == currentSceneName)
+                return sceneInfo.IdScene;
+
+        // Если сцена не найдена в списке, можно вернуть null или выполнить другую логику
+        if (currentSceneName!= "OpenScene")
+        Debug.LogError("ErRrOrR Current scene info not found in AllScenes list: " + currentSceneName);
+        return allScenes.emptyScene;
+    }
+
+
     private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
         allScenes newLevel = allScenes.emptyScene;
@@ -73,7 +86,7 @@ public class LevelChangeObserver : MonoBehaviour
         }
         if (SavePointsManager.AllSavePoints.Count > 0)
         {
-            Vector3 posThere = SavePointsManager.AllSavePoints[IGame.Instance.dataPLayer.playerData.spawnPoint].transform.position;
+            Vector3 posThere = SavePointsManager.AllSavePoints[IGame.Instance.dataPlayer.playerData.spawnPoint].transform.position;
             UpdatePlayerLocation(posThere);
         }
         else
@@ -89,7 +102,7 @@ public class LevelChangeObserver : MonoBehaviour
             //UpdatePlayerLocation(spawnPoints[newLevel]);
         }
 
-        SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPLayer,true);
+        SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPlayer,true);
         MainPlayer.Instance.ResetCountEergy();
 
         IGame.Instance.gameAPI.SaveUpdater();

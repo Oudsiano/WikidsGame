@@ -6,5 +6,6 @@ namespace FarrokhGames.Inventory.Examples
         Weapons,
         Consume,
         Armor,
+        QuestItem,
     }
 }

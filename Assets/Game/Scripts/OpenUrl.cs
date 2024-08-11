@@ -1,3 +1,4 @@
+using DialogueEditor;
 using UnityEngine;
 
 public class OpenURL : MonoBehaviour

@@ -241,7 +241,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickupAxe Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -8038202884318622124, guid: 4c4090dbe13f20845ade2955a6c38a21, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2024164608871745493, guid: 4c4090dbe13f20845ade2955a6c38a21,
@@ -257,6 +258,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4737896794501538129}
+    - targetCorrespondingSourceObject: {fileID: 8850688159232812749, guid: 4c4090dbe13f20845ade2955a6c38a21,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634883042683090092}
   m_SourcePrefab: {fileID: 100100000, guid: 4c4090dbe13f20845ade2955a6c38a21, type: 3}
 --- !u!1 &3471820478102605208 stripped
 GameObject:
@@ -279,6 +284,20 @@ MonoBehaviour:
   rotationAxis: {x: 0, y: 1, z: 0}
   rotationDuration: 5
   easeType: 1
+--- !u!114 &1634883042683090092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3471820478102605208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bab17c746a34cb4f8a59d784edf79f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: ffb74ce10e58a40848f605574f502b71, type: 2}
+  respawnTime: 20
 --- !u!4 &6263048393931598976 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2024164608871745493, guid: 4c4090dbe13f20845ade2955a6c38a21,

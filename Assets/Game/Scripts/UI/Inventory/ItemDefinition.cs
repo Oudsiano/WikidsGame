@@ -14,7 +14,21 @@ namespace FarrokhGames.Inventory.Examples
         [SerializeField] private ItemType _type = ItemType.Consume;
         [SerializeField] private bool _canDrop = true;
         [SerializeField, HideInInspector] private Vector2Int _position = Vector2Int.zero;
+        [SerializeField] private bool _onlyOne = false;
+        [SerializeField, HideInInspector] private int _countItems = 1;
+        [Header("Item Description")]
+        [SerializeField] [TextArea] private string itemDescription; // Переименовано для уникальности
 
+        public int CountItems
+        {
+            get => _countItems;
+            set
+            {
+                _countItems = value;
+            }
+        }
+
+        public bool onlyOne => _onlyOne;
 
         public int price => PriceCoins;
 
@@ -53,12 +67,15 @@ namespace FarrokhGames.Inventory.Examples
         /// <inheritdoc />
         public bool canDrop => _canDrop;
 
-
+        /// <summary>
+        /// Public property to access the description
+        /// </summary>
+        public string Description => itemDescription;
 
         /// <summary>
         /// Creates a copy if this scriptable object
         /// </summary>
-        public IInventoryItem CreateInstance()
+        public ItemDefinition CreateInstance()
         {
             var clone = ScriptableObject.Instantiate(this);
             clone.name = clone.name.Substring(0, clone.name.Length - 7); // Remove (Clone) from name

@@ -119,7 +119,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickupRapier Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -8038202884318622124, guid: 4c4090dbe13f20845ade2955a6c38a21, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2024164608871745493, guid: 4c4090dbe13f20845ade2955a6c38a21,
@@ -131,6 +132,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2881900833339107764}
+    - targetCorrespondingSourceObject: {fileID: 8850688159232812749, guid: 4c4090dbe13f20845ade2955a6c38a21,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2059485815199733403}
   m_SourcePrefab: {fileID: 100100000, guid: 4c4090dbe13f20845ade2955a6c38a21, type: 3}
 --- !u!4 &2704274384496733526 stripped
 Transform:
@@ -159,6 +164,20 @@ MonoBehaviour:
   rotationAxis: {x: 0, y: 1, z: 0}
   rotationDuration: 5
   easeType: 1
+--- !u!114 &2059485815199733403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4846770648933567566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bab17c746a34cb4f8a59d784edf79f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: a0e4f3572c655324c9c968ddc6ab7605, type: 2}
+  respawnTime: 20
 --- !u!1001 &5515906063961018592
 PrefabInstance:
   m_ObjectHideFlags: 0

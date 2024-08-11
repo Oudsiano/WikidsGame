@@ -1,7 +1,6 @@
 using RPG.Combat;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -16,22 +15,26 @@ namespace RPG.Core
         private bool removed = false; // Флаг, указывающий, что существо было удалено
         private int isAtackedInlast5sec = 0;
         private bool isPlayer = false;
+        private BossNPC bossNPC; //if exist
         public Slider healthBar; // Ссылка на полосу здоровья в пользовательском интерфейсе
 
-        // Примечание: в настоящее время значение здоровья при загрузке новой сцены перезаписывается этим методом
-        // из-за порядка выполнения сценариев
+        // Событие, которое будет вызываться при смерти персонажа
+        public event Action OnDeath;
+
+        public GameObject redHalfCircle;
+
+        public BossNPC BossNPC { get => bossNPC; set => bossNPC = value; }
+
         void Start()
         {
             currentHealth = maxHealth; // Устанавливаем текущее здоровье в максимальное значение при старте
             healthBar.value = currentHealth; // Устанавливаем значение полосы здоровья в текущее здоровье
 
-            isPlayer = gameObject.GetComponent("MainPlayer");
+            isPlayer = gameObject.GetComponent<MainPlayer>() != null;
 
             if (isPlayer)
-            StartCoroutine(HeallUpPLayer());
+                StartCoroutine(HeallUpPLayer());
         }
-
-
 
         private IEnumerator HeallUpPLayer()
         {
@@ -54,29 +57,75 @@ namespace RPG.Core
         {
             currentHealth = Mathf.Min(currentHealth + heal, maxHealth);
         }
+
+
+        public void MissFastTest()
+        {
+            Fighter fighter = GetComponent<Fighter>();
+            if (fighter != null)
+            {
+                fighter.target = IGame.Instance.playerController.GetHealth();
+            }
+        }
+
+
+        public void AttackFromBehind(bool alreadyNeedKill)
+        {
+            if (alreadyNeedKill)
+            {
+                TakeDamage(GetCurrentHealth());
+                return;
+            }
+            if (!isPlayer)
+                IGame.Instance.FastTestsManager.WasAttaked(this);
+        }
+
+
+
         // Метод для нанесения урона существу
         public void TakeDamage(float damage)
         {
+            if (isPlayer)
+            {
+                var tempRandom = UnityEngine.Random.Range(0, 9);
+                if (tempRandom > 6) //30%
+                {
+                    Dodge();
+                    return;
+                }
+            }
             currentHealth = Mathf.Max(currentHealth - damage, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0
 
             if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти
                 Die();
 
-            
             if (isPlayer)
                 isAtackedInlast5sec = 5;
             else
                 healthBar.value = currentHealth; // хил бар только у других. У пользователя свой отдельный скрипт
         }
 
+        private void Dodge()
+        {
+            GetComponent<Animator>().SetTrigger("dodge");
+        }
 
         // Метод для обработки смерти существа
         private void Die()
         {
+            if (redHalfCircle != null) redHalfCircle.SetActive(false);
+
             GetComponent<Animator>().SetTrigger("dead"); // Устанавливаем триггер смерти для аниматора
             isDead = true; // Устанавливаем флаг "мертв"
             GetComponent<ActionScheduler>().CancelAction(); // Отменяем действие, выполняемое действенным планировщиком
             RemoveProjectiles(); // Удаляем снаряды
+
+            // Вызов события при смерти персонажа
+            if (OnDeath != null)
+            {
+                OnDeath();
+            }
+
             if (!isPlayer)
             {
                 // Разрушаем/деактивируем объект
@@ -85,19 +134,35 @@ namespace RPG.Core
                     GetComponent<NavMeshAgent>().enabled = false; // Отключаем компонент навигации
                     removed = true; // Устанавливаем флаг "удален"
                 }
+
+                IGame.Instance.QuestManager.newKill();
+
+                QuestSpecialEnemyName SpecialEnemyName = GetComponent<QuestSpecialEnemyName>();
+                if (SpecialEnemyName != null)
+                {
+                    IGame.Instance.QuestManager.newKill(SpecialEnemyName.specialEnemyName);
+                }
+
                 Destroy(healthBar.gameObject);
+                LineRenderer lineRenderer = GetComponentInChildren<LineRenderer>();
+                if (lineRenderer != null)
+                {
+                    Destroy(lineRenderer.gameObject);
+                }
                 Destroy(this.gameObject, 5f); // Уничтожаем объект через 5 секунд после смерти
                 IGame.Instance.CoinManager.MakeGoldOnSceneWithCount(25, this.gameObject.transform.position);
 
                 var tempRandom = UnityEngine.Random.Range(0, 9);
                 if (tempRandom > 6) //30%
-                IGame.Instance.BottleManager.MakeBottleOnSceneWithCount(25, this.gameObject.transform.position);
-
-
+                    IGame.Instance.BottleManager.MakeBottleOnSceneWithCount(25, this.gameObject.transform.position);
             }
             else
             {
                 IGame.Instance.UIManager.DeathUI.ShowDeathScreen();
+                // Деактивируем необходимые компоненты
+                //GetComponent<NavMeshAgent>().enabled = false;
+                //GetComponent<Collider>().enabled = false;
+                //this.enabled = false; // Отключаем скрипт здоровья
             }
         }
 
@@ -137,6 +202,12 @@ namespace RPG.Core
                 Destroy(projectile.gameObject); // Уничтожаем снаряд
                 Debug.Log("hello"); // Выводим сообщение в консоль
             }
+        }
+
+        // Добавляем метод для получения текущего здоровья
+        public float GetCurrentHealth()
+        {
+            return currentHealth;
         }
     }
 }

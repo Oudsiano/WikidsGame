@@ -35,9 +35,9 @@ public class KeyBoardsEvents : MonoBehaviour
     {
         if (sceneState == SceneState.battle)
         {
-            if (IGame.Instance.playerController.PlayerUIManager.MapCanvas.gameObject.activeSelf)
+            if (IGame.Instance.UIManager.MapCanvas.gameObject.activeSelf)
             {
-                IGame.Instance.playerController.PlayerUIManager.MapCanvas.gameObject.SetActive(false);
+                IGame.Instance.UIManager.OnClickBtnCloseMap();
             }
             else
             switch (escState)

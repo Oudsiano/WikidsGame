@@ -5,166 +5,279 @@ using RPG.Movement;
 
 namespace RPG.Controller
 {
-    // Класс, отвечающий за управление искусственным интеллектом (ИИ)
     public class AIController : MonoBehaviour
     {
-        // Параметры ИИ
-        [SerializeField] private float chaseDistance = 5f; // Дистанция преследования игрока
-        [SerializeField] private float suspicionTimer = 10f; // Время подозрения
-        [SerializeField] private PatrolPath patrolPath; // Путь патрулирования
-        private int currentWayPointIndex = 0; // Индекс текущей точки пути
-        [SerializeField] private float tolerance = 1f; // Допуск для определения достижения точки
+        [SerializeField] private float chaseDistance = 5f;
+        [SerializeField] private float suspicionTimer = 10f;
+        [SerializeField] private PatrolPath patrolPath;
+        private int currentWayPointIndex = 0;
+        [SerializeField] private float tolerance = 1f;
 
-        // Время пребывания в каждой точке пути
         [SerializeField] private float minDwellTime;
         [SerializeField] private float maxDwellTime;
 
-        [SerializeField] private float currentDwellTime; // Время пребывания в текущей точке (для отладки)
+        [SerializeField] private float currentDwellTime;
 
-        // Переменные ИИ
-        private Vector3 lastKnownLocation; // Последнее известное местоположение игрока
-        private Vector3 guardLocation; // Местоположение патруля
-        private Quaternion guardRotation; // Начальное вращение патруля
-        [SerializeField] private float timeSinceLastSawPlayer = Mathf.Infinity; // Время с момента последней видимости игрока
+        private Vector3 lastKnownLocation;
+        private Vector3 guardLocation;
+        private Quaternion guardRotation;
+        [SerializeField] private float timeSinceLastSawPlayer = Mathf.Infinity;
+        [SerializeField] private float timeSinceLastHit = Mathf.Infinity;
 
-        // Кэшированные компоненты
         private Fighter fighter;
         private Mover mover;
         private Health health;
 
-        void Awake()
-        {
-            fighter = GetComponent<Fighter>(); // Получаем компонент Fighter
-            mover = GetComponent<Mover>(); // Получаем компонент Mover
-            health = GetComponent<Health>(); // Получаем компонент Health
+        private GameObject halfCircle;
+        private MeshRenderer halfCircleRenderer;
+        private MeshFilter halfCircleFilter;
 
-            guardLocation = transform.position; // Устанавливаем начальное местоположение патруля
-            guardRotation = transform.rotation; // Устанавливаем начальное вращение патруля
+        private float lastHealth;
+
+        private float startDistanceForShowIcon = 300f;
+        private float maxOpacity = 0.2f;  // Добавлено поле для максимальной непрозрачности
+
+        private void Awake()
+        {
+            fighter = GetComponent<Fighter>();
+            mover = GetComponent<Mover>();
+            health = GetComponent<Health>();
+
+            guardLocation = transform.position;
+            guardRotation = transform.rotation;
+
+            CreateHalfCircle();
+            health.redHalfCircle = halfCircle;
+
+            FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
         }
 
-        void Update()
+        private void OnDestroy()
         {
+            FollowCamera.OnCameraDistance -= FollowCamera_OnCameraDistance;
+        }
+
+        private void CreateHalfCircle()
+        {
+            halfCircle = new GameObject("HalfCircle");
+            halfCircle.layer = LayerMask.NameToLayer("Enemy");
+            halfCircle.transform.parent = transform;
+            halfCircle.transform.localPosition = new Vector3(0, 1, 0);
+            halfCircle.transform.localEulerAngles = new Vector3(0, 22, 180);
+
+            halfCircleRenderer = halfCircle.AddComponent<MeshRenderer>();
+            halfCircleFilter = halfCircle.AddComponent<MeshFilter>();
+            halfCircleFilter.mesh = CreateHalfCircleMesh(chaseDistance, 14);
+
+            halfCircleRenderer.material = new Material(Shader.Find("Standard"));
+            halfCircleRenderer.material.color = new Color(1, 0, 0, maxOpacity); // Используем maxOpacity
+            halfCircleRenderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            halfCircleRenderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            halfCircleRenderer.material.SetInt("_ZWrite", 0);
+            halfCircleRenderer.material.DisableKeyword("_ALPHATEST_ON");
+            halfCircleRenderer.material.DisableKeyword("_ALPHABLEND_ON");
+            halfCircleRenderer.material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+            halfCircleRenderer.material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        }
+
+        private Mesh CreateHalfCircleMesh(float radius, int segments)
+        {
+            Mesh mesh = new Mesh();
+
+            Vector3[] vertices = new Vector3[segments + 2];
+            int[] triangles = new int[segments * 3];
+
+            vertices[0] = Vector3.zero;
+            float angleStep = Mathf.PI*0.75f / segments;
+            for (int i = 0; i <= segments; i++)
+            {
+                float angle = i * angleStep;
+                vertices[i + 1] = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+            }
+
+            for (int i = 0; i < segments; i++)
+            {
+                triangles[i * 3] = 0;
+                triangles[i * 3 + 1] = i + 1;
+                triangles[i * 3 + 2] = i + 2;
+            }
+
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+
+            return mesh;
+        }
+
+        private void Update()
+        {
+            if (pauseClass.GetPauseState()) return;
+
             if (health.IsDead())
                 return;
 
-            if (DistanceToPlayer() < 40)
+            if (!IGame.Instance.playerController.GetPlayerInvis() && DistanceToPlayer() < 40)
             {
-                InteractWithCombat(); // Взаимодействие с боем (игроком)
+                InteractWithCombat();
             }
 
-            timeSinceLastSawPlayer += Time.deltaTime; // Обновляем время с момента последней видимости игрока
+            timeSinceLastSawPlayer += Time.deltaTime;
+            timeSinceLastHit += Time.deltaTime;
+
+            // Check if health has decreased, indicating a ranged attack
+            if (health.GetCurrentHealth() < lastHealth)
+            {
+                timeSinceLastHit = 0;
+                lastKnownLocation = MainPlayer.Instance.transform.position;
+                AttackBehavior();
+            }
+
+            // Update last health
+            lastHealth = health.GetCurrentHealth();
         }
 
-        // Расстояние до игрока
         private float DistanceToPlayer()
         {
-            return Mathf.Abs(Vector3.Distance(MainPlayer.Instance.transform.position, transform.position));
+            return Vector3.Distance(MainPlayer.Instance.transform.position, transform.position);
         }
 
-        // Взаимодействие с боем (игроком)
         private void InteractWithCombat()
         {
-            // Если игрок в пределах дистанции преследования и возможно атаковать
-            if (DistanceToPlayer() <= chaseDistance && fighter.CanAttack(MainPlayer.Instance.gameObject) || IsAttacked())
+            if (IsPlayerInSight() && DistanceToPlayer() <= chaseDistance && (fighter.CanAttack(MainPlayer.Instance.gameObject) || IsAttacked()))
             {
-                AttackBehavior(); // Атака игрока
+                if (IsPlayerBehind())
+                {
+                    // Игрок атакует со спины
+                    fighter.Hit();
+                }
+                else
+                {
+                    AttackBehavior();
+                }
             }
-            else if (suspicionTimer > timeSinceLastSawPlayer)
+            else if (suspicionTimer > timeSinceLastSawPlayer || timeSinceLastHit < 5f)
             {
-                SuspicionBehavior(); // Поведение при подозрении
+                SuspicionBehavior();
             }
             else
             {
-                PatrolBehavior(); // Патрулирование
+                PatrolBehavior();
             }
         }
 
-        // Проверка на атаку со стороны игрока
         private bool IsAttacked()
         {
             var player = MainPlayer.Instance;
             bool isAttacked = player.GetComponent<Fighter>().target == this.gameObject.GetComponent<Health>();
-            return (isAttacked);
+            return isAttacked;
         }
 
-        // Отрисовка гизмоны для обозначения дистанции преследования
-        private void OnDrawGizmos()
+        private bool IsPlayerInSight()
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, chaseDistance);
+            Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
+            float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
+
+            if (angleBetween <= 120f)
+            {
+                return true;
+            }
+            return false;
         }
 
-        // Поведение при патрулировании
+        private bool IsPlayerBehind()
+        {
+            Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
+            float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
+            
+            return angleBetween > 120; // Угол, определяющий, что игрок позади (например, > 135 градусов)
+        }
+
         private void PatrolBehavior()
         {
-            Vector3 nextPos = guardLocation; // Следующая позиция - начальное местоположение патруля
+            Vector3 nextPos = guardLocation;
 
-            // Если есть путь патрулирования
             if (patrolPath)
             {
-                // Если достигли текущей точки пути
                 if (AtWayPoint())
                 {
-                    // Уменьшаем время пребывания в текущей точке
                     if (currentDwellTime > 0)
                         currentDwellTime -= Time.deltaTime;
                     else
-                        GoToNextWayPoint(); // Переходим к следующей точке пути
+                        GoToNextWayPoint();
+                }
+                else
+                {
+                    // Randomly decide to change direction while moving
+                    if (Random.Range(0f, 1f) < 0.01f) // Adjust the probability as needed
+                    {
+                        GoToNextWayPoint();
+                    }
                 }
 
-                nextPos = GetCurrentWayPoint(); // Получаем позицию текущей точки пути
+                nextPos = GetCurrentWayPoint();
             }
 
-            mover.StartMoveAction(nextPos); // Начинаем движение к следующей позиции
+            mover.StartMoveAction(nextPos);
 
-            // Устанавливаем вращение патрулирующего объекта в начальное положение, если достигли точки
             if (!patrolPath && mover.IsAtLocation(tolerance))
             {
                 transform.rotation = guardRotation;
             }
         }
 
-        // Переход к следующей точке пути
-
         private void GoToNextWayPoint()
         {
-            if (currentWayPointIndex < patrolPath.transform.childCount)
-            {
-                currentWayPointIndex++;
-            }
+            // Randomly choose the next waypoint
+            currentWayPointIndex = Random.Range(0, patrolPath.transform.childCount);
 
-            if (currentWayPointIndex == patrolPath.transform.childCount)
-            {
-                currentWayPointIndex = 0;
-            }
-
-            currentDwellTime = Random.Range(minDwellTime, maxDwellTime); // Случайное время пребывания в следующей точке
+            currentDwellTime = Random.Range(minDwellTime, maxDwellTime);
         }
 
-        // Проверка на достижение текущей точки пути
         private bool AtWayPoint()
         {
             return Vector3.Distance(transform.position, patrolPath.transform.GetChild(currentWayPointIndex).position) < tolerance;
         }
 
-        // Получение текущей точки пути
         private Vector3 GetCurrentWayPoint()
         {
             return patrolPath.transform.GetChild(currentWayPointIndex).position;
         }
 
-        // Поведение при подозрении
         private void SuspicionBehavior()
         {
-            mover.StartMoveAction(lastKnownLocation); // Начинаем движение к последнему местоположению игрока
+            mover.StartMoveAction(lastKnownLocation);
         }
 
-        // Поведение при атаке игрока
         private void AttackBehavior()
         {
-            timeSinceLastSawPlayer = 0; // Обнуляем время с момента последней видимости игрока
-            fighter.Attack(MainPlayer.Instance.gameObject); // Атакуем игрока
-            lastKnownLocation = MainPlayer.Instance.transform.position; // Запоминаем последнее местоположение игрока
+            timeSinceLastSawPlayer = 0;
+            fighter.Attack(MainPlayer.Instance.gameObject);
+            lastKnownLocation = MainPlayer.Instance.transform.position;
+        }
+
+        private void FollowCamera_OnCameraDistance(float obj)
+        {
+            if (halfCircleRenderer != null)
+            {
+                if (obj < startDistanceForShowIcon)
+                {
+                    halfCircle.SetActive(true);
+                    Color newColor = halfCircleRenderer.material.color;
+                    newColor.a = Mathf.Min(((startDistanceForShowIcon - obj) / 100f), maxOpacity);
+                    halfCircleRenderer.material.color = newColor;
+
+                    //float _scale = (startDistanceForShowIcon - obj) / 100f + 1;
+                    //halfCircle.transform.localScale = new Vector3(_scale, _scale, _scale);
+                }
+                else
+                {
+                    halfCircle.SetActive(false);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Полусфера не найдена, пожалуйста проверьте инициализацию.");
+            }
         }
     }
 }

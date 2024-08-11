@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ArrowForPlayerManager
 {
@@ -15,13 +16,12 @@ public class ArrowForPlayerManager
     public void Init()
     {
         allArrowForPlayers = new SortedDictionary<int, ArrowForPlayer>();
-        RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
+        SceneManager.sceneLoaded += SceneLoader_LevelChanged;
     }
 
-    private void SceneLoader_LevelChanged(LevelChangeObserver.allScenes obj)
+    private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode)
     {
         allArrowForPlayers = new SortedDictionary<int, ArrowForPlayer>();
-
     }
 
     public void StartArrow()
@@ -29,7 +29,7 @@ public class ArrowForPlayerManager
         List<ArrowForPlayer> sorted = AllArrowForPlayers.Values.ToList();
         if (sorted.Count > 0)
         {
-            sorted[0].gameObject.SetActive(true);
+            sorted[0].ArrowSprite.SetActive(true);
         }
     }
 
@@ -51,18 +51,33 @@ public class ArrowForPlayer : MonoBehaviour
 
     }
 
-    private void Awake()
+    private void Start()
     {
         if (IGame.Instance!=null)
         IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[Index] = this;
-        if (Index != 0) gameObject.SetActive(false);
+        if (Index != 0)
+        {
+            ArrowSprite.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         trigered = true;
-        IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[Index].gameObject.SetActive(false);
-        IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.Remove(Index);
+
+        for (int i = Index; i >= 0; i--)
+        {
+            if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.ContainsKey(i))
+            if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[i].Index <= Index)
+            {
+                //if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.ContainsKey(IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[i].Index))
+                {
+                    IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[i].gameObject.SetActive(false);
+                    IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.Remove(i);
+                }
+            }
+        }
+
         IGame.Instance.ArrowForPlayerManager.StartArrow();
     }
 

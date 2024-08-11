@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Curency
 {
@@ -30,6 +27,7 @@ public class Curency
     public void SetCount(double count)
     {
         _count = count;
+        IGame.Instance.saveGame.MakeSave();
         OnChangeCount?.Invoke(_count);
     }
 }
@@ -53,7 +51,7 @@ public class CoinManager : MonoBehaviour
         Instantiate(_Coin, pos, Quaternion.Euler(0, 0, 0))
             .GetComponent<PickableCoin>()
             .Init(count);
-        AudioManager.instance.Play("CoinPickup");
+        AudioManager.instance.PlaySound("CoinPickup");
 
     }
 

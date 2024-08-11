@@ -26,6 +26,7 @@ public class UiMarketPanel : MonoBehaviour
     [SerializeField] private Button _btnWeapons;
     [SerializeField] private Button _btnArmors;
     [SerializeField] private Button _btnConsume;
+    [SerializeField] private Button _btnClose;
 
     [SerializeField] public TMPro.TMP_Text coinCountText;
 
@@ -41,6 +42,8 @@ public class UiMarketPanel : MonoBehaviour
     private Weapon oldWeaponWhenTryOn;
     private Armor oldArmorWhenTryOn;
 
+    private int minPrice;
+    private int maxPrice;
 
     private bool notAvaliableEvents = false;
 
@@ -54,6 +57,15 @@ public class UiMarketPanel : MonoBehaviour
         _btnArmors.onClick.AddListener(OnClickBtnArmors);
         _btnConsume.onClick.AddListener(OnClickBtnConsume);
         _confirmPanel.SetActive(false);
+
+        _btnClose.onClick.AddListener(OnClickClose);
+    }
+
+    private void OnClickClose()
+    {
+        gameObject.SetActive(false);
+        IGame.Instance.SavePlayerPosLikeaPause(false);
+        pauseClass.IsOpenUI = false;
     }
 
     private void OnClickBtnConsume()
@@ -83,21 +95,19 @@ public class UiMarketPanel : MonoBehaviour
         InventoryBag.Init();
         GenerateMarketItems();
 
-        /*
-        foreach (var item in IGame.Instance.WeaponArmorManager.allWeaponsInGame)
-        {
-            if (item.sprite != null)
-                InventoryAll.inventory.TryAdd(item);
-        }
-        foreach (var item in IGame.Instance.WeaponArmorManager.allArmorsInGame)
-        {
-            if (item.sprite != null)
-                InventoryAll.inventory.TryAdd(item);
-        }*/
+        InventoryBag.inventory.onItemAdded += HandleItemBugAdded;
+        InventoryBag.inventory.onItemRemoved += HandleItemBugRemoved;
+        InventoryAll.inventory.onItemAdded += HandleItemAdded;
+        InventoryAll.inventory.onItemRemoved += HandleItemRemoved;
+
+        IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
     }
 
-    public void Regen()
+    public void Regen(int _minPrice, int _maxPrice)
     {
+        minPrice = _minPrice;
+        maxPrice = _maxPrice;
+
         notAvaliableEvents = true;
         InventoryBag.inventory.Clear();
         foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
@@ -105,18 +115,26 @@ public class UiMarketPanel : MonoBehaviour
             InventoryBag.inventory.TryAdd(item);
         }
 
+
         ShowMarketItems(ItemType.Any);
 
         notAvaliableEvents = false;
-
-
     }
+
+    public void SellItem(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
+    {
+        IGame.Instance.saveGame.Coins += (int)(item.price * InventoryBag.inventory.PriceMultiple);
+        accept?.Invoke(grid);
+        IGame.Instance.saveGame.MakeSave();
+    }
+
     public void GenerateMarketItems()
     {
         marketItems = new List<ItemDefinition>();
         foreach (var item in IGame.Instance.WeaponArmorManager.AllWeaponsInGame)
         {
             if (item.sprite != null)
+
                 marketItems.Add(item);
         }
         foreach (var item in IGame.Instance.WeaponArmorManager.AllArmorsInGame)
@@ -124,16 +142,9 @@ public class UiMarketPanel : MonoBehaviour
             if (item.sprite != null)
                 marketItems.Add(item);
         }
-
-        //marketInventoryController.onItemPickedUp += HandleItemPickedUp;
-        //marketInventoryController.onItemAdded += HandleItemAdded;
-        InventoryAll.inventory.onItemAdded += HandleItemAdded;
-        InventoryAll.inventory.onItemRemoved += HandleItemRemoved;
-        InventoryBag.inventory.onItemAdded += HandleItemBugAdded;
-        InventoryBag.inventory.onItemRemoved += HandleItemBugRemoved;
-
-        IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
     }
+
+    
 
     private void OnChangeMoney(double newValue)
     {
@@ -204,7 +215,6 @@ public class UiMarketPanel : MonoBehaviour
 
     public void ShowMarketItems(ItemType state)
     {
-
         notAvaliableEvents = true;
         marketState = state;
         InventoryAll.inventory.Clear();
@@ -215,16 +225,31 @@ public class UiMarketPanel : MonoBehaviour
             {
                 if ((state == ItemType.Any) || (item.Type == state))
                 {
-                    InventoryAll.inventory.TryAdd(item);
+                    bool find = false;
+                    foreach (var itemBug in InventoryBag.inventory.allItems)
+                    {
+                        if (itemBug.name == item.name)
+                        {
+                            find = true;
+                            break;
+                        }
+                    }
+
+                    if (IGame.Instance.saveGame.EquipedArmor.name == item.name)
+                        find = true;
+                    if (IGame.Instance.saveGame.EquipedWeapon.name == item.name)
+                        find = true;
+
+                    if (!find)
+                        if (item.price>=minPrice && item.price<=maxPrice)
+                        InventoryAll.inventory.TryAdd(item);
                 }
             }
         }
-
         notAvaliableEvents = false;
-
     }
 
-    public void InitMarketUI(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
+    public void InitConfirmMarketUI(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
     {
         _accept = accept;
         _decline = decline;
@@ -253,9 +278,10 @@ public class UiMarketPanel : MonoBehaviour
 
         IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
         angleTryOnEquip = 0;
-        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
+        IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         _confirmPanel.SetActive(true);
+        IGame.Instance.saveGame.MakeSave();
     }
 
     private void OnClickDecline()
@@ -266,8 +292,7 @@ public class UiMarketPanel : MonoBehaviour
         oldArmorWhenTryOn.EquipIt();
         IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(oldWeaponWhenTryOn.name));
 
-        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 0, 0);
-        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
+        
     }
 
     private void OnClickAccept()
@@ -281,8 +306,7 @@ public class UiMarketPanel : MonoBehaviour
         oldArmorWhenTryOn.EquipIt();
         IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(oldWeaponWhenTryOn.name));
 
-        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 0, 0);
-        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, 0, 0);
+        
     }
 
     private void OnDestroy()
@@ -297,14 +321,32 @@ public class UiMarketPanel : MonoBehaviour
         }
 
         IGame.Instance.CoinManager.Coins.OnChangeCount -= OnChangeMoney;
+        _btnClose.onClick.RemoveAllListeners();
+
+        _buttonAccept.onClick.RemoveAllListeners();
+        _buttonDecline.onClick.RemoveAllListeners();
+
+        _btnAll.onClick.RemoveAllListeners();
+        _btnWeapons.onClick.RemoveAllListeners();
+        _btnArmors.onClick.RemoveAllListeners();
+        _btnConsume.onClick.RemoveAllListeners();
     }
 
+    private long oldTime;
 
     private void Update()
     {
-        if (!_confirmPanel.gameObject.active) return;
-        angleTryOnEquip += Time.deltaTime * 60;
+        if (!_confirmPanel.gameObject.activeInHierarchy) return;
+
+        if (oldTime == 0) oldTime = now_time();
+
+        angleTryOnEquip += (now_time()-oldTime)*0.05f;
+        oldTime = now_time();
         if (angleTryOnEquip > 360) angleTryOnEquip -= 360;
-        IGame.Instance.playerController.modularCharacter.transform.rotation = Quaternion.Euler(0, angleTryOnEquip, 0);
+        IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, angleTryOnEquip, 0);
+    }
+    public long now_time()
+    {
+        return (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds;
     }
 }

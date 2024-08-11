@@ -33,6 +33,7 @@ namespace RPG.Combat
 
         void Update()
         {
+            if (target == null) return;
             // Проверяем, не умерла ли цель или не достиг ли снаряд коллайдера
             bool isDead = target.GetComponent<Health>().IsDead();
             if (!reachedCollider || isDead)

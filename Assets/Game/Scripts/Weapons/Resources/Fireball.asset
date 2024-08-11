@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6633050ac13726345b6f02b2d761dfae, type: 3}
   m_Name: Fireball
   m_EditorClassIdentifier: 
+  PriceCoins: 0
   _sprite: {fileID: 0}
   _shape:
     _width: 1
@@ -20,12 +21,17 @@ MonoBehaviour:
   _type: 2
   _canDrop: 1
   _position: {x: 0, y: 0}
+  _onlyOne: 0
+  _countItems: 1
+  itemDescription: 
   weaponOverride: {fileID: 22100000, guid: 79f475917593b87448e6efd2231a1f0e, type: 2}
   weaponPrefab: {fileID: 0}
   isRightHanded: 1
   projectile: {fileID: -4922199924457682498, guid: 68f8ce2228d901d4bb9ecef68e140361,
     type: 3}
-  IsFireballs: 1
+  isFireballs: 0
+  hitVFX: {fileID: 0}
   weaponDamage: 300
   weaponRange: 12
   timeBetweenAttacks: 3
+  description: "\u0424\u0430\u0439\u0440\u0431\u043E\u043B"

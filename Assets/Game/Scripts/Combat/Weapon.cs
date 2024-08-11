@@ -1,43 +1,55 @@
-﻿using FarrokhGames.Inventory;
+﻿using System;
+using FarrokhGames.Inventory;
 using FarrokhGames.Inventory.Examples;
 using UnityEngine;
 
 namespace RPG.Combat
 {
-    // Создает объект оружия для использования в бою
     [CreateAssetMenu(fileName = "Weapon", menuName = "Weapons", order = 0)]
     public class Weapon : ItemDefinition
     {
         [Header("Core")]
-        [SerializeField] private AnimatorOverrideController weaponOverride; // Переопределенный контроллер анимации оружия
-        [SerializeField] private GameObject weaponPrefab; // Префаб объекта оружия
-        [SerializeField] private bool isRightHanded = true; // Определяет, используется ли правая рука по умолчанию
-        [SerializeField] private Projectile projectile; // Ссылка на снаряд, если оружие дистанционное
-        [SerializeField] private bool IsFireballs = false;
+        [SerializeField] private AnimatorOverrideController weaponOverride;
+        [SerializeField] private GameObject weaponPrefab;
+        [SerializeField] private bool isRightHanded = true;
+        [SerializeField] private Projectile projectile;
+        [SerializeField] private bool isFireballs = false;
+        [SerializeField] private GameObject hitVFX;
 
         [Header("Stats")]
-        [SerializeField] private float weaponDamage; // Урон, наносимый оружием
-        [SerializeField] private float weaponRange = 2f; // Расстояние, на котором оружие может наносить урон
-        [SerializeField] private float timeBetweenAttacks; // Время между атаками
+        [SerializeField] private float weaponDamage;
+        [SerializeField] private float weaponRange = 2f;
+        [SerializeField] private float timeBetweenAttacks;
 
-        private const string weaponNameForHand = "weapon"; // Имя объекта оружия в сцене
-        
-        // Спаунит объект оружия для игрока
+        [Header("Description")]
+        [SerializeField] [TextArea] private string description;
+
+        [Header("Charges")]
+        [SerializeField] private int maxCharges = 10;
+        private int currentCharges;
+
+        private const string weaponNameForHand = "weapon";
+        public event Action OnShotFired; // Событие для уведомления о выстреле
+
+        public GameObject WeaponPrefab { get => weaponPrefab; set => weaponPrefab = value; }
+
+        public void InitializeWeapon()
+        {
+            currentCharges = maxCharges;
+        }
+
         public void SpawnToPlayer(Transform rightHandPos, Transform lefthandPos, Animator anim)
         {
-            // Уничтожаем предыдущее оружие игрока
             DestroyWeaponOnPlayer(rightHandPos, lefthandPos, anim);
 
-            // Создаем новое оружие, если задан префаб
-            if (weaponPrefab)
+            if (WeaponPrefab)
             {
                 Transform handPos = FindTransformOfHand(rightHandPos, lefthandPos);
-                GameObject wepInScene = Instantiate(weaponPrefab, handPos);
+                GameObject wepInScene = Instantiate(WeaponPrefab, handPos);
                 wepInScene.transform.localScale = Vector3.one * 1 / wepInScene.transform.lossyScale.x;
                 wepInScene.name = weaponNameForHand;
             }
 
-            // Устанавливаем переопределенный контроллер анимации оружия, если он задан
             var overrideController = anim.runtimeAnimatorController as AnimatorOverrideController;
             if (weaponOverride)
                 anim.runtimeAnimatorController = weaponOverride;
@@ -47,20 +59,17 @@ namespace RPG.Combat
             }
         }
 
-        // Находит позицию для оружия в соответствии с выбранной рукой
         private Transform FindTransformOfHand(Transform rightHandPos, Transform lefthandPos)
         {
             return isRightHanded ? rightHandPos : lefthandPos;
         }
 
-        // Уничтожает объект оружия у игрока
         public void DestroyWeaponOnPlayer(Transform rightHandPos, Transform leftHandPos, Animator anim)
         {
             DestroyWeaponOnHand(rightHandPos);
             DestroyWeaponOnHand(leftHandPos);
         }
 
-        // Уничтожает объект оружия в указанной руке
         private void DestroyWeaponOnHand(Transform handPos)
         {
             Transform handWep = handPos.Find(weaponNameForHand);
@@ -71,42 +80,96 @@ namespace RPG.Combat
             }
         }
 
-
-        // Возвращает урон оружия
         public float GetWeaponDamage()
         {
             return weaponDamage;
         }
 
-        // Возвращает дальность действия оружия
         public float GetWeaponRange()
         {
             return weaponRange;
         }
 
-        // Возвращает время между атаками оружия
         public float GetTimeBetweenAttacks()
         {
             return timeBetweenAttacks;
         }
 
-        // Создает снаряд, если оружие дистанционное, и назначает цель для него
-        public void SpawnProjectile(Transform target, Transform rightHand, Transform leftHand)
+        public string GetDescription()
         {
+            return description;
+        }
+
+        public void SpawnProjectile(Transform target, Transform rightHand, Transform leftHand, bool isPlayer)
+        {
+            if (isPlayer && !ConsumeCharge())
+            {
+                Debug.Log("Out of charges!");
+                return;
+            }
+
             var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
             proj.SetTarget(target, weaponDamage);
+
+            AudioManager.instance.PlaySound("Shot");
+            OnShotFired?.Invoke(); // Вызов события
+        }
+
+        public bool ConsumeCharge()
+        {
+            if (currentCharges > 0)
+            {
+                currentCharges--;
+                Debug.Log("Charges left: " + currentCharges);
+                if (currentCharges == 0)
+                {
+                    OnOutOfCharges();
+                }
+                return true;
+            }
+            Debug.Log("No charges left!");
+            OnOutOfCharges();
+            return false;
+        }
+
+        private void OnOutOfCharges()
+        {
+            // Получаем ссылку на WeaponPanelUI и вызываем ResetWeaponToDefault
+            WeaponPanelUI weaponPanelUI = FindObjectOfType<WeaponPanelUI>();
+            if (weaponPanelUI != null)
+            {
+                weaponPanelUI.ResetWeaponToDefault();
+            }
+        }
+
+        public void ReloadCharges(int charges)
+        {
+            currentCharges = Mathf.Min(currentCharges + charges, maxCharges);
+            Debug.Log("Charges reloaded. Current charges: " + currentCharges);
         }
 
         public bool IsFireball()
         {
-            return IsFireballs;
+            return isFireballs;
         }
 
-
-        // Определяет, является ли оружие дистанционным
         public bool IsRanged()
         {
-            return projectile;
+            return projectile != null;
+        }
+
+        public void PlayHitVFX(Vector3 position)
+        {
+            if (hitVFX != null)
+            {
+                GameObject vfx = Instantiate(hitVFX, position, Quaternion.identity);
+                Destroy(vfx, vfx.GetComponent<ParticleSystem>().main.duration); // Уничтожаем VFX после завершения
+            }
+        }
+
+        public int GetCurrentCharges()
+        {
+            return currentCharges;
         }
     }
 }

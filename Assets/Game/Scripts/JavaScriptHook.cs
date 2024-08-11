@@ -25,6 +25,8 @@ public class JavaScriptHook : MonoBehaviour
         // Здесь вы можете использовать данные configData по вашему усмотрению
         DisplayData(configData); // Вызываем метод отображения данных
 
+        Debug.Log("loadConfigFromHtml");
+
         // Передаем данные в DataPlayer
         dataPlayer.playerData.id = configData.id;
         dataPlayer.playerData.health = configData.health;

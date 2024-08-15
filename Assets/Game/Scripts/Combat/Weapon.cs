@@ -27,6 +27,8 @@ namespace RPG.Combat
         [Header("Charges")]
         [SerializeField] private int maxCharges = 10;
         private int currentCharges;
+        [SerializeField] private bool isBow = false; // Флаг, указывающий, что это оружие является луком
+
 
         private const string weaponNameForHand = "weapon";
         public event Action OnShotFired; // Событие для уведомления о выстреле
@@ -102,17 +104,53 @@ namespace RPG.Combat
 
         public void SpawnProjectile(Transform target, Transform rightHand, Transform leftHand, bool isPlayer)
         {
-            if (isPlayer && !ConsumeCharge())
+            if (IsBow()) // Проверяем, является ли текущее оружие луком
             {
-                Debug.Log("Out of charges!");
-                return;
+                // Проверяем, достаточно ли стрел
+                if (IGame.Instance.dataPlayer.playerData.arrowCount > 0)
+                {
+                    // Уменьшаем количество стрел
+                    IGame.Instance.dataPlayer.playerData.arrowCount--;
+                    Debug.Log("Arrow shot. Remaining arrows: " + IGame.Instance.dataPlayer.playerData.arrowCount);
+
+                    // Создаем снаряд и нацеливаем его на цель
+                    var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
+                    proj.SetTarget(target, weaponDamage);
+                    AudioManager.instance.PlaySound("Shot");
+                    OnShotFired?.Invoke(); // Вызов события выстрела
+                }
+                else
+                {
+                    Debug.Log("No arrows left!");
+                    return; // Не стреляем, если стрел нет
+                }
             }
+            else if (IsFireball()) // Проверяем, является ли текущее оружие fireball
+            {
+                // Проверяем, достаточно ли зарядов fireball
+                if (IGame.Instance.dataPlayer.playerData.chargeEnergy > 0)
+                {
+                    // Уменьшаем количество зарядов fireball
+                    IGame.Instance.dataPlayer.playerData.chargeEnergy--;
+                    Debug.Log("Fireball shot. Remaining charges: " + IGame.Instance.dataPlayer.playerData.chargeEnergy);
 
-            var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
-            proj.SetTarget(target, weaponDamage);
-
-            AudioManager.instance.PlaySound("Shot");
-            OnShotFired?.Invoke(); // Вызов события
+                    // Создаем снаряд и нацеливаем его на цель
+                    var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
+                    proj.SetTarget(target, weaponDamage);
+                    AudioManager.instance.PlaySound("Shot");
+                    OnShotFired?.Invoke(); // Вызов события выстрела
+                }
+                else
+                {
+                    Debug.Log("No fireball charges left!");
+                    return; // Не стреляем, если зарядов нет
+                }
+            }
+            else
+            {
+                Debug.LogError("Unsupported weapon type for projectile spawning.");
+                return; // Не стреляем, если оружие не поддерживается
+            }
         }
 
         public bool ConsumeCharge()
@@ -156,6 +194,11 @@ namespace RPG.Combat
         public bool IsRanged()
         {
             return projectile != null;
+        }
+
+        public bool IsBow()
+        {
+            return isBow; // Возвращает true, если оружие является луком
         }
 
         public void PlayHitVFX(Vector3 position)

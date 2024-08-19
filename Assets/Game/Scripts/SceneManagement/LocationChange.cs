@@ -161,7 +161,7 @@ public class LocationChange : MonoBehaviour
         Loading.gameObject.SetActive(true);
         IGame.Instance.gameAPI.SaveUpdater();
         //Invoke("LoadSceneAfterDelay", 2f); 
-        SceneLoader.Instance.TryChangeLevel((LevelChangeObserver.allScenes)IGame.Instance.dataPlayer.playerData.sceneToLoad);
+        SceneLoader.Instance.TryChangeLevel(sceneId);
         AudioManager.instance.PlaySound("ClickButton");
     }
     /*

@@ -36,15 +36,7 @@ public class QuestManager : MonoBehaviour
 
     private bool alreadyDelegated;
 
-    public void Awake()
-    {
-        Init();
-    }
 
-    private void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= SceneLoader_LevelChanged;
-    }
 
     public void Init()
     {

@@ -25,7 +25,6 @@ namespace RPG.Combat
         [SerializeField] [TextArea] private string description;
 
         [Header("Charges")]
-        public bool isBow = false;
         [SerializeField] private int maxCharges = 10;
         private int currentCharges;
 
@@ -103,21 +102,11 @@ namespace RPG.Combat
 
         public void SpawnProjectile(Transform target, Transform rightHand, Transform leftHand, bool isPlayer)
         {
-            if (IsBow())
+            if (isPlayer && !ConsumeCharge())
             {
-                if (isPlayer && !ConsumeCharge())
-                {
-                    Debug.Log("Out of charges!");
-                    return;
-                }
+                Debug.Log("Out of charges!");
+                return;
             }
-            if (IsFireball())
-            {
-                Debug.Log("выстрел из fireball");
-            }
-
-
-
 
             var proj = Instantiate(projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
             proj.SetTarget(target, weaponDamage);
@@ -162,10 +151,6 @@ namespace RPG.Combat
         public bool IsFireball()
         {
             return isFireballs;
-        }
-        public bool IsBow()
-        {
-            return isBow;
         }
 
         public bool IsRanged()

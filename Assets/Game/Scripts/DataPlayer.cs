@@ -71,7 +71,7 @@ public class OneTestQuestion
 
 [System.Serializable]
 public class PlayerData
-{
+{    
     public int id;
     public string playerName;
     public int health;
@@ -86,7 +86,6 @@ public class PlayerData
     public int armorIdToload;
     public OneLeson[] progress;
     public int chargeEnergy;
-    public int arrowCount; // Новое поле для хранения количества стрел
     public List<int> FinishedRegionsIDs;
 
     public string[] containsBug;
@@ -98,10 +97,9 @@ public class PlayerData
 
     public int helpIndex;
 
-    public float soundVol = 1;
-    public float musicVol = 1;
-    public bool soundOn = true;
-    public bool musicOn = true;
+    public float soundVol=1;
+    public float musicVol=1;
+    public bool soundOn=true;
+    public bool musicOn=true;
 
 }
-

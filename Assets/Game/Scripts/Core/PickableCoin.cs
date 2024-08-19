@@ -45,6 +45,7 @@ public class PickableCoin : MonoBehaviour
                 {
                     IGame.Instance.saveGame.Coins += count;
                     Destroy(gameObject);
+                    IGame.Instance.CursorManager.SetCursorDefault();
                 }
             }
         }

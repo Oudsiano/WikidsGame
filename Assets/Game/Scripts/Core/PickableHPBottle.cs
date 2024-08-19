@@ -60,6 +60,7 @@ public class PickableHPBottle : MonoBehaviour
         }
 
         Destroy(gameObject);
+        IGame.Instance.CursorManager.SetCursorDefault();
     }
 
 }

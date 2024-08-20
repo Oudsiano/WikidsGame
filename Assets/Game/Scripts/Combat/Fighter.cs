@@ -134,7 +134,9 @@ namespace RPG.Combat
             }
             else
             {
-                transform.LookAt(target.transform);
+                Vector3 lookAt = target.transform.position;
+                lookAt.y = transform.position.y;
+                transform.LookAt(lookAt, Vector3.up);
                 mover.Cancel();
                 AttackBehavior();
             }

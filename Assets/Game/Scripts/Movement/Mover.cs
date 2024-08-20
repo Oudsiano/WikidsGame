@@ -89,6 +89,8 @@ namespace RPG.Movement
         // Метод для перемещения к указанной точке
         public void MoveTo(Vector3 pos)
         {
+            if (!thisNavAgent.isActiveAndEnabled) return;
+
             thisNavAgent.destination = pos; // Устанавливаем пункт назначения для навигационного агента
             thisNavAgent.isStopped = false; // Возобновляем движение
         }
@@ -107,6 +109,7 @@ namespace RPG.Movement
         // Метод для отмены текущего действия
         public void Cancel()
         {
+            if (!thisNavAgent.isActiveAndEnabled) return;
             thisNavAgent.isStopped = true; // Останавливаем движение
         }
 

@@ -26,7 +26,7 @@ namespace RPG.Combat
 
         [Header("Charges")]
         [SerializeField] private int maxCharges = 10;
-        private int currentCharges;
+        public int currentCharges;
 
         private const string weaponNameForHand = "weapon";
         public event Action OnShotFired; // Событие для уведомления о выстреле
@@ -102,6 +102,9 @@ namespace RPG.Combat
 
         public void SpawnProjectile(Transform target, Transform rightHand, Transform leftHand, bool isPlayer)
         {
+            if(isFireballs)
+                currentCharges = IGame.Instance.dataPlayer.playerData.chargeEnergy + 1;
+
             if (isPlayer && !ConsumeCharge())
             {
                 Debug.Log("Out of charges!");
@@ -115,7 +118,7 @@ namespace RPG.Combat
             OnShotFired?.Invoke(); // Вызов события
         }
 
-        public bool ConsumeCharge()
+        private bool ConsumeCharge()
         {
             if (currentCharges > 0)
             {

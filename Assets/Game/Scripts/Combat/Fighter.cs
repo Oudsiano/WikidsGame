@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace RPG.Combat
 {
+
+    public enum WeaponNow
+    {
+        common,
+        fire,
+        bow
+    }
+
     public class Fighter : MonoBehaviour, IAction
     {
         [Header("Fighter Stats")]
@@ -16,7 +24,8 @@ namespace RPG.Combat
         [SerializeField] private Weapon fireballWeapon = null;
         [SerializeField] private Weapon bowWeapon = null;
         private bool isPlayer;
-        private bool isFireballNow = false;
+        private WeaponNow weaponNow;
+        //private bool isFireballNow = false;
 
         [Header("")]
         public float timer = 20;
@@ -59,7 +68,7 @@ namespace RPG.Combat
 
         public void SetFireball()
         {
-            isFireballNow = true;
+            weaponNow = WeaponNow.fire;
             fireballWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
 
@@ -68,7 +77,7 @@ namespace RPG.Combat
             if (anim == null)
                 Awake();
 
-            isFireballNow = false;
+            weaponNow = WeaponNow.common;
             if (equippedWeapon != null)
                 equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
@@ -78,7 +87,7 @@ namespace RPG.Combat
             if (anim == null)
                 Awake();
 
-            isFireballNow = false;
+            weaponNow = WeaponNow.bow;
             if (bowWeapon != null)
                 bowWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
@@ -140,10 +149,28 @@ namespace RPG.Combat
             }
         }
 
+        private float getRangeCurrentWeapon()
+        {
+            switch (weaponNow)
+            {
+                case WeaponNow.common:
+                    return equippedWeapon.GetWeaponRange();
+                case WeaponNow.fire:
+                    return fireballWeapon.GetWeaponRange();
+                case WeaponNow.bow:
+                    return bowWeapon.GetWeaponRange();
+                default:
+                    return equippedWeapon.GetWeaponRange();
+            }
+        }
+
+
         private bool InRange()
         {
             var distance = Mathf.Abs(Vector3.Distance(transform.position, target.transform.position));
-            return distance < equippedWeapon.GetWeaponRange();
+
+
+            return distance < getRangeCurrentWeapon();
         }
 
         private void AttackBehavior()
@@ -155,12 +182,26 @@ namespace RPG.Combat
             }
             else if (timer > equippedWeapon.GetTimeBetweenAttacks())
             {
-                if (isPlayer && isFireballNow)
+                if (isPlayer && weaponNow == WeaponNow.fire)
                 {
                     if (IGame.Instance.dataPlayer.playerData.chargeEnergy > 0)
                     {
                         MainPlayer.Instance.ChangeCountEnegry(-1);
                         ShootFireball();
+                        timer = 0;
+                        return;
+                    }
+                    else
+                    {
+                        IGame.Instance.playerController.WeaponPanelUI.ResetWeaponToDefault();
+                    }
+                }
+
+                if (isPlayer && weaponNow == WeaponNow.bow)
+                {
+                    if (bowWeapon.currentCharges > 0)
+                    {
+                        ShootBow();
                         timer = 0;
                         return;
                     }
@@ -185,6 +226,12 @@ namespace RPG.Combat
             anim.ResetTrigger("stopAttack");
             anim.SetTrigger("attack");
             fireballWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition, isPlayer);
+        }
+        private void ShootBow()
+        {
+            anim.ResetTrigger("stopAttack");
+            anim.SetTrigger("attack");
+            bowWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition, isPlayer);
         }
 
         public void Cancel()

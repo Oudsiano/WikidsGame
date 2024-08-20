@@ -12,21 +12,21 @@ public class LookAtPlayer : MonoBehaviour
     {
         //_camera = Camera.main.transform;
         RPG.Core.FollowCamera.NewYRotation += newYrotate;
+        RPG.Core.FollowCamera.NewXRotation += newXrotate;
     }
 
     float keepYRotate=220;
+    float keepXRotate=60;
 
-    private void newYrotate(float obj) => keepYRotate = obj;
+    private void newYrotate(float y) => keepYRotate = y;
+    private void newXrotate(float x) => keepXRotate = x;
     
 
     void LateUpdate()
     {
         //Vector3 relativePos = _camera.position - transform.position;
 
-        var rot_parenr = transform.parent.transform.localEulerAngles;
-
-        transform.localEulerAngles = new Vector3(40- rot_parenr.x, keepYRotate - rot_parenr.y, 0);
-
+        transform.eulerAngles = new Vector3(keepXRotate, keepYRotate, 0);
         // the second argument, upwards, defaults to Vector3.up
         //Quaternion rotation = Quaternion.LookRotation(relativePos, new Vector3(0, 1, 0));
         //transform.rotation = rotation * Quaternion.Euler(0, 0, 0);
@@ -37,5 +37,6 @@ public class LookAtPlayer : MonoBehaviour
     private void OnDestroy()
     {
         RPG.Core.FollowCamera.NewYRotation -= newYrotate;
+        RPG.Core.FollowCamera.NewXRotation -= newXrotate;
     }
 }

@@ -9,6 +9,7 @@ namespace RPG.Movement
     // Класс, отвечающий за перемещение персонажа и взаимодействие с ним
     public class Mover : MonoBehaviour, IAction
     {
+
         public ClickEffect clickEffect; // Ссылка на скрипт для создания эффекта при нажатии на точку
         private Animator animator; // Ссылка на компонент аниматора
         private NavMeshAgent thisNavAgent; // Ссылка на компонент навигации
@@ -18,6 +19,7 @@ namespace RPG.Movement
         NPCInteractable target; // Цель для взаимодействия
 
         // Метод, вызываемый при старте
+
         void Start()
         {
             isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false; //Мувер должен знать на игроке он или нет

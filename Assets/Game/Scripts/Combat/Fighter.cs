@@ -139,11 +139,11 @@ namespace RPG.Combat
             timer += Time.deltaTime;
 
             if (!target) return;
-
+            if (targetF!=null)
             if (targetF.defaultWeapon == bowWeapon)
             {
                 //Archer
-                if (bowWeapon.currentCharges==0)
+                if (bowWeapon.currentCharges == 0 || weaponNow!= WeaponNow.bow)
                 {
                     return;
                 }

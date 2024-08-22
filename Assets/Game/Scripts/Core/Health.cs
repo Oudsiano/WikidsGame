@@ -142,7 +142,7 @@ namespace RPG.Core
                 {
                     IGame.Instance.QuestManager.newKill(SpecialEnemyName.specialEnemyName);
                 }
-
+                if (healthBar!=null)
                 Destroy(healthBar.gameObject);
                 LineRenderer lineRenderer = GetComponentInChildren<LineRenderer>();
                 if (lineRenderer != null)

@@ -151,6 +151,10 @@ namespace RPG.Combat
             Debug.Log("Charges reloaded. Current charges: " + currentCharges);
         }
 
+        public void SetFireball()
+        {
+            isFireballs=true;
+        }
         public bool IsFireball()
         {
             return isFireballs;

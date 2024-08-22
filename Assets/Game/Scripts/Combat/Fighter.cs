@@ -69,6 +69,8 @@ namespace RPG.Combat
         public void SetFireball()
         {
             weaponNow = WeaponNow.fire;
+            fireballWeapon.SetFireball();
+            if (!fireballWeapon.IsFireball()) Debug.LogError("нет галочки");
             fireballWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
         }
 

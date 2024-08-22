@@ -31,6 +31,7 @@ namespace RPG.Combat
         public float timer = 20;
 
         public Health target;
+        private Fighter targetF;
 
         private Mover mover;
         private ActionScheduler actionScheduler;
@@ -138,6 +139,16 @@ namespace RPG.Combat
             timer += Time.deltaTime;
 
             if (!target) return;
+
+            if (targetF.defaultWeapon == bowWeapon)
+            {
+                //Archer
+                if (bowWeapon.currentCharges==0)
+                {
+                    return;
+                }
+            }
+            //if (target.)
 
             if (!InRange())
             {
@@ -250,6 +261,7 @@ namespace RPG.Combat
 
             actionScheduler.StartAction(this);
             target = combatTarget.GetComponent<Health>();
+            targetF = target.GetComponent<Fighter>();
         }
 
         public bool CanAttack(GameObject target)

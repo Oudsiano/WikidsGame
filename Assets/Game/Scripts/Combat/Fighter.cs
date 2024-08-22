@@ -225,6 +225,11 @@ namespace RPG.Combat
                         IGame.Instance.playerController.WeaponPanelUI.ResetWeaponToDefault();
                     }
                 }
+                if (isPlayer && weaponNow != WeaponNow.bow)
+                {
+                    if (targetF.defaultWeapon == bowWeapon)
+                        return;
+                }    
 
                 anim.ResetTrigger("stopAttack");
                 anim.SetTrigger("attack");

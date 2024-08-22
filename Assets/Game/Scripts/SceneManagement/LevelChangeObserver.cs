@@ -84,22 +84,26 @@ public class LevelChangeObserver : MonoBehaviour
                 newLevel = item.Key;
             }
         }
-        if (SavePointsManager.AllSavePoints.Count > 0)
-        {
-            Vector3 posThere = SavePointsManager.AllSavePoints[IGame.Instance.dataPlayer.playerData.spawnPoint].transform.position;
-            UpdatePlayerLocation(posThere);
-        }
-        else
+
+        if (IGame.Instance.dataPlayer.playerData.spawnPoint == 0)
         {
             GameObject StartPos = GameObject.Find("StartPoint");
 
             if (StartPos != null)
             {
                 Vector3 position = StartPos.transform.position;
-                UpdatePlayerLocation(position);
+                Quaternion rotation = StartPos.transform.rotation;
+                UpdatePlayerLocation(position, rotation);
             }
+        }
+        else
 
-            //UpdatePlayerLocation(spawnPoints[newLevel]);
+        if (SavePointsManager.AllSavePoints.Count > 0)
+        {
+            Vector3 posThere = SavePointsManager.AllSavePoints[IGame.Instance.dataPlayer.playerData.spawnPoint].transform.position;
+
+            Quaternion rotation = new Quaternion();
+            UpdatePlayerLocation(posThere, rotation);
         }
 
         SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPlayer,true);
@@ -109,13 +113,14 @@ public class LevelChangeObserver : MonoBehaviour
     }
 
     // Метод для обновления местоположения игрока
-    private void UpdatePlayerLocation(Vector3 spawnPoint)
+    private void UpdatePlayerLocation(Vector3 spawnPoint, Quaternion rotation)
     {
         // Отключаем навигацию для игрока
         MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = false;
 
         // Устанавливаем позицию игрока в соответствии с порталом назначения
         MainPlayer.Instance.transform.position = spawnPoint;
+        MainPlayer.Instance.transform.rotation = rotation;
 
         Animator anim =
             MainPlayer.Instance.gameObject.GetComponent<Animator>();

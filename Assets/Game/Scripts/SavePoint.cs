@@ -24,7 +24,7 @@ public class SavePointsManager
 
     public static void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer, bool reset = false)
     {
-
+        if (allSavePoints == null) return;
         for (int i = 0; i < dataPlayer.playerData.stateSpawnPoints.Count; i++)
         {
             bool thisLast = i == dataPlayer.playerData.spawnPoint;

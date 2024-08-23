@@ -109,6 +109,8 @@ public class SaveGame
         IGame.Instance.dataPlayer.playerData.musicOn = !SoundManager.GetMusicMuted();
         IGame.Instance.dataPlayer.playerData.musicVol = SoundManager.GetMusicVolume();
 
+        IGame.Instance.dataPlayer.playerData.arrowsCount = IGame.Instance.UIManager.WeaponBow.currentCharges;
+
         IGame.Instance.gameAPI.SaveUpdater();
     }
 
@@ -159,5 +161,6 @@ public class SaveGame
 
         OnLoadItems?.Invoke();
         Coins = IGame.Instance.dataPlayer.playerData.coins;
+        IGame.Instance.UIManager.SetArrowsCount();
     }
 }

@@ -95,7 +95,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Weapon Charges")]
     [SerializeField] private Button _buttonIncreaseCharges;
-    [SerializeField] private Weapon weapon; // ?????? ?? ?????? ??????
+    [SerializeField] public Weapon WeaponBow; // ?????? ?? ?????? ??????
     [SerializeField] public TMPro.TMP_Text arrowCharges;
     private FollowCamera followCamera;
     private SceneLoader sceneLoader;
@@ -155,10 +155,9 @@ public class UIManager : MonoBehaviour
         SceneManager.sceneLoaded += SceneLoader_LevelChanged;
 
         // ?????????? ?????? ?? UIManager ? UIFastTest
-        fastTestUI.SetUIManager(this);
-        if (weapon != null)
+        if (WeaponBow != null)
         {
-            weapon.OnShotFired += UpdateArrowCharges;
+            WeaponBow.OnShotFired += UpdateArrowCharges;
         }
     }
 
@@ -192,18 +191,11 @@ public class UIManager : MonoBehaviour
     }
 
     private void OnButtonIncreaseChargesClick()
-    {
-        // ??????? ????????? ? ???????? ??????? ??? ?????? ? ?????????? ????? ??? ??????????
-        int stratIndexFastTests = 0;
-        int endIndexFastTests = 10; // ?????? ????????, ???????? ?? ???????? ????????
-        int arrowCountToAdd = 1;
+        => IGame.Instance.FastTestsManager.NeedTestForArrows(1);
 
-        // ????? ?????? ??? ?????? ????? ? ?????????? ?????? ? ?????? ??????????? ??????
-        fastTestUI.ShowTestForAddedArrow(stratIndexFastTests, endIndexFastTests, arrowCountToAdd);
-    }
 
-    public void RegenFastTestUI(int stratIndexFastTests, int endIndexFastTests, Health targetKillAterTest)
-        => fastTestUI.ShowTest(stratIndexFastTests, endIndexFastTests, targetKillAterTest);
+    public void RegenFastTestUI(int stratIndexFastTests, int endIndexFastTests, int count_arrows, Health targetKillAterTest)
+        => fastTestUI.ShowTest(stratIndexFastTests, endIndexFastTests, count_arrows, targetKillAterTest);
 
     private void OnCLickCloseOption()
     {
@@ -441,27 +433,36 @@ public class UIManager : MonoBehaviour
         _btnQuestBack.enabled = IGame.Instance.QuestManager.ShowBackImgForBtn();
     }
 
-    public void IncreaseWeaponCharges()
+    public void IncreaseWeaponCharges(int count)
     {
-        weapon.ReloadCharges(1);
-        Debug.Log("Charges increased by 1. Current charges: " + weapon.GetCurrentCharges());
-        arrowCharges.text = weapon.GetCurrentCharges().ToString();
+        WeaponBow.ReloadCharges(count);
+        Debug.Log($"Charges increased by {count}. Current charges: " + WeaponBow.GetCurrentCharges());
+        UpdateArrowCharges();
     }
 
     private void OnDestroy()
     {
         // Отписка от события при уничтожении объекта
-        if (weapon != null)
+        if (WeaponBow != null)
         {
-            weapon.OnShotFired -= UpdateArrowCharges;
+            WeaponBow.OnShotFired -= UpdateArrowCharges;
         }
     }
-    private void UpdateArrowCharges()
+    public void SetArrowsCount()
+    {
+        if (WeaponBow != null)
+        {
+            WeaponBow.currentCharges = IGame.Instance.dataPlayer.playerData.arrowsCount;
+            arrowCharges.text = WeaponBow.GetCurrentCharges().ToString();
+        }
+    }
+    public void UpdateArrowCharges()
     {
         // Обновление текста количества стрел
         if (arrowCharges != null)
         {
-            arrowCharges.text = weapon.GetCurrentCharges().ToString();
+            arrowCharges.text = WeaponBow.GetCurrentCharges().ToString();
+            IGame.Instance.saveGame.MakeSave();
         }
     }
     private void OnClickActivatePanel()

@@ -139,16 +139,9 @@ namespace RPG.Combat
             timer += Time.deltaTime;
 
             if (!target) return;
-            if (targetF!=null)
-            if (targetF.defaultWeapon == bowWeapon)
-            {
-                //Archer
-                if (bowWeapon.currentCharges == 0 || weaponNow!= WeaponNow.bow)
-                {
-                    return;
-                }
-            }
-            //if (target.)
+            //Archer
+            //if (targetF?.defaultWeapon == bowWeapon && (bowWeapon.currentCharges == 0 || weaponNow != WeaponNow.bow))
+            //    return;
 
             if (!InRange())
             {
@@ -190,6 +183,9 @@ namespace RPG.Combat
 
         private void AttackBehavior()
         {
+            if (isPlayer)
+                isPlayer = true;
+
             if (target.IsDead())
             {
                 Cancel();
@@ -229,7 +225,7 @@ namespace RPG.Combat
                 {
                     if (targetF.defaultWeapon == bowWeapon)
                         return;
-                }    
+                }
 
                 anim.ResetTrigger("stopAttack");
                 anim.SetTrigger("attack");

@@ -191,6 +191,10 @@ namespace RPG.Core
             if (pauseClass.GetPauseState()) return;
             if (zoomTotal < minZoom) MinZoom();
 
+
+
+            //Debug.Log(camYRotation + " " + IGame.Instance.playerController.transform.rotation.eulerAngles.y);
+
             float step = 1f;
             Vector3 targetPos = target.position + new Vector3Int(0, 1, 0);
             Vector3 tempV1 = target.position + (mainCam.transform.forward * ((zoomTotal - step * 2) * 0.2f));

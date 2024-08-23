@@ -124,10 +124,10 @@ namespace RPG.Combat
             {
                 currentCharges--;
                 Debug.Log("Charges left: " + currentCharges);
-                if (currentCharges == 0)
+                /*if (currentCharges == 0)
                 {
                     OnOutOfCharges();
-                }
+                }*/
                 return true;
             }
             Debug.Log("No charges left!");

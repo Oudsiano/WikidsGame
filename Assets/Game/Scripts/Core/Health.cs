@@ -135,15 +135,16 @@ namespace RPG.Core
                     removed = true; // Устанавливаем флаг "удален"
                 }
 
-                IGame.Instance.QuestManager.newKill();
-
                 QuestSpecialEnemyName SpecialEnemyName = GetComponent<QuestSpecialEnemyName>();
                 if (SpecialEnemyName != null)
                 {
                     IGame.Instance.QuestManager.newKill(SpecialEnemyName.specialEnemyName);
                 }
-                if (healthBar!=null)
-                Destroy(healthBar.gameObject);
+                else
+                    IGame.Instance.QuestManager.newKill();
+
+                if (healthBar != null)
+                    Destroy(healthBar.gameObject);
                 LineRenderer lineRenderer = GetComponentInChildren<LineRenderer>();
                 if (lineRenderer != null)
                 {

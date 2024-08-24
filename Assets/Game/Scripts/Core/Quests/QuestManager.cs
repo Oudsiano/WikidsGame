@@ -63,7 +63,9 @@ public class QuestManager : MonoBehaviour
     private void GenListQuests()
     {
         QuestsInScene = new List<UiOneQuestElement>();
+        if (_AllQuestsInGame==null)
         _AllQuestsInGame = FindObjectOfType<AllQuestsInGame>();
+        if (sceneWithTestsID==null)
         sceneWithTestsID = FindObjectOfType<SceneWithTestsID>();
 
         thisQuestsScene = new List<OneQuest>();

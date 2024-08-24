@@ -46,7 +46,7 @@ public class LocationChange : MonoBehaviour
     private SceneWithTestsID sceneWithTestsID;
     private List<string> ListNeedTests;
 
-    
+    [SerializeField] private Button continueButton;
 
     public void Awake()
     {
@@ -81,6 +81,13 @@ public class LocationChange : MonoBehaviour
 
         if (textID != null)
             textID.text = IGame.Instance.dataPlayer.playerData.id.ToString();
+
+        if (continueButton != null)
+            continueButton.onClick.AddListener(OnClickLoadFromSaveState);
+
+        if(IGame.Instance.dataPlayer.playerData.sceneToLoad>0)
+            continueButton.gameObject.SetActive(true); else
+            continueButton.gameObject.SetActive(false);
 
     }
 
@@ -155,13 +162,20 @@ public class LocationChange : MonoBehaviour
         }
     }
 
+    public void OnClickLoadFromSaveState()
+    {
+        Loading.gameObject.SetActive(true);
+        SceneLoader.Instance.TryChangeLevel((allScenes)IGame.Instance.dataPlayer.playerData.sceneToLoad, IGame.Instance.dataPlayer.playerData.spawnPoint);
+        AudioManager.instance.PlaySound("ClickButton");
+    }
+
     private void OnClick(allScenes sceneId)
     {
         IGame.Instance.dataPlayer.SetSceneToLoad(sceneId);
         Loading.gameObject.SetActive(true);
         IGame.Instance.gameAPI.SaveUpdater();
         //Invoke("LoadSceneAfterDelay", 2f); 
-        SceneLoader.Instance.TryChangeLevel(sceneId);
+        SceneLoader.Instance.TryChangeLevel(sceneId,0);
         AudioManager.instance.PlaySound("ClickButton");
     }
     /*

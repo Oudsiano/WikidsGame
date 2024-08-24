@@ -1319,6 +1319,16 @@ public class FastTestsManager
 
     public void WasAttaked(Health target)
     {
+        ShowTest(1, target); //atleast one arrow anyway
+    }
+
+    public void NeedTestForArrows(int countArrows)
+    {
+        ShowTest(countArrows, null);
+    }
+
+    private void ShowTest(int count_arrow, Health target)
+    {
         if (AvaliableTestsNow == null)
         {
             Debug.LogError("AvaliableTestsNow is null");
@@ -1326,21 +1336,9 @@ public class FastTestsManager
             return;
         }
 
-        if (IGame.Instance == null)
-        {
-            Debug.LogError("IGame.Instance is null");
-            return;
-        }
-
-        if (IGame.Instance.UIManager == null)
-        {
-            Debug.LogError("IGame.Instance.UIManager is null");
-            return;
-        }
-
         if (AvaliableTestsNow.Count > 0)
         {
-            IGame.Instance.UIManager.RegenFastTestUI(0, AvaliableTestsNow.Count, target);
+            IGame.Instance.UIManager.RegenFastTestUI(0, AvaliableTestsNow.Count, count_arrow, target);
         }
         else
         {

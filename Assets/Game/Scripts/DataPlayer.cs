@@ -101,5 +101,6 @@ public class PlayerData
     public float musicVol=1;
     public bool soundOn=true;
     public bool musicOn=true;
+    public int arrowsCount = 0;
 
 }

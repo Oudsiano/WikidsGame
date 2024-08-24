@@ -9,6 +9,7 @@ namespace RPG.Movement
     // Класс, отвечающий за перемещение персонажа и взаимодействие с ним
     public class Mover : MonoBehaviour, IAction
     {
+
         public ClickEffect clickEffect; // Ссылка на скрипт для создания эффекта при нажатии на точку
         private Animator animator; // Ссылка на компонент аниматора
         private NavMeshAgent thisNavAgent; // Ссылка на компонент навигации
@@ -18,6 +19,7 @@ namespace RPG.Movement
         NPCInteractable target; // Цель для взаимодействия
 
         // Метод, вызываемый при старте
+
         void Start()
         {
             isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false; //Мувер должен знать на игроке он или нет
@@ -89,6 +91,8 @@ namespace RPG.Movement
         // Метод для перемещения к указанной точке
         public void MoveTo(Vector3 pos)
         {
+            if (!thisNavAgent.isActiveAndEnabled) return;
+
             thisNavAgent.destination = pos; // Устанавливаем пункт назначения для навигационного агента
             thisNavAgent.isStopped = false; // Возобновляем движение
         }
@@ -107,6 +111,7 @@ namespace RPG.Movement
         // Метод для отмены текущего действия
         public void Cancel()
         {
+            if (!thisNavAgent.isActiveAndEnabled) return;
             thisNavAgent.isStopped = true; // Останавливаем движение
         }
 

@@ -21,8 +21,7 @@ public class UIFastTest : MonoBehaviour
     private Health targetKillAfterTest;
     private OneFastTest currentTest;
     private bool isCorrect;
-
-    private UIManager uiManager; // ?????? ?? UIManager
+    private int addArrows;
 
     CanvasGroup canvasGroup;
 
@@ -42,12 +41,6 @@ public class UIFastTest : MonoBehaviour
         }
     }
 
-    // ????? ??? ????????? UIManager
-    public void SetUIManager(UIManager manager)
-    {
-        uiManager = manager;
-    }
-
     public void SetTexts(string mainText, string btnText1, string btnText2, string btnText3, string btnText4)
     {
         testText.text = mainText;
@@ -64,24 +57,17 @@ public class UIFastTest : MonoBehaviour
 
     private void ResetButton(Button button)
     {
+        canvasGroup.DOKill();
         canvasGroup.alpha = 1;
         button.interactable = true;
         button.GetComponent<Image>().color = Color.white;
     }
 
-    public void ShowTestForAddedArrow(int stratIndexFastTests, int endIndexFastTests, int arrowCountToAdd)
+    public void ShowTest(int stratIndexFastTests, int endIndexFastTests, int addArrows, Health targetKillAfterTest)
     {
-        if (IGame.Instance == null)
-        {
-            Debug.LogError("IGame.Instance is null");
-            return;
-        }
-
-        if (IGame.Instance.FastTestsManager == null)
-        {
-            Debug.LogError("FastTestsManager is null");
-            return;
-        }
+        isCorrect = false;
+        this.addArrows = addArrows;
+        this.targetKillAfterTest = targetKillAfterTest;
 
         var allTests = IGame.Instance.FastTestsManager.AvaliableTestsNow;
         if (allTests == null || allTests.Count == 0)
@@ -93,9 +79,9 @@ public class UIFastTest : MonoBehaviour
 
         bool testFound = false;
         int attempts = 0;
-        int maxAttempts = 5;
+        int maxAttemptsForFindRandomTEst = 5;
 
-        while (!testFound && attempts < maxAttempts)
+        while (!testFound && attempts < maxAttemptsForFindRandomTEst)
         {
             int randomId = UnityEngine.Random.Range(stratIndexFastTests, endIndexFastTests);
             currentTest = allTests[randomId];
@@ -124,66 +110,7 @@ public class UIFastTest : MonoBehaviour
 
         if (!testFound)
         {
-            Debug.Log($"No test found after {maxAttempts} attempts.");
-        }
-    }
-
-    private void AddArrows(int count)
-    {
-        if (uiManager != null)
-        {
-            uiManager.IncreaseWeaponCharges(); // ????? ?????? ????? ????????? UIManager
-        }
-        else
-        {
-            Debug.LogError("uiManager is null");
-        }
-
-        Debug.Log($"{count} arrows added to the inventory.");
-    }
-
-
-    public void ShowTest(int stratIndexFastTests, int endIndexFastTests, Health targetKillAfterTest)
-    {
-        isCorrect = false;
-
-        this.targetKillAfterTest = targetKillAfterTest;
-
-        var allTests = IGame.Instance.FastTestsManager.AvaliableTestsNow;
-        bool testFound = false;
-        int attempts = 0;
-        int maxAttempts = 5;
-
-        while (!testFound && attempts < maxAttempts)
-        {
-            int randomId = UnityEngine.Random.Range(stratIndexFastTests, endIndexFastTests);
-            currentTest = allTests[randomId];
-
-            if (currentTest != null)
-            {
-                pauseClass.IsOpenUI = true;
-                IGame.Instance.SavePlayerPosLikeaPause(true);
-                gameObject.SetActive(true);
-
-                SetTexts(
-                    currentTest.QuestionText,
-                    currentTest.Answer1,
-                    currentTest.Answer2,
-                    currentTest.Answer3,
-                    currentTest.Answer4
-                );
-
-                testFound = true;
-            }
-            else
-            {
-                attempts++;
-            }
-        }
-
-        if (!testFound)
-        {
-            Debug.Log($"No test found after {maxAttempts} attempts.");
+            Debug.Log($"No test found after {maxAttemptsForFindRandomTEst} attempts.");
             // ????? ???????? ?????? ?????????, ???? ???? ?? ?????? ????? ?????????? ???????
         }
     }
@@ -204,10 +131,8 @@ public class UIFastTest : MonoBehaviour
         DisableButtons();
         canvasGroup.DOFade(0, 0.3f).SetDelay(2f).OnComplete(OnClickClose);
 
-        if (isCorrect)
-        {
-            AddArrows(1); // ?????????? ????? ??? ?????????? ??????
-        }
+        if (isCorrect && addArrows>0)
+            IGame.Instance.UIManager.IncreaseWeaponCharges(addArrows); // ?????????? ????? ??? ?????????? ??????
     }
 
     private Button GetButtonByIndex(int index)
@@ -242,6 +167,7 @@ public class UIFastTest : MonoBehaviour
             else
                 targetKillAfterTest.MissFastTest();
         }
+
     }
     public void FindAndFadeFastTextSavePoint(string newText)
     {

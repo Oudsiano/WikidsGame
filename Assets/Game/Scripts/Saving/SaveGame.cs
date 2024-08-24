@@ -109,6 +109,8 @@ public class SaveGame
         IGame.Instance.dataPlayer.playerData.musicOn = !SoundManager.GetMusicMuted();
         IGame.Instance.dataPlayer.playerData.musicVol = SoundManager.GetMusicVolume();
 
+        IGame.Instance.dataPlayer.playerData.arrowsCount = IGame.Instance.UIManager.WeaponBow.currentCharges;
+
         IGame.Instance.gameAPI.SaveUpdater();
     }
 
@@ -119,6 +121,8 @@ public class SaveGame
 
         BugItems.Clear();
         EquipedArmor = IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPlayer.playerData.armorIdToload);
+        if (IGame.Instance.dataPlayer.playerData.weaponToLoad == "Basic Bow")
+            IGame.Instance.dataPlayer.playerData.weaponToLoad = "";
         EquipedWeapon = IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPlayer.playerData.weaponToLoad);
 
         if (IGame.Instance.dataPlayer.playerData.playerName != "")
@@ -144,6 +148,7 @@ public class SaveGame
                 }
         }
 
+        IGame.Instance.dataPlayer.playerData.containsBug2.RemoveAll(item => item.name == "Basic Bow");
 
         foreach (var item in IGame.Instance.dataPlayer.playerData.containsBug2)
         {
@@ -156,5 +161,6 @@ public class SaveGame
 
         OnLoadItems?.Invoke();
         Coins = IGame.Instance.dataPlayer.playerData.coins;
+        IGame.Instance.UIManager.SetArrowsCount();
     }
 }

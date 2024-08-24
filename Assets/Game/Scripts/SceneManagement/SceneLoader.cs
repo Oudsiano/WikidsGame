@@ -41,10 +41,10 @@ namespace RPG.Core
             LoadLevel((allScenes)IGame.Instance.dataPlayer.playerData.sceneToLoad);
         }
 
-        public void TryChangeLevel(allScenes IdNewLevel)
+        public void TryChangeLevel(allScenes IdNewLevel,int newSpawnPoint)
         {
             SavePointsManager.ResetDict();
-            IGame.Instance.dataPlayer.playerData.spawnPoint = 0;
+            IGame.Instance.dataPlayer.playerData.spawnPoint = newSpawnPoint;
             LoadLevel(IdNewLevel);
         }
 

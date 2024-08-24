@@ -380,7 +380,7 @@ public class UIManager : MonoBehaviour
     {
         closeAgainUI(true);
         IGame.Instance.gameAPI.SaveUpdater();
-        SceneLoader.TryChangeLevel(LevelChangeObserver.allScenes.regionSCene);
+        SceneLoader.TryChangeLevel(LevelChangeObserver.allScenes.regionSCene,0);
         AudioManager.instance.PlaySound("ButtonClick");
     }
 

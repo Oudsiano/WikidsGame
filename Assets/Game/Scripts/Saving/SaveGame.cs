@@ -49,7 +49,7 @@ public class SaveGame
 
 
         EquipedArmor = new Armor();
-        EquipedWeapon = new Weapon();
+        EquipedWeapon = (Weapon)IGame.Instance.WeaponArmorManager.TryGetWeaponByName("Sword").CreateInstance();
     }
 
     public void SaveItemToBug(ItemDefinition item)
@@ -123,6 +123,9 @@ public class SaveGame
         EquipedArmor = IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPlayer.playerData.armorIdToload);
         if (IGame.Instance.dataPlayer.playerData.weaponToLoad == "Basic Bow")
             IGame.Instance.dataPlayer.playerData.weaponToLoad = "";
+        if (IGame.Instance.dataPlayer.playerData.weaponToLoad == "")
+            IGame.Instance.dataPlayer.playerData.weaponToLoad = "Sword";
+
         EquipedWeapon = IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPlayer.playerData.weaponToLoad);
 
         if (IGame.Instance.dataPlayer.playerData.playerName != "")

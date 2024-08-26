@@ -82,7 +82,7 @@ public class PlayerData
     public int spawnPoint; // Новое поле для хранения позиции объекта
     public List<bool> stateSpawnPoints;
     public List<string> alreadyExistWeapons;
-    public string weaponToLoad;
+    public string weaponToLoad = "Sword";
     public int armorIdToload;
     public OneLeson[] progress;
     public int chargeEnergy;

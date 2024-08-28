@@ -34,22 +34,14 @@ public class PickableEquip : MonoBehaviour
     {
         if (IGame.Instance.WeaponArmorManager.IsWeaponInGame(item.name))
         {
-            if (IGame.Instance.WeaponArmorManager.IsWeaponInGame(item.name))
 
+            if (item != null)
             {
-
-                if (item != null)
-                {
-                    item.CreateInstance();
-                    IGame.Instance.UIManager.uIBug.TryAddEquipToBug(item);
-                }
-                else
-                    Debug.LogError("mistake item");
+                item.CreateInstance();
+                IGame.Instance.UIManager.uIBug.TryAddEquipToBug(item);
             }
             else
-            {
-                Debug.LogWarning("Этого предмета нет в списке предметов в WeaponArmorManager");
-            }
+                Debug.LogError("mistake item");
         }
         else
         {
@@ -72,17 +64,19 @@ public class PickableEquip : MonoBehaviour
         RaycastHit[] hits;
         hits = Physics.RaycastAll(ray, Mathf.Infinity);
 
-        foreach (var Hit in hits)
+        if (Input.GetMouseButtonDown(0))
         {
-            PickableEquip target = Hit.transform.gameObject.GetComponent<PickableEquip>();
-
-            // Если цель не существует или игрок не может атаковать выбранного противника, продолжаем цикл
-            if (!target)
-                continue;
-
-            // Если игрок кликнул мышью, атакуем цель
-            if (Input.GetMouseButtonDown(0))
+            foreach (var Hit in hits)
             {
+                PickableEquip target = Hit.transform.gameObject.GetComponent<PickableEquip>();
+
+                if (!target)
+                    continue;
+
+                if (target != this)
+                    return;
+
+
                 PickUpIt();
             }
         }

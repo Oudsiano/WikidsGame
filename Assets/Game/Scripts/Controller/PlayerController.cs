@@ -58,6 +58,7 @@ namespace RPG.Controller
         private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode)
         {
             IGame.Instance.saveGame.MakeLoad();
+            IGame.Instance.saveGame.SetBonusWeaponAndArmorIfNeed(); //TODO перенести эту функцию куда то еще
             EquipWeaponAndArmorAfterLoad();
         }
 

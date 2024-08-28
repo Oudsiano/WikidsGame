@@ -75,7 +75,7 @@ namespace RPG.SceneManagement
                     TextDisplay(0, "Рано портироваться, ты еще не сделал все тесты");
                     return;
                 }
-
+                
                 if (sceneToLoad != sceneComponent.IdScene)
                     StartCoroutine(Transition()); // Запускаем переход между сценами
                 else
@@ -94,6 +94,7 @@ namespace RPG.SceneManagement
             dataPlayer.SetSceneToLoad(sceneToLoad);
             SceneLoader.Instance.TryChangeLevel(sceneToLoad,0);
 
+            IGame.Instance.CursorManager.SetCursorDefault();
             //yield return SceneManager.LoadSceneAsync(IGame.Instance.LevelChangeObserver.DAllScenes[sceneToLoad].name); // Загружаем новую сцену
 
 
@@ -120,7 +121,8 @@ namespace RPG.SceneManagement
             else
                 Debug.LogError("DataPlayer object not found!"); // Выводит ошибку, если объект DataPlayer не найден в сцене
 
-            SetBonusWeaponAndArmor();
+            IGame.Instance.saveGame.MakePortalSave(bonusWeapon, bonusArmor, sceneComponent);
+            
             yield return new WaitForSeconds(betweenFadeTime); // Ждем некоторое время после загрузки сцены
         }
 
@@ -158,50 +160,6 @@ namespace RPG.SceneManagement
 
         }
 
-        private void SetBonusWeaponAndArmor()
-        {
-            if (IGame.Instance.dataPlayer.playerData.FinishedRegionsIDs.Contains((int)sceneComponent.IdScene))
-                return;
-
-            if (bonusWeapon != null)
-            {
-                if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusWeapon.name)))
-                {
-                    IGame.Instance.UIManager.ShowNewWeapon();
-                    IGame.Instance.gameAPI.SaveUpdater();
-
-                    if (!IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Contains(bonusWeapon.name))
-                    {
-                        IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Add(bonusWeapon.name);
-                    }
-                }
-                else
-                {
-                    if (bonusWeapon.price > 0)
-                        TextDisplay(bonusWeapon.price / 4, "Вы получили бонусные деньги за прохождение");
-                }
-            }
-
-            if (bonusArmor != null)
-            {
-                if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusArmor.name)))
-                {
-                    IGame.Instance.UIManager.ShowNewArmor();
-                    IGame.Instance.gameAPI.SaveUpdater();
-
-                    if (!IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Contains(bonusArmor.name))
-                    {
-                        IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Add(bonusArmor.name);
-                    }
-                }
-                else
-                {
-                    if (bonusArmor.price > 0)
-                        TextDisplay(bonusArmor.price / 4, "Вы получили бонусные деньги за прохождение");
-                }
-            }
-        }
-
         private void TextDisplay(int coins, string text)
         {
             IGame.Instance.CoinManager.Coins.ChangeCount(coins);
@@ -231,10 +189,10 @@ namespace RPG.SceneManagement
             GameObject textObj = new GameObject("MessageText");
             textObj.transform.SetParent(panel.transform, false);
             messageText = textObj.AddComponent<TextMeshProUGUI>();
-            if (coins!=0)
-            messageText.text = text + " " + coins;
+            if (coins != 0)
+                messageText.text = text + " " + coins;
             else
-            messageText.text = text;
+                messageText.text = text;
             messageText.alignment = TextAlignmentOptions.Center;
             messageText.color = Color.black;
             RectTransform textRectTransform = textObj.GetComponent<RectTransform>();

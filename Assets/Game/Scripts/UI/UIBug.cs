@@ -76,7 +76,7 @@ public class UIBug : MonoBehaviour
         {
             if (InventoryBag.inventory.TryAdd(item.CreateInstance()))
             {
-                IGame.Instance.saveGame.SaveItemToBug(item);
+                //IGame.Instance.saveGame.SaveItemToBug(item);
                 return true;
             }
             return false;
@@ -94,7 +94,7 @@ public class UIBug : MonoBehaviour
             if (InventoryBag.inventory.CanAdd(item))
         {
             InventoryBag.inventory.TryAdd(item.CreateInstance());
-            IGame.Instance.saveGame.SaveItemToBug(item);
+            //IGame.Instance.saveGame.SaveItemToBug(item);
         }
         else
         {
@@ -233,6 +233,8 @@ public class UIBug : MonoBehaviour
     private void OnAdded(IInventoryItem obj)
     {
         if (notAvaliableEvents) return;
+
+        Debug.Log("d");
         IGame.Instance.saveGame.BugItems.Add((ItemDefinition)obj);
         IGame.Instance.saveGame.MakeSave();
     }

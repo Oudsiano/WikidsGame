@@ -68,7 +68,7 @@ public class SaveGame
     }
     public void SetBonusWeaponAndArmorIfNeed()
     {
-        if (IGame.Instance.dataPlayer.playerData.FinishedRegionsIDs.Contains((int)sceneComponent.IdScene))
+        if (sceneComponent==null || IGame.Instance.dataPlayer.playerData.FinishedRegionsIDs.Contains((int)sceneComponent.IdScene))
             return;
 
         if (bonusWeapon != null)

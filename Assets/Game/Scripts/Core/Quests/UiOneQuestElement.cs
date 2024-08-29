@@ -146,7 +146,6 @@ public class UiOneQuestElement : MonoBehaviour
         switch (QuestType)
         {
             case QuestType.killEnemy:
-            case QuestType.killArcher: // ????????? ?????? ???? ??????
                 updateProcess(thisQuestData.currentProcess, thisQuestData.targetProcess);
                 break;
             case QuestType.toSpeekNPC:

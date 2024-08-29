@@ -164,7 +164,9 @@ public class LocationChange : MonoBehaviour
 
     public void OnClickLoadFromSaveState()
     {
+
         Loading.gameObject.SetActive(true);
+        //SceneLoader.Instance.TryChangeLevel((allScenes)2, 4);
         SceneLoader.Instance.TryChangeLevel((allScenes)IGame.Instance.dataPlayer.playerData.sceneToLoad, IGame.Instance.dataPlayer.playerData.spawnPoint);
         AudioManager.instance.PlaySound("ClickButton");
     }

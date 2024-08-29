@@ -207,6 +207,7 @@ public class GameAPI : MonoBehaviour
                 IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName("Sword"));
                 StartCoroutine(SaveGameData());
 
+                IGame.Instance.FastTestsManager.GenAvaliableTests();
                 GameLoaded = true;
             }
             else

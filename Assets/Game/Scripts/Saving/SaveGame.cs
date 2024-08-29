@@ -1,8 +1,11 @@
-﻿using FarrokhGames.Inventory.Examples;
+﻿using DG.Tweening;
+using FarrokhGames.Inventory.Examples;
 using RPG.Combat;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class OneItemForSave
@@ -43,6 +46,11 @@ public class SaveGame
     }
     public string PlayerName { get => playerName; set { playerName = value; OnChangePlayerName?.Invoke(playerName); } }
 
+    //Порталы в неправильном порядке работают. Их надо сохранять в начале след карты. А для этого запоминать.
+    public RPG.Combat.Weapon bonusWeapon;
+    public Armor bonusArmor;
+    private SceneComponent sceneComponent;
+
     public SaveGame()
     {
         BugItems = new List<ItemDefinition>();
@@ -50,6 +58,117 @@ public class SaveGame
 
         EquipedArmor = new Armor();
         EquipedWeapon = (Weapon)IGame.Instance.WeaponArmorManager.TryGetWeaponByName("Sword").CreateInstance();
+    }
+
+    public void MakePortalSave(Weapon _bonusw, Armor _bonusA, SceneComponent _sceneComponent)
+    {
+        bonusWeapon = _bonusw;
+        bonusArmor = _bonusA;
+        sceneComponent = _sceneComponent;
+    }
+    public void SetBonusWeaponAndArmorIfNeed()
+    {
+        if (IGame.Instance.dataPlayer.playerData.FinishedRegionsIDs.Contains((int)sceneComponent.IdScene))
+            return;
+
+        if (bonusWeapon != null)
+        {
+            if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusWeapon.name)))
+            {
+                Debug.Log("show weapon");
+                IGame.Instance.UIManager.ShowNewWeapon();
+                IGame.Instance.gameAPI.SaveUpdater();
+
+                if (!IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Contains(bonusWeapon.name))
+                {
+                    IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Add(bonusWeapon.name);
+                }
+            }
+            else
+            {
+                if (bonusWeapon.price > 0)
+                    TextDisplay(bonusWeapon.price / 4, "Вы получили бонусные деньги за прохождение");
+            }
+        }
+
+        if (bonusArmor != null)
+        {
+            if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusArmor.name)))
+            {
+                IGame.Instance.UIManager.ShowNewArmor();
+                IGame.Instance.gameAPI.SaveUpdater();
+
+                if (!IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Contains(bonusArmor.name))
+                {
+                    IGame.Instance.dataPlayer.playerData.alreadyExistWeapons.Add(bonusArmor.name);
+                }
+            }
+            else
+            {
+                if (bonusArmor.price > 0)
+                    TextDisplay(bonusArmor.price / 4, "Вы получили бонусные деньги за прохождение");
+            }
+        }
+
+        bonusWeapon = null;
+        bonusArmor = null;
+    }
+    private void TextDisplay(int coins, string text)
+    {
+        IGame.Instance.CoinManager.Coins.ChangeCount(coins);
+
+        TextMeshProUGUI messageText;
+        Canvas canvas;
+        GameObject panel;
+
+        // Создание Canvas
+        GameObject canvasObj = new GameObject("Canvas");
+        canvas = canvasObj.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 100; // Установка sortOrder
+        canvasObj.AddComponent<CanvasScaler>();
+        canvasObj.AddComponent<GraphicRaycaster>();
+
+        // Создание панели
+        panel = new GameObject("MessagePanel");
+        panel.transform.SetParent(canvas.transform, false);
+        RectTransform rectTransform = panel.AddComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(800, 300);
+        panel.AddComponent<CanvasRenderer>();
+        Image image = panel.AddComponent<Image>();
+        image.color = new Color(0.5f, 0.5f, 0.5f, 0.5f); // Серый полупрозрачный цвет
+
+        // Создание текста
+        GameObject textObj = new GameObject("MessageText");
+        textObj.transform.SetParent(panel.transform, false);
+        messageText = textObj.AddComponent<TextMeshProUGUI>();
+        if (coins != 0)
+            messageText.text = text + " " + coins;
+        else
+            messageText.text = text;
+        messageText.alignment = TextAlignmentOptions.Center;
+        messageText.color = Color.black;
+        RectTransform textRectTransform = textObj.GetComponent<RectTransform>();
+        textRectTransform.sizeDelta = new Vector2(500, textRectTransform.sizeDelta.y);
+        textRectTransform.anchoredPosition = Vector2.zero;
+
+        // Запуск анимации для исчезновения и удаления панели
+        DOVirtual.DelayedCall(3, () =>
+        {
+            // Плавное исчезновение за 2 секунды
+            Image panelImage = panel.GetComponent<Image>();
+            TextMeshProUGUI textMesh = messageText;
+
+            // Анимация исчезновения панели
+            panelImage.DOFade(0, 2);
+
+            // Анимация исчезновения текста
+            textMesh.DOFade(0, 2).OnComplete(() =>
+            {
+                // Удаление панели после завершения анимации
+                IGame.Destroy(panel);
+            });
+        });
     }
 
     public void SaveItemToBug(ItemDefinition item)

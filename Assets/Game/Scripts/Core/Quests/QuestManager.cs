@@ -12,7 +12,6 @@ public enum QuestType
     toSpeekNPC,
     killSpecialEnemy,
     completeSpecialTest,
-    killArcher,
 }
 
 public enum QuestAwardType
@@ -199,11 +198,6 @@ public class QuestManager : MonoBehaviour
             }
 
             if (item.QuestType == QuestType.killSpecialEnemy && item.quest.specialEnemyName == name)
-            {
-                item.addOneProcess();
-            }
-
-            if (item.QuestType == QuestType.killArcher && name == "Archer") // ???????? ??? ?????? ???? ??????
             {
                 item.addOneProcess();
             }

@@ -39,7 +39,7 @@ public class IconForFarCamera : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         sphereCollider = GetComponent<SphereCollider>();
         sphereCollider.isTrigger = true;
-        sphereCollider.radius = 1.5f;
+        sphereCollider.radius = 0.5f;
     }
 
     private void FollowCamera_OnupdateEulerAngles(Vector3 obj)

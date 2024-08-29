@@ -1309,10 +1309,10 @@ public class FastTestsManager
         }
 
         // Добавьте хотя бы один тест, если список пуст
-        if (AvaliableTestsNow.Count == 0 && AllFastTests.Count > 0)
+        /*if (AvaliableTestsNow.Count == 0 && AllFastTests.Count > 0)
         {
             AvaliableTestsNow.Add(AllFastTests[0]);
-        }
+        }*/
 
         Debug.Log(AvaliableTestsNow.Count);
     }
@@ -1329,24 +1329,17 @@ public class FastTestsManager
 
     private void ShowTest(int count_arrow, Health target)
     {
-        if (AvaliableTestsNow == null)
-        {
-            Debug.LogError("AvaliableTestsNow is null");
-            IGame.Instance.UIManager.DisplayEmptyTestMessage(); // Вызов нового метода
-            return;
-        }
-
         if (AvaliableTestsNow.Count > 0)
         {
             IGame.Instance.UIManager.RegenFastTestUI(0, AvaliableTestsNow.Count, count_arrow, target);
         }
         else
         {
-            target.MissFastTest();
+            if (target == null)
+                IGame.Instance.UIManager.DisplayEmptyTestMessage(); // Вызов нового метода
+            else
+                target.MissFastTest();
             Debug.Log("Нет доступных тестов");
         }
     }
-
-
-
 }

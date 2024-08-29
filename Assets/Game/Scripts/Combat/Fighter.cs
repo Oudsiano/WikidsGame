@@ -227,6 +227,9 @@ namespace RPG.Combat
                         return;
                 }
 
+                if (isPlayer)
+                    isPlayer = true;
+
                 anim.ResetTrigger("stopAttack");
                 anim.SetTrigger("attack");
 
@@ -283,6 +286,12 @@ namespace RPG.Combat
         public void Hit()
         {
             if (!target) return; // Если цели нет, выйти
+
+            if (isPlayer && weaponNow != WeaponNow.bow)
+            {
+                if (targetF.defaultWeapon == bowWeapon)
+                    return;
+            }
 
             AudioManager.instance.PlaySound("Attack");
 

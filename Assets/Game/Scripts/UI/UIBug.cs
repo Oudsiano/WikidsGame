@@ -23,6 +23,7 @@ public class UIBug : MonoBehaviour
     private bool notAvaliableEvents = false;
     private bool inited = false;
 
+    private bool NoAddToSave; //По умолчанию false а значит включаем true в исключительных случаях и обратно в false переводим
     public void Init()
     {
         marketInventoryController = InventoryBag.GetComponent<InventoryController>();
@@ -41,7 +42,7 @@ public class UIBug : MonoBehaviour
         pauseClass.IsOpenUI = false;
     }
 
-    public bool TryTakeQuestItem(string itemName, bool needDelete=false)
+    public bool TryTakeQuestItem(string itemName, bool needDelete = false)
     {
 
         foreach (var item in InventoryBag.inventory.allItems)
@@ -74,11 +75,16 @@ public class UIBug : MonoBehaviour
 
         if (InventoryBag.inventory.CanAdd(item))
         {
+            NoAddToSave = true;
             if (InventoryBag.inventory.TryAdd(item.CreateInstance()))
             {
-                //IGame.Instance.saveGame.SaveItemToBug(item);
+
+                //Обязательно вот такой сейв, потому, что по факту именно в этот момент добавили предмет
+                IGame.Instance.saveGame.SaveItemToBug(item);
+                NoAddToSave = false;
                 return true;
             }
+            NoAddToSave = false;
             return false;
         }
         return false;
@@ -91,10 +97,10 @@ public class UIBug : MonoBehaviour
 
         if (item.onlyOne && InventoryBag.inventory.Contains(item)) return;
 
-            if (InventoryBag.inventory.CanAdd(item))
+        if (InventoryBag.inventory.CanAdd(item))
         {
+            IGame.Instance.saveGame.SaveItemToBug(item);
             InventoryBag.inventory.TryAdd(item.CreateInstance());
-            //IGame.Instance.saveGame.SaveItemToBug(item);
         }
         else
         {
@@ -192,7 +198,7 @@ public class UIBug : MonoBehaviour
     {
         DropItemNearPlayer((ItemDefinition)obj);
     }
-    
+
 
 
     private void OnRemovedArmor(IInventoryItem obj)
@@ -234,8 +240,9 @@ public class UIBug : MonoBehaviour
     {
         if (notAvaliableEvents) return;
 
-        Debug.Log("d");
+        if (!NoAddToSave)
         IGame.Instance.saveGame.BugItems.Add((ItemDefinition)obj);
+
         IGame.Instance.saveGame.MakeSave();
     }
 

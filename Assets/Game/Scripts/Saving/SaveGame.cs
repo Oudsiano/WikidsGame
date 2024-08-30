@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static LevelChangeObserver;
 
 [System.Serializable]
 public class OneItemForSave
@@ -49,7 +50,7 @@ public class SaveGame
     //Порталы в неправильном порядке работают. Их надо сохранять в начале след карты. А для этого запоминать.
     public RPG.Combat.Weapon bonusWeapon;
     public Armor bonusArmor;
-    private SceneComponent sceneComponent;
+    private allScenes IdSceneForPortal = allScenes.emptyScene;
 
     public SaveGame()
     {
@@ -64,12 +65,14 @@ public class SaveGame
     {
         bonusWeapon = _bonusw;
         bonusArmor = _bonusA;
-        sceneComponent = _sceneComponent;
+        IdSceneForPortal = _sceneComponent.IdScene;
     }
     public void SetBonusWeaponAndArmorIfNeed()
     {
-        if (sceneComponent==null || IGame.Instance.dataPlayer.playerData.FinishedRegionsIDs.Contains((int)sceneComponent.IdScene))
+        if (IdSceneForPortal == allScenes.emptyScene || IGame.Instance.dataPlayer.playerData.FinishedRegionsIDs.Contains((int)IdSceneForPortal))
             return;
+
+        IGame.Instance.dataPlayer.playerData.FinishedRegionsIDs.Add((int)IdSceneForPortal);
 
         if (bonusWeapon != null)
         {
@@ -112,6 +115,7 @@ public class SaveGame
 
         bonusWeapon = null;
         bonusArmor = null;
+        IdSceneForPortal = allScenes.emptyScene;
     }
     private void TextDisplay(int coins, string text)
     {

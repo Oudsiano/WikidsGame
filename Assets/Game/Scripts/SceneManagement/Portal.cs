@@ -75,7 +75,7 @@ namespace RPG.SceneManagement
                     TextDisplay(0, "Рано портироваться, ты еще не сделал все тесты");
                     return;
                 }
-                
+
                 if (sceneToLoad != sceneComponent.IdScene)
                     StartCoroutine(Transition()); // Запускаем переход между сценами
                 else
@@ -92,37 +92,14 @@ namespace RPG.SceneManagement
                 Debug.LogError("Empty scene on portal. It's mistake");
 
             dataPlayer.SetSceneToLoad(sceneToLoad);
-            SceneLoader.Instance.TryChangeLevel(sceneToLoad,0);
+            SceneLoader.Instance.TryChangeLevel(sceneToLoad, 0);
 
             IGame.Instance.CursorManager.SetCursorDefault();
-            //yield return SceneManager.LoadSceneAsync(IGame.Instance.LevelChangeObserver.DAllScenes[sceneToLoad].name); // Загружаем новую сцену
-
-
-            if (dataPlayer != null)
-            {
-                List<allScenes> posTempList = new List<allScenes>(IGame.Instance.LevelChangeObserver.DAllScenes.Keys);
-
-                int posNew = 0;
-                foreach (var item in posTempList)
-                {
-                    if (item == (allScenes)sceneComponent.IdScene)
-                    {
-                        posNew = (int)sceneComponent.IdScene;
-                    }
-                }
-
-
-                if (!dataPlayer.playerData.FinishedRegionsIDs.Contains(posNew))
-                    dataPlayer.playerData.FinishedRegionsIDs.Add(posNew);
-
-                //if (dataPlayer.playerData.IDmaxRegionAvaliable < posNew)
-                //    dataPlayer.playerData.IDmaxRegionAvaliable = posNew;
-            }
-            else
-                Debug.LogError("DataPlayer object not found!"); // Выводит ошибку, если объект DataPlayer не найден в сцене
 
             IGame.Instance.saveGame.MakePortalSave(bonusWeapon, bonusArmor, sceneComponent);
-            
+
+
+
             yield return new WaitForSeconds(betweenFadeTime); // Ждем некоторое время после загрузки сцены
         }
 

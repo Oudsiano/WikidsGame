@@ -83,7 +83,7 @@ public class ConversationStarter : MonoBehaviour
     {
         if (TestID==0)
         {
-            Debug.LogError("Not have TestID in inspector");
+            Debug.LogWarning("Not have TestID in inspector");
             TestID = testId;
         }
 

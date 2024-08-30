@@ -89,7 +89,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UIFastTest fastTestUI;
 
     [Header("PanelUI")]
-    [SerializeField] private GameObject _panelToActivate; // Панель, которую нужно активировать
+    [SerializeField] private TestTableGenerator _testTableGenerator; // Панель, которую нужно активировать
     [SerializeField] private Button _buttonActivatePanel; // Кнопка для активации панели
     [SerializeField] private Button _buttonClosePanel; // Кнопка для закрытия па
 
@@ -467,14 +467,15 @@ public class UIManager : MonoBehaviour
     }
     private void OnClickActivatePanel()
     {
-        // Активируем панель
-        _panelToActivate.SetActive(true);
+        _testTableGenerator.gameObject.SetActive(true);
+        pauseClass.IsOpenUI = true;
+        _testTableGenerator.Regen();
     }
 
     private void OnClickClosePanel()
     {
-        // Деактивируем панель
-        _panelToActivate.SetActive(false);
+        _testTableGenerator.gameObject.SetActive(false);
+        pauseClass.IsOpenUI = false;
     }
     private void Update()
     {

@@ -41,6 +41,8 @@ namespace RPG.Core
         private float minZoom;
         private float maxZoom;
         private float zoomTotal = -35; // Общее изменение масштаба
+        public float[] zoomLevels = new float[] { -20f, -35f, -100f, -200f, -300f, -400f, -500f, -600f };
+
 
         private float zoomAmt; // Количество изменения масштаба
 
@@ -252,9 +254,19 @@ namespace RPG.Core
                 }
             }
         }
+
         public void MaxZoom()
         {
-            float targetZoom = zoomTotal + 100f;
+            float targetZoom = maxZoom;
+
+            for (int i = zoomLevels.Length - 1; i >= 0; i--)
+                if (zoomLevels[i] > zoomTotal)
+                {
+                    targetZoom = zoomLevels[i];
+                    break;
+                }
+
+            // Если значение превышает максимум, устанавливаем его на максимальное значение
             if (targetZoom > maxZoom)
             {
                 targetZoom = maxZoom;
@@ -270,7 +282,16 @@ namespace RPG.Core
 
         public void MinZoom()
         {
-            float targetZoom = zoomTotal - 100f;
+            float targetZoom = minZoom;
+            for (int i = 0; i < zoomLevels.Length; i++)
+                if (zoomLevels[i] < zoomTotal)
+                {
+                    targetZoom =  zoomLevels[i];
+                    break;
+                }
+
+
+            // Если значение меньше минимума, устанавливаем его на минимальное значение
             if (targetZoom < minZoom)
             {
                 targetZoom = minZoom;
@@ -283,5 +304,6 @@ namespace RPG.Core
                 CommonZoomUpdata = true;
             }, targetZoom, 0.5f);
         }
+
     }
 }

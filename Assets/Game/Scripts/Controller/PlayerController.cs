@@ -6,6 +6,7 @@ using RPG.Core;
 using DialogueEditor;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace RPG.Controller
 {
@@ -192,25 +193,36 @@ namespace RPG.Controller
         private bool InteractWithMovement()
         {
             // Получаем луч из мыши
-            Ray ray = GetMouseRay();
-            bool hasHit = Physics.Raycast(ray, out RaycastHit hit);
-
-            // Если луч не попал ни в один объект, возвращаем false
-            if (!hasHit)
-                return false;
-
-            // Если игрок кликнул мышью, перемещаемся к указанной точке
+            /*Ray ray = GetMouseRay();
+            int layerMask = ~LayerMask.GetMask("PLayer");
+            bool hasHit = Physics.Raycast(ray, out RaycastHit hit, layerMask);*/
             if (Input.GetMouseButton(0))
                 if (!EventSystem.current.IsPointerOverGameObject())
                 {
-                    bool readyToGo = true;
 
-                    if (ConversationManager.Instance != null)
-                        if (ConversationManager.Instance.IsConversationActive)
-                            readyToGo = false;
+                    Ray ray = GetMouseRay();
+                    RaycastHit[] hits = Physics.RaycastAll(ray);
+                    Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
 
-                    if (readyToGo)
-                        mover.StartMoveAction(hit.point);
+                    RaycastHit hit;
+                    for (int i = 0; i < hits.Length; i++)
+                    {
+                        if (hits[i].collider.gameObject.name != "Player")
+                        {
+                            hit = hits[i];
+
+                            bool readyToGo = true;
+
+                            if (ConversationManager.Instance != null)
+                                if (ConversationManager.Instance.IsConversationActive)
+                                    readyToGo = false;
+
+                            if (readyToGo)
+                                mover.StartMoveAction(hit.point);
+
+                            break; // Выходим, найдя первый подходящий объект
+                        }
+                    }
                 }
 
             return true;

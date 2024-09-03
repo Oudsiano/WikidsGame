@@ -59,6 +59,7 @@ namespace RPG.Movement
                 }
 
 
+
             //Вынес вызов диалогового окна в сам скрипт NPCInteractable
             /*
             // Если есть цель для взаимодействия и мы достигли ее, выполняем взаимодействие
@@ -93,7 +94,19 @@ namespace RPG.Movement
         {
             if (!thisNavAgent.isActiveAndEnabled) return;
 
+            if (isPlayer)
+            {
+                NavMeshPath path = new NavMeshPath();
+                thisNavAgent.CalculatePath(pos, path);
+                if (path.status == NavMeshPathStatus.PathComplete)
+                {
+                    thisNavAgent.SetPath(path);
+                }
+            }
+            else
             thisNavAgent.destination = pos; // Устанавливаем пункт назначения для навигационного агента
+
+
             thisNavAgent.isStopped = false; // Возобновляем движение
         }
 

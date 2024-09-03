@@ -25,10 +25,14 @@ namespace RPG.Combat
         private float damage; // Общий урон снаряда
         private bool reachedCollider = false; // Флаг, указывающий, достиг ли снаряд коллайдера
 
+        Rigidbody rb;
+
         // Устанавливаем направление полета снаряда на момент запуска
         void Start()
         {
-            transform.LookAt(GetTargetPosition());
+            transform.LookAt(GetTargetPosition()); 
+            rb = GetComponent<Rigidbody>();
+            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
 
         void Update()
@@ -43,7 +47,8 @@ namespace RPG.Combat
                     transform.LookAt(GetTargetPosition());
 
                 // Перемещаем снаряд вперед по направлению
-                transform.Translate(Vector3.forward * speed * Time.deltaTime);
+                rb.MovePosition(transform.position + transform.forward * speed * Time.deltaTime);
+                //transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
                 // Если цель мертва, уничтожаем снаряд через некоторое время
                 if (isDead)

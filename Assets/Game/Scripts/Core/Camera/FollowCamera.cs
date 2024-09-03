@@ -204,10 +204,14 @@ namespace RPG.Core
         private void setLocalPosition()
         {
             float delta = Math.Abs(camYRotation - IGame.Instance.playerController.transform.rotation.eulerAngles.y);
+            float deltaX = camYRotation - IGame.Instance.playerController.transform.rotation.eulerAngles.y;
             float delta2 = Math.Abs(180 - delta);
+            float delta2X = Mathf.Sin(deltaX * Mathf.Deg2Rad);
             float deltaCameraY = (delta2 - 90) / 90 * 0.04f * (Math.Abs(zoomTotal) - 10);
+            float deltaCameraX = -delta2X  * 0.04f * (Math.Abs(zoomTotal) - 10);
             Vector3 newZoomPos = mainCam.transform.localPosition;
             newZoomPos.y = deltaCameraY;
+            newZoomPos.x = deltaCameraX;
             mainCam.transform.localPosition = newZoomPos;
 
         }
@@ -217,6 +221,12 @@ namespace RPG.Core
             if (SceneId == allScenes.emptyScene || SceneId == allScenes.regionSCene) return;
             if (pauseClass.GetPauseState()) return;
             if (zoomTotal < minZoom) MinZoom();
+
+            /*float delta = Math.Abs(camYRotation - IGame.Instance.playerController.transform.rotation.eulerAngles.y);
+            float deltaX = camYRotation - IGame.Instance.playerController.transform.rotation.eulerAngles.y;
+            float delta2 = Mathf.Sin(deltaX * Mathf.Deg2Rad);
+            Debug.Log(camYRotation + " " + IGame.Instance.playerController.transform.rotation.eulerAngles.y + " " + delta + " " + deltaX + " " + delta2);
+            */
 
             float step = 1f;
             Vector3 targetPos = target.position + new Vector3Int(0, 1, 0);

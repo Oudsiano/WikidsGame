@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static LevelChangeObserver;
 
 // Пространство имен для ядра игры
 namespace RPG.Core
@@ -23,11 +24,12 @@ namespace RPG.Core
 
         // Ссылки на камеру и начальное положение камеры
         private Transform defaultCameraTransform;
-        private Camera mainCam;
+        public Camera mainCam;
 
         // Флаги для определения возможности двигаться/масштабироваться/вращаться камере
         private bool canRotate = true;
         private bool canZoom = true;
+        private bool commonZoomUpdata = false;
 
         // Переменные для вращения камеры
         private float camXRotation = 40;
@@ -39,11 +41,13 @@ namespace RPG.Core
         private float minZoom;
         private float maxZoom;
         private float zoomTotal = -35; // Общее изменение масштаба
-        
+
         private float zoomAmt; // Количество изменения масштаба
 
         public LayerMask obstacleMask; // Слой, который обозначает препятствия
         private float autoZoomForReturn;
+
+        private allScenes SceneId = allScenes.emptyScene;
 
         public float AutoZoomForReturn
         {
@@ -53,6 +57,8 @@ namespace RPG.Core
                 autoZoomForReturn = value;
             }
         }
+
+        public bool CommonZoomUpdata { get => commonZoomUpdata; set => commonZoomUpdata = value; }
 
         // Метод вызывается перед первым обновлением кадра
         void Start()
@@ -78,9 +84,11 @@ namespace RPG.Core
             if (sceneComponent != null)
             {
                 if (sceneComponent.newMinZoomCamera != 0)
-                    minZoom = sceneComponent.newMinZoomCamera; 
+                    minZoom = sceneComponent.newMinZoomCamera;
                 if (sceneComponent.newMaxZoomCamera != 0)
                     maxZoom = sceneComponent.newMaxZoomCamera;
+
+                SceneId = sceneComponent.IdScene;
             }
         }
 
@@ -88,6 +96,8 @@ namespace RPG.Core
         void LateUpdate()
         {
             cameraMovement(); // Вызываем метод для управления камерой
+
+            if (CommonZoomUpdata) CommonZoom();
         }
 
         // Метод для управления камерой
@@ -133,6 +143,7 @@ namespace RPG.Core
             OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
             OnCameraRotation?.Invoke();
             NewYRotation?.Invoke(camYRotation);
+            setLocalPosition();
             //NewXRotation?.Invoke(camXRotation);
         }
 
@@ -156,18 +167,18 @@ namespace RPG.Core
             // Ограничиваем общее изменение масштаба
             zoomTotal = Mathf.Clamp(zoomTotal, minZoom, maxZoom);
 
-            // Получаем новую позицию для масштабирования
-            CommonZoom();
+            CommonZoomUpdata=true;
         }
 
         private void ZoomUpdateByZoomTotal(float delta)
         {
             zoomTotal += delta;
-            CommonZoom();
+            CommonZoomUpdata = true;
         }
 
         private void CommonZoom()
         {
+            CommonZoomUpdata = false;
             Vector3 newZoomPos;//= mainCam.transform.position + (mainCam.transform.forward * zoomAmt);
             if (zoomTotal < minZoom) zoomTotal = minZoom;
             if (zoomTotal > maxZoom) zoomTotal = maxZoom;
@@ -175,7 +186,11 @@ namespace RPG.Core
             {
                 newZoomPos = target.position + (mainCam.transform.forward * (zoomTotal * 0.2f));
                 mainCam.transform.position = newZoomPos;
+
+                setLocalPosition();
+
                 //Debug.Log(mainCam.transform.position);
+                //Debug.Log(mainCam.transform.localPosition);
 
                 OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
                 OnCameraDistance?.Invoke(Math.Abs(zoomTotal));
@@ -186,14 +201,22 @@ namespace RPG.Core
             OnCameraScale?.Invoke();
         }
 
+        private void setLocalPosition()
+        {
+            float delta = Math.Abs(camYRotation - IGame.Instance.playerController.transform.rotation.eulerAngles.y);
+            float delta2 = Math.Abs(180 - delta);
+            float deltaCameraY = (delta2 - 90) / 90 * 0.04f * (Math.Abs(zoomTotal) - 10);
+            Vector3 newZoomPos = mainCam.transform.localPosition;
+            newZoomPos.y = deltaCameraY;
+            mainCam.transform.localPosition = newZoomPos;
+
+        }
+
         void Update()
         {
+            if (SceneId == allScenes.emptyScene || SceneId == allScenes.regionSCene) return;
             if (pauseClass.GetPauseState()) return;
             if (zoomTotal < minZoom) MinZoom();
-
-
-
-            //Debug.Log(camYRotation + " " + IGame.Instance.playerController.transform.rotation.eulerAngles.y);
 
             float step = 1f;
             Vector3 targetPos = target.position + new Vector3Int(0, 1, 0);
@@ -231,7 +254,7 @@ namespace RPG.Core
             {
                 zoomTotal = x;
                 AutoZoomForReturn = zoomTotal;
-                CommonZoom();
+                CommonZoomUpdata = true;
             }, targetZoom, 0.5f);
         }
 
@@ -247,7 +270,7 @@ namespace RPG.Core
             {
                 zoomTotal = x;
                 AutoZoomForReturn = zoomTotal;
-                CommonZoom();
+                CommonZoomUpdata = true;
             }, targetZoom, 0.5f);
         }
     }

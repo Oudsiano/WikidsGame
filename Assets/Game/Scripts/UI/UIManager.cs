@@ -101,6 +101,7 @@ public class UIManager : MonoBehaviour
     private SceneLoader sceneLoader;
 
     public SceneLoader SceneLoader { get => sceneLoader; set => sceneLoader = value; }
+    public FollowCamera FollowCamera { get => followCamera; set => followCamera = value; }
 
     public void Init()
     {
@@ -163,7 +164,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        followCamera = FindObjectOfType<FollowCamera>();
+        FollowCamera = FindObjectOfType<FollowCamera>();
     }
 
     private void SceneLoader_LevelChanged(Scene arg0, LoadSceneMode arg1)
@@ -515,6 +516,6 @@ public class UIManager : MonoBehaviour
     }
 
 
-    private void OnClickMaxZoom() => followCamera.MaxZoom();
-    private void OnClickMinZoom() => followCamera.MinZoom();
+    private void OnClickMaxZoom() => FollowCamera.MaxZoom();
+    private void OnClickMinZoom() => FollowCamera.MinZoom();
 }

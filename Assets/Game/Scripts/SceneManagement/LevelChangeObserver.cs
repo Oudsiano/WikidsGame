@@ -94,6 +94,7 @@ public class LevelChangeObserver : MonoBehaviour
                 Vector3 position = StartPos.transform.position;
                 Quaternion rotation = StartPos.transform.rotation;
                 UpdatePlayerLocation(position, rotation);
+                IGame.Instance.UIManager.FollowCamera.CommonZoomUpdata = true;
             }
         }
         else
@@ -104,6 +105,7 @@ public class LevelChangeObserver : MonoBehaviour
 
             Quaternion rotation = new Quaternion();
             UpdatePlayerLocation(posThere, rotation);
+            IGame.Instance.UIManager.FollowCamera.CommonZoomUpdata = true;
         }
 
         SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPlayer,true);

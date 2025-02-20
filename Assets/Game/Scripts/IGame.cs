@@ -1,7 +1,7 @@
-using RPG.Controller;
 using RPG.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using AINavigation;
 using UnityEngine;
 
 public class IGame : MonoBehaviour

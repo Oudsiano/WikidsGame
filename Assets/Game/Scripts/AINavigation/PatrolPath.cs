@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace RPG.Controller
+namespace AINavigation
 {
     public class PatrolPath : MonoBehaviour
     {

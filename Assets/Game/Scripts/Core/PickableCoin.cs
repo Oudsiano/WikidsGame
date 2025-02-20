@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using RPG.Combat;
-using RPG.Controller;
 using UnityEngine;
 
 public class PickableCoin : MonoBehaviour

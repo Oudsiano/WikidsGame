@@ -5,10 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LoadSceneAfterComix : MonoBehaviour
 {
-
     public void LoadSceneNext()
     {
         SceneManager.LoadScene("ChangeRegion");
     }
-    
 }

@@ -1,9 +1,9 @@
-﻿using RPG.Combat;
-using UnityEngine;
+﻿using Movement;
+using RPG.Combat;
 using RPG.Core;
-using RPG.Movement;
+using UnityEngine;
 
-namespace RPG.Controller
+namespace AINavigation
 {
     public class AIController : MonoBehaviour
     {

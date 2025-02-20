@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using FarrokhGames.Inventory.Examples;
 using RPG.Combat;
-using RPG.Controller;
 using UnityEngine;
 
 public class PickableEquip : MonoBehaviour

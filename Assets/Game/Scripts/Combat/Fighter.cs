@@ -1,6 +1,6 @@
 ﻿using FarrokhGames.Inventory.Examples;
+using Movement;
 using RPG.Core;
-using RPG.Movement;
 using UnityEngine;
 
 namespace RPG.Combat

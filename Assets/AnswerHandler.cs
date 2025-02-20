@@ -13,6 +13,7 @@ public class AnswerHandler : MonoBehaviour
     {
         // Отключаем коллайдер
         Collider collider = targetObject.GetComponent<Collider>();
+        
         if (collider != null)
         {
             collider.enabled = false;

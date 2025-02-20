@@ -35,7 +35,6 @@ public class OneFastTest
 
 public class FastTestsManager
 {
-
     private List<OneFastTest> AllFastTests;
     public List<OneFastTest> AvaliableTestsNow;
 

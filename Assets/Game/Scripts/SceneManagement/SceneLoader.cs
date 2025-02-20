@@ -12,9 +12,7 @@ namespace RPG.Core
         public delegate void LevelChangedEventHandler(allScenes IdNewLevel);
         // Событие, возникающее при изменении уровня загрузки.
         public static event Action<allScenes> LevelChanged;
-
         
-
         [SerializeField] private allScenes levelToLoad = 0;
         private static SceneLoader _instance;
 

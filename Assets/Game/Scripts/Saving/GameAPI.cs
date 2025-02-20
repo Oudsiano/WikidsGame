@@ -9,8 +9,6 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-
-
 public class SL_objs
 {
     public Dictionary<string, object> objs;

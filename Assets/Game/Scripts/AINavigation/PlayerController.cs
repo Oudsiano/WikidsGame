@@ -1,14 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using RPG.Movement;
+﻿using System;
+using System.Collections.Generic;
+using DialogueEditor;
+using Movement;
 using RPG.Combat;
 using RPG.Core;
-using DialogueEditor;
-using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using System;
 
-namespace RPG.Controller
+namespace AINavigation
 {
     // Класс, управляющий игроком
     public class PlayerController : MonoBehaviour

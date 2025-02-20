@@ -2,74 +2,91 @@ using System.Collections.Generic;
 using DialogueEditor;
 using FarrokhGames.Inventory.Examples;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace AINavigation
 {
-    public class CheckItem : MonoBehaviour
+    public class CheckItem : MonoBehaviour // TODO rename
     {
-        [SerializeField] public string nameParamInNPC;
-        [SerializeField] public List<ItemDefinition> items = new List<ItemDefinition>();
+        [FormerlySerializedAs("nameParamInNPC")] [SerializeField]
+        private string _nameParamInNPC;
 
-        [Header("�������� ��������� (�� ��� ���� �����������)")]
+        [FormerlySerializedAs("items")] [SerializeField]
+        private List<ItemDefinition> _items = new();
 
-        [SerializeField] public string nameItem;
-        [SerializeField] public List<string> itemsString = new List<string>();
+        [FormerlySerializedAs("nameItem")]
+        [Header("�������� ��������� (�� ��� ���� �����������)")] // TODO UTF-8 error
+        [SerializeField]
+        private string _nameItem;
 
-        public void ChekItem()
+        [FormerlySerializedAs("itemsString")] [SerializeField]
+        private List<string> _itemsString = new();
+
+        public void CheсkItem() // TODO not used // TODO rename
         {
             bool confirm = true;
 
-            foreach (var item in items)
+            foreach (var item in _items)
             {
-                if (!IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item.Name))
+                if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item.Name) == false)
+                {
                     confirm = false;
+                }
             }
 
-            foreach (var item in itemsString)
+            foreach (var item in _itemsString)
             {
-                if (!IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item))
+                if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item) == false)
+                {
                     confirm = false;
+                }
             }
-        
-            if (!IGame.Instance.UIManager.uIBug.TryTakeQuestItem(nameItem))
+
+            if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(_nameItem) == false)
             {
                 confirm = false;
             }
 
-            ConversationManager.Instance.SetBool(nameParamInNPC, confirm);
+            ConversationManager.Instance.SetBool(_nameParamInNPC, confirm);
         }
 
-        public void ChekItemAndDelte()
+        public void CheckItemAndDelete()
         {
             bool confirm = true;
 
-            foreach (var item in items)
+            foreach (var item in _items)
             {
-                if (!IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item.Name))
+                if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item.Name) == false)
                     confirm = false;
             }
 
-            foreach (var item in itemsString)
+            foreach (var item in _itemsString)
             {
-                if (!IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item))
+                if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item) == false)
                     confirm = false;
             }
 
-            if (!IGame.Instance.UIManager.uIBug.TryTakeQuestItem(nameItem))
+            if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(_nameItem) == false)
             {
                 confirm = false;
             }
 
             if (confirm)
             {
-                foreach (var item in items)
+                foreach (var item in _items)
+                {
                     IGame.Instance.UIManager.uIBug.NeedDeleteItem(item.Name);
-                foreach (var item in itemsString)
+                }
+
+                foreach (var item in _itemsString)
+                {
                     IGame.Instance.UIManager.uIBug.NeedDeleteItem(item);
-                IGame.Instance.UIManager.uIBug.NeedDeleteItem(nameItem);
+                }
+
+                IGame.Instance.UIManager.uIBug.NeedDeleteItem(_nameItem);
             }
 
-            ConversationManager.Instance.SetBool(nameParamInNPC, confirm);
+            ConversationManager.Instance.SetBool(_nameParamInNPC, confirm);
         }
     }
 }

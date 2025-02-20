@@ -2,6 +2,7 @@ using RPG.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Core.Camera;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -58,11 +59,11 @@ public class IconForFarCamera : MonoBehaviour
     }
     void Update()
     {
-        // Создаем луч от камеры к курсору мыши
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        // Проверяем, попадает ли луч в объект
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         if (Physics.Raycast(ray, out hit))
         {
             if (hit.collider != null && hit.collider.gameObject == gameObject)
@@ -141,7 +142,7 @@ public class IconForFarCamera : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Не найдена картинка, хотя ожидалась");
+            Debug.LogWarning("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         }
     }
 }

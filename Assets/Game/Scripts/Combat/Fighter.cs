@@ -1,62 +1,106 @@
-﻿using FarrokhGames.Inventory.Examples;
+﻿using Combat.EnumsCombat;
+using FarrokhGames.Inventory.Examples;
 using Movement;
 using RPG.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace RPG.Combat
+namespace Combat
 {
-
-    public enum WeaponNow
-    {
-        common,
-        fire,
-        bow
-    }
-
     public class Fighter : MonoBehaviour, IAction
     {
-        [Header("Fighter Stats")]
-        [Header("Weapon")]
-        [SerializeField] private Transform rightHandPosition = null;
-        [SerializeField] private Transform leftHandPosition = null;
-        [SerializeField] private Weapon defaultWeapon = null;
-        [SerializeField] private Weapon equippedWeapon = null;
-        [SerializeField] private Weapon fireballWeapon = null;
-        [SerializeField] private Weapon bowWeapon = null;
-        private bool isPlayer;
-        private WeaponNow weaponNow;
-        //private bool isFireballNow = false;
+        [FormerlySerializedAs("rightHandPosition")] [Header("Fighter Stats")] [Header("Weapon")] [SerializeField]
+        private Transform _rightHandPosition = null;
 
-        [Header("")]
-        public float timer = 20;
+        [FormerlySerializedAs("leftHandPosition")] [SerializeField]
+        private Transform _leftHandPosition = null;
 
-        public Health target;
-        private Fighter targetF;
+        [FormerlySerializedAs("defaultWeapon")] [SerializeField]
+        private Weapon _defaultWeapon = null;
 
-        private Mover mover;
-        private ActionScheduler actionScheduler;
-        private Animator anim;
+        [FormerlySerializedAs("equippedWeapon")] [SerializeField]
+        private Weapon _equippedWeapon = null;
 
-        void Awake()
+        [FormerlySerializedAs("fireballWeapon")] [SerializeField]
+        private Weapon _fireballWeapon = null;
+
+        [FormerlySerializedAs("bowWeapon")] [SerializeField]
+        private Weapon _bowWeapon = null;
+
+        [FormerlySerializedAs("target")] public Health Target;
+
+        private float _timer = 20;
+        private bool _isPlayer;
+        private WeaponNow _weapon;
+        //private bool isFireballNow = false; // TODO not used code
+
+        private Fighter _fighter;
+
+        private Mover _mover;
+        private ActionScheduler _actionScheduler;
+        private Animator _animator;
+
+        private void Awake() // TODO construct
         {
-            mover = GetComponent<Mover>();
-            actionScheduler = GetComponent<ActionScheduler>();
-            anim = GetComponent<Animator>();
-            isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
+            _mover = GetComponent<Mover>(); // TODO RequireComponents
+            _actionScheduler = GetComponent<ActionScheduler>();
+            _animator = GetComponent<Animator>();
+            _isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
 
-            if (isPlayer)
+            if (_isPlayer)
             {
                 if (IGame.Instance.saveGame.EquipedWeapon != null)
+                {
                     EquipWeapon(IGame.Instance.saveGame.EquipedWeapon);
+                }
             }
 
-            if (!equippedWeapon)
-                EquipWeapon(defaultWeapon);
+            if (_equippedWeapon == false)
+            {
+                EquipWeapon(_defaultWeapon);
+            }
         }
 
-        void OnMouseEnter()
+        private void Update()
         {
-            if (!isPlayer && !GetComponent<Health>().IsDead())
+            if (pauseClass.GetPauseState())
+            {
+                return;
+            }
+
+            if (ConversationStarter.IsDialogActive)
+            {
+                return;
+            }
+
+            _timer += Time.deltaTime;
+
+            if (Target == false)
+            {
+                return;
+            }
+
+            //Archer // TODO not used code
+            //if (targetF?.defaultWeapon == bowWeapon && (bowWeapon.currentCharges == 0 || weaponNow != WeaponNow.bow))
+            //    return;
+
+            if (InRange() == false)
+            {
+                _mover.MoveTo(Target.transform.position);
+            }
+            else
+            {
+                Vector3 lookAt = Target.transform.position;
+                lookAt.y = transform.position.y;
+                transform.LookAt(lookAt, Vector3.up);
+                _mover.Cancel();
+                AttackBehavior();
+            }
+        }
+
+        private void OnMouseEnter()
+        {
+            if (_isPlayer == false && GetComponent<Health>().IsDead() == false)
             {
                 IGame.Instance.CursorManager.SetCursorSword();
             }
@@ -69,287 +113,318 @@ namespace RPG.Combat
 
         public void SetFireball()
         {
-            weaponNow = WeaponNow.fire;
-            fireballWeapon.SetFireball();
-            if (!fireballWeapon.IsFireball()) Debug.LogError("нет галочки");
-            fireballWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
+            _weapon = WeaponNow.fire;
+            _fireballWeapon.SetFireball();
+
+            if (_fireballWeapon.IsFireball() == false)
+            {
+                Debug.LogError("нет галочки");
+            }
+
+            _fireballWeapon.SpawnToPlayer(_rightHandPosition, _leftHandPosition, _animator);
         }
 
         public void SetCommonWeapon()
         {
-            if (anim == null)
-                Awake();
+            if (_animator == null)
+            {
+                Awake(); // TODO CRITICAL CALL BACK AWAKE??
+            }
 
-            weaponNow = WeaponNow.common;
-            if (equippedWeapon != null)
-                equippedWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
+            _weapon = WeaponNow.common;
+
+            if (_equippedWeapon != null)
+            {
+                _equippedWeapon.SpawnToPlayer(_rightHandPosition, _leftHandPosition, _animator);
+            }
         }
 
         public void SetBow()
         {
-            if (anim == null)
-                Awake();
+            if (_animator == null)
+            {
+                Awake(); // TODO CRITICAL CALL BACK AWAKE??
+            }
 
-            weaponNow = WeaponNow.bow;
-            if (bowWeapon != null)
-                bowWeapon.SpawnToPlayer(rightHandPosition, leftHandPosition, anim);
+            _weapon = WeaponNow.bow;
+
+            if (_bowWeapon != null)
+            {
+                _bowWeapon.SpawnToPlayer(_rightHandPosition, _leftHandPosition, _animator);
+            }
         }
 
         public void EquipItem(ItemDefinition item)
         {
             if (item is Armor)
-                ((Armor)item).EquipIt();
+            {
+                ((Armor)item).EquipIt(); // TODO Expensive unboxing
+            }
             else if (item is Weapon)
-                EquipWeapon((Weapon)item);
+            {
+                EquipWeapon((Weapon)item); // TODO Expensive unboxing
+            }
         }
 
         public void EquipWeapon(Weapon weapon)
         {
             if (weapon.IsFireball())
             {
-                fireballWeapon = weapon;
+                _fireballWeapon = weapon;
+
                 return;
             }
             else
             {
-                equippedWeapon = weapon;
+                _equippedWeapon = weapon;
                 SetCommonWeapon();
             }
 
-            if (isPlayer)
+            if (_isPlayer)
             {
                 if (IGame.Instance != null)
+                {
                     IGame.Instance.saveGame.EquipedWeapon = weapon;
-            }
-        }
-
-        public void UnequipWeapon()
-        {
-            if (equippedWeapon == defaultWeapon) return;
-            equippedWeapon.DestroyWeaponOnPlayer(rightHandPosition, leftHandPosition, anim);
-            EquipWeapon(defaultWeapon);
-        }
-
-        void Update()
-        {
-            if (pauseClass.GetPauseState()) return;
-
-            if (ConversationStarter.IsDialogActive) return;
-
-            timer += Time.deltaTime;
-
-            if (!target) return;
-            //Archer
-            //if (targetF?.defaultWeapon == bowWeapon && (bowWeapon.currentCharges == 0 || weaponNow != WeaponNow.bow))
-            //    return;
-
-            if (!InRange())
-            {
-                mover.MoveTo(target.transform.position);
-            }
-            else
-            {
-                Vector3 lookAt = target.transform.position;
-                lookAt.y = transform.position.y;
-                transform.LookAt(lookAt, Vector3.up);
-                mover.Cancel();
-                AttackBehavior();
-            }
-        }
-
-        private float getRangeCurrentWeapon()
-        {
-            switch (weaponNow)
-            {
-                case WeaponNow.common:
-                    return equippedWeapon.GetWeaponRange();
-                case WeaponNow.fire:
-                    return fireballWeapon.GetWeaponRange();
-                case WeaponNow.bow:
-                    return bowWeapon.GetWeaponRange();
-                default:
-                    return equippedWeapon.GetWeaponRange();
-            }
-        }
-
-
-        private bool InRange()
-        {
-            var distance = Mathf.Abs(Vector3.Distance(transform.position, target.transform.position));
-
-
-            return distance < getRangeCurrentWeapon();
-        }
-
-        private void AttackBehavior()
-        {
-            if (isPlayer)
-                isPlayer = true;
-
-            if (target.IsDead())
-            {
-                Cancel();
-                actionScheduler.CancelAction();
-            }
-            else if (timer > equippedWeapon.GetTimeBetweenAttacks())
-            {
-                if (isPlayer && weaponNow == WeaponNow.fire)
-                {
-                    if (IGame.Instance.dataPlayer.playerData.chargeEnergy > 0)
-                    {
-                        MainPlayer.Instance.ChangeCountEnegry(-1);
-                        ShootFireball();
-                        timer = 0;
-                        return;
-                    }
-                    else
-                    {
-                        IGame.Instance.playerController.WeaponPanelUI.ResetWeaponToDefault();
-                    }
                 }
-
-                if (isPlayer && weaponNow == WeaponNow.bow)
-                {
-                    if (bowWeapon.currentCharges > 0)
-                    {
-                        ShootBow();
-                        timer = 0;
-                        return;
-                    }
-                    else
-                    {
-                        IGame.Instance.playerController.WeaponPanelUI.ResetWeaponToDefault();
-                    }
-                }
-                if (isPlayer && weaponNow != WeaponNow.bow)
-                {
-                    if (targetF.defaultWeapon == bowWeapon)
-                        return;
-                }
-
-                if (isPlayer)
-                    isPlayer = true;
-
-                anim.ResetTrigger("stopAttack");
-                anim.SetTrigger("attack");
-
-                if (equippedWeapon.IsRanged())
-                    equippedWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition, isPlayer);
-
-                timer = 0;
             }
-        }
-
-        private void ShootFireball()
-        {
-            anim.ResetTrigger("stopAttack");
-            anim.SetTrigger("attack");
-            fireballWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition, isPlayer);
-        }
-        private void ShootBow()
-        {
-            anim.ResetTrigger("stopAttack");
-            anim.SetTrigger("attack");
-            bowWeapon.SpawnProjectile(target.transform, rightHandPosition, leftHandPosition, isPlayer);
         }
 
         public void Cancel()
         {
-            target = null;
-            anim.SetTrigger("stopAttack");
+            Target = null;
+            _animator.SetTrigger("stopAttack"); // TODO can be cached
         }
 
         public void Attack(GameObject combatTarget)
         {
-            if (ConversationStarter.IsDialogActive) return;
+            if (ConversationStarter.IsDialogActive)
+            {
+                return;
+            }
 
-            actionScheduler.StartAction(this);
-            target = combatTarget.GetComponent<Health>();
-            targetF = target.GetComponent<Fighter>();
+            _actionScheduler.StartAction(this);
+            Target = combatTarget.GetComponent<Health>(); // TODO replace getComp
+            _fighter = Target.GetComponent<Fighter>(); // TODO replace getComp
         }
 
         public bool CanAttack(GameObject target)
         {
-            return target && !target.GetComponent<Health>().IsDead();
+            return target && target.GetComponent<Health>().IsDead() == false;
         }
 
-        private bool IsBehindTarget()
+        public void UnequipWeapon()
         {
-            if (!target) return false;
-
-            Vector3 directionToPlayer = (transform.position - target.transform.position).normalized;
-            float angleBetween = Vector3.Angle(target.transform.forward, directionToPlayer);
-
-            return angleBetween > 120f; // Угол, определяющий, что атака со спины (например, > 135 градусов)
-        }
-
-        public void Hit()
-        {
-            if (!target) return; // Если цели нет, выйти
-
-            if (isPlayer && weaponNow != WeaponNow.bow)
+            if (_equippedWeapon == _defaultWeapon)
             {
-                if (targetF.defaultWeapon == bowWeapon)
-                    return;
+                return;
             }
 
-            AudioManager.instance.PlaySound("Attack");
-
-            if (IsBehindTarget() && !target.GetComponent<MainPlayer>() && !target.GetComponent<Boss>()) // Проверка, если атака сзади и цель не игрок и не босс
+            _equippedWeapon.DestroyWeaponOnPlayer(_rightHandPosition, _leftHandPosition, _animator);
+            EquipWeapon(_defaultWeapon);
+        }
+        
+        public void Hit()
+        {
+            if (Target == false)
             {
-                target.AttackFromBehind(false);
+                return; // Если цели нет, выйти
+            }
+
+            if (_isPlayer && _weapon != WeaponNow.bow)
+            {
+                if (_fighter._defaultWeapon == _bowWeapon)
+                {
+                    return;
+                }
+            }
+
+            AudioManager.instance.PlaySound("Attack"); // TODO can be cached
+
+            if (IsBehindTarget() && Target.GetComponent<MainPlayer>() == false &&
+                Target.GetComponent<Boss>() == false) // Проверка, если атака сзади и цель не игрок и не босс
+            {
+                Target.AttackFromBehind(false);
             }
             else
             {
-                target.TakeDamage(equippedWeapon.GetWeaponDamage()); // Нанести нормальный урон цели
+                Target.TakeDamage(_equippedWeapon.GetWeaponDamage()); // Нанести нормальный урон цели
             }
 
             // Проиграть эффект при попадании
-            Vector3 hitPosition = new Vector3(target.transform.position.x, target.transform.position.y + 1.5f, target.transform.position.z - 1); // Использовать позицию цели для VFX
-            equippedWeapon.PlayHitVFX(hitPosition);
-
-            // Проверить, жива ли цель
-            if (target.IsDead())
+            Vector3 hitPosition = new Vector3(Target.transform.position.x, Target.transform.position.y + 1.5f,
+                Target.transform.position.z - 1); // Использовать позицию цели для VFX // // TODO magic numbers
+            _equippedWeapon.PlayHitVFX(hitPosition);
+            
+            if (Target.IsDead())
             {
-                Animator targetAnim = target.GetComponent<Animator>();
+                Animator targetAnim = Target.GetComponent<Animator>(); // TODO bad practice with O/C principle
+                
                 if (targetAnim != null)
                 {
-                    targetAnim.SetTrigger("dead"); // Запуск анимации смерти
+                    targetAnim.SetTrigger("dead"); // Запуск анимации смерти // TODO can be cached
                 }
             }
             else
             {
                 // Запустить анимацию получения урона у цели
-                Animator targetAnim = target.GetComponent<Animator>();
+                Animator targetAnim = Target.GetComponent<Animator>(); // TODO bad practice with O/C principle
+                
                 if (targetAnim != null)
                 {
-                    targetAnim.SetTrigger("takeDamage");
+                    targetAnim.SetTrigger("takeDamage"); // TODO can be cached
                 }
             }
         }
+        
+        // public void SetTarget(Health other) // TODO not used code
+        // {
+        //     Target = other;
+        // }
+        //
+        // public object CaptureState()
+        // {
+        //     return _equippedWeapon.name;
+        // }
+        //
+        // public void RestoreState(object state)
+        // {
+        //     string weaponName = (string)state;
+        //     Weapon weapon = Resources.Load<Weapon>(weaponName);
+        //     EquipWeapon(weapon);
+        // }
+        
+        private float GetRangeCurrentWeapon()
+        {
+            switch (_weapon)
+            {
+                case WeaponNow.common:
+                    return _equippedWeapon.GetWeaponRange();
 
+                case WeaponNow.fire:
+                    return _fireballWeapon.GetWeaponRange();
+
+                case WeaponNow.bow:
+                    return _bowWeapon.GetWeaponRange();
+
+                default:
+                    return _equippedWeapon.GetWeaponRange();
+            }
+        }
+
+        private bool InRange()
+        {
+            var distance =
+                Mathf.Abs(Vector3.Distance(transform.position, Target.transform.position)); // TODO Vector3 Extensions
+
+            return distance < GetRangeCurrentWeapon();
+        }
+
+        private void AttackBehavior()
+        {
+            if (_isPlayer)
+            {
+                _isPlayer = true;
+            }
+
+            if (Target.IsDead())
+            {
+                Cancel();
+                _actionScheduler.CancelAction();
+            }
+            else if (_timer > _equippedWeapon.GetTimeBetweenAttacks())
+            {
+                if (_isPlayer && _weapon == WeaponNow.fire)
+                {
+                    if (IGame.Instance.dataPlayer.playerData.chargeEnergy > 0)
+                    {
+                        MainPlayer.Instance.ChangeCountEnegry(-1); // TODO magic number
+                        ShootFireball();
+                        _timer = 0;
+
+                        return;
+                    }
+                    else
+                    {
+                        IGame.Instance.playerController.WeaponPanelUI.ResetWeaponToDefault();
+                    }
+                }
+
+                if (_isPlayer && _weapon == WeaponNow.bow)
+                {
+                    if (_bowWeapon._currentCharges > 0)
+                    {
+                        ShootBow();
+                        _timer = 0;
+
+                        return;
+                    }
+                    else
+                    {
+                        IGame.Instance.playerController.WeaponPanelUI.ResetWeaponToDefault();
+                    }
+                }
+
+                if (_isPlayer && _weapon != WeaponNow.bow)
+                {
+                    if (_fighter._defaultWeapon == _bowWeapon)
+                    {
+                        return;
+                    }
+                }
+
+                if (_isPlayer)
+                {
+                    _isPlayer = true;
+                }
+
+                _animator.ResetTrigger("stopAttack"); // TODO can be cached
+                _animator.SetTrigger("attack"); // TODO can be cached
+
+                if (_equippedWeapon.IsRanged())
+                {
+                    _equippedWeapon.SpawnProjectile(Target.transform, _rightHandPosition, _leftHandPosition, _isPlayer);
+                }
+
+                _timer = 0;
+            }
+        }
+
+        private void ShootFireball()
+        {
+            _animator.ResetTrigger("stopAttack"); // TODO can be cached
+            _animator.SetTrigger("attack"); // TODO can be cached 
+            _fireballWeapon.SpawnProjectile(Target.transform, _rightHandPosition, _leftHandPosition, _isPlayer);
+        }
+
+        private void ShootBow()
+        {
+            _animator.ResetTrigger("stopAttack"); // TODO can be cached
+            _animator.SetTrigger("attack"); // TODO can be cached
+            _bowWeapon.SpawnProjectile(Target.transform, _rightHandPosition, _leftHandPosition, _isPlayer);
+        }
+
+        private bool IsBehindTarget()
+        {
+            if (Target == false)
+            {
+                return false;
+            }
+
+            Vector3 directionToPlayer = (transform.position - Target.transform.position).normalized;
+            float angleBetween = Vector3.Angle(Target.transform.forward, directionToPlayer);
+
+            return angleBetween > 120f; // Угол, определяющий, что атака со спины (например, > 135 градусов)
+            // TODO magic number
+        }
+        
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            if (equippedWeapon)
-                Gizmos.DrawWireSphere(transform.position, equippedWeapon.GetWeaponRange());
-        }
 
-        public void SetTarget(Health other)
-        {
-            target = other;
-        }
-
-        public object CaptureState()
-        {
-            return equippedWeapon.name;
-        }
-
-        public void RestoreState(object state)
-        {
-            string weaponName = (string)state;
-            Weapon weapon = Resources.Load<Weapon>(weaponName);
-            EquipWeapon(weapon);
+            if (_equippedWeapon)
+            {
+                Gizmos.DrawWireSphere(transform.position, _equippedWeapon.GetWeaponRange());
+            }
         }
     }
 }

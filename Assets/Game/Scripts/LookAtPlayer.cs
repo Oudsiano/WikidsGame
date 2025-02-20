@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Core.Camera;
 using UnityEngine;
 
 public class LookAtPlayer : MonoBehaviour
@@ -11,8 +12,8 @@ public class LookAtPlayer : MonoBehaviour
     void Awake()
     {
         //_camera = Camera.main.transform;
-        RPG.Core.FollowCamera.NewYRotation += newYrotate;
-        RPG.Core.FollowCamera.NewXRotation += newXrotate;
+        FollowCamera.NewYRotation += newYrotate;
+        FollowCamera.NewXRotation += newXrotate;
     }
 
     float keepYRotate=220;
@@ -36,7 +37,7 @@ public class LookAtPlayer : MonoBehaviour
 
     private void OnDestroy()
     {
-        RPG.Core.FollowCamera.NewYRotation -= newYrotate;
-        RPG.Core.FollowCamera.NewXRotation -= newXrotate;
+        FollowCamera.NewYRotation -= newYrotate;
+        FollowCamera.NewXRotation -= newXrotate;
     }
 }

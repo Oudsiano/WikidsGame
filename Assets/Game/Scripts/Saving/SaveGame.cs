@@ -1,8 +1,9 @@
 ﻿using DG.Tweening;
 using FarrokhGames.Inventory.Examples;
-using RPG.Combat;
 using System;
 using System.Collections.Generic;
+using Combat;
+using Combat.EnumsCombat;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -49,7 +50,7 @@ public class SaveGame
     public string PlayerName { get => playerName; set { playerName = value; OnChangePlayerName?.Invoke(playerName); } }
 
     //Порталы в неправильном порядке работают. Их надо сохранять в начале след карты. А для этого запоминать.
-    public RPG.Combat.Weapon bonusWeapon;
+    public Weapon bonusWeapon;
     public Armor bonusArmor;
     private allScenes IdSceneForPortal = allScenes.emptyScene;
 
@@ -233,7 +234,7 @@ public class SaveGame
         IGame.Instance.dataPlayer.playerData.musicOn = !SoundManager.GetMusicMuted();
         IGame.Instance.dataPlayer.playerData.musicVol = SoundManager.GetMusicVolume();
 
-        IGame.Instance.dataPlayer.playerData.arrowsCount = IGame.Instance.UIManager.WeaponBow.currentCharges;
+        IGame.Instance.dataPlayer.playerData.arrowsCount = IGame.Instance.UIManager.WeaponBow._currentCharges;
 
         IGame.Instance.gameAPI.SaveUpdater();
     }

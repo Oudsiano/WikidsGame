@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Combat;
+using Core.Camera;
 using UnityEngine;
 using UnityEngine.UI;
 using RPG.Core;
@@ -10,7 +12,6 @@ using FarrokhGames.Inventory.Examples;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using static LevelChangeObserver;
-using RPG.Combat;
 using DG.Tweening;
 
 public class UIManager : MonoBehaviour
@@ -158,7 +159,7 @@ public class UIManager : MonoBehaviour
         // ?????????? ?????? ?? UIManager ? UIFastTest
         if (WeaponBow != null)
         {
-            WeaponBow.OnShotFired += UpdateArrowCharges;
+            WeaponBow.Fired += UpdateArrowCharges;
         }
     }
 
@@ -446,14 +447,14 @@ public class UIManager : MonoBehaviour
         // Отписка от события при уничтожении объекта
         if (WeaponBow != null)
         {
-            WeaponBow.OnShotFired -= UpdateArrowCharges;
+            WeaponBow.Fired -= UpdateArrowCharges;
         }
     }
     public void SetArrowsCount()
     {
         if (WeaponBow != null)
         {
-            WeaponBow.currentCharges = IGame.Instance.dataPlayer.playerData.arrowsCount;
+            WeaponBow._currentCharges = IGame.Instance.dataPlayer.playerData.arrowsCount;
             arrowCharges.text = WeaponBow.GetCurrentCharges().ToString();
         }
     }

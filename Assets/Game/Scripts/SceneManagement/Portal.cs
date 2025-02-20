@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Combat;
 using DG.Tweening;
 using RPG.Core;
 using TMPro;
@@ -27,7 +28,7 @@ namespace RPG.SceneManagement
         private SceneComponent sceneComponent;
 
         [Header("Bonus")]
-        [SerializeField] private RPG.Combat.Weapon bonusWeapon;
+        [SerializeField] private Weapon bonusWeapon;
         [SerializeField] private Armor bonusArmor;
 
 

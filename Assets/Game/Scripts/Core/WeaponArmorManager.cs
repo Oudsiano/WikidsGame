@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RPG.Core;
-using RPG.Combat;
 using FarrokhGames.Inventory.Examples;
 using System.Linq;
+using Combat;
+using Combat.EnumsCombat;
 
 public class WeaponArmorManager : MonoBehaviour
 {

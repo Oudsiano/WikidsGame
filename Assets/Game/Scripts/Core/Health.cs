@@ -1,6 +1,6 @@
-using RPG.Combat;
 using System;
 using System.Collections;
+using Combat;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -64,7 +64,7 @@ namespace RPG.Core
             Fighter fighter = GetComponent<Fighter>();
             if (fighter != null)
             {
-                fighter.target = IGame.Instance.playerController.GetHealth();
+                fighter.Target = IGame.Instance.playerController.GetHealth();
             }
         }
 

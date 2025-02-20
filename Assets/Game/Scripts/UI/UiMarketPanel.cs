@@ -1,9 +1,9 @@
 using FarrokhGames.Inventory;
 using FarrokhGames.Inventory.Examples;
-using RPG.Combat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Combat;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -276,9 +276,9 @@ public class UiMarketPanel : MonoBehaviour
             IGame.Instance.playerController.GetFighter().EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(item.name));
         }
 
-        IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
+        IGame.Instance.playerController.ModularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
         angleTryOnEquip = 0;
-        IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        IGame.Instance.playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         _confirmPanel.SetActive(true);
         IGame.Instance.saveGame.MakeSave();
@@ -343,7 +343,7 @@ public class UiMarketPanel : MonoBehaviour
         angleTryOnEquip += (now_time()-oldTime)*0.05f;
         oldTime = now_time();
         if (angleTryOnEquip > 360) angleTryOnEquip -= 360;
-        IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, angleTryOnEquip, 0);
+        IGame.Instance.playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, angleTryOnEquip, 0);
     }
     public long now_time()
     {

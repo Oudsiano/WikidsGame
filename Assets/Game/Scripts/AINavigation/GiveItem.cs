@@ -1,17 +1,17 @@
 using FarrokhGames.Inventory.Examples;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace AINavigation
 {
-    public class GiveItem : MonoBehaviour
+    public class GiveItem : MonoBehaviour // TODO rename
     {
-        [SerializeField] public ItemDefinition Item;
+        [FormerlySerializedAs("Item")] [SerializeField] private ItemDefinition _item; // TODO rename
 
         public void TryAddItemItem()
         {
-            if (Item!=null)
-                IGame.Instance.UIManager.uIBug.TryAddEquipToBug(Item.CreateInstance());
+            if (_item != null)
+                IGame.Instance.UIManager.uIBug.TryAddEquipToBug(_item.CreateInstance());
         }
-
     }
 }

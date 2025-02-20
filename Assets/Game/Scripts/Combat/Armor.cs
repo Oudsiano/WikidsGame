@@ -1,69 +1,72 @@
-﻿using FarrokhGames.Inventory.Examples;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Combat.EnumsCombat;
+using FarrokhGames.Inventory.Examples;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-[CreateAssetMenu(fileName = "Armor", menuName = "Armors", order = 0)]
-public class Armor : ItemDefinition
+namespace Combat
 {
-    [Header("Core")]
-    [SerializeField] private armorType armorType;
-    [SerializeField] private armorID armorName;
-
-    [Header("Stats")]
-    [SerializeField] private float armor;
-
-    [Header("Description")]
-    [SerializeField] [TextArea] private string description; // Описание брони
-
-    public float ArmorValue { get => armor; set => armor = value; }
-    public armorID ArmorName { get => armorName; set => armorName = value; }
-
-    //public string Description { get => description; set => description = value; } // Свойство для описания
-
-    public void EquipIt()
+    [CreateAssetMenu(fileName = "Armor", menuName = "Armors", order = 0)]
+    public class Armor : ItemDefinition // TODO data -> its a data(SO)
     {
-        UnEquipOtherArmorFromPlayer();
+        [FormerlySerializedAs("armorType")] [Header("Core")] [SerializeField]
+        private ArmorType _armorType;
 
-        IGame.Instance.saveGame.EquipedArmor = this;
-        foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllArmors)
+        [FormerlySerializedAs("armorName")] [SerializeField]
+        private armorID _armorName;
+
+        [FormerlySerializedAs("armor")] [Header("Stats")] [SerializeField]
+        private float _armor;
+
+        [FormerlySerializedAs("description")] [Header("Description")] [SerializeField] [TextArea]
+        private string _description; // Описание брони
+
+        public float ArmorValue => _armor;
+        public armorID ArmorName => _armorName;
+
+        //public string Description { get => description; set => description = value; } // Свойство для описания
+
+        public void EquipIt() // TODO cannot be dynamically used 
         {
-            if (ArmorName == armor.armorID)
+            UnEquipOtherArmorFromPlayer();
+
+            IGame.Instance.saveGame.EquipedArmor = this;
+            
+            foreach (var armor in IGame.Instance.playerController.PlayerArmorManager.AllArmors)
             {
-                foreach (var item in armor.armorGO)
+                if (ArmorName == armor.armorID)
                 {
-                    item.SetActive(true);
+                    foreach (var item in armor.armorGO)
+                    {
+                        item.SetActive(true);
+                    }
                 }
             }
         }
-    }
 
-    public void UnEquip()
-    {
-        foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllArmors)
+        public void UnEquip() // TODO cannot be dynamically used 
         {
-            if (ArmorName == armor.armorID)
+            foreach (var armor in IGame.Instance.playerController.PlayerArmorManager.AllArmors)
+            {
+                if (ArmorName == armor.armorID)
+                {
+                    foreach (var item in armor.armorGO)
+                    {
+                        item.SetActive(false);
+                    }
+                }
+            }
+
+            IGame.Instance.WeaponArmorManager.GerArmorById(armorID.none).EquipIt();
+        }
+
+        public void UnEquipOtherArmorFromPlayer() // TODO cannot be dynamically used 
+        {
+            foreach (var armor in IGame.Instance.playerController.PlayerArmorManager.AllArmors)
             {
                 foreach (var item in armor.armorGO)
                 {
                     item.SetActive(false);
                 }
-            }
-        }
-
-        IGame.Instance.WeaponArmorManager.GerArmorById(armorID.none).EquipIt();
-    }
-
-    public void UnEquipOtherArmorFromPlayer()
-    {
-        foreach (var armor in IGame.Instance.playerController.playerArmorManager.AllArmors)
-        {
-            foreach (var item in armor.armorGO)
-            {
-                item.SetActive(false);
             }
         }
     }

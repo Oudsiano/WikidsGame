@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core.Camera;
 using UnityEngine;
 using static LevelChangeObserver;
 
@@ -20,9 +21,9 @@ public class HelpInFirstScene : MonoBehaviour
     {
         RPG.Core.SceneLoader.LevelChanged += SceneLoader_LevelChanged;
 
-        RPG.Core.FollowCamera.OnCameraRotation += FollowCamera_OnCameraRotation;
+        FollowCamera.OnCameraRotation += FollowCamera_OnCameraRotation;
 
-        RPG.Core.FollowCamera.OnCameraScale += FollowCamera_OnCameraScale;
+        FollowCamera.OnCameraScale += FollowCamera_OnCameraScale;
         restTexts();
     }
 
@@ -36,8 +37,8 @@ public class HelpInFirstScene : MonoBehaviour
 
     private void OnDestroy()
     {
-        RPG.Core.FollowCamera.OnCameraRotation -= FollowCamera_OnCameraRotation;
-        RPG.Core.FollowCamera.OnCameraScale -= FollowCamera_OnCameraScale;
+        FollowCamera.OnCameraRotation -= FollowCamera_OnCameraRotation;
+        FollowCamera.OnCameraScale -= FollowCamera_OnCameraScale;
     }
 
     private void restTexts()
@@ -124,7 +125,7 @@ public class HelpInFirstScene : MonoBehaviour
     }
     public void Study5()
     {
-        //тут без условия. Типа дошли до конца карты и хватит
+        //пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         restTexts();
         text5.SetActive(true);
         Panel.SetActive(true);

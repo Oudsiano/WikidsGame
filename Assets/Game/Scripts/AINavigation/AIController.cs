@@ -1,53 +1,65 @@
-﻿using Movement;
-using RPG.Combat;
+﻿using Combat;
+using Core.Camera;
+using Movement;
 using RPG.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace AINavigation
 {
     public class AIController : MonoBehaviour
     {
-        [SerializeField] private float chaseDistance = 5f;
-        [SerializeField] private float suspicionTimer = 10f;
-        [SerializeField] private PatrolPath patrolPath;
-        private int currentWayPointIndex = 0;
-        [SerializeField] private float tolerance = 1f;
+        [FormerlySerializedAs("suspicionTimer")] [SerializeField]
+        private float _suspicionTimer = 10f;
 
-        [SerializeField] private float minDwellTime;
-        [SerializeField] private float maxDwellTime;
+        [SerializeField] private PatrolPath patrolPath; // TODO bug on village scene
+        [SerializeField] private float _chaseDistance = 5f;
+        [SerializeField] private float _tolerance = 1f;
 
-        [SerializeField] private float currentDwellTime;
+        [FormerlySerializedAs("minDwellTime")] [SerializeField]
+        private float _minDwellTime;
 
-        private Vector3 lastKnownLocation;
-        private Vector3 guardLocation;
-        private Quaternion guardRotation;
-        [SerializeField] private float timeSinceLastSawPlayer = Mathf.Infinity;
-        [SerializeField] private float timeSinceLastHit = Mathf.Infinity;
+        [FormerlySerializedAs("maxDwellTime")] [SerializeField]
+        private float _maxDwellTime;
 
-        private Fighter fighter;
-        private Mover mover;
-        private Health health;
+        [FormerlySerializedAs("currentDwellTime")] [SerializeField]
+        private float _currentDwellTime;
 
-        private GameObject halfCircle;
-        private MeshRenderer halfCircleRenderer;
-        private MeshFilter halfCircleFilter;
+        [FormerlySerializedAs("timeSinceLastSawPlayer")] [SerializeField]
+        private float _timeSinceLastSawPlayer = Mathf.Infinity;
 
-        private float lastHealth;
+        [FormerlySerializedAs("timeSinceLastHit")] [SerializeField]
+        private float _timeSinceLastHit = Mathf.Infinity;
 
-        private float startDistanceForShowIcon = 300f;
-        private float maxOpacity = 0.2f;  // Добавлено поле для максимальной непрозрачности
+        private int _currentWayPointIndex = 0;
+        private Vector3 _lastKnownLocation;
+        private Vector3 _guardLocation;
+        private Quaternion _guardRotation;
 
-        private void Awake()
+        private Fighter _fighter;
+        private Mover _mover;
+        private Health _health;
+
+        private GameObject _halfCircle; // TODO remove GO
+        private MeshRenderer _halfCircleRenderer;
+        private MeshFilter _halfCircleFilter;
+
+        private float _lastHealth;
+
+        private float _startDistanceForShowIcon = 300f;
+        private float _maxOpacity = 0.2f;
+
+        private void Awake() // TODO Construct
         {
-            fighter = GetComponent<Fighter>();
-            mover = GetComponent<Mover>();
-            health = GetComponent<Health>();
+            _fighter = GetComponent<Fighter>();
+            _mover = GetComponent<Mover>();
+            _health = GetComponent<Health>();
 
-            guardLocation = transform.position;
-            guardRotation = transform.rotation;
+            _guardLocation = transform.position;
+            _guardRotation = transform.rotation;
 
             CreateHalfCircle();
-            health.redHalfCircle = halfCircle;
+            _health.redHalfCircle = _halfCircle;
 
             FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
         }
@@ -57,30 +69,33 @@ namespace AINavigation
             FollowCamera.OnCameraDistance -= FollowCamera_OnCameraDistance;
         }
 
-        private void CreateHalfCircle()
+        private void CreateHalfCircle() // TODO move to factory AIController -> HalfCircle factory
         {
-            halfCircle = new GameObject("HalfCircle");
-            halfCircle.layer = LayerMask.NameToLayer("Enemy");
-            halfCircle.transform.parent = transform;
-            halfCircle.transform.localPosition = new Vector3(0, 1, 0);
-            halfCircle.transform.localEulerAngles = new Vector3(0, 22, 180);
+            _halfCircle = new GameObject("HalfCircle");
+            _halfCircle.layer = LayerMask.NameToLayer("Enemy");
+            _halfCircle.transform.parent = transform;
+            _halfCircle.transform.localPosition = new Vector3(0, 1, 0);
+            _halfCircle.transform.localEulerAngles = new Vector3(0, 22, 180);
 
-            halfCircleRenderer = halfCircle.AddComponent<MeshRenderer>();
-            halfCircleFilter = halfCircle.AddComponent<MeshFilter>();
-            halfCircleFilter.mesh = CreateHalfCircleMesh(chaseDistance, 14);
+            _halfCircleRenderer = _halfCircle.AddComponent<MeshRenderer>();
+            _halfCircleFilter = _halfCircle.AddComponent<MeshFilter>();
+            _halfCircleFilter.mesh = CreateHalfCircleMesh(_chaseDistance, 14);
 
-            halfCircleRenderer.material = new Material(Shader.Find("Standard"));
-            halfCircleRenderer.material.color = new Color(1, 0, 0, maxOpacity); // Используем maxOpacity
-            halfCircleRenderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-            halfCircleRenderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            halfCircleRenderer.material.SetInt("_ZWrite", 0);
-            halfCircleRenderer.material.DisableKeyword("_ALPHATEST_ON");
-            halfCircleRenderer.material.DisableKeyword("_ALPHABLEND_ON");
-            halfCircleRenderer.material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-            halfCircleRenderer.material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            _halfCircleRenderer.material = new Material(Shader.Find("Standard"));
+            _halfCircleRenderer.material.color = new Color(1, 0, 0, _maxOpacity); // Используем maxOpacity
+            _halfCircleRenderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            _halfCircleRenderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            _halfCircleRenderer.material.SetInt("_ZWrite", 0);
+            _halfCircleRenderer.material.DisableKeyword("_ALPHATEST_ON");
+            _halfCircleRenderer.material.DisableKeyword("_ALPHABLEND_ON");
+            _halfCircleRenderer.material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+            _halfCircleRenderer.material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
         }
 
-        private Mesh CreateHalfCircleMesh(float radius, int segments)
+        private Mesh CreateHalfCircleMesh
+        (
+            float radius,
+            int segments) // TODO move to factory AIController -> HalfCircle(mesh) factory
         {
             Mesh mesh = new Mesh();
 
@@ -88,7 +103,8 @@ namespace AINavigation
             int[] triangles = new int[segments * 3];
 
             vertices[0] = Vector3.zero;
-            float angleStep = Mathf.PI*0.75f / segments;
+            float angleStep = Mathf.PI * 0.75f / segments;
+
             for (int i = 0; i <= segments; i++)
             {
                 float angle = i * angleStep;
@@ -111,51 +127,58 @@ namespace AINavigation
 
         private void Update()
         {
-            if (pauseClass.GetPauseState()) return;
-
-            if (health.IsDead())
+            if (pauseClass.GetPauseState())
+            {
                 return;
+            }
 
-            if (!IGame.Instance.playerController.GetPlayerInvis() && DistanceToPlayer() < 40)
+            if (_health.IsDead()) // TODO rename "IsDead"
+            {
+                return;
+            }
+
+            if (IGame.Instance.playerController.GetPlayerInvisibility() == false &&
+                DistanceToPlayer() < 40) // TODO magic number
             {
                 InteractWithCombat();
             }
 
-            timeSinceLastSawPlayer += Time.deltaTime;
-            timeSinceLastHit += Time.deltaTime;
+            _timeSinceLastSawPlayer += Time.deltaTime;
+            _timeSinceLastHit += Time.deltaTime;
 
             // Check if health has decreased, indicating a ranged attack
-            if (health.GetCurrentHealth() < lastHealth)
+            if (_health.GetCurrentHealth() < _lastHealth)
             {
-                timeSinceLastHit = 0;
-                lastKnownLocation = MainPlayer.Instance.transform.position;
+                _timeSinceLastHit = 0;
+                _lastKnownLocation = MainPlayer.Instance.transform.position;
                 AttackBehavior();
             }
 
             // Update last health
-            lastHealth = health.GetCurrentHealth();
+            _lastHealth = _health.GetCurrentHealth();
         }
 
-        private float DistanceToPlayer()
+        private float DistanceToPlayer() // TODO Vector3 Extensions
         {
             return Vector3.Distance(MainPlayer.Instance.transform.position, transform.position);
         }
 
         private void InteractWithCombat()
         {
-            if (IsPlayerInSight() && DistanceToPlayer() <= chaseDistance && (fighter.CanAttack(MainPlayer.Instance.gameObject) || IsAttacked()))
+            if (IsPlayerInSight() && DistanceToPlayer() <= _chaseDistance &&
+                (_fighter.CanAttack(MainPlayer.Instance.gameObject) || IsAttacked()))
             {
                 if (IsPlayerBehind())
                 {
                     // Игрок атакует со спины
-                    fighter.Hit();
+                    _fighter.Hit();
                 }
                 else
                 {
                     AttackBehavior();
                 }
             }
-            else if (suspicionTimer > timeSinceLastSawPlayer || timeSinceLastHit < 5f)
+            else if (_suspicionTimer > _timeSinceLastSawPlayer || _timeSinceLastHit < 5f)
             {
                 SuspicionBehavior();
             }
@@ -168,7 +191,10 @@ namespace AINavigation
         private bool IsAttacked()
         {
             var player = MainPlayer.Instance;
-            bool isAttacked = player.GetComponent<Fighter>().target == this.gameObject.GetComponent<Health>();
+            bool isAttacked =
+                player.GetComponent<Fighter>().Target ==
+                gameObject.GetComponent<Health>(); // TODO Remove GetComponent in live fight
+
             return isAttacked;
         }
 
@@ -177,10 +203,11 @@ namespace AINavigation
             Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
             float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
 
-            if (angleBetween <= 120f)
+            if (angleBetween <= 120f) // TODO magic number 
             {
                 return true;
             }
+
             return false;
         }
 
@@ -188,27 +215,33 @@ namespace AINavigation
         {
             Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
             float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
-            
-            return angleBetween > 120; // Угол, определяющий, что игрок позади (например, > 135 градусов)
+
+            return
+                angleBetween >
+                120; // Угол, определяющий, что игрок позади (например, > 135 градусов) // TODO magic number 
         }
 
         private void PatrolBehavior()
         {
-            Vector3 nextPos = guardLocation;
+            Vector3 nextPos = _guardLocation;
 
             if (patrolPath)
             {
                 if (AtWayPoint())
                 {
-                    if (currentDwellTime > 0)
-                        currentDwellTime -= Time.deltaTime;
+                    if (_currentDwellTime > 0)
+                    {
+                        _currentDwellTime -= Time.deltaTime;
+                    }
                     else
+                    {
                         GoToNextWayPoint();
+                    }
                 }
                 else
                 {
                     // Randomly decide to change direction while moving
-                    if (Random.Range(0f, 1f) < 0.01f) // Adjust the probability as needed
+                    if (Random.Range(0f, 1f) < 0.01f) // Adjust the probability as needed // TODO magic number 
                     {
                         GoToNextWayPoint();
                     }
@@ -217,61 +250,62 @@ namespace AINavigation
                 nextPos = GetCurrentWayPoint();
             }
 
-            mover.StartMoveAction(nextPos);
+            _mover.StartMoveAction(nextPos);
 
-            if (!patrolPath && mover.IsAtLocation(tolerance))
+            if (patrolPath == false && _mover.IsAtLocation(_tolerance))
             {
-                transform.rotation = guardRotation;
+                transform.rotation = _guardRotation;
             }
         }
 
         private void GoToNextWayPoint()
         {
             // Randomly choose the next waypoint
-            currentWayPointIndex = Random.Range(0, patrolPath.transform.childCount);
+            _currentWayPointIndex = Random.Range(0, patrolPath.transform.childCount);
 
-            currentDwellTime = Random.Range(minDwellTime, maxDwellTime);
+            _currentDwellTime = Random.Range(_minDwellTime, _maxDwellTime);
         }
 
-        private bool AtWayPoint()
+        private bool AtWayPoint() // TODO Vector3 Extensions
         {
-            return Vector3.Distance(transform.position, patrolPath.transform.GetChild(currentWayPointIndex).position) < tolerance;
+            return Vector3.Distance(transform.position, patrolPath.transform.GetChild(_currentWayPointIndex).position) <
+                   _tolerance;
         }
 
         private Vector3 GetCurrentWayPoint()
         {
-            return patrolPath.transform.GetChild(currentWayPointIndex).position;
+            return patrolPath.transform.GetChild(_currentWayPointIndex).position;
         }
 
         private void SuspicionBehavior()
         {
-            mover.StartMoveAction(lastKnownLocation);
+            _mover.StartMoveAction(_lastKnownLocation);
         }
 
         private void AttackBehavior()
         {
-            timeSinceLastSawPlayer = 0;
-            fighter.Attack(MainPlayer.Instance.gameObject);
-            lastKnownLocation = MainPlayer.Instance.transform.position;
+            _timeSinceLastSawPlayer = 0;
+            _fighter.Attack(MainPlayer.Instance.gameObject);
+            _lastKnownLocation = MainPlayer.Instance.transform.position;
         }
 
-        private void FollowCamera_OnCameraDistance(float obj)
+        private void FollowCamera_OnCameraDistance(float zoomTotal)
         {
-            if (halfCircleRenderer != null)
+            if (_halfCircleRenderer != null)
             {
-                if (obj < startDistanceForShowIcon)
+                if (zoomTotal < _startDistanceForShowIcon)
                 {
-                    halfCircle.SetActive(true);
-                    Color newColor = halfCircleRenderer.material.color;
-                    newColor.a = Mathf.Min(((startDistanceForShowIcon - obj) / 100f), maxOpacity);
-                    halfCircleRenderer.material.color = newColor;
+                    _halfCircle.SetActive(true);
+                    Color newColor = _halfCircleRenderer.material.color;
+                    newColor.a = Mathf.Min(((_startDistanceForShowIcon - zoomTotal) / 100f), _maxOpacity); // TODO magic number
+                    _halfCircleRenderer.material.color = newColor;
 
                     //float _scale = (startDistanceForShowIcon - obj) / 100f + 1;
-                    //halfCircle.transform.localScale = new Vector3(_scale, _scale, _scale);
+                    //halfCircle.transform.localScale = new Vector3(_scale, _scale, _scale); // TODO not used
                 }
                 else
                 {
-                    halfCircle.SetActive(false);
+                    _halfCircle.SetActive(false);
                 }
             }
             else

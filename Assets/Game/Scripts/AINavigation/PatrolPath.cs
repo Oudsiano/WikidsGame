@@ -4,7 +4,6 @@ namespace AINavigation
 {
     public class PatrolPath : MonoBehaviour
     {
-        // Функция Unity, автоматически вызываемая в редакторе для рисования gizmos
         private void OnDrawGizmos()
         {
             // Устанавливаем цвет gizmos в белый
@@ -17,14 +16,14 @@ namespace AINavigation
                 Transform firstWaypoint = transform.GetChild(i);
 
                 // Если это последняя точка пути, соединяем ее с первой, чтобы замкнуть цикл
-                if (i + 1 >= transform.childCount)
+                if (i + 1 >= transform.childCount) // TODO magic number
                 {
                     Gizmos.DrawLine(firstWaypoint.position, transform.GetChild(0).position);
                     break;
                 }
 
                 // В противном случае получаем Transform следующей точки пути
-                Transform secondWayPoint = transform.GetChild(i + 1);
+                Transform secondWayPoint = transform.GetChild(i + 1); // TODO magic number
 
                 // Рисуем линию, соединяющую текущую и следующую точки пути
                 Gizmos.DrawLine(firstWaypoint.position, secondWayPoint.position);

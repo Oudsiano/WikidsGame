@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using RPG.Combat;
+using Combat;
 using UnityEngine;
 using UnityEngine.UI;
 public class WeaponPanelUI : MonoBehaviour

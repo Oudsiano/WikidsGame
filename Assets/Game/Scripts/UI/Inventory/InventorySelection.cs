@@ -1,5 +1,5 @@
-﻿using TMPro;
-using RPG.Combat;
+﻿using Combat;
+using TMPro;
 using UnityEngine;
 
 namespace FarrokhGames.Inventory.Examples

@@ -1,114 +1,133 @@
-﻿using JetBrains.Annotations;
-using RPG.Core;
+﻿using RPG.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace RPG.Combat
+namespace Combat
 {
     public class Projectile : MonoBehaviour
     {
-        [Header("Projectile Settings")]
-        [SerializeField] private Transform target; // Цель, к которой летит снаряд
-        [SerializeField] private float speed = 5f; // Скорость полета снаряда
-        [SerializeField] private float thisProjectileDamage = 0f; // Урон этого конкретного снаряда
-        [SerializeField] private float projectileDestroySpeed = 5f; // Время до уничтожения снаряда после попадания
-        [SerializeField] private float projectileDecaySpeed = 5f; // Время до уничтожения снаряда после завершения полета
-        [SerializeField] private bool homing = false; // Флаг, определяющий, должен ли снаряд самонаводиться на цель
+        [FormerlySerializedAs("target")] [Header("Projectile Settings")] [SerializeField]
+        private Transform _target; // Цель, к которой летит снаряд
 
-        [Header("FX")]
-        [SerializeField] private GameObject hitEffect = null; // Эффект при попадании
+        [FormerlySerializedAs("speed")] [SerializeField]
+        private float _speed = 5f; // Скорость полета снаряда
 
-        [Header("Arrow Effect Settings")]
-        [SerializeField] private float minHitVariance = 0f; // Минимальное отклонение при попадании
-        [SerializeField] private float maxHitVariance = 1f; // Максимальное отклонение при попадании
-        [SerializeField] private GameObject[] destroyOnHit; // Объекты, уничтожаемые при попадании
+        [FormerlySerializedAs("thisProjectileDamage")] [SerializeField]
+        private float _thisProjectileDamage = 0f; // Урон этого конкретного снаряда
 
-        private float damage; // Общий урон снаряда
-        private bool reachedCollider = false; // Флаг, указывающий, достиг ли снаряд коллайдера
+        [FormerlySerializedAs("projectileDestroySpeed")] [SerializeField]
+        private float _projectileDestroySpeed = 5f; // Время до уничтожения снаряда после попадания
 
-        Rigidbody rb;
+        [FormerlySerializedAs("projectileDecaySpeed")] [SerializeField]
+        private float _projectileDecaySpeed = 5f; // Время до уничтожения снаряда после завершения полета
 
-        // Устанавливаем направление полета снаряда на момент запуска
-        void Start()
+        [FormerlySerializedAs("homing")] [SerializeField]
+        private bool _homing = false; // Флаг, определяющий, должен ли снаряд самонаводиться на цель
+
+        [FormerlySerializedAs("hitEffect")] [Header("FX")] [SerializeField]
+        private GameObject _hitEffect = null; // Эффект при попадании c // TODO GO
+
+        [FormerlySerializedAs("minHitVariance")] [Header("Arrow Effect Settings")] [SerializeField]
+        private float _minHitVariance = 0f; // Минимальное отклонение при попадании
+
+        [FormerlySerializedAs("maxHitVariance")] [SerializeField]
+        private float _maxHitVariance = 1f; // Максимальное отклонение при попадании
+
+        [FormerlySerializedAs("destroyOnHit")] [SerializeField]
+        private GameObject[] _destroyOnHit; // Объекты, уничтожаемые при попадании // TODO GO
+
+        private float _damage; // Общий урон снаряда
+        private bool _reachedCollider = false; // Флаг, указывающий, достиг ли снаряд коллайдера
+
+        private Rigidbody _rigidbody;
+
+        private void Start()
         {
-            transform.LookAt(GetTargetPosition()); 
-            rb = GetComponent<Rigidbody>();
-            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            transform.LookAt(GetTargetPosition());
+            _rigidbody = GetComponent<Rigidbody>(); // TODO RequireComp
+            _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
 
-        void Update()
+        private void Update()
         {
-            if (target == null) return;
-            // Проверяем, не умерла ли цель или не достиг ли снаряд коллайдера
-            bool isDead = target.GetComponent<Health>().IsDead();
-            if (!reachedCollider || isDead)
+            if (_target == null)
+            {
+                return;
+            }
+
+            bool isDead = _target.GetComponent<Health>().IsDead(); // TODO getcomp
+
+            if (_reachedCollider == false || isDead)
             {
                 // Если снаряд должен самонаводиться, корректируем его направление на цель
-                if (homing)
+                if (_homing)
+                {
                     transform.LookAt(GetTargetPosition());
+                }
 
                 // Перемещаем снаряд вперед по направлению
-                rb.MovePosition(transform.position + transform.forward * speed * Time.deltaTime);
+                _rigidbody.MovePosition(transform.position +
+                                        transform.forward * _speed * Time.deltaTime); // TODO  MOVE TO FIXEDUPDATE 
                 //transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
                 // Если цель мертва, уничтожаем снаряд через некоторое время
                 if (isDead)
                 {
-                    Destroy(gameObject, projectileDecaySpeed);
-                    homing = false; // Отключаем самонаведение
+                    Destroy(gameObject, _projectileDecaySpeed);
+                    _homing = false; // Отключаем самонаведение
                 }
             }
         }
 
-        // Получаем позицию, куда должен попасть снаряд
-        private Vector3 GetTargetPosition()
+        private void OnTriggerEnter(Collider other)
         {
-            CapsuleCollider targetCollider = target.GetComponent<CapsuleCollider>();
-            // Добавляем случайное отклонение по высоте, чтобы снаряд выглядел естественно при попадании
-            return (target.position + Vector3.up * (targetCollider.height + Random.Range(minHitVariance, maxHitVariance)) / 2);
+            if (other.gameObject == _target.gameObject && _target.GetComponent<Health>().IsDead() == false)
+            {
+                other.GetComponent<Health>().TakeDamage(_damage); // TODO can be changed with Actions
+
+                // Рассчитываем позицию снаряда после попадания
+                Vector3 targetPos = GetTargetPosition();
+                transform.position = targetPos;
+                transform.parent =
+                    other.transform; // Делаем снаряд дочерним объектом цели // TODO move to projectile factory
+
+                if (_hitEffect)
+                {
+                    GameObject effect =
+                        Instantiate(_hitEffect, GetTargetPosition(), Quaternion.identity); // TODO not used code
+                }
+
+                foreach (GameObject gameObjectToDestroy in _destroyOnHit) // TODO GO
+                {
+                    Destroy(gameObjectToDestroy);
+                }
+
+                Destroy(gameObject, _projectileDestroySpeed);
+                TrailRenderer trail = GetComponentInChildren<TrailRenderer>();
+
+                if (trail)
+                {
+                    trail.enabled = false; // Отключаем эффект следа за снарядом
+                }
+
+                _reachedCollider = true; // Устанавливаем флаг, указывающий, что снаряд достиг коллайдера
+            }
         }
 
         // Устанавливаем цель и урон для снаряда
         public void SetTarget(Transform target, float damage)
         {
-            this.target = target;
-            this.damage = damage + thisProjectileDamage; // Учитываем дополнительный урон от этого конкретного снаряда
+            _target = target;
+            _damage = damage + _thisProjectileDamage; // Учитываем дополнительный урон от этого конкретного снаряда
         }
 
-        // Обработчик столкновения с коллайдером
-        private void OnTriggerEnter(Collider other)
+        private Vector3 GetTargetPosition()
         {
-            // Проверяем, что объект столкнулся с целью и цель жива
-            if (other.gameObject == target.gameObject && !target.GetComponent<Health>().IsDead())
-            {
-                // Наносим урон цели
-                other.GetComponent<Health>().TakeDamage(damage);
+            CapsuleCollider targetCollider = _target.GetComponent<CapsuleCollider>(); // TODO TRYGETCOMP
 
-                // Рассчитываем позицию снаряда после попадания
-                Vector3 targetPos = GetTargetPosition();
-                transform.position = targetPos;
-                transform.parent = other.transform; // Делаем снаряд дочерним объектом цели
-
-                // Воспроизводим эффект при попадании, если он указан
-                if (hitEffect)
-                {
-                    GameObject effect = Instantiate(hitEffect, GetTargetPosition(), Quaternion.identity);
-                }
-
-                // Уничтожаем все объекты, указанные для уничтожения при попадании
-                foreach (GameObject gameObjectToDestroy in destroyOnHit)
-                {
-                    Destroy(gameObjectToDestroy);
-                }
-
-                // Уничтожаем снаряд через некоторое время
-                Destroy(gameObject, projectileDestroySpeed);
-
-                TrailRenderer trail = GetComponentInChildren<TrailRenderer>();
-                if (trail)
-                    trail.enabled = false; // Отключаем эффект следа за снарядом
-
-                reachedCollider = true; // Устанавливаем флаг, указывающий, что снаряд достиг коллайдера
-            }
+            // Добавляем случайное отклонение по высоте, чтобы снаряд выглядел естественно при попадании
+            return (_target.position +
+                    Vector3.up * (targetCollider.height + Random.Range(_minHitVariance, _maxHitVariance)) / 2);
         }
     }
 }

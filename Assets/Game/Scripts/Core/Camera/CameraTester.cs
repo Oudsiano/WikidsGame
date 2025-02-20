@@ -1,21 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
-public class CameraTester : MonoBehaviour
+namespace Core.Camera
 {
-    // Цель, за которой следует камера
-    public Transform target;
-
-    // Плавность следования камеры
-    public float smoothSpeed;
-
-    // Смещение камеры относительно цели
-    public Vector3 offSet;
-
-    void LateUpdate()
+    public class CameraTester : MonoBehaviour // TODO not used class
     {
-        // Устанавливаем позицию камеры как смещенную относительно позиции цели
-        transform.position = target.position + offSet;
+        [SerializeField] private Transform _target;
+        [SerializeField] private float _smoothSpeed;
+        [SerializeField] private Vector3 _offSet;
+
+        private void LateUpdate()
+        {
+            transform.position = _target.position + _offSet;
+        }
     }
 }

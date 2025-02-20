@@ -1,9 +1,9 @@
 using FarrokhGames.Inventory;
 using FarrokhGames.Inventory.Examples;
-using RPG.Combat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Combat;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +23,7 @@ public class UIBug : MonoBehaviour
     private bool notAvaliableEvents = false;
     private bool inited = false;
 
-    private bool NoAddToSave; //По умолчанию false а значит включаем true в исключительных случаях и обратно в false переводим
+    private bool NoAddToSave; //пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ false пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ true пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ false пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public void Init()
     {
         marketInventoryController = InventoryBag.GetComponent<InventoryController>();
@@ -50,7 +50,7 @@ public class UIBug : MonoBehaviour
             if (item.name == itemName)
             {
                 if (needDelete) OnRemoved(item);
-                //Debug.Log("Предмет найдет. Возможно стоит еще прописать удаление");
+                //Debug.Log("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
                 return true;
             }
         }
@@ -79,7 +79,7 @@ public class UIBug : MonoBehaviour
             if (InventoryBag.inventory.TryAdd(item.CreateInstance()))
             {
 
-                //Обязательно вот такой сейв, потому, что по факту именно в этот момент добавили предмет
+                //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 IGame.Instance.saveGame.SaveItemToBug(item);
                 NoAddToSave = false;
                 return true;
@@ -249,7 +249,7 @@ public class UIBug : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DropPlace.inventory.DropAll(); //Вынес сюда, чтобы сброс происходил в отдельном фрейме. Если сброс делать во время переноса предмета, то косяк
+        DropPlace.inventory.DropAll(); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     }
 
     private void OnDestroy()

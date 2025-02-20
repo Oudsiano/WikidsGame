@@ -135,13 +135,13 @@ public class IGame : MonoBehaviour
     {
         if (p)
         {
-            IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
-            IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            IGame.Instance.playerController.ModularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
+            IGame.Instance.playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
         else
         {
-            IGame.Instance.playerController.modularCharacter.transform.localPosition = new Vector3(0, 0, 0);
-            IGame.Instance.playerController.modularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            IGame.Instance.playerController.ModularCharacter.transform.localPosition = new Vector3(0, 0, 0);
+            IGame.Instance.playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
         //Time.timeScale = p ? 0.01f : 1;
     }

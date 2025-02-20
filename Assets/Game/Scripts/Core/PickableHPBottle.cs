@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using AINavigation;
-using RPG.Combat;
 using UnityEngine;
 
 public class PickableHPBottle : MonoBehaviour

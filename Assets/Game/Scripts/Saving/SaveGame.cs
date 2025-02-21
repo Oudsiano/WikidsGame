@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using static LevelChangeObserver;
+using static SceneManagement.LevelChangeObserver;
 
 [Serializable]
 public class OneItemForSave

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core.Quests;
 using UnityEngine;
 using DialogueEditor;
 using TMPro;
@@ -86,7 +87,7 @@ public class NPCInteractable : MonoBehaviour
 
             NPC_for_testID _npc = conversationStarter.myConversation.GetComponent<NPC_for_testID>();
             if (_npc != null)
-                _npc.setParentGO(gameObject);
+                _npc.SetParent(gameObject);
         }
     }
 

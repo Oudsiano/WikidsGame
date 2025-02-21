@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core.Quests;
 using UnityEngine;
 using DialogueEditor;
 

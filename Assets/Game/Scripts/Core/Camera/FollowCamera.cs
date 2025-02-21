@@ -4,7 +4,7 @@ using RPG.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
-using static LevelChangeObserver;
+using static SceneManagement.LevelChangeObserver;
 
 // Пространство имен для ядра игры
 namespace Core.Camera

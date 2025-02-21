@@ -1,108 +1,95 @@
 using DialogueEditor;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC_for_testID : MonoBehaviour
+namespace Core.Quests
 {
-
-    [Header("NPC mesh object")]
-    public GameObject MeshGameObject;
-
-
-    [Header("Icon")]
-    public string IconText;
-
-
-    [Header("TestID")]
-    [SerializeField] public int TestID;
-
-
-
-    [Header("SuccessCoins")]
-    [SerializeField] public int coins = 100;
-
-    private IconForFarCamera _icon;
-    private OpenURL _thisOpenURL;
-    private Transform splashOrangeTransform;
-
-    private GameObject parentGO;
-
-    public void setParentGO(GameObject _go)
+    public class NPC_for_testID : MonoBehaviour // TODO Rename
     {
-        parentGO = _go;
-        Debug.Log(parentGO.name);
-    }
+        [Header("TestID")] [SerializeField] public int TestID;
+        [Header("SuccessCoins")] [SerializeField] public int coins = 100;
+        [Header("NPC mesh object")] public GameObject MeshGameObject; // TODO GO
+        [Header("Icon")] public string IconText;
 
+        private IconForFarCamera _icon;
+        private OpenURL _thisOpenURL;
+        private Transform _splashOrangeTransform;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        _thisOpenURL = GetComponent<OpenURL>();
+        private GameObject _parentGO;
 
-        var _oldOpenUrl = transform.parent.GetComponent<OpenURL>();
-        if (_oldOpenUrl != null)
-            if (_oldOpenUrl.urlToOpen.Length > 2)
-                _thisOpenURL.urlToOpen = _oldOpenUrl.urlToOpen;
-
-        _icon = transform.Find("Icon").GetComponent<IconForFarCamera>();
-        _icon.description = IconText;
-
-
-
-
-    }
-
-    public void SuccessAnsver()
-    {
-        AddCoinsToPlayer();
-        DeactivateInteract();
-    }
-
-
-    public void AddCoinsToPlayer()
-    {
-        IGame.Instance.saveGame.Coins += coins;
-    }
-
-    public void DeactivateInteract()
-    {
-        NPCInteractable interract = parentGO.GetComponent<NPCInteractable>();
-        interract.posibleInteract = false;
-
-
-        Transform splashOrangeTransform = transform.Find("Splash_orange");
-        // Отключаем дочерний объект с именем "Splash_orange"
-        if (splashOrangeTransform != null)
+        private void Start() // TODO construct
         {
-            splashOrangeTransform.gameObject.SetActive(false);
-        }
-        else
-        {
-            Debug.LogWarning("Child object 'Splash_orange' not found.");
-        }
-    }
+            _thisOpenURL = GetComponent<OpenURL>();
+            var _oldOpenUrl = transform.parent.GetComponent<OpenURL>();
 
-
-    public void IsTestCompleted()
-    {
-        if (TestID == 0)
-        {
-            Debug.LogError("Not have TestID in inspector");
-        }
-
-        
-
-        FindObjectOfType<GameAPI>().IsTestCompleted(TestID, (isCompleted) =>
-        {
-            ConversationManager.Instance.SetBool("ThisTestCompleted", isCompleted);
-
-            if (isCompleted)
-                if (!IGame.Instance.dataPlayer.playerData.wasSuccessTests.Contains(TestID))
+            if (_oldOpenUrl != null)
+            {
+                if (_oldOpenUrl.urlToOpen.Length > 2)
                 {
-                    IGame.Instance.dataPlayer.playerData.wasSuccessTests.Add(TestID);
-                    IGame.Instance.FastTestsManager.GenAvaliableTests();
+                    _thisOpenURL.urlToOpen = _oldOpenUrl.urlToOpen;
                 }
-        });
+            }
+
+            _icon = transform.Find("Icon").GetComponent<IconForFarCamera>(); // TODO find change
+            _icon.description = IconText;
+        }
+
+        public void SetParent(GameObject parent)
+        {
+            _parentGO = parent;
+            
+            Debug.Log(_parentGO.name);
+        }
+
+        public void SuccessAnsver()
+        {
+            AddCoinsToPlayer();
+            DeactivateInteract();
+        }
+
+
+        public void AddCoinsToPlayer()
+        {
+            IGame.Instance.saveGame.Coins += coins;
+        }
+
+        public void DeactivateInteract()
+        {
+            NPCInteractable interract = _parentGO.GetComponent<NPCInteractable>();
+            interract.posibleInteract = false;
+
+
+            Transform splashOrangeTransform = transform.Find("Splash_orange");
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "Splash_orange"
+            if (splashOrangeTransform != null)
+            {
+                splashOrangeTransform.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.LogWarning("Child object 'Splash_orange' not found.");
+            }
+        }
+
+
+        public void IsTestCompleted()
+        {
+            if (TestID == 0)
+            {
+                Debug.LogError("Not have TestID in inspector");
+            }
+
+
+            FindObjectOfType<GameAPI>().IsTestCompleted(TestID, (isCompleted) =>
+            {
+                ConversationManager.Instance.SetBool("ThisTestCompleted", isCompleted);
+
+                if (isCompleted)
+                    if (!IGame.Instance.dataPlayer.playerData.wasSuccessTests.Contains(TestID))
+                    {
+                        IGame.Instance.dataPlayer.playerData.wasSuccessTests.Add(TestID);
+                        IGame.Instance.FastTestsManager.GenAvaliableTests();
+                    }
+            });
+        }
     }
 }

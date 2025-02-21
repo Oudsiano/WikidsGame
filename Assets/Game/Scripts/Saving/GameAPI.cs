@@ -7,6 +7,7 @@ using TMPro;
 using DialogueEditor;
 using System;
 using System.Collections.Generic;
+using Core.Quests;
 using Newtonsoft.Json;
 
 public class SL_objs

@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor;
+using SceneManagement;
 using UnityEngine;
-using static LevelChangeObserver;
 
-[Serializable]
-public class SceneData
+namespace Core.Quests
 {
-    public allScenes scene;
-    public List<int> numbers = new List<int>();
-}
+    [Serializable]
+    public class SceneData
+    {
+        public LevelChangeObserver.allScenes scene;
+        public List<int> numbers = new List<int>();
+    }
 
-[Serializable]
-public class SceneWithTestsID : MonoBehaviour
-{
-    [SerializeField]
-    public List<SceneData> sceneDataList = new List<SceneData>();
+    [Serializable]
+    public class SceneWithTestsID : MonoBehaviour
+    {
+        [SerializeField]
+        public List<SceneData> sceneDataList = new List<SceneData>();
+    }
 }

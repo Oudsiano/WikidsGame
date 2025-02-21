@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static LevelChangeObserver;
+using static SceneManagement.LevelChangeObserver;
 
 public class SceneComponent : MonoBehaviour
 {

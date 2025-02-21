@@ -11,8 +11,9 @@ using FarrokhGames.Inventory;
 using FarrokhGames.Inventory.Examples;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using static LevelChangeObserver;
+using static SceneManagement.LevelChangeObserver;
 using DG.Tweening;
+using SceneManagement;
 
 public class UIManager : MonoBehaviour
 {

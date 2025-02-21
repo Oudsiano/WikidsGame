@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Combat;
 using DG.Tweening;
 using RPG.Core;
+using SceneManagement;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static LevelChangeObserver;
+using static SceneManagement.LevelChangeObserver;
 
 // Пространство имен для управления сценами игры
 namespace RPG.SceneManagement

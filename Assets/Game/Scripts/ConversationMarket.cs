@@ -13,7 +13,6 @@ public class ConversationMarket : MonoBehaviour
     public int MinPriceMarket;
     public int MaxPriceMarket;
 
-
     public void Awake()
     {
         MarketBtn.gameObject.SetActive(false);
@@ -45,7 +44,7 @@ public class ConversationMarket : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Нет маркета в инстансе");
+            Debug.LogError("пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         }
     }
 

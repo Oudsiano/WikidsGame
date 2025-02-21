@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Combat;
+using Core.Quests;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;

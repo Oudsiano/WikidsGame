@@ -1,10 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestsForThisScene : MonoBehaviour
+namespace Core.Quests
 {
+    public class QuestsForThisScene : MonoBehaviour
+    {
 
-    public List<OneQuest> QuestsThisScene;
+        public List<OneQuest> QuestsThisScene;
 
+    }
 }

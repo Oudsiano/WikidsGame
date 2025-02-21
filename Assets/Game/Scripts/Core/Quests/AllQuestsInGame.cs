@@ -1,21 +1,13 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using static LevelChangeObserver;
-[System.Serializable]
-public class OneSceneListQuests
-{
-    [SerializeField]
-    public allScenes SceneId;
-    [SerializeField]
-    public List<OneQuest> QuestsThisScene;
-}
+using UnityEngine.Serialization;
 
-
-public class AllQuestsInGame : MonoBehaviour
+namespace Core.Quests
 {
-    [SerializeField]
-    public List<OneSceneListQuests> AllQuests;
+    public class AllQuestsInGame : MonoBehaviour
+    {
+        [FormerlySerializedAs("AllQuests")] [SerializeField] private List<OneSceneListQuests> _allQuests;
+
+        public IReadOnlyList<OneSceneListQuests> Quests => _allQuests;
+    }
 }

@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static LevelChangeObserver;
+using static SceneManagement.LevelChangeObserver;
 
 namespace RPG.Core
 {

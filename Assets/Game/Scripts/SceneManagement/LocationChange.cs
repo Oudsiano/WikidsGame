@@ -6,9 +6,10 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using static LevelChangeObserver;
+using static SceneManagement.LevelChangeObserver;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Core.Quests;
 
 public class LocationChange : MonoBehaviour
 {

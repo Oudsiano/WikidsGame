@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using Core.Quests;
 using UnityEditor;
 using UnityEngine;
-using static LevelChangeObserver;
+using static SceneManagement.LevelChangeObserver;
 
 [CustomEditor(typeof(SceneWithTestsID))]
 public class SceneWithTestsIDEditor : Editor

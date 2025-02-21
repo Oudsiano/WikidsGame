@@ -1,10 +1,9 @@
-﻿using DialogueEditor;
-using FarrokhGames.Inventory.Examples;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class QuestSpecialEnemyName : MonoBehaviour
+namespace Core.Quests
 {
-    [SerializeField] public string specialEnemyName;
+    public class QuestSpecialEnemyName : MonoBehaviour
+    {
+        [SerializeField] public string specialEnemyName;
+    }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Core.Camera;
 using UnityEngine;
-using static LevelChangeObserver;
+using static SceneManagement.LevelChangeObserver;
 
 public class HelpInFirstScene : MonoBehaviour
 {

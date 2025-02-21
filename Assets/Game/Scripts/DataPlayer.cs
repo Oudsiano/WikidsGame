@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Core.Quests;
 using UnityEngine;
-using static LevelChangeObserver;
+using static SceneManagement.LevelChangeObserver;
 
 public class DataPlayer : MonoBehaviour
 {

@@ -1,234 +1,235 @@
-using FarrokhGames.Inventory.Examples;
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using FarrokhGames.Inventory.Examples;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[System.Serializable]
-public enum QuestType
+namespace Core.Quests
 {
-    killEnemy,
-    toSpeekNPC,
-    killSpecialEnemy,
-    completeSpecialTest,
-}
-
-public enum QuestAwardType
-{
-    none,
-    money,
-    item,
-}
-
-public class QuestManager : MonoBehaviour
-{
-    public List<OneQuest> thisQuestsScene;
-    public List<ItemDefinition> allQuestsItems;
-    private List<UiOneQuestElement> QuestsInScene;
-
-    private QuestsForThisScene _QuestsForThisScene;
-    private AllQuestsInGame _AllQuestsInGame;
-    private SceneWithTestsID sceneWithTestsID;
-
-    private List<int> needRepeatTestQuests = new List<int>();
-
-    private bool alreadyDelegated;
-
-
-
-    public void Init()
+    [System.Serializable]
+    public enum QuestType
     {
-        SceneManager.sceneLoaded += SceneLoader_LevelChanged;
-        QuestsInScene = new List<UiOneQuestElement>();
+        killEnemy,
+        toSpeekNPC,
+        killSpecialEnemy,
+        completeSpecialTest,
     }
 
-    private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode)
+    public enum QuestAwardType
     {
-        GenListQuests();
+        none,
+        money,
+        item,
     }
 
-    public bool ShowBackImgForBtn()
+    public class QuestManager : MonoBehaviour
     {
-        foreach (var item in QuestsInScene)
+        public List<OneQuest> thisQuestsScene;
+        public List<ItemDefinition> allQuestsItems;
+        private List<UiOneQuestElement> QuestsInScene;
+
+        private QuestsForThisScene _QuestsForThisScene;
+        private AllQuestsInGame _AllQuestsInGame;
+        private SceneWithTestsID sceneWithTestsID;
+
+        private List<int> needRepeatTestQuests = new List<int>();
+
+        private bool alreadyDelegated;
+
+
+
+        public void Init()
         {
-            if (item.thisQuestData.compliteWaitAward)
-                if (!item.thisQuestData.fullComplite)
-                    return true;
+            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+            QuestsInScene = new List<UiOneQuestElement>();
         }
-        return false;
-    }
 
-    private void GenListQuests()
-    {
-        QuestsInScene = new List<UiOneQuestElement>();
-        if (_AllQuestsInGame==null)
-        _AllQuestsInGame = FindObjectOfType<AllQuestsInGame>();
-        if (sceneWithTestsID==null)
-        sceneWithTestsID = FindObjectOfType<SceneWithTestsID>();
-
-        thisQuestsScene = new List<OneQuest>();
-
-        if (_AllQuestsInGame != null)
+        private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode)
         {
-            foreach (OneSceneListQuests OneList in _AllQuestsInGame.AllQuests)
+            GenListQuests();
+        }
+
+        public bool ShowBackImgForBtn()
+        {
+            foreach (var item in QuestsInScene)
             {
-                if (OneList.SceneId == IGame.Instance.LevelChangeObserver.GetCuurentSceneId())
+                if (item.thisQuestData.compliteWaitAward)
+                    if (!item.thisQuestData.fullComplite)
+                        return true;
+            }
+            return false;
+        }
+
+        private void GenListQuests()
+        {
+            QuestsInScene = new List<UiOneQuestElement>();
+            if (_AllQuestsInGame==null)
+                _AllQuestsInGame = FindObjectOfType<AllQuestsInGame>();
+            if (sceneWithTestsID==null)
+                sceneWithTestsID = FindObjectOfType<SceneWithTestsID>();
+
+            thisQuestsScene = new List<OneQuest>();
+
+            if (_AllQuestsInGame != null)
+            {
+                foreach (OneSceneListQuests OneList in _AllQuestsInGame.Quests)
                 {
-                    foreach (var quest in OneList.QuestsThisScene)
+                    if (OneList.SceneId == IGame.Instance.LevelChangeObserver.GetCuurentSceneId())
                     {
-                        if (IGame.Instance.dataPlayer.playerData.completedQuests == null) continue;
-                        if (IGame.Instance.dataPlayer.playerData.completedQuests.Contains(quest.name)) continue;
-                        thisQuestsScene.Add(quest);
+                        foreach (var quest in OneList.QuestsThisScene)
+                        {
+                            if (IGame.Instance.dataPlayer.playerData.completedQuests == null) continue;
+                            if (IGame.Instance.dataPlayer.playerData.completedQuests.Contains(quest.name)) continue;
+                            thisQuestsScene.Add(quest);
+                        }
+                    }
+                }
+
+                foreach (int testID in needRepeatTestQuests)
+                {
+                    foreach (var OneSceneWithTestID in sceneWithTestsID.sceneDataList)
+                    {
+                        if (OneSceneWithTestID.numbers.Contains(testID))
+                        {
+                            //We need start quest with testID in scene OneSceneWithTestID.scene
+
+                            //TODO: There we should prepare list for visible NPC with tests
+                        }
                     }
                 }
             }
 
-            foreach (int testID in needRepeatTestQuests)
+            if (IGame.Instance.UIManager.QuestsContentScrollRect != null && IGame.Instance.UIManager.QuestsContentScrollRect.content != null)
             {
-                foreach (var OneSceneWithTestID in sceneWithTestsID.sceneDataList)
+                GameObject NotExitQuests = new GameObject();
+                foreach (Transform child in IGame.Instance.UIManager.QuestsContentScrollRect.content)
                 {
-                    if (OneSceneWithTestID.numbers.Contains(testID))
+                    if (child.name == "NotExitQuests")
+                        NotExitQuests = child.gameObject;
+                    if ((child.name != "EmptySpace") && (child.name != "NotExitQuests"))
                     {
-                        //We need start quest with testID in scene OneSceneWithTestID.scene
-
-                        //TODO: There we should prepare list for visible NPC with tests
+                        Destroy(child.gameObject);
                     }
                 }
-            }
-        }
 
-        if (IGame.Instance.UIManager.QuestsContentScrollRect != null && IGame.Instance.UIManager.QuestsContentScrollRect.content != null)
-        {
-            GameObject NotExitQuests = new GameObject();
-            foreach (Transform child in IGame.Instance.UIManager.QuestsContentScrollRect.content)
-            {
-                if (child.name == "NotExitQuests")
-                    NotExitQuests = child.gameObject;
-                if ((child.name != "EmptySpace") && (child.name != "NotExitQuests"))
+                foreach (OneQuest quest in thisQuestsScene)
                 {
-                    Destroy(child.gameObject);
+                    GameObject newQuest = Instantiate(IGame.Instance.UIManager.OneQuestPref, IGame.Instance.UIManager.QuestsContentScrollRect.content);
+
+                    var questElement = newQuest.GetComponent<UiOneQuestElement>();
+                    if (questElement != null)
+                    {
+                        questElement.setQuest(quest);
+                        QuestsInScene.Add(questElement);
+                    }
+                    else
+                    {
+                        Debug.LogError("UiOneQuestElement component is missing on newQuest object");
+                    }
                 }
-            }
 
-            foreach (OneQuest quest in thisQuestsScene)
-            {
-                GameObject newQuest = Instantiate(IGame.Instance.UIManager.OneQuestPref, IGame.Instance.UIManager.QuestsContentScrollRect.content);
-
-                var questElement = newQuest.GetComponent<UiOneQuestElement>();
-                if (questElement != null)
+                if (QuestsInScene.Count == 0)
                 {
-                    questElement.setQuest(quest);
-                    QuestsInScene.Add(questElement);
+                    NotExitQuests.SetActive(true);
+                    IGame.Instance.UIManager.UpdateGreyBtnQuest(true);
                 }
                 else
                 {
-                    Debug.LogError("UiOneQuestElement component is missing on newQuest object");
+                    NotExitQuests.SetActive(false);
+                    IGame.Instance.UIManager.UpdateGreyBtnQuest(false);
                 }
             }
+            IGame.Instance.UIManager.UpdateQuestBackImg();
+        }
 
-            if (QuestsInScene.Count == 0)
+        public void StartNewQuest(OneQuest quest)
+        {
+            GameObject newQuest = Instantiate(IGame.Instance.UIManager.OneQuestPref, IGame.Instance.UIManager.QuestsContentScrollRect.content);
+
+            var questElement = newQuest.GetComponent<UiOneQuestElement>();
+            if (questElement != null)
             {
-                NotExitQuests.SetActive(true);
-                IGame.Instance.UIManager.UpdateGreyBtnQuest(true);
-            }
-            else
-            {
-                NotExitQuests.SetActive(false);
-                IGame.Instance.UIManager.UpdateGreyBtnQuest(false);
+                questElement.setQuest(quest);
+                QuestsInScene.Add(questElement);
             }
         }
-        IGame.Instance.UIManager.UpdateQuestBackImg();
-    }
 
-    public void StartNewQuest(OneQuest quest)
-    {
-        GameObject newQuest = Instantiate(IGame.Instance.UIManager.OneQuestPref, IGame.Instance.UIManager.QuestsContentScrollRect.content);
-
-        var questElement = newQuest.GetComponent<UiOneQuestElement>();
-        if (questElement != null)
+        public void StartNewQuestIfNot(OneQuest quest)
         {
-            questElement.setQuest(quest);
-            QuestsInScene.Add(questElement);
-        }
-    }
-
-    public void StartNewQuestIfNot(OneQuest quest)
-    {
-        foreach (var item in QuestsInScene)
-        {
-            if (item.quest.name == quest.name)
+            foreach (var item in QuestsInScene)
             {
+                if (item.quest.name == quest.name)
+                {
+                    return;
+                }
+            }
+            StartNewQuest(quest);
+        }
+
+        public void questFinished(string ID)
+        {
+            foreach (UiOneQuestElement item in QuestsInScene)
+            {
+                if (item.QuestType == QuestType.completeSpecialTest)
+                {
+                    item.CheckTestCount();
+                }
+            }
+        }
+
+        public void newKill(string name = null)
+        {
+            if (QuestsInScene == null)
+            {
+                Debug.LogError("QuestsInScene is null in newKill");
                 return;
             }
-        }
-        StartNewQuest(quest);
-    }
 
-    public void questFinished(string ID)
-    {
-        foreach (UiOneQuestElement item in QuestsInScene)
-        {
-            if (item.QuestType == QuestType.completeSpecialTest)
+            foreach (UiOneQuestElement item in QuestsInScene)
             {
-                item.CheckTestCount();
+                if (item == null)
+                {
+                    Debug.LogError("UiOneQuestElement item is null in QuestsInScene");
+                    continue;
+                }
+
+                if (item.QuestType == QuestType.killEnemy)
+                {
+                    item.addOneProcess();
+                }
+
+                if (item.QuestType == QuestType.killSpecialEnemy && item.quest.specialEnemyName == name)
+                {
+                    item.addOneProcess();
+                }
             }
         }
-    }
 
-    public void newKill(string name = null)
-    {
-        if (QuestsInScene == null)
+        public void startedConversation(ConversationStarter conversationStarter)
         {
-            Debug.LogError("QuestsInScene is null in newKill");
-            return;
-        }
-
-        foreach (UiOneQuestElement item in QuestsInScene)
-        {
-            if (item == null)
+            if (conversationStarter == null)
             {
-                Debug.LogError("UiOneQuestElement item is null in QuestsInScene");
-                continue;
+                Debug.LogError("conversationStarter is null in startedConversation");
+                return;
             }
 
-            if (item.QuestType == QuestType.killEnemy)
+            if (QuestsInScene == null)
             {
-                item.addOneProcess();
+                Debug.LogError("QuestsInScene is null in startedConversation");
+                return;
             }
 
-            if (item.QuestType == QuestType.killSpecialEnemy && item.quest.specialEnemyName == name)
+            foreach (UiOneQuestElement item in QuestsInScene)
             {
-                item.addOneProcess();
-            }
-        }
-    }
+                if (item == null)
+                {
+                    Debug.LogError("UiOneQuestElement item is null in QuestsInScene");
+                    continue;
+                }
 
-    public void startedConversation(ConversationStarter conversationStarter)
-    {
-        if (conversationStarter == null)
-        {
-            Debug.LogError("conversationStarter is null in startedConversation");
-            return;
-        }
-
-        if (QuestsInScene == null)
-        {
-            Debug.LogError("QuestsInScene is null in startedConversation");
-            return;
-        }
-
-        foreach (UiOneQuestElement item in QuestsInScene)
-        {
-            if (item == null)
-            {
-                Debug.LogError("UiOneQuestElement item is null in QuestsInScene");
-                continue;
-            }
-
-            if (item.QuestType == QuestType.toSpeekNPC)
-            {
-                item.startedConversation(conversationStarter);
+                if (item.QuestType == QuestType.toSpeekNPC)
+                {
+                    item.startedConversation(conversationStarter);
+                }
             }
         }
     }

@@ -1,9 +1,8 @@
-using DialogueEditor;
 using UnityEngine;
 
 public class OpenURL : MonoBehaviour
 {
-    public string urlToOpen;
+    public string urlToOpen; // TODO OC
 
     public void Open()
     {

@@ -1,24 +1,22 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class RotationObjects : MonoBehaviour
+public class RotationObjects : MonoBehaviour // TODO rename
 {
-    public Vector3 rotationAxis = Vector3.up; // Ось вращения (по умолчанию вокруг оси Y)
-    public float rotationDuration = 1f; // Продолжительность анимации вращения
-    public Ease easeType = Ease.Linear; // Тип анимации
+    public Vector3 rotationAxis = Vector3.up; 
+    public float rotationDuration = 1f; 
+    public Ease easeType = Ease.Linear; 
 
-    void Start()
+    private void Start() // TODO Construct 
     {
-        // Начать вращение объекта при запуске скрипта
         Rotate();
     }
 
-    void Rotate()
+    private void Rotate()
     {
-        // Используем DoTween для вращения объекта вокруг его центра
         transform.DOLocalRotate(transform.localRotation.eulerAngles + rotationAxis * 360f, rotationDuration, RotateMode.FastBeyond360)
             .SetEase(easeType)
-            .SetLoops(-1, LoopType.Restart); // Зацикливаем вращение бесконечно
+            .SetLoops(-1, LoopType.Restart);
     }
 }
 

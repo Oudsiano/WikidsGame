@@ -1,13 +1,11 @@
-﻿using UnityEngine;
+﻿using FarrokhGames.Inventory;
+using UI.Inventory.Data;
+using UI.Inventory.Enums;
+using UnityEngine;
 
-namespace FarrokhGames.Inventory.Examples
+namespace UI.Inventory
 {
-    /// <summary>
-    /// Example Lobby class
-    /// </summary>
-    /// 
-    [RequireComponent(typeof(InventoryController))]
-    [RequireComponent(typeof(InventoryRenderer))]
+    [RequireComponent(typeof(InventoryController), typeof(InventoryRenderer))]
     public class SizeInventoryExample : MonoBehaviour
     {
         [SerializeField] private InventoryRenderMode _renderMode = InventoryRenderMode.Grid;
@@ -25,9 +23,9 @@ namespace FarrokhGames.Inventory.Examples
 
         public InventoryManager inventory;
 
-        public void Init()
+        public void Init() // TODO construct
         {
-            GetComponent<InventoryRenderer>().Init();
+            GetComponent<InventoryRenderer>().Init(); 
             var provider = new InventoryProvider(_renderMode, _maximumAlowedItemCount, _allowedItem);
 
             // Create inventory
@@ -36,10 +34,12 @@ namespace FarrokhGames.Inventory.Examples
             inventory.DropedFromThere = _dropedFromThere;
             inventory.PriceMultiple = _priceMultiple;
             inventory.ShowPricesThere = _showPricesThere;
+            
             // Fill inventory with random items
             if (_fillRandomly)
             {
-                var tries = (_width * _height) / 3;
+                var tries = (_width * _height) / 3; // TODO magic numbers
+                
                 for (var i = 0; i < tries; i++)
                 {
                     inventory.TryAdd(_definitions[Random.Range(0, _definitions.Length)].CreateInstance());
@@ -54,24 +54,19 @@ namespace FarrokhGames.Inventory.Examples
                     inventory.TryAdd(_definitions[0].CreateInstance());
                 }
             }
-
-            // Sets the renderers's inventory to trigger drawing
             
             GetComponent<InventoryRenderer>().SetInventory(inventory, provider.inventoryRenderMode);
-
-            // Log items being dropped on the ground
+            
             inventory.onItemDropped += (item) =>
             {
                 Debug.Log((item as ItemDefinition).Name + " was dropped on the ground");
             };
-
-			// Log when an item was unable to be placed on the ground (due to its canDrop being set to false)
+            
             inventory.onItemDroppedFailed += (item) =>
             {
                 Debug.Log($"You're not allowed to drop {(item as ItemDefinition).Name} on the ground");
             };
-
-			// Log when an item was unable to be placed on the ground (due to its canDrop being set to false)
+            
             inventory.onItemAddedFailed += (item) =>
             {
                 Debug.Log($"You can't put {(item as ItemDefinition).Name} there!");

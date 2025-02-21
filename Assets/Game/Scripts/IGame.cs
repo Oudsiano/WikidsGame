@@ -1,4 +1,3 @@
-using RPG.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using AINavigation;
@@ -7,9 +6,10 @@ using Core.Player;
 using Core.Quests;
 using Saving;
 using SceneManagement;
+using UI;
 using UnityEngine;
 
-public class IGame : MonoBehaviour
+public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR FOR COMPOSE
 {
     private static IGame instance;
 
@@ -133,14 +133,14 @@ public class IGame : MonoBehaviour
         UIManager.Init();
         playerController.Init();
         ArrowForPlayerManager.Init();
-        FastTestsManager.init();
+        FastTestsManager.Init();
     }
 
     public void SavePlayerPosLikeaPause(bool p)
     {
         if (p)
         {
-            IGame.Instance.playerController.ModularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
+            IGame.Instance.playerController.ModularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000); 
             IGame.Instance.playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
         else

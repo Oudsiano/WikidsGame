@@ -1,79 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
 using Core;
 using Core.Health;
 using DG.Tweening;
-using RPG.Core;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class SavePointsManager
+public class SavePoint : MonoBehaviour // TODO rename
 {
-    private static Dictionary<int, SavePoint> allSavePoints;
-    public static Dictionary<int, SavePoint> AllSavePoints
-    {
-        get
-        {
-            if (allSavePoints == null) allSavePoints = new Dictionary<int, SavePoint>();
-            return allSavePoints;
-        }
-        set => allSavePoints = value;
-    }
-
-    public static void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer, bool reset = false)
-    {
-        if (allSavePoints == null) return;
-        for (int i = 0; i < dataPlayer.playerData.stateSpawnPoints.Count; i++)
-        {
-            bool thisLast = i == dataPlayer.playerData.spawnPoint;
-            if (allSavePoints.Count > i)
-                if (allSavePoints[i] != null)
-                    allSavePoints[i].SetAlreadyEnabled(dataPlayer.playerData.stateSpawnPoints[i], thisLast);
-        }
-    }
-
-    public static void ResetDict()
-    {
-        allSavePoints = new Dictionary<int, SavePoint>();
-        IGame.Instance.dataPlayer.playerData.stateSpawnPoints = new List<bool> { false };
-    }
-
-}
-
-public class SavePoint : MonoBehaviour
-{
-    [SerializeField] ParticleSystem savePointUpdated;
+    [SerializeField] private ParticleSystem savePointUpdated; // TODO rename
     [SerializeField] public GameObject ChekedSprite;
     [SerializeField] public GameObject LastSprite;
     [SerializeField] public GameObject NotActiveSprite;
     [SerializeField] public Health health;
     [SerializeField] public DataPlayer dataPlayer;
     [SerializeField] public int spawnPoint;
-    //[SerializeField] private bool alreadyEnabled;
+
+    //[SerializeField] private bool alreadyEnabled; // TODO not used code
     // Переменная для хранения позиции игрока
-    private Vector3 playerPosition;
 
-    public void SetAlreadyEnabled(bool state, bool thisLast)
-    {
-        //alreadyEnabled = true;
+    private Vector3 _playerPosition;
 
-        ChekedSprite.SetActive(false);
-        LastSprite.SetActive(false);
-        NotActiveSprite.SetActive(false);
-
-        if (thisLast)
-            LastSprite.SetActive(true);
-        else if (state)
-            ChekedSprite.SetActive(true);
-        else
-            NotActiveSprite.SetActive(true);
-    }
-
-    private void Awake()
+    private void Awake() // TODO construct
     {
         SavePointsManager.AllSavePoints[spawnPoint] = this;
         NotActiveSprite.SetActive(true);
@@ -85,58 +32,44 @@ public class SavePoint : MonoBehaviour
         }
 
         BoxCollider collider = GetComponent<BoxCollider>();
+
         if (collider != null && collider.size != Vector3.one)
         {
             Debug.LogError("Box Collider size is not (1, 1, 1)");
         }
     }
 
-    void OnMouseEnter()
+    private void Update()
     {
-        IGame.Instance.CursorManager.SetCursorSave();
-    }
-    private void OnMouseExit()
-    {
-        IGame.Instance.CursorManager.SetCursorDefault();
-    }
-
-    void Update()
-    {
-        // Проверяем, был ли произведен клик
         if (Input.GetMouseButtonDown(0))
         {
-            // Создаем луч из точки на экране в мир
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // TODO find change TODO duplicate
             RaycastHit hit;
 
-            // Проверяем, попал ли луч в какой-то объект с коллайдером
             if (Physics.Raycast(ray, out hit))
             {
-                // Проверяем, этот ли объект был нажат
                 if (hit.transform == transform)
                 {
-                    // Действия при клике на объект
                     Activate();
                 }
             }
         }
     }
 
-
-
-    /*private void OnTriggerEnter(Collider other)
+    private void OnMouseEnter()
     {
-        if (other.gameObject == MainPlayer.Instance.gameObject)
-        {
-            Activate();
-        }
-    }*/
+        IGame.Instance.CursorManager.SetCursorSave();
+    }
 
+    private void OnMouseExit()
+    {
+        IGame.Instance.CursorManager.SetCursorDefault();
+    }
 
     private void Activate()
     {
-        dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
-                                                     // Сохраняем позицию игрока
+        dataPlayer = FindObjectOfType<DataPlayer>(); // TODO find change
+        // Сохраняем позицию игрока
         savePointUpdated.gameObject.SetActive(true);
         Debug.Log("включили партикл при сохранении");
         health.Restore();
@@ -144,8 +77,11 @@ public class SavePoint : MonoBehaviour
 
         if (dataPlayer != null)
         {
-            while (dataPlayer.playerData.stateSpawnPoints.Count < spawnPoint + 1) dataPlayer.playerData.stateSpawnPoints.Add(false);
-            dataPlayer.playerData.stateSpawnPoints[spawnPoint] = true;
+            while (dataPlayer.PlayerData.stateSpawnPoints.Count < spawnPoint + 1)
+                dataPlayer.PlayerData.stateSpawnPoints.Add(false);
+            {
+                dataPlayer.PlayerData.stateSpawnPoints[spawnPoint] = true;
+            }
 
             // Если объект найден, продолжаем с сохранением игры
             IGame.Instance.gameAPI.SaveUpdater();
@@ -167,16 +103,44 @@ public class SavePoint : MonoBehaviour
         // Дополнительно можно сохранить другие параметры игрока, такие как например его здоровье, экипировку и т.д.
     }
 
-
-    // Метод для получения сохранённой позиции игрока
-
-    public void FindAndFadeFastTextSavePoint(string newText)
+    public void SetAlreadyEnabled(bool state, bool thisLast)
     {
-        GameObject fastTextSavePoint = FindInactiveObjectByName("FastTextSavePoint");
+        //alreadyEnabled = true;
+
+        ChekedSprite.SetActive(false);
+        LastSprite.SetActive(false);
+        NotActiveSprite.SetActive(false);
+
+        if (thisLast)
+        {
+            LastSprite.SetActive(true);
+        }
+        else if (state)
+        {
+            ChekedSprite.SetActive(true);
+        }
+        else
+        {
+            NotActiveSprite.SetActive(true);
+        }
+    }
+
+    /*private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == MainPlayer.Instance.gameObject)
+        {
+            Activate();
+        }
+    }*/
+
+    private void FindAndFadeFastTextSavePoint(string newText)
+    {
+        GameObject fastTextSavePoint = FindInactiveObjectByName("FastTextSavePoint"); // TODO find change
 
         if (fastTextSavePoint != null)
         {
             Transform messageTextTransform = fastTextSavePoint.transform.Find("MessageText");
+            
             if (messageTextTransform != null)
             {
                 TextMeshProUGUI textMeshPro = messageTextTransform.GetComponent<TextMeshProUGUI>();
@@ -187,6 +151,7 @@ public class SavePoint : MonoBehaviour
             }
 
             CanvasGroup canvasGroup = fastTextSavePoint.GetComponent<CanvasGroup>();
+            
             if (canvasGroup == null)
             {
                 canvasGroup = fastTextSavePoint.AddComponent<CanvasGroup>();
@@ -207,6 +172,7 @@ public class SavePoint : MonoBehaviour
     private GameObject FindInactiveObjectByName(string name)
     {
         Transform[] allObjects = Resources.FindObjectsOfTypeAll<Transform>();
+        
         foreach (Transform obj in allObjects)
         {
             if (obj.name == name && obj.hideFlags == HideFlags.None)
@@ -214,6 +180,7 @@ public class SavePoint : MonoBehaviour
                 return obj.gameObject;
             }
         }
+
         return null;
     }
 }

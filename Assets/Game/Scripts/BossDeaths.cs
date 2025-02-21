@@ -1,19 +1,24 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DestroyOtherObject : MonoBehaviour
 {
-    public GameObject objectToDestroy; // ?????? ?? ??????, ??????? ????? ??????????
-    public GameObject objectToUpdate;
+    [FormerlySerializedAs("objectToDestroy")] [SerializeField]
+    private GameObject _objectToDestroy;
+
+    [FormerlySerializedAs("objectToUpdate")] [SerializeField]
+    private GameObject _objectToUpdate;
+
     private void OnDestroy()
     {
-        if (objectToDestroy != null)
+        if (_objectToDestroy != null)
         {
-            objectToDestroy.SetActive(false);
+            _objectToDestroy.SetActive(false);
         }
-        if (objectToUpdate != null)
-        {
-            objectToUpdate.SetActive(true);
 
+        if (_objectToUpdate != null)
+        {
+            _objectToUpdate.SetActive(true);
         }
     }
 }

@@ -1,4 +1,5 @@
-using FarrokhGames.Inventory.Examples;
+using UI.Inventory;
+using UI.Inventory.Data;
 using UnityEngine;
 using UnityEngine.Serialization;
 

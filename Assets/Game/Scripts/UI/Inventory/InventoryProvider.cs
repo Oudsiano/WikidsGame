@@ -1,18 +1,18 @@
-using System;
 using System.Collections.Generic;
+using FarrokhGames.Inventory;
+using UI.Inventory.Data;
+using UI.Inventory.Enums;
 
-namespace FarrokhGames.Inventory.Examples
+namespace UI.Inventory
 {
     public class InventoryProvider : IInventoryProvider
     {
-        private List<IInventoryItem> _items = new List<IInventoryItem>();
+        private List<IInventoryItem> _items = new();
         private int _maximumAlowedItemCount;
-        ItemType _allowedItem;
+        private readonly ItemType _allowedItem;
 
-        /// <summary>
-        /// CTOR
-        /// </summary>
-        public InventoryProvider(InventoryRenderMode renderMode, int maximumAlowedItemCount = -1, ItemType allowedItem = ItemType.Any)
+        public InventoryProvider(InventoryRenderMode renderMode, int maximumAlowedItemCount = -1,
+            ItemType allowedItem = ItemType.Any)
         {
             inventoryRenderMode = renderMode;
             _maximumAlowedItemCount = maximumAlowedItemCount;
@@ -27,18 +27,20 @@ namespace FarrokhGames.Inventory.Examples
         {
             get
             {
-                if (_maximumAlowedItemCount < 0)return false;
+                if (_maximumAlowedItemCount < 0) return false;
                 return inventoryItemCount >= _maximumAlowedItemCount;
             }
         }
 
         public bool AddInventoryItem(IInventoryItem item)
         {
-            if (!_items.Contains(item))
+            if (_items.Contains(item) == false) // TODO TryAdd
             {
                 _items.Add(item);
+
                 return true;
             }
+
             return false;
         }
 
@@ -54,7 +56,11 @@ namespace FarrokhGames.Inventory.Examples
 
         public bool CanAddInventoryItem(IInventoryItem item)
         {
-            if (_allowedItem == ItemType.Any)return true;
+            if (_allowedItem == ItemType.Any)
+            {
+                return true;
+            }
+
             return (item as ItemDefinition).Type == _allowedItem;
         }
 

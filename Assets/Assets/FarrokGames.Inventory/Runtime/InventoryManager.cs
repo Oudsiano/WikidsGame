@@ -1,4 +1,3 @@
-using FarrokhGames.Inventory.Examples;
 using System;
 using System.Linq;
 using UnityEngine;

@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DialogueEditor;
+using UnityEngine.Serialization;
 
 public class ConversationOpenScene : MonoBehaviour
 {
-    [SerializeField] private NPCConversation openConversation;
+    [FormerlySerializedAs("openConversation")] [SerializeField] private NPCConversation _openConversation;
 
-    private void Start()
+    private void Start() // TODO Construct
     {
-        ConversationManager.Instance.StartConversation(openConversation);
+        ConversationManager.Instance.StartConversation(_openConversation);
     }
 }

@@ -1,57 +1,63 @@
 using DialogueEditor;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ConversationMarket : MonoBehaviour
 {
-    public bool marketAvaliable = true;
+    [FormerlySerializedAs("marketAvaliable")] [SerializeField]
+    private bool _marketAvailiable = true;
 
-    public Button MarketBtn;
-    public int MinPriceMarket;
-    public int MaxPriceMarket;
+    [FormerlySerializedAs("MarketBtn")] [SerializeField]
+    private Button _marketButton;
 
-    public void Awake()
+    [FormerlySerializedAs("MinPriceMarket")] [SerializeField]
+    private int _minPriceMarket;
+
+    [FormerlySerializedAs("MaxPriceMarket")] [SerializeField]
+    private int _maxPriceMarket;
+
+    private void Awake()  // TODO Construct
     {
-        MarketBtn.gameObject.SetActive(false);
-        ConversationManager.OnConversationStarted += onStartConversation;
+        _marketButton.gameObject.SetActive(false);
+        ConversationManager.OnConversationStarted += OnStartConversation;
         ConversationManager.OnConversationEnded += OnConversationEnded;
 
-        MarketBtn.onClick.AddListener(onClickBtn);
-    }
-
-    private void OnConversationEnded()
-    {
-        if (MarketBtn!=null)
-        MarketBtn.gameObject.SetActive(false);
-    }
-
-    private void onStartConversation()
-    {
-        if (!marketAvaliable)
-            MarketBtn.gameObject.SetActive(false);
-        else
-            MarketBtn.gameObject.SetActive(true);
-    }
-
-    private void onClickBtn()
-    {
-        if (IGame.Instance.UIManager.UiMarketPanel != null)
-        {
-            IGame.Instance.UIManager.OpenMarket(MinPriceMarket, MaxPriceMarket);
-        }
-        else
-        {
-            Debug.LogError("��� ������� � ��������");
-        }
+        _marketButton.onClick.AddListener(OnClickButton);
     }
 
     private void OnDestroy()
     {
-        ConversationManager.OnConversationStarted -= onStartConversation;
+        ConversationManager.OnConversationStarted -= OnStartConversation;
         ConversationManager.OnConversationEnded -= OnConversationEnded;
-        MarketBtn.onClick.RemoveAllListeners();
+        _marketButton.onClick.RemoveAllListeners();
+    }
+
+    private void OnConversationEnded()
+    {
+        if (_marketButton != null)
+        {
+            _marketButton.gameObject.SetActive(false);
+        }
+    }
+
+    private void OnStartConversation()
+    {
+        if (_marketAvailiable == false)
+        {
+            _marketButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            _marketButton.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnClickButton()
+    {
+        if (IGame.Instance.UIManager.UiMarketPanel != null)
+        {
+            IGame.Instance.UIManager.OpenMarket(_minPriceMarket, _maxPriceMarket);
+        }
     }
 }

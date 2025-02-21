@@ -1,72 +1,63 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using Combat;
 using Combat.Data;
-using Core;
 using Core.Player;
 using DG.Tweening;
-using RPG.Core;
-using SceneManagement;
+using SceneManagement.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static SceneManagement.LevelChangeObserver;
 
 // Пространство имен для управления сценами игры
-namespace RPG.SceneManagement
+namespace SceneManagement
 {
     // Класс для портала, переносящего игрока между сценами
-    public class Portal : MonoBehaviour
+    public class Portal : MonoBehaviour // TODO Restruct
     {
-        [SerializeField] LevelChangeObserver.allScenes sceneToLoad = LevelChangeObserver.allScenes.emptyScene; // Индекс сцены для загрузки
-        [SerializeField] private Transform spawnPoint; // Точка спавна в новой сцене
-        [SerializeField] private DestinationIdentifier destination; // Идентификатор места назначения портала
+        [SerializeField]
+        private allScenes sceneToLoad = allScenes.emptyScene; // Индекс сцены для загрузки // TODO rename
+
+        [SerializeField] private Transform spawnPoint; // Точка спавна в новой сцене // TODO rename
+
+        [SerializeField]
+        private DestinationIdentifier destination; // Идентификатор места назначения портала // TODO rename
+
         //[SerializeField] private float fadeOutTime = 2f; // Время затухания перед загрузкой новой сцены
         //[SerializeField] private float fadeInTime = 2f; // Время появления после загрузки новой сцены
-        [SerializeField] private float betweenFadeTime = 2f; // Время ожидания между затуханием и появлением
-        [SerializeField] public DataPlayer dataPlayer;
-        [SerializeField] public bool ItFinishPortal = true;
+        [SerializeField]
+        private float betweenFadeTime = 2f; // Время ожидания между затуханием и появлением // TODO rename
+
+        [SerializeField] public DataPlayer dataPlayer; // TODO rename
+
+        [SerializeField] public bool ItFinishPortal = true; // TODO rename
+
         // Статическая переменная, определяющая, идет ли в данный момент переход между сценами
-        private SceneComponent sceneComponent;
+        private SceneComponent sceneComponent; // TODO rename
 
-        [Header("Bonus")]
-        [SerializeField] private Weapon bonusWeapon;
-        [SerializeField] private Armor bonusArmor;
+        [Header("Bonus")] [SerializeField] private Weapon bonusWeapon; // TODO rename
+        [SerializeField] private Armor bonusArmor; // TODO rename
 
-
-        // Перечисление для идентификации места назначения портала
-        enum DestinationIdentifier
+        private void Awake() // TODO construct
         {
-            A, B, C, D, E
-        }
-
-        private void Awake()
-        {
-            dataPlayer = FindObjectOfType<DataPlayer>(); // Находит объект DataPlayer в сцене
+            dataPlayer = FindObjectOfType<DataPlayer>();
             sceneComponent = FindObjectOfType<SceneComponent>();
 
             if (sceneComponent == null)
             {
                 Debug.LogError("Errrorr! na scene net SceneComponent.");
             }
-            else
-            {
-
-            }
         }
 
-        void OnMouseEnter()
+        private void OnMouseEnter()
         {
             IGame.Instance.CursorManager.SetCursorExit();
         }
+
         private void OnMouseExit()
         {
             IGame.Instance.CursorManager.SetCursorDefault();
         }
 
-        // Обработчик события входа в область портала
         private void OnTriggerEnter(Collider other)
         {
             // Проверяем, что в область портала входит игрок и что переход между сценами не происходит в данный момент
@@ -74,15 +65,19 @@ namespace RPG.SceneManagement
             {
                 IGame.Instance.UIManager.HelpInFirstScene.EndStudy5();
 
-                if (!IGame.Instance.NPCManagment.checkAllTestsComplite())
+                if (IGame.Instance.NPCManagment.checkAllTestsComplite() == false)
                 {
-                    Debug.Log("Рано портироваться, ты еще не сделал все тесты" + string.Join(", ", IGame.Instance.NPCManagment.notComplite));
-                    TextDisplay(0, "Рано портироваться, ты еще не сделал все тесты");
+                    Debug.Log("Рано портироваться, ты еще не сделал все тесты" + // TODO can be cached
+                              string.Join(", ", IGame.Instance.NPCManagment.NotComplete));
+                    TextDisplay(0, "Рано портироваться, ты еще не сделал все тесты"); // TODO can be cached
+
                     return;
                 }
 
                 if (sceneToLoad != sceneComponent.IdScene)
+                {
                     StartCoroutine(Transition()); // Запускаем переход между сценами
+                }
                 else
                 {
                     TransitionInScene();
@@ -90,20 +85,18 @@ namespace RPG.SceneManagement
             }
         }
 
-        // Метод для перехода между сценами
         private IEnumerator Transition()
         {
-            if (sceneToLoad == LevelChangeObserver.allScenes.emptyScene)
+            if (sceneToLoad == allScenes.emptyScene)
+            {
                 Debug.LogError("Empty scene on portal. It's mistake");
+            }
 
             dataPlayer.SetSceneToLoad(sceneToLoad);
             SceneLoader.Instance.TryChangeLevel(sceneToLoad, 0);
 
             IGame.Instance.CursorManager.SetCursorDefault();
-
             IGame.Instance.saveGame.MakePortalSave(bonusWeapon, bonusArmor, sceneComponent);
-
-
 
             yield return new WaitForSeconds(betweenFadeTime); // Ждем некоторое время после загрузки сцены
         }
@@ -121,28 +114,27 @@ namespace RPG.SceneManagement
 
             // Проходим по всем порталам
             foreach (var portal in portals)
-                if (portal != this && portal.destination == this.destination)
+            {
+                if (portal != this && portal.destination == destination)
+                {
                     return portal;
+                }
+            }
 
             return null; // Если портал не найден, возвращаем null
         }
-
-        // Метод для обновления местоположения игрока
+        
         private void UpdatePlayerLocation(Portal otherPortal)
         {
-            // Отключаем навигацию для игрока
             MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = false;
-
-            // Устанавливаем позицию и поворот игрока в соответствии с порталом назначения
+            
             MainPlayer.Instance.transform.position = otherPortal.spawnPoint.position;
             MainPlayer.Instance.transform.rotation = otherPortal.spawnPoint.rotation;
-
-            // Включаем навигацию для игрока
+            
             MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = true;
-
         }
 
-        private void TextDisplay(int coins, string text)
+        private void TextDisplay(int coins, string text) // TODO move Factory canvas
         {
             IGame.Instance.CoinManager.Coins.ChangeCount(coins);
 

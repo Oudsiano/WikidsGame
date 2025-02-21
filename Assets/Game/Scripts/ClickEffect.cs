@@ -1,12 +1,12 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class ClickEffect : MonoBehaviour
+public class ClickEffect : MonoBehaviour // TODO Factory 
 {
-    public ParticleSystem effectPrefab; // Префаб эффекта частиц
-
-    // Метод для создания эффекта в указанной позиции
+    [FormerlySerializedAs("effectPrefab")][SerializeField] private ParticleSystem _prefab; 
+    
     public void CreateEffect(Vector3 position)
     {
-        Instantiate(effectPrefab, position, Quaternion.identity); // Создаем эффект в указанной позиции
+        Instantiate(_prefab, position, Quaternion.identity);
     }
 }

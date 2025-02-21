@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using Core.Quests.Data;
 using Core.Quests.QuestsEnums;
-using FarrokhGames.Inventory.Examples;
+using UI.Inventory;
+using UI.Inventory.Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -164,16 +165,16 @@ namespace Core.Quests
             {
                 foreach (OneSceneListQuests OneList in _allQuestsInGame.Quests)
                 {
-                    if (OneList.SceneId == IGame.Instance.LevelChangeObserver.GetCuurentSceneId())
+                    if (OneList.SceneId == IGame.Instance.LevelChangeObserver.GetCurrentSceneId())
                     {
                         foreach (var quest in OneList.QuestsThisScene)
                         {
-                            if (IGame.Instance.dataPlayer.playerData.completedQuests == null)
+                            if (IGame.Instance.dataPlayer.PlayerData.completedQuests == null)
                             {
                                 continue;
                             }
 
-                            if (IGame.Instance.dataPlayer.playerData.completedQuests.Contains(quest.name))
+                            if (IGame.Instance.dataPlayer.PlayerData.completedQuests.Contains(quest.name))
                             {
                                 continue;
                             }

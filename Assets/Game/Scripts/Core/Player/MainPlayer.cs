@@ -26,15 +26,15 @@ namespace Core.Player
 
         public void ChangeCountEnergy(int value)
         {
-            IGame.Instance.dataPlayer.playerData.chargeEnergy += value;
-            IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPlayer.playerData.chargeEnergy.ToString());
+            IGame.Instance.dataPlayer.PlayerData.chargeEnergy += value;
+            IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPlayer.PlayerData.chargeEnergy.ToString());
             IGame.Instance.playerController.WeaponPanelUI.ResetFireballCount();
         }
 
         public void ResetCountEnergy()
         {
-            IGame.Instance.dataPlayer.playerData.chargeEnergy = 0;
-            IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPlayer.playerData.chargeEnergy.ToString());
+            IGame.Instance.dataPlayer.PlayerData.chargeEnergy = 0;
+            IGame.Instance.UIManager.setEnergyCharger(IGame.Instance.dataPlayer.PlayerData.chargeEnergy.ToString());
             IGame.Instance.playerController.WeaponPanelUI.ResetFireballCount();
         }
     }

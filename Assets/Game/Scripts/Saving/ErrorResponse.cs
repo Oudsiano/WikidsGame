@@ -3,7 +3,7 @@
 namespace Saving
 {
     [Serializable]
-    public class ErrorResponse
+    public class ErrorResponse // TODO can be changed?
     {
         public string name;
         public string message;

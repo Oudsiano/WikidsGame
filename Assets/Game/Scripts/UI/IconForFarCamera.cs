@@ -1,148 +1,150 @@
-using RPG.Core;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Core.Camera;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(SphereCollider))]
-public class IconForFarCamera : MonoBehaviour
+namespace UI
 {
-
-    [SerializeField] float startDistanceForShowIcon = 125;
-
-    [TextArea(3, 10)]
-    public string description;
-
-    private SpriteRenderer thisImg;
-    private Vector3 thisEulerAngles;
-
-    private SpriteRenderer spriteRenderer;
-    private bool isMouseOver = false;
-
-    [SerializeField] bool isMovable = false;
-    SphereCollider sphereCollider;
-
-    [SerializeField] float scaleThis = 3f;
-
-    private void Awake()
+    [RequireComponent(typeof(SphereCollider), typeof(SpriteRenderer))]
+    public class IconForFarCamera : MonoBehaviour
     {
-        FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
-        FollowCamera.NewYRotation += FollowCamera_NewYRotation;
-        FollowCamera.NewXRotation += FollowCamera_NewXRotation;
-        FollowCamera.OnupdateEulerAngles += FollowCamera_OnupdateEulerAngles;
-        thisImg = GetComponent<SpriteRenderer>();
-        thisImg.gameObject.SetActive(false);
-        thisEulerAngles = thisImg.transform.eulerAngles;
+        [SerializeField] private float scaleThis = 3f;
+        [SerializeField] private float startDistanceForShowIcon = 125; // TODO rename
+        [SerializeField] private bool isMovable = false; // TODO rename
+        [TextArea(3, 10)] public string description; // TODO rename
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        sphereCollider = GetComponent<SphereCollider>();
-        sphereCollider.isTrigger = true;
-        sphereCollider.radius = 0.5f;
-    }
+        private SpriteRenderer _image; // TODO Duplicate
+        private Vector3 _eulerAngles;
 
-    private void FollowCamera_OnupdateEulerAngles(Vector3 obj)
-    {
-        thisEulerAngles.x = obj.x;
-        thisEulerAngles.y = obj.y;
-        UpdateData();
-    }
+        private SpriteRenderer _spriteRenderer; // TODO Duplicate
+        private bool _isMouseOver = false;
 
-    private void OnDestroy()
-    {
-        FollowCamera.OnCameraDistance -= FollowCamera_OnCameraDistance;
-        FollowCamera.NewYRotation -= FollowCamera_NewYRotation;
-        FollowCamera.NewXRotation -= FollowCamera_NewXRotation;
-        FollowCamera.OnupdateEulerAngles -= FollowCamera_OnupdateEulerAngles;
-    }
-    void Update()
-    {
-        // ������� ��� �� ������ � ������� ����
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+        private SphereCollider _sphereCollider;
 
-        // ���������, �������� �� ��� � ������
-        if (Physics.Raycast(ray, out hit))
+        private void Awake() // TODO construct
         {
-            if (hit.collider != null && hit.collider.gameObject == gameObject)
+            FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
+            FollowCamera.NewYRotation += FollowCamera_NewYRotation;
+            FollowCamera.NewXRotation += FollowCamera_NewXRotation;
+            FollowCamera.OnupdateEulerAngles += FollowCamera_OnupdateEulerAngles;
+
+            _image = GetComponent<SpriteRenderer>();
+            _image.gameObject.SetActive(false);
+            _eulerAngles = _image.transform.eulerAngles;
+
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _sphereCollider = GetComponent<SphereCollider>();
+            _sphereCollider.isTrigger = true;
+            _sphereCollider.radius = 0.5f; // TODO magic number
+        }
+
+        private void Update()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // TODO can be allocated memory
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
             {
-                if (!isMouseOver)
-                    _OnMouseEnter();
-                isMouseOver = true;
+                if (hit.collider != null && hit.collider.gameObject == gameObject)
+                {
+                    if (_isMouseOver == false)
+                    {
+                        _OnMouseEnter();
+                    }
+
+                    _isMouseOver = true;
+                }
+                else
+                {
+                    if (_isMouseOver)
+                    {
+                        _OnMouseExit();
+                    }
+
+                    _isMouseOver = false;
+                }
             }
             else
             {
-                if (isMouseOver)
+                if (_isMouseOver)
                 {
                     _OnMouseExit();
                 }
-                isMouseOver = false;
+
+                _isMouseOver = false;
+            }
+
+            if (isMovable)
+            {
+                UpdateData();
             }
         }
-        else
+
+        private void _OnMouseEnter()
         {
-            if (isMouseOver)
-            {
-                _OnMouseExit();
-            }
-            isMouseOver = false;
+            IGame.Instance.UIManager.UpdateIconMapPanel(description);
         }
 
-        if (isMovable) UpdateData();
-    }
-
-    private void _OnMouseEnter()
-    {
-        IGame.Instance.UIManager.UpdateIconMapPanel(description);
-    }
-    private void _OnMouseExit()
-    {
-        IGame.Instance.UIManager.UpdateIconMapPanel("");
-    }
-
-    private void UpdateData()
-    {
-
-        thisImg.gameObject.transform.eulerAngles = thisEulerAngles;
-    }
-
-    private void FollowCamera_NewXRotation(float obj)
-    {
-        thisEulerAngles.x = obj;
-        UpdateData();
-    }
-
-    private void FollowCamera_NewYRotation(float obj)
-    {
-        thisEulerAngles.y = obj;
-        UpdateData();
-    }
-
-    private void FollowCamera_OnCameraDistance(float obj)
-    {
-        if (thisImg != null)
+        private void _OnMouseExit()
         {
-            if (obj > startDistanceForShowIcon)
-            {
-                thisImg.gameObject.SetActive(true);
-                Color newColor = thisImg.color;
-                newColor.a = Mathf.Min(((obj - startDistanceForShowIcon) / 50f), 1);
-                thisImg.color = newColor;
+            IGame.Instance.UIManager.UpdateIconMapPanel("");
+        }
 
-                float _scale = ((obj - startDistanceForShowIcon) / 100f + 1) * scaleThis / thisImg.sprite.bounds.size.magnitude;
-                thisImg.transform.localScale = new Vector3(_scale, _scale, _scale);
+        private void OnDestroy()
+        {
+            FollowCamera.OnCameraDistance -= FollowCamera_OnCameraDistance;
+            FollowCamera.NewYRotation -= FollowCamera_NewYRotation;
+            FollowCamera.NewXRotation -= FollowCamera_NewXRotation;
+            FollowCamera.OnupdateEulerAngles -= FollowCamera_OnupdateEulerAngles;
+        }
+
+        private void FollowCamera_OnupdateEulerAngles(Vector3 obj)
+        {
+            _eulerAngles.x = obj.x;
+            _eulerAngles.y = obj.y;
+            UpdateData();
+        }
+
+        private void UpdateData()
+        {
+            _image.gameObject.transform.eulerAngles = _eulerAngles;
+        }
+
+        private void FollowCamera_NewXRotation(float obj)
+        {
+            _eulerAngles.x = obj;
+            UpdateData();
+        }
+
+        private void FollowCamera_NewYRotation(float obj)
+        {
+            _eulerAngles.y = obj;
+            UpdateData();
+        }
+
+        private void FollowCamera_OnCameraDistance(float obj)
+        {
+            if (_image != null)
+            {
+                if (obj > startDistanceForShowIcon)
+                {
+                    _image.gameObject.SetActive(true);
+                    Color newColor = _image.color; 
+                    newColor.a = Mathf.Min(((obj - startDistanceForShowIcon) / 50f), 1); // TODO magic numbers
+                    _image.color = newColor;
+
+                    float _scale = ((obj - startDistanceForShowIcon) / 100f + 1) * scaleThis / // TODO magic numbers
+                                   _image.sprite.bounds.size.magnitude;
+                    _image.transform.localScale = new Vector3(_scale, _scale, _scale);
+                }
+                else
+                {
+                    _OnMouseExit();
+                    _image.gameObject.SetActive(false);
+                }
             }
             else
             {
-                _OnMouseExit();
-                thisImg.gameObject.SetActive(false);
+                Debug.LogWarning("�� ������� ��������, ���� ���������"); // TODO UTF-8 ERROR
             }
-        }
-        else
-        {
-            Debug.LogWarning("�� ������� ��������, ���� ���������");
         }
     }
 }

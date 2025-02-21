@@ -1,18 +1,18 @@
-using Core;
 using Core.Health;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using RPG.Core; // Пространство имен, содержащее класс Health
+using UnityEngine.Serialization;
 
 public class SpecificCharacterDeathHandler : MonoBehaviour
 {
-    public GameObject specificCharacter; // Укажите объект нужного персонажа
+    [FormerlySerializedAs("specificCharacter")] [SerializeField] private GameObject _specificCharacter;
 
-    void Start()
+    private void Start() // TODO construct
     {
-        if (specificCharacter != null)
+        if (_specificCharacter != null)
         {
-            Health health = specificCharacter.GetComponent<Health>();
+            Health health = _specificCharacter.GetComponent<Health>();
+            
             if (health != null)
             {
                 health.OnDeath += HandleCharacterDeath;
@@ -20,9 +20,8 @@ public class SpecificCharacterDeathHandler : MonoBehaviour
         }
     }
 
-    void HandleCharacterDeath()
+    private void HandleCharacterDeath()
     {
-        // Здесь вы можете выполнить дополнительные действия перед загрузкой сцены
-        SceneManager.LoadScene(8); // Загрузка сцены номер 8
+        SceneManager.LoadScene(8); // Загрузка сцены номер 8 // TODO can be cached
     }
 }

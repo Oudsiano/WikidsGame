@@ -1,11 +1,11 @@
 ﻿using System;
 using Core.Player;
 using DG.Tweening;
-using RPG.Core;
+using SceneManagement;
+using SceneManagement.Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
-using static SceneManagement.LevelChangeObserver;
 
 // Пространство имен для ядра игры
 namespace Core.Camera

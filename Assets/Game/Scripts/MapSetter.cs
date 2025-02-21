@@ -1,22 +1,27 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class ImageSetter : MonoBehaviour
 {
-    public RawImage imageComponent; // Ссылка на компонент Image в вашем объекте
-    //public Texture2D[] imageArray; // Массив изображений, которые вы хотите использовать
-    public RenderTexture renderTexturesArray;
+    [FormerlySerializedAs("imageComponent")] [SerializeField]
+    private RawImage _imageComponent; // Ссылка на компонент Image в вашем объекте
 
-    void Start()
+    //public Texture2D[] imageArray; // Массив изображений, которые вы хотите использовать
+    [FormerlySerializedAs("renderTexturesArray")] [SerializeField]
+    private RenderTexture _renderTexturesArray;
+
+    private void Start() // TODO construct
     {
-        // Проверка наличия компонента Image
-        if (imageComponent == null)
+        if (_imageComponent == null)
         {
-            imageComponent = gameObject.GetComponent<RawImage>();
-            if (imageComponent == null)
+            _imageComponent = gameObject.GetComponent<RawImage>();
+
+            if (_imageComponent == null)
             {
                 Debug.LogError("Image component is not assigned!");
+
                 return;
             }
         }
@@ -28,20 +33,17 @@ public class ImageSetter : MonoBehaviour
         UpdateImage(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 
-    // Метод для обновления изображения при переходе на новую сцену
-    void UpdateImage(Scene scene, LoadSceneMode mode)
-    {
-        // Получаем номер текущей сцены
-        int sceneIndex = scene.buildIndex;
-
-        // Проверяем, существует ли изображение для текущей сцены
-            // Устанавливаем изображение из массива, соответствующее номеру сцены
-                imageComponent.texture = renderTexturesArray;
-    }
-
-    // Отключаем слушатель события при уничтожении объекта
-    void OnDestroy()
+    private void OnDestroy()
     {
         SceneManager.sceneLoaded -= UpdateImage;
+    }
+
+    private void UpdateImage(Scene scene, LoadSceneMode mode)
+    {
+        int sceneIndex = scene.buildIndex;
+
+        // Проверяем, существует ли изображение для текущей сцены // TODO idk
+        // Устанавливаем изображение из массива, соответствующее номеру сцены
+        _imageComponent.texture = _renderTexturesArray;
     }
 }

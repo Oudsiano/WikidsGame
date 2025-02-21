@@ -105,10 +105,10 @@ namespace Core.Quests
             SetUnfinished();
             _button.onClick.AddListener(OnClickButton);
 
-            if (IGame.Instance.dataPlayer.playerData.startedQuests != null &&
-                IGame.Instance.dataPlayer.playerData.startedQuests.ContainsKey(Quest.name))
+            if (IGame.Instance.dataPlayer.PlayerData.startedQuests != null &&
+                IGame.Instance.dataPlayer.PlayerData.startedQuests.ContainsKey(Quest.name))
             {
-                QuestData = IGame.Instance.dataPlayer.playerData.startedQuests[Quest.name];
+                QuestData = IGame.Instance.dataPlayer.PlayerData.startedQuests[Quest.name];
                 CheckUpdateAndComplete(false);
             }
         }
@@ -206,9 +206,9 @@ namespace Core.Quests
         {
             var dataPlayer = IGame.Instance.dataPlayer;
 
-            if (dataPlayer.playerData.completedQuests.Contains(Quest.name) == false)
+            if (dataPlayer.PlayerData.completedQuests.Contains(Quest.name) == false)
             {
-                dataPlayer.playerData.completedQuests.Add(Quest.name);
+                dataPlayer.PlayerData.completedQuests.Add(Quest.name);
                 IGame.Instance.gameAPI.SaveUpdater();
             }
         }
@@ -217,13 +217,13 @@ namespace Core.Quests
         {
             if (withSave)
             {
-                if (IGame.Instance.dataPlayer.playerData.startedQuests == null)
+                if (IGame.Instance.dataPlayer.PlayerData.startedQuests == null)
                 {
-                    IGame.Instance.dataPlayer.playerData.startedQuests = new Dictionary<string, OneQuestData>();
+                    IGame.Instance.dataPlayer.PlayerData.startedQuests = new Dictionary<string, OneQuestData>();
                 }
 
                 QuestData.QuestName = Quest.name;
-                IGame.Instance.dataPlayer.playerData.startedQuests[Quest.name] = QuestData;
+                IGame.Instance.dataPlayer.PlayerData.startedQuests[Quest.name] = QuestData;
                 IGame.Instance.gameAPI.SaveUpdater();
             }
 
@@ -243,7 +243,7 @@ namespace Core.Quests
 
                         if (int.TryParse(itemId, out testId))
                         {
-                            if (IGame.Instance.dataPlayer.isTestComplete(testId))
+                            if (IGame.Instance.dataPlayer.IsTestComplete(testId))
                             {
                                 QuestData.CurrentProcess++;
                             }

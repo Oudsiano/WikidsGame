@@ -1,19 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using Core;
 using Core.PickableItems;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class BottleManager : MonoBehaviour
+namespace SceneManagement
 {
-    [SerializeField] private GameObject _Bottle;
-
-    public void MakeBottleOnSceneWithCount(float count, Vector3 pos)
+    public class BottleManager : MonoBehaviour // TODO Restruct 
     {
-        double countCoins = count;
-        Instantiate(_Bottle, pos, Quaternion.Euler(0, 0, 0))
-            .GetComponent<PickableHPBottle>()
-            .Init(count);
+        [FormerlySerializedAs("_Bottle")] [SerializeField] private GameObject _prefab;
 
+        public void MakeBottleOnSceneWithCount(float count, Vector3 pos)  // TODO move to factory Bottles mb OBJPOOL
+        {
+            double countCoins = count;
+            Instantiate(_prefab, pos, Quaternion.Euler(0, 0, 0))
+                .GetComponent<PickableHPBottle>()
+                .Init(count);
+        }
     }
 }

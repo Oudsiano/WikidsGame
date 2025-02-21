@@ -1,36 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
+using SceneManagement.Enums;
 using UnityEngine;
-using static SceneManagement.LevelChangeObserver;
 
-public class SceneComponent : MonoBehaviour
+namespace SceneManagement
 {
-    [SerializeField] public allScenes IdScene;
-
-    //[SerializeField] public GameObject TheCore;
-
-    [Header("Camera New Params")]
-    [SerializeField] public int newMinZoomCamera;
-    [SerializeField] public int newMaxZoomCamera;
-
-    [Header("Infection Group")]
-    [SerializeField] public GameObject InfectGroup;
-
-    private void Awake()
+    public class SceneComponent : MonoBehaviour
     {
-        if (InfectGroup == null)
+        [SerializeField] public allScenes IdScene; // TODO rename
+
+        //[SerializeField] public GameObject TheCore; // TODO not used code
+
+        [Header("Camera New Params")] [SerializeField]
+        public int newMinZoomCamera; // TODO rename
+
+        [SerializeField] public int newMaxZoomCamera; // TODO rename
+
+        [Header("Infection Group")] [SerializeField]
+        public GameObject InfectGroup; // TODO rename
+
+        private void Awake()
         {
-            InfectGroup = GameObject.Find("infection");
             if (InfectGroup == null)
-                InfectGroup = GameObject.Find("infested");
-        }
-        if (IGame.Instance.LevelChangeObserver.DictForInfected.ContainsKey(IdScene))
-            SetInfectGroupActive(IGame.Instance.LevelChangeObserver.DictForInfected[IdScene]);
-    }
+            {
+                InfectGroup = GameObject.Find("infection"); // TODO find change
+                
+                if (InfectGroup == null)
+                {
+                    InfectGroup = GameObject.Find("infested"); // TODO find change
+                }
+            }
 
-    public void SetInfectGroupActive(bool isActive)
-    {
-        if (InfectGroup != null)
-            InfectGroup.SetActive(isActive);
+            if (IGame.Instance.LevelChangeObserver.DictForInfected.ContainsKey(IdScene))
+            {
+                SetInfectGroupActive(IGame.Instance.LevelChangeObserver.DictForInfected[IdScene]);
+            }
+        }
+
+        private void SetInfectGroupActive(bool isActive)
+        {
+            if (InfectGroup != null)
+                InfectGroup.SetActive(isActive);
+        }
     }
 }

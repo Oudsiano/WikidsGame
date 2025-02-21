@@ -1,8 +1,9 @@
-﻿using FarrokhGames.Inventory.Examples;
-using FarrokhGames.Shared;
+﻿using FarrokhGames.Shared;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UI.Inventory;
+using UI.Inventory.Data;
 using UnityEngine;
 using UnityEngine.UI;
 

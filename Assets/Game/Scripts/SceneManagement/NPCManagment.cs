@@ -1,89 +1,96 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Core.Quests;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
-public class NPCManagment : MonoBehaviour
+namespace SceneManagement
 {
-    private Dictionary<int, GameObject> _dicNPCTests;
-    public List<int> notComplite;
-
-    // Start is called before the first frame update
-
-    public void Init()
+    public class NPCManagment : MonoBehaviour
     {
-        SceneManager.sceneLoaded += SceneLoader_LevelChanged;
-    }
+        private Dictionary<int, GameObject> _npcTests;
 
-    private void SceneLoader_LevelChanged(Scene arg0, LoadSceneMode arg1)
-    {
-        updateAllNPCinScene();
-    }
+        [FormerlySerializedAs("notComplite")] [SerializeField]
+        private List<int> _notComplete;
 
-    private void FindAllNPCWithTests()
-    {
-        //Need find all NPC
-        _dicNPCTests = new Dictionary<int, GameObject>();
+        public List<int> NotComplete => _notComplete;
 
-        NPC_for_testID[] conversationStarters = FindObjectsOfType<NPC_for_testID>();
-
-        foreach (NPC_for_testID item in conversationStarters)
+        public void Init() // TODO construct
         {
-            if (item.TestID > 0)
-            {
-                _dicNPCTests[item.TestID] = item.gameObject;
-            }
+            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
         }
-    }
 
-    public bool checkAllTestsComplite()
-    {
-        notComplite = new List<int>();
-
-        FindAllNPCWithTests();
-
-        foreach (int itemTestId in _dicNPCTests.Keys)
+        public bool checkAllTestsComplite()
         {
-            bool complete = false;
-            foreach (OneLeson lesson in IGame.Instance.dataPlayer.playerData.progress)
+            _notComplete = new List<int>();
+
+            FindAllNPCWithTests();
+
+            foreach (int itemTestId in _npcTests.Keys)
             {
-                foreach (OneTestQuestion test in lesson.tests)
+                bool complete = false;
+                foreach (OneLeson lesson in IGame.Instance.dataPlayer.PlayerData.progress)
                 {
-                    if (_dicNPCTests.ContainsKey(test.id))
+                    foreach (OneTestQuestion test in lesson.tests)
                     {
-                        if (test.id == itemTestId)
-                            complete = test.completed;
+                        if (_npcTests.ContainsKey(test.id))
+                        {
+                            if (test.id == itemTestId)
+                            {
+                                complete = test.completed;
+                            }
+                        }
                     }
+                }
+
+                if (complete == false)
+                {
+                    _notComplete.Add(itemTestId);
                 }
             }
 
-            if (!complete)
+            if (_notComplete.Count > 0)
             {
-                notComplite.Add(itemTestId);
-
+                return false;
             }
-
+            else
+            {
+                return true;
+            }
+        }
+        
+        private void SceneLoader_LevelChanged(Scene arg0, LoadSceneMode arg1)
+        {
+            UpdateAllNPCinScene();
         }
 
-        if (notComplite.Count > 0)
-            return false;
-        else
-            return true;
-    }
-
-    public void updateAllNPCinScene()
-    {
-        FindAllNPCWithTests();
-
-        foreach (OneLeson lesson in IGame.Instance.dataPlayer.playerData.progress)
+        private void FindAllNPCWithTests()
         {
-            foreach (OneTestQuestion test in lesson.tests)
+            _npcTests = new Dictionary<int, GameObject>();
+
+            NPC_for_testID[] conversationStarters = FindObjectsOfType<NPC_for_testID>();
+
+            foreach (NPC_for_testID item in conversationStarters)
             {
-                if (_dicNPCTests.ContainsKey(test.id))
+                if (item.TestID > 0)
                 {
-                    _dicNPCTests[test.id].transform.parent.gameObject.SetActive(!test.completed);
+                    _npcTests[item.TestID] = item.gameObject;
+                }
+            }
+        }
+        
+        private void UpdateAllNPCinScene()
+        {
+            FindAllNPCWithTests();
+
+            foreach (OneLeson lesson in IGame.Instance.dataPlayer.PlayerData.progress)
+            {
+                foreach (OneTestQuestion test in lesson.tests)
+                {
+                    if (_npcTests.ContainsKey(test.id))
+                    {
+                        _npcTests[test.id].transform.parent.gameObject.SetActive(!test.completed);
+                    }
                 }
             }
         }

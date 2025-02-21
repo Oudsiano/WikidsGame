@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryDropPlace : MonoBehaviour
+namespace UI.Inventory
 {
+    public class InventoryDropPlace : MonoBehaviour
+    {
+    }
 }

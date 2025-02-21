@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SetStudy5Step : MonoBehaviour
+namespace UI
 {
-    private void OnTriggerEnter(Collider other)
+    public class SetStudy5Step : MonoBehaviour // TODO Duplicate
     {
-        IGame.Instance.UIManager.HelpInFirstScene.Study5();
-    }
+        private void OnTriggerEnter(Collider other)
+        {
+            IGame.Instance.UIManager.HelpInFirstScene.Study5();
+        }
 
+    }
 }

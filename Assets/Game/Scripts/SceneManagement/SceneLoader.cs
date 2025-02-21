@@ -1,59 +1,64 @@
-﻿using RPG.SceneManagement;
-using System;
+﻿using System;
+using SceneManagement.Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static SceneManagement.LevelChangeObserver;
 
-namespace RPG.Core
+namespace SceneManagement
 {
-    public class SceneLoader : MonoBehaviour
+    public class SceneLoader : MonoBehaviour // TODO in SCENELOADER SERVICE
     {
         // Определите делегат для события изменения уровня загрузки.
-        public delegate void LevelChangedEventHandler(allScenes IdNewLevel);
+        public delegate void LevelChangedEventHandler(allScenes IdNewLevel); 
         // Событие, возникающее при изменении уровня загрузки.
         public static event Action<allScenes> LevelChanged;
         
-        [SerializeField] private allScenes levelToLoad = 0;
-        private static SceneLoader _instance;
+        [SerializeField] private allScenes levelToLoad = 0; // TODO rename
+        private static SceneLoader _instance; // TODO rename
 
-        public static SceneLoader Instance
+        public static SceneLoader Instance // TODO rename 
         {
             get { return _instance; }
         }
 
-        private void Awake()
+        private void Awake() // TODO construct
         {
             if (_instance != null && _instance != this)
             {
-                Destroy(this.gameObject);
+                Destroy(gameObject);
             }
             else
             {
                 _instance = this;
-                DontDestroyOnLoad(this.gameObject);
+                DontDestroyOnLoad(gameObject);
             }
         }
 
         public void UpdateCurrentLevel()
         {
-            LoadLevel((allScenes)IGame.Instance.dataPlayer.playerData.sceneToLoad);
+            LoadLevel((allScenes)IGame.Instance.dataPlayer.PlayerData.sceneToLoad);
         }
 
         public void TryChangeLevel(allScenes IdNewLevel,int newSpawnPoint)
         {
             SavePointsManager.ResetDict();
-            IGame.Instance.dataPlayer.playerData.spawnPoint = newSpawnPoint;
+            IGame.Instance.dataPlayer.PlayerData.spawnPoint = newSpawnPoint;
             LoadLevel(IdNewLevel);
         }
-
-        public void LoadLevel(allScenes IdNewLevel)
+        
+        public void OnFadeComplete()
+        {
+            SceneManager.LoadScene(IGame.Instance.LevelChangeObserver.DAllScenes[levelToLoad]);
+        }
+        
+        private void LoadLevel(allScenes IdNewLevel)
         {
             if (IdNewLevel == allScenes.emptyScene)
             {
                 Debug.LogWarning("Forgotten add scene somewhere");
             }
 
-            this.levelToLoad = IdNewLevel;
+            levelToLoad = IdNewLevel;
             // При изменении уровня загрузки вызываем событие.
 
             Debug.Log("Уровень загрузки изменен на " + IdNewLevel);
@@ -62,19 +67,11 @@ namespace RPG.Core
 
             OnLevelChanged(IdNewLevel);
         }
-
-
+        
         // Вызываем событие при изменении уровня загрузки.
         private void OnLevelChanged(allScenes IdNewLevel)
         {
             LevelChanged?.Invoke(IdNewLevel);
         }
-
-
-        public void OnFadeComplete()
-        {
-            SceneManager.LoadScene(IGame.Instance.LevelChangeObserver.DAllScenes[levelToLoad]);
-        }
-
     }
 }

@@ -1,19 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SetMusicForThisScene : MonoBehaviour
 {
-    public string musicFileName;
+    [FormerlySerializedAs("musicFileName")][SerializeField]  private string _musicFileName;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start() // TODO construct
     {
-        if (musicFileName .Length>0)
+        if (_musicFileName.Length > 0)
         {
-            SoundManager.PlayMusic(musicFileName);
+            SoundManager.PlayMusic(_musicFileName);
         }
     }
-
 }

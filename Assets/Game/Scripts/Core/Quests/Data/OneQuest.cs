@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Core.Quests.QuestsEnums;
-using FarrokhGames.Inventory.Examples;
+using UI.Inventory;
+using UI.Inventory.Data;
 using UnityEngine;
 
 namespace Core.Quests.Data

@@ -1,220 +1,245 @@
-using DG.Tweening;
-using RPG.Core;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Core;
 using Core.Health;
+using DG.Tweening;
+using SceneManagement;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class UIFastTest : MonoBehaviour
+namespace UI
 {
-    [SerializeField] Button btnClose;
-
-    [SerializeField] Button btn1;
-    [SerializeField] Button btn2;
-    [SerializeField] Button btn3;
-    [SerializeField] Button btn4;
-
-    [SerializeField] TMP_Text testText;
-
-    private Health targetKillAfterTest;
-    private OneFastTest currentTest;
-    private bool isCorrect;
-    private int addArrows;
-
-    CanvasGroup canvasGroup;
-
-    private void Awake()
+    public class UIFastTest : MonoBehaviour
     {
-        btnClose.onClick.AddListener(OnClickClose);
+        [FormerlySerializedAs("btnClose")] [SerializeField]
+        private Button _buttonClose;
 
-        btn1.onClick.AddListener(() => OnAnswerClick(1));
-        btn2.onClick.AddListener(() => OnAnswerClick(2));
-        btn3.onClick.AddListener(() => OnAnswerClick(3));
-        btn4.onClick.AddListener(() => OnAnswerClick(4));
+        [FormerlySerializedAs("btn1")] [SerializeField]
+        private Button _button1;
 
-        canvasGroup = gameObject.GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
+        [FormerlySerializedAs("btn2")] [SerializeField]
+        private Button _button2;
+
+        [FormerlySerializedAs("btn3")] [SerializeField]
+        private Button _button3;
+
+        [FormerlySerializedAs("btn4")] [SerializeField]
+        private Button _button4;
+
+        [FormerlySerializedAs("testText")] [SerializeField]
+        private TMP_Text _testText;
+
+        private Health _targetKillAfterTest;
+        private OneFastTest _currentTest;
+        private bool _isCorrect;
+        private int _addArrows;
+
+        private CanvasGroup _canvasGroup;
+
+        private void Awake() // TODO construct
         {
-            canvasGroup = gameObject.AddComponent<CanvasGroup>();
-        }
-    }
+            _buttonClose.onClick.AddListener(OnClickClose);
 
-    public void SetTexts(string mainText, string btnText1, string btnText2, string btnText3, string btnText4)
-    {
-        testText.text = mainText;
-        btn1.GetComponentInChildren<TMP_Text>().text = btnText1;
-        btn2.GetComponentInChildren<TMP_Text>().text = btnText2;
-        btn3.GetComponentInChildren<TMP_Text>().text = btnText3;
-        btn4.GetComponentInChildren<TMP_Text>().text = btnText4;
+            _button1.onClick.AddListener(() => OnAnswerClick(1)); // TODO magic numbers
+            _button2.onClick.AddListener(() => OnAnswerClick(2)); // TODO magic numbers
+            _button3.onClick.AddListener(() => OnAnswerClick(3)); // TODO magic numbers
+            _button4.onClick.AddListener(() => OnAnswerClick(4)); // TODO magic numbers
 
-        ResetButton(btn1);
-        ResetButton(btn2);
-        ResetButton(btn3);
-        ResetButton(btn4);
-    }
+            _canvasGroup = gameObject.GetComponent<CanvasGroup>();
 
-    private void ResetButton(Button button)
-    {
-        canvasGroup.DOKill();
-        canvasGroup.alpha = 1;
-        button.interactable = true;
-        button.GetComponent<Image>().color = Color.white;
-    }
-
-    public void ShowTest(int stratIndexFastTests, int endIndexFastTests, int addArrows, Health targetKillAfterTest)
-    {
-        isCorrect = false;
-        this.addArrows = addArrows;
-        this.targetKillAfterTest = targetKillAfterTest;
-
-        var allTests = IGame.Instance.FastTestsManager.AvaliableTestsNow;
-        if (allTests == null || allTests.Count == 0)
-        {
-            Debug.LogError("No tests available");
-            FindAndFadeFastTextSavePoint("нет доступных тестов");
-            return;
-        }
-
-        bool testFound = false;
-        int attempts = 0;
-        int maxAttemptsForFindRandomTEst = 5;
-
-        while (!testFound && attempts < maxAttemptsForFindRandomTEst)
-        {
-            int randomId = UnityEngine.Random.Range(stratIndexFastTests, endIndexFastTests);
-            currentTest = allTests[randomId];
-
-            if (currentTest != null)
+            if (_canvasGroup == null)
             {
-                PauseClass.IsOpenUI = true;
-                IGame.Instance.SavePlayerPosLikeaPause(true);
-                gameObject.SetActive(true);
-
-                SetTexts(
-                    currentTest.QuestionText,
-                    currentTest.Answer1,
-                    currentTest.Answer2,
-                    currentTest.Answer3,
-                    currentTest.Answer4
-                );
-
-                testFound = true;
-            }
-            else
-            {
-                attempts++;
+                _canvasGroup = gameObject.AddComponent<CanvasGroup>();
             }
         }
 
-        if (!testFound)
+        private void SetTexts(string mainText, string btnText1, string btnText2, string btnText3, string btnText4)
         {
-            Debug.Log($"No test found after {maxAttemptsForFindRandomTEst} attempts.");
-            // ????? ???????? ?????? ?????????, ???? ???? ?? ?????? ????? ?????????? ???????
-        }
-    }
+            _testText.text = mainText;
+            _button1.GetComponentInChildren<TMP_Text>().text = btnText1;
+            _button2.GetComponentInChildren<TMP_Text>().text = btnText2;
+            _button3.GetComponentInChildren<TMP_Text>().text = btnText3;
+            _button4.GetComponentInChildren<TMP_Text>().text = btnText4;
 
-    private void OnAnswerClick(int answerIndex)
-    {
-        isCorrect = (answerIndex == currentTest.CorrectAnswerIndex);
-
-        Button clickedButton = GetButtonByIndex(answerIndex);
-        clickedButton.GetComponent<Image>().color = isCorrect ? Color.green : Color.red;
-
-        Button correctButton = GetButtonByIndex(currentTest.CorrectAnswerIndex);
-        if (!isCorrect)
-        {
-            correctButton.GetComponent<Image>().color = Color.green;
+            ResetButton(_button1);
+            ResetButton(_button2);
+            ResetButton(_button3);
+            ResetButton(_button4);
         }
 
-        DisableButtons();
-        canvasGroup.DOFade(0, 0.3f).SetDelay(2f).OnComplete(OnClickClose);
-
-        if (isCorrect && addArrows>0)
-            IGame.Instance.UIManager.IncreaseWeaponCharges(addArrows); // ?????????? ????? ??? ?????????? ??????
-    }
-
-    private Button GetButtonByIndex(int index)
-    {
-        switch (index)
+        private void ResetButton(Button button)
         {
-            case 1: return btn1;
-            case 2: return btn2;
-            case 3: return btn3;
-            case 4: return btn4;
-            default: throw new ArgumentOutOfRangeException(nameof(index), "Invalid button index");
-        }
-    }
-
-    private void DisableButtons()
-    {
-        btn1.interactable = false;
-        btn2.interactable = false;
-        btn3.interactable = false;
-        btn4.interactable = false;
-    }
-
-    private void OnClickClose()
-    {
-        gameObject.SetActive(false);
-        IGame.Instance.SavePlayerPosLikeaPause(false);
-        PauseClass.IsOpenUI = false;
-        if (targetKillAfterTest != null)
-        {
-            if (isCorrect)
-                targetKillAfterTest.AttackFromBehind(true);
-            else
-                targetKillAfterTest.MissFastTest();
+            _canvasGroup.DOKill();
+            _canvasGroup.alpha = 1;
+            button.interactable = true;
+            button.GetComponent<Image>().color = Color.white;
         }
 
-    }
-    public void FindAndFadeFastTextSavePoint(string newText)
-    {
-        GameObject fastTextSavePoint = FindInactiveObjectByName("NotAvaibleTest");
-
-        if (fastTextSavePoint != null)
+        public void ShowTest(int stratIndexFastTests, int endIndexFastTests, int addArrows, Health targetKillAfterTest)
         {
-            Transform messageTextTransform = fastTextSavePoint.transform.Find("MessageText");
-            if (messageTextTransform != null)
+            _isCorrect = false;
+            _addArrows = addArrows;
+            _targetKillAfterTest = targetKillAfterTest;
+
+            var allTests = IGame.Instance.FastTestsManager.AvaliableTestsNow;
+
+            if (allTests == null || allTests.Count == 0)
             {
-                TextMeshProUGUI textMeshPro = messageTextTransform.GetComponent<TextMeshProUGUI>();
-                if (textMeshPro != null)
+                Debug.LogError("No tests available");
+                FindAndFadeFastTextSavePoint("нет доступных тестов"); // TODO magic numbers
+                return;
+            }
+
+            bool testFound = false;
+            int attempts = 0;
+            int maxAttemptsForFindRandomTEst = 5;
+
+            while (testFound == false && attempts < maxAttemptsForFindRandomTEst)
+            {
+                int randomId = UnityEngine.Random.Range(stratIndexFastTests, endIndexFastTests);
+                _currentTest = allTests[randomId];
+
+                if (_currentTest != null)
                 {
-                    textMeshPro.text = newText;
+                    PauseClass.IsOpenUI = true;
+                    IGame.Instance.SavePlayerPosLikeaPause(true);
+                    gameObject.SetActive(true);
+
+                    SetTexts(
+                        _currentTest.QuestionText,
+                        _currentTest.Answer1,
+                        _currentTest.Answer2,
+                        _currentTest.Answer3,
+                        _currentTest.Answer4
+                    );
+
+                    testFound = true;
+                }
+                else
+                {
+                    attempts++;
                 }
             }
 
-            CanvasGroup canvasGroup = fastTextSavePoint.GetComponent<CanvasGroup>();
-            if (canvasGroup == null)
+            if (testFound == false)
             {
-                canvasGroup = fastTextSavePoint.AddComponent<CanvasGroup>();
+                Debug.Log($"No test found after {maxAttemptsForFindRandomTEst} attempts.");
             }
-
-            canvasGroup.DOKill();
-
-            fastTextSavePoint.SetActive(true);
-            canvasGroup.alpha = 1; // Ensure alpha is reset to 1 before fading
-            canvasGroup.DOFade(0, 1).SetDelay(2).OnComplete(() =>
-            {
-                fastTextSavePoint.SetActive(false);
-                canvasGroup.alpha = 1; // Reset alpha for next use
-            });
         }
-    }
 
-    private GameObject FindInactiveObjectByName(string name)
-    {
-        Transform[] allObjects = Resources.FindObjectsOfTypeAll<Transform>();
-        foreach (Transform obj in allObjects)
+        private void OnAnswerClick(int answerIndex)
         {
-            if (obj.name == name && obj.hideFlags == HideFlags.None)
+            _isCorrect = (answerIndex == _currentTest.CorrectAnswerIndex);
+
+            Button clickedButton = GetButtonByIndex(answerIndex);
+            clickedButton.GetComponent<Image>().color = _isCorrect ? Color.green : Color.red;
+
+            Button correctButton = GetButtonByIndex(_currentTest.CorrectAnswerIndex);
+
+            if (_isCorrect == false)
             {
-                return obj.gameObject;
+                correctButton.GetComponent<Image>().color = Color.green;
+            }
+
+            DisableButtons();
+            _canvasGroup.DOFade(0, 0.3f).SetDelay(2f).OnComplete(OnClickClose);
+
+            if (_isCorrect && _addArrows > 0)
+            {
+                IGame.Instance.UIManager.IncreaseWeaponCharges(_addArrows); // ?????????? ????? ??? ?????????? ??????
             }
         }
-        return null;
+
+        private Button GetButtonByIndex(int index)
+        {
+            switch (index)
+            {
+                case 1: return _button1;
+                case 2: return _button2;
+                case 3: return _button3;
+                case 4: return _button4;
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Invalid button index");
+            }
+        }
+
+        private void DisableButtons()
+        {
+            _button1.interactable = false;
+            _button2.interactable = false;
+            _button3.interactable = false;
+            _button4.interactable = false;
+        }
+
+        private void OnClickClose()
+        {
+            gameObject.SetActive(false);
+            IGame.Instance.SavePlayerPosLikeaPause(false);
+            PauseClass.IsOpenUI = false;
+
+            if (_targetKillAfterTest != null)
+            {
+                if (_isCorrect)
+                {
+                    _targetKillAfterTest.AttackFromBehind(true);
+                }
+                else
+                {
+                    _targetKillAfterTest.MissFastTest();
+                }
+            }
+        }
+
+        private void FindAndFadeFastTextSavePoint(string newText)
+        {
+            GameObject fastTextSavePoint = FindInactiveObjectByName("NotAvaibleTest"); // TODO find change
+
+            if (fastTextSavePoint != null)
+            {
+                Transform messageTextTransform = fastTextSavePoint.transform.Find("MessageText"); // TODO can be cached
+                
+                if (messageTextTransform != null)
+                {
+                    TextMeshProUGUI textMeshPro = messageTextTransform.GetComponent<TextMeshProUGUI>();
+                    
+                    if (textMeshPro != null)
+                    {
+                        textMeshPro.text = newText;
+                    }
+                }
+
+                CanvasGroup canvasGroup = fastTextSavePoint.GetComponent<CanvasGroup>();
+                
+                if (canvasGroup == null)
+                {
+                    canvasGroup = fastTextSavePoint.AddComponent<CanvasGroup>();
+                }
+
+                canvasGroup.DOKill();
+
+                fastTextSavePoint.SetActive(true);
+                canvasGroup.alpha = 1; // Ensure alpha is reset to 1 before fading
+                canvasGroup.DOFade(0, 1).SetDelay(2).OnComplete(() => // TODO magic numbers
+                {
+                    fastTextSavePoint.SetActive(false);
+                    canvasGroup.alpha = 1; // Reset alpha for next use
+                });
+            }
+        }
+
+        private GameObject FindInactiveObjectByName(string name)
+        {
+            Transform[] allObjects = Resources.FindObjectsOfTypeAll<Transform>(); // TODO find change
+            
+            foreach (Transform obj in allObjects)
+            {
+                if (obj.name == name && obj.hideFlags == HideFlags.None)
+                {
+                    return obj.gameObject;
+                }
+            }
+
+            return null;
+        }
     }
 }

@@ -7,6 +7,7 @@ using Core.Health;
 using DialogueEditor;
 using Movement;
 using RPG.Core;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -170,14 +171,14 @@ namespace AINavigation
 
         private void EquipWeaponAndArmorAfterLoad()
         {
-            if (IGame.Instance.dataPlayer.playerData.weaponToLoad.Length > 1) // TODO magic number
+            if (IGame.Instance.dataPlayer.PlayerData.weaponToLoad.Length > 1) // TODO magic number
             {
                 _fighter.EquipWeapon(
-                    IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPlayer.playerData
+                    IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPlayer.PlayerData
                         .weaponToLoad));
             }
 
-            IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPlayer.playerData.armorIdToload)
+            IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPlayer.PlayerData.armorIdToload)
                 .EquipIt();
         }
 

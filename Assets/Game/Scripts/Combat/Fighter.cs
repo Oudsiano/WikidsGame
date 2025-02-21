@@ -4,9 +4,10 @@ using Core;
 using Core.Health;
 using Core.Interfaces;
 using Core.Player;
-using FarrokhGames.Inventory.Examples;
 using Movement;
 using RPG.Core;
+using UI.Inventory;
+using UI.Inventory.Data;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -340,7 +341,7 @@ namespace Combat
             {
                 if (_isPlayer && _weapon == WeaponNow.fire)
                 {
-                    if (IGame.Instance.dataPlayer.playerData.chargeEnergy > 0)
+                    if (IGame.Instance.dataPlayer.PlayerData.chargeEnergy > 0)
                     {
                         MainPlayer.Instance.ChangeCountEnergy(-1); // TODO magic number
                         ShootFireball();

@@ -1,5 +1,7 @@
 ﻿using System;
-using FarrokhGames.Inventory.Examples;
+using UI;
+using UI.Inventory;
+using UI.Inventory.Data;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -128,7 +130,7 @@ namespace Combat.Data
             bool isPlayer) // TODO cannot be dynamically used 
         {
             if (_isFireballs)
-                _currentCharges = IGame.Instance.dataPlayer.playerData.chargeEnergy + 1; // TODO magic number
+                _currentCharges = IGame.Instance.dataPlayer.PlayerData.chargeEnergy + 1; // TODO magic number
 
             if (isPlayer && ConsumeCharge() == false)
             {

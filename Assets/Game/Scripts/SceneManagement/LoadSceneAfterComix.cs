@@ -7,6 +7,6 @@ public class LoadSceneAfterComix : MonoBehaviour
 {
     public void LoadSceneNext()
     {
-        SceneManager.LoadScene("ChangeRegion");
+        SceneManager.LoadScene("ChangeRegion"); // TODO can be cached
     }
 }

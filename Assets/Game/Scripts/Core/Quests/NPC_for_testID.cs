@@ -1,5 +1,6 @@
 using DialogueEditor;
 using Saving;
+using UI;
 using UnityEngine;
 
 namespace Core.Quests
@@ -63,9 +64,9 @@ namespace Core.Quests
 
                 if (isCompleted)
                 {
-                    if (IGame.Instance.dataPlayer.playerData.wasSuccessTests.Contains(TestID) == false)
+                    if (IGame.Instance.dataPlayer.PlayerData.wasSuccessTests.Contains(TestID) == false)
                     {
-                        IGame.Instance.dataPlayer.playerData.wasSuccessTests.Add(TestID);
+                        IGame.Instance.dataPlayer.PlayerData.wasSuccessTests.Add(TestID);
                         IGame.Instance.FastTestsManager.GenAvaliableTests();
                     }
                 }

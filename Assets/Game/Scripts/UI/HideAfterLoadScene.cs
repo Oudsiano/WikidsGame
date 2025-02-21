@@ -1,18 +1,22 @@
 using System.Collections;
 using UnityEngine;
-public class HideAfterLoadScene : MonoBehaviour
-{
-    void Start()
-    {
-        StartCoroutine(CallFunctionWithDelay(1.0f));
-    }
 
-    private IEnumerator CallFunctionWithDelay(float delay)
+namespace UI
+{
+    public class HideAfterLoadScene : MonoBehaviour
     {
-        yield return new WaitForSeconds(delay);
-        gameObject.SetActive(false);
-    }
+        private void Start()
+        {
+            StartCoroutine(CallFunctionWithDelay(1.0f)); // TODO magic numbers
+        }
+
+        private IEnumerator CallFunctionWithDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            gameObject.SetActive(false);
+        }
 
 
     
+    }
 }

@@ -5,84 +5,96 @@ using UnityEngine;
 
 namespace Saving
 {
-    public class SL_objs
+    public class SL_objs // TODO rename
     {
-        public Dictionary<string, object> objs;
-        public SL_objs(string _load)
+        private Dictionary<string, object> objects;
+
+        public SL_objs(string loadJson) // TODO construct
         {
-            objs = JsonConvert.DeserializeObject<Dictionary<string, object>>(_load);
+            objects = JsonConvert.DeserializeObject<Dictionary<string, object>>(loadJson);
         }
 
-        private void unpars<T>(ref T _ob, string i)
+        private void Unparse<T>(ref T obj, string index) // TODO Rename
         {
-            if (objs.ContainsKey(i))
+            if (objects.ContainsKey(index))
             {
-                if (_ob is bool)
+                if (obj is bool)
                 {
-                    _ob = JsonConvert.DeserializeObject<T>(objs[i].ToString().ToLower());
+                    obj = JsonConvert.DeserializeObject<T>(objects[index].ToString().ToLower());
                 }
-                else if (_ob is float)
+                else if (obj is float)
                 {
-                    _ob = JsonConvert.DeserializeObject<T>(objs[i].ToString().Replace(',', '.'));
+                    obj = JsonConvert.DeserializeObject<T>(objects[index].ToString()
+                        .Replace(',', '.')); // TODO can be cached
                 }
                 else
                 {
-                    object obj = objs[i];
-                    if (obj != null)
+                    object newObj = objects[index];
+
+                    if (newObj != null)
                     {
-                        string str1 = obj.ToString();
-                        if (str1.Length>2)
-                            _ob = JsonConvert.DeserializeObject<T>(str1);
+                        string str1 = newObj.ToString();
+                        if (str1.Length > 2) // TODO magic numbers
+                        {
+                            obj = JsonConvert.DeserializeObject<T>(str1);
+                        }
                     }
                 }
             }
             else
+            {
                 Debug.Log("Загрузка пытается получить больше данных чем есть в файле.");
+            }
         }
 
-        internal void load(ref List<string> _ob, string v)
+        internal void Load(ref List<string> obj, string v)
         {
-            unpars<List<string>>(ref _ob, v);
+            Unparse<List<string>>(ref obj, v);
         }
 
-        internal void load(ref double _ob, string v)
+        internal void Load(ref double obj, string v)
         {
-            unpars<double>(ref _ob, v);
-        }
-        internal void load(ref int _ob, string v)
-        {
-            unpars<int>(ref _ob, v);
-        }
-        internal void load(ref long _ob, string v)
-        {
-            unpars<long>(ref _ob, v);
-        }
-        internal void load(ref string _ob, string v)
-        {
-            unpars<string>(ref _ob, v);
-        }
-        internal void load(ref bool _ob, string v)
-        {
-            unpars<bool>(ref _ob, v);
+            Unparse<double>(ref obj, v);
         }
 
-        internal void load(ref Dictionary<string, string> _ob, string v)
+        internal void Load(ref int obj, string v)
         {
-            unpars<Dictionary<string, string>>(ref _ob, v);
+            Unparse<int>(ref obj, v);
         }
 
-        internal void load(ref Dictionary<string, int> _ob, string v)
+        internal void Load(ref long obj, string v)
         {
-            unpars<Dictionary<string, int>>(ref _ob, v);
+            Unparse<long>(ref obj, v);
         }
-    
-        internal void load(ref Dictionary<int, bool> _ob, string v)
+
+        internal void Load(ref string obj, string v)
         {
-            unpars<Dictionary<int, bool>>(ref _ob, v);
+            Unparse<string>(ref obj, v);
         }
-        internal void load(ref Dictionary<string, OneQuestData> _ob, string v)
+
+        internal void Load(ref bool obj, string v)
         {
-            unpars<Dictionary<string, OneQuestData>>(ref _ob, v);
+            Unparse<bool>(ref obj, v);
+        }
+
+        internal void Load(ref Dictionary<string, string> obj, string v)
+        {
+            Unparse<Dictionary<string, string>>(ref obj, v);
+        }
+
+        internal void Load(ref Dictionary<string, int> obj, string v)
+        {
+            Unparse<Dictionary<string, int>>(ref obj, v);
+        }
+
+        internal void Load(ref Dictionary<int, bool> obj, string v)
+        {
+            Unparse<Dictionary<int, bool>>(ref obj, v);
+        }
+
+        internal void Load(ref Dictionary<string, OneQuestData> obj, string v)
+        {
+            Unparse<Dictionary<string, OneQuestData>>(ref obj, v);
         }
     }
 }

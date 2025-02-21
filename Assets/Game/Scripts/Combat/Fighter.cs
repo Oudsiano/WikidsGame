@@ -1,4 +1,9 @@
-﻿using Combat.EnumsCombat;
+﻿using Combat.Data;
+using Combat.EnumsCombat;
+using Core;
+using Core.Health;
+using Core.Interfaces;
+using Core.Player;
 using FarrokhGames.Inventory.Examples;
 using Movement;
 using RPG.Core;
@@ -63,7 +68,7 @@ namespace Combat
 
         private void Update()
         {
-            if (pauseClass.GetPauseState())
+            if (PauseClass.GetPauseState())
             {
                 return;
             }
@@ -202,7 +207,7 @@ namespace Combat
                 return;
             }
 
-            _actionScheduler.StartAction(this);
+            _actionScheduler.Setup(this);
             Target = combatTarget.GetComponent<Health>(); // TODO replace getComp
             _fighter = Target.GetComponent<Fighter>(); // TODO replace getComp
         }
@@ -329,7 +334,7 @@ namespace Combat
             if (Target.IsDead())
             {
                 Cancel();
-                _actionScheduler.CancelAction();
+                _actionScheduler.Cancel();
             }
             else if (_timer > _equippedWeapon.GetTimeBetweenAttacks())
             {
@@ -337,7 +342,7 @@ namespace Combat
                 {
                     if (IGame.Instance.dataPlayer.playerData.chargeEnergy > 0)
                     {
-                        MainPlayer.Instance.ChangeCountEnegry(-1); // TODO magic number
+                        MainPlayer.Instance.ChangeCountEnergy(-1); // TODO magic number
                         ShootFireball();
                         _timer = 0;
 

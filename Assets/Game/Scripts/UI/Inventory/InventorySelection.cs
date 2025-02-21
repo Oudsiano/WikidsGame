@@ -1,4 +1,5 @@
 ﻿using Combat;
+using Combat.Data;
 using TMPro;
 using UnityEngine;
 

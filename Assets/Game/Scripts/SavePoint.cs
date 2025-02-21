@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core;
+using Core.Health;
 using DG.Tweening;
 using RPG.Core;
 using TMPro;

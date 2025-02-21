@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core;
 using Core.Quests;
+using Core.Quests.Data;
 using UnityEngine;
 using DialogueEditor;
+using Saving;
 
 public class ConversationStarter : MonoBehaviour
 {
@@ -26,14 +29,14 @@ public class ConversationStarter : MonoBehaviour
             return;
         }
 
-        IGame.Instance.QuestManager.startedConversation(this);
+        IGame.Instance.QuestManager.StartedConversation(this);
 
         DataPlayer playerData = FindObjectOfType<DataPlayer>();
         ConversationManager.OnConversationEnded += DialogEnded;  // ????????????? ?? ??????? ????????? ???????
         ConversationManager.Instance.StartConversation(myConversation);
         DialogStarted = true;
         IsDialogActive = true;
-        pauseClass.IsDialog = true;
+        PauseClass.IsDialog = true;
         Debug.Log("Dialog Started");
         //TODO: Uncomment this and display the success count once the data object is properly initialized.
         //Debug.Log(data.countSuccessAnswers);
@@ -71,7 +74,7 @@ public class ConversationStarter : MonoBehaviour
     {
         DialogStarted = false;
         IsDialogActive = false;
-        pauseClass.IsDialog = false;
+        PauseClass.IsDialog = false;
         ConversationManager.OnConversationEnded -= DialogEnded;  // ???????????? ?? ??????? ????????? ???????
     }
 

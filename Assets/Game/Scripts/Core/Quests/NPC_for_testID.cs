@@ -1,4 +1,5 @@
 using DialogueEditor;
+using Saving;
 using UnityEngine;
 
 namespace Core.Quests
@@ -6,7 +7,10 @@ namespace Core.Quests
     public class NPC_for_testID : MonoBehaviour // TODO Rename
     {
         [Header("TestID")] [SerializeField] public int TestID;
-        [Header("SuccessCoins")] [SerializeField] public int coins = 100;
+
+        [Header("SuccessCoins")] [SerializeField]
+        public int coins = 100;
+
         [Header("NPC mesh object")] public GameObject MeshGameObject; // TODO GO
         [Header("Icon")] public string IconText;
 
@@ -23,7 +27,7 @@ namespace Core.Quests
 
             if (_oldOpenUrl != null)
             {
-                if (_oldOpenUrl.urlToOpen.Length > 2)
+                if (_oldOpenUrl.urlToOpen.Length > 2) // TODO magic number
                 {
                     _thisOpenURL.urlToOpen = _oldOpenUrl.urlToOpen;
                 }
@@ -36,40 +40,15 @@ namespace Core.Quests
         public void SetParent(GameObject parent)
         {
             _parentGO = parent;
-            
+
             Debug.Log(_parentGO.name);
         }
 
-        public void SuccessAnsver()
+        public void SuccessAnswer()
         {
             AddCoinsToPlayer();
             DeactivateInteract();
         }
-
-
-        public void AddCoinsToPlayer()
-        {
-            IGame.Instance.saveGame.Coins += coins;
-        }
-
-        public void DeactivateInteract()
-        {
-            NPCInteractable interract = _parentGO.GetComponent<NPCInteractable>();
-            interract.posibleInteract = false;
-
-
-            Transform splashOrangeTransform = transform.Find("Splash_orange");
-            // ��������� �������� ������ � ������ "Splash_orange"
-            if (splashOrangeTransform != null)
-            {
-                splashOrangeTransform.gameObject.SetActive(false);
-            }
-            else
-            {
-                Debug.LogWarning("Child object 'Splash_orange' not found.");
-            }
-        }
-
 
         public void IsTestCompleted()
         {
@@ -78,18 +57,41 @@ namespace Core.Quests
                 Debug.LogError("Not have TestID in inspector");
             }
 
-
-            FindObjectOfType<GameAPI>().IsTestCompleted(TestID, (isCompleted) =>
+            FindObjectOfType<GameAPI>().IsTestCompleted(TestID, (isCompleted) => // TODO find change
             {
-                ConversationManager.Instance.SetBool("ThisTestCompleted", isCompleted);
+                ConversationManager.Instance.SetBool("ThisTestCompleted", isCompleted); // TODO can be cached
 
                 if (isCompleted)
-                    if (!IGame.Instance.dataPlayer.playerData.wasSuccessTests.Contains(TestID))
+                {
+                    if (IGame.Instance.dataPlayer.playerData.wasSuccessTests.Contains(TestID) == false)
                     {
                         IGame.Instance.dataPlayer.playerData.wasSuccessTests.Add(TestID);
                         IGame.Instance.FastTestsManager.GenAvaliableTests();
                     }
+                }
             });
+        }
+
+        private void AddCoinsToPlayer()
+        {
+            IGame.Instance.saveGame.Coins += coins;
+        }
+
+        private void DeactivateInteract()
+        {
+            NPCInteractable interact = _parentGO.GetComponent<NPCInteractable>(); // TODO can be TRYGETCOMP
+            interact.posibleInteract = false;
+
+            Transform splashOrangeTransform = transform.Find("Splash_orange"); // TODO find change
+            // ��������� �������� ������ � ������ "Splash_orange" // TODO UTF-8 code error
+            if (splashOrangeTransform != null)
+            {
+                splashOrangeTransform.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.LogWarning("Child object 'Splash_orange' not found.");
+            }
         }
     }
 }

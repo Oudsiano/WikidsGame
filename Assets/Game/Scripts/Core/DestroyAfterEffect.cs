@@ -1,16 +1,13 @@
 ﻿using UnityEngine;
 
-namespace RPG.Core
+namespace Core
 {
     public class DestroyAfterEffect : MonoBehaviour
     {
-        // Метод Update вызывается один раз за кадр
-        void Update()
+        private void Update() // TODO best practice getcomp in update
         {
-            // Проверяем, завершилось ли воспроизведение эффекта частиц
-            if (!GetComponent<ParticleSystem>().IsAlive())
+            if (GetComponent<ParticleSystem>().IsAlive() == false) // TODO trygetcomp
             {
-                // Если эффект завершился, уничтожаем объект, к которому прикреплен скрипт
                 Destroy(gameObject);
             }
         }

@@ -1,33 +1,29 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace RPG.Core
+namespace Core
 {
-
     public class PersistentObjectSpawner : MonoBehaviour
     {
-        [SerializeField] private string _saveFileLink;
+        [SerializeField] private string _saveFileLink; // TODO not used code
+        [FormerlySerializedAs("persistentObjectPrefab")] [SerializeField] private GameObject _persistentObjectPrefab;
 
-        [SerializeField] private GameObject persistentObjectPrefab;
-
-        public static bool hasSpawned = false;
+        public static bool IsSpawned = false; // TODO static
         
-        private void Awake()
+        private void Awake() // TODO Construct
         {
-            if (hasSpawned)
+            if (IsSpawned)
+            {
                 return;
-            
-            hasSpawned = true;
+            }
+
+            IsSpawned = true;
             SpawnPersistentObjects();
-            
-            
         }
 
         private void SpawnPersistentObjects()
         {
-            GameObject persistentObject = Instantiate(persistentObjectPrefab);
+            GameObject persistentObject = Instantiate(_persistentObjectPrefab);
             DontDestroyOnLoad(persistentObject);
         }
     }

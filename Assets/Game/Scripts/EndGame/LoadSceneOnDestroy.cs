@@ -6,9 +6,12 @@ public class LoadSceneOnDestroy : MonoBehaviour
     private void OnDestroy()
     {
         // Проверка на то, что игра не завершена
-        if (!Application.isPlaying) return;
+        if (Application.isPlaying == false)
+        {
+            return;
+        }
 
         // Загружаем сцену номер 8
-        SceneManager.LoadScene(8);
+        SceneManager.LoadScene(8); // TODO magic number
     }
 }

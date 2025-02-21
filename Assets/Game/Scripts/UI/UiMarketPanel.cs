@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Combat;
+using Combat.Data;
+using Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,7 +67,7 @@ public class UiMarketPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
-        pauseClass.IsOpenUI = false;
+        PauseClass.IsOpenUI = false;
     }
 
     private void OnClickBtnConsume()

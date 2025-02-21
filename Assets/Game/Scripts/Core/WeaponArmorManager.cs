@@ -1,80 +1,108 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using RPG.Core;
-using FarrokhGames.Inventory.Examples;
 using System.Linq;
 using Combat;
+using Combat.Data;
 using Combat.EnumsCombat;
+using FarrokhGames.Inventory.Examples;
+using UnityEngine;
+using UnityEngine.Serialization;
 
-public class WeaponArmorManager : MonoBehaviour
+namespace Core
 {
-    [Header("Weapon")]
-    [SerializeField]
-    private List<Weapon> allWeaponsInGame;
-
-    [Header("Armors")]
-    [SerializeField]
-    private List<Armor> allArmorsInGame;
-
-    public List<Weapon> AllWeaponsInGame { get => allWeaponsInGame; set => allWeaponsInGame = value; }
-    public List<Armor> AllArmorsInGame { get => allArmorsInGame; set => allArmorsInGame = value; }
-
-    public PickableEquip dafaultPrefab;
-
-    public Armor GerArmorById(armorID armrId)
+    public class WeaponArmorManager : MonoBehaviour
     {
-        return allArmorsInGame.Find((item) => item.ArmorName == armrId);
-    }
+        [FormerlySerializedAs("allWeaponsInGame")] [Header("Weapon")] [SerializeField]
+        private List<Weapon> _allWeaponsInGame;
 
-    public bool IsWeaponInGame(string name)
-    {
-        return allWeaponsInGame.Any(item => item.name == name);
-    }
+        [FormerlySerializedAs("allArmorsInGame")] [Header("Armors")] [SerializeField]
+        private List<Armor> _allArmorsInGame;
 
-    public Weapon TryGetWeaponByName(string _name)
-    {
-        if (_name == "" || _name==null) _name = "Unarmed";
-        foreach (var item in allWeaponsInGame)
+        public List<Weapon> AllWeaponsInGame
         {
-            if (item.name == _name)
-                return item;
+            get => _allWeaponsInGame;
+            set => _allWeaponsInGame = value;
         }
 
-        Debug.LogError("Can't return weapon. It can be mistake");
-        return null;
-    }
-    public Armor TryGetArmorByName(string _name)
-    {
-        foreach (var item in allArmorsInGame)
+        public List<Armor> AllArmorsInGame
         {
-            if (item.name == _name)
-                return item;
+            get => _allArmorsInGame;
+            set => _allArmorsInGame = value;
         }
 
-        Debug.LogError("Can't return armor. It can be mistake");
-        return null;
-    }
+        [FormerlySerializedAs("dafaultPrefab")]
+        public PickableEquip DefaultPrefab;
 
-    public ItemDefinition TryGetItemByName(string _name)
-    {
-        foreach (var item in allWeaponsInGame)
+        public Armor GerArmorById(armorID armrId) // TODO rename
         {
-            if (item.name == _name)
-                return item;
-        }
-        foreach (var item in allArmorsInGame)
-        {
-            if (item.name == _name)
-                return item;
-        }
-        foreach (var item in IGame.Instance.QuestManager.allQuestsItems)
-        {
-            if (item.name == _name)
-                return item;
+            return _allArmorsInGame.Find((item) => item.ArmorName == armrId);
         }
 
-        Debug.LogError("Can't return item. It can be mistake");
-        return null;
+        public bool IsWeaponInGame(string name)
+        {
+            return _allWeaponsInGame.Any(item => item.name == name);
+        }
+
+        public Weapon TryGetWeaponByName(string _name) // TODO need return bool
+        {
+            if (_name == "" || _name == null)
+            {
+                _name = "Unarmed"; // TODO can be cached
+            }
+
+            foreach (var item in _allWeaponsInGame)
+            {
+                if (item.name == _name)
+                {
+                    return item;
+                }
+            }
+
+            Debug.LogError("Can't return weapon. It can be mistake");
+            return null;
+        }
+
+        public Armor TryGetArmorByName(string _name) // TODO need return bool
+        {
+            foreach (var item in _allArmorsInGame)
+            {
+                if (item.name == _name)
+                {
+                    return item;
+                }
+            }
+
+            Debug.LogError("Can't return armor. It can be mistake");
+            return null;
+        }
+
+        public ItemDefinition TryGetItemByName(string name) // TODO need return bool
+        {
+            foreach (var item in _allWeaponsInGame)
+            {
+                if (item.name == name)
+                {
+                    return item;
+                }
+            }
+
+            foreach (var item in _allArmorsInGame)
+            {
+                if (item.name == name)
+                {
+                    return item;
+                }
+            }
+
+            foreach (var item in IGame.Instance.QuestManager.AllQuestsItems)
+            {
+                if (item.name == name)
+                {
+                    return item;
+                }
+            }
+
+            Debug.LogError("Can't return item. It can be mistake");
+            return null;
+        }
     }
 }

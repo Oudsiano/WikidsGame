@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Core;
+using Core.Health;
+using Core.Player;
 using RPG.Core;
 using UnityEngine;
 using UnityEngine.AI;
@@ -109,7 +112,7 @@ namespace SceneManagement
             }
 
             SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPlayer,true);
-            MainPlayer.Instance.ResetCountEergy();
+            MainPlayer.Instance.ResetCountEnergy();
 
             IGame.Instance.gameAPI.SaveUpdater();
         }

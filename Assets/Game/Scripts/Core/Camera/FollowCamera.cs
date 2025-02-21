@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Player;
 using DG.Tweening;
 using RPG.Core;
 using UnityEngine;
@@ -90,7 +91,7 @@ namespace Core.Camera
                 return;
             }
 
-            if (pauseClass.GetPauseState())
+            if (PauseClass.GetPauseState())
             {
                 return;
             }
@@ -212,7 +213,7 @@ namespace Core.Camera
 
         private void Follow()
         {
-            if (pauseClass.GetPauseState())
+            if (PauseClass.GetPauseState())
             {
                 return;
             }

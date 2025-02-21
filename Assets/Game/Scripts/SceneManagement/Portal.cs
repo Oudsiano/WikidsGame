@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Combat;
+using Combat.Data;
+using Core;
+using Core.Player;
 using DG.Tweening;
 using RPG.Core;
 using SceneManagement;

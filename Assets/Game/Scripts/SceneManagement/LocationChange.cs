@@ -10,6 +10,7 @@ using static SceneManagement.LevelChangeObserver;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Core.Quests;
+using Core.Quests.Data;
 
 public class LocationChange : MonoBehaviour
 {
@@ -141,7 +142,7 @@ public class LocationChange : MonoBehaviour
             IGame.Instance.LevelChangeObserver.DictForInfected[region.loadedScene] = false;
 
             // Находим соответствующую сцену для текущего региона.
-            var sceneData = sceneWithTestsID.sceneDataList
+            var sceneData = sceneWithTestsID.SceneDataList
                 .FirstOrDefault(scene => scene.scene == region.loadedScene);
 
             if (sceneData != null && playerData != null)
@@ -198,7 +199,7 @@ public class LocationChange : MonoBehaviour
 
             if (regions[index].Button.interactable==true)
             {
-                foreach (SceneData scene in sceneWithTestsID.sceneDataList)
+                foreach (SceneData scene in sceneWithTestsID.SceneDataList)
                 {
                     if (scene.scene == regions[index].loadedScene)
                     {

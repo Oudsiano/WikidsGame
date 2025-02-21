@@ -2,7 +2,7 @@
 using Combat.EnumsCombat;
 using UnityEngine;
 
-namespace Combat
+namespace Combat.Data
 {
     [Serializable]
     public class ArmorOne

@@ -1,5 +1,8 @@
 ﻿using Combat;
+using Core;
 using Core.Camera;
+using Core.Health;
+using Core.Player;
 using Movement;
 using RPG.Core;
 using UnityEngine;
@@ -59,7 +62,7 @@ namespace AINavigation
             _guardRotation = transform.rotation;
 
             CreateHalfCircle();
-            _health.redHalfCircle = _halfCircle;
+            _health.RedHalfCircle = _halfCircle;
 
             FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
         }
@@ -127,7 +130,7 @@ namespace AINavigation
 
         private void Update()
         {
-            if (pauseClass.GetPauseState())
+            if (PauseClass.GetPauseState())
             {
                 return;
             }

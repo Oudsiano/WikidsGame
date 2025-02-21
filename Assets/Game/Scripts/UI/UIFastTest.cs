@@ -3,6 +3,8 @@ using RPG.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Core;
+using Core.Health;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -88,7 +90,7 @@ public class UIFastTest : MonoBehaviour
 
             if (currentTest != null)
             {
-                pauseClass.IsOpenUI = true;
+                PauseClass.IsOpenUI = true;
                 IGame.Instance.SavePlayerPosLikeaPause(true);
                 gameObject.SetActive(true);
 
@@ -159,7 +161,7 @@ public class UIFastTest : MonoBehaviour
     {
         gameObject.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
-        pauseClass.IsOpenUI = false;
+        PauseClass.IsOpenUI = false;
         if (targetKillAfterTest != null)
         {
             if (isCorrect)

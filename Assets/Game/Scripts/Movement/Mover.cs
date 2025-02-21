@@ -1,4 +1,6 @@
-﻿using RPG.Core;
+﻿using Core;
+using Core.Interfaces;
+using Core.Player;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -42,7 +44,7 @@ namespace Movement
         {
             if (_isPlayer == false && _agent.isActiveAndEnabled)
             {
-                if (pauseClass.GetPauseState()) // TODO Update
+                if (PauseClass.GetPauseState()) // TODO Update
                 {
                     _agent.isStopped = true;
                 }
@@ -94,7 +96,7 @@ namespace Movement
         // Метод для начала действия перемещения к определенной точке
         public void StartMoveAction(Vector3 newPosition)
         {
-            _actionScheduler.StartAction(this); // Устанавливаем текущее действие как перемещение
+            _actionScheduler.Setup(this); // Устанавливаем текущее действие как перемещение
             MoveTo(newPosition);
         }
 

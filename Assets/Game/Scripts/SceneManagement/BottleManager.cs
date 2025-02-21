@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core;
+using Core.PickableItems;
 using UnityEngine;
 
 public class BottleManager : MonoBehaviour

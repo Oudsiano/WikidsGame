@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using Core;
+using Core.Health;
 using UnityEngine;
 using RPG.Core;
 using TMPro;

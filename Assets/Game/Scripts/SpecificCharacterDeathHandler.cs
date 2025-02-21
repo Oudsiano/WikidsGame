@@ -1,3 +1,5 @@
+using Core;
+using Core.Health;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using RPG.Core; // Пространство имен, содержащее класс Health

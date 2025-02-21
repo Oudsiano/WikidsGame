@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Core.Quests;
+using Core.Quests.Data;
+using Saving;
 using UnityEngine;
 using static SceneManagement.LevelChangeObserver;
 

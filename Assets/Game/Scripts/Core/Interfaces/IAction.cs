@@ -1,8 +1,8 @@
-namespace RPG.Core
+namespace Core.Interfaces
 {
     public interface IAction
     {
         // Метод Cancel() предназначен для отмены текущего действия.
-        void Cancel();
+        public void Cancel();
     }
 }

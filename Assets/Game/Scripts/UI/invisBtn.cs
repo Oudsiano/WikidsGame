@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,7 +52,7 @@ public class invisBtn : MonoBehaviour
     {
         if (!timeAnimate) return;
 
-        if (!pauseClass.GetPauseState())
+        if (!PauseClass.GetPauseState())
             timeBtn += Time.deltaTime;
 
         if (timeBtn > 30)

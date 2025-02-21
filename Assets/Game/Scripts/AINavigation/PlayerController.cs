@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Combat;
 using Combat.EnumsCombat;
+using Core;
+using Core.Health;
 using DialogueEditor;
 using Movement;
 using RPG.Core;
@@ -48,7 +50,7 @@ namespace AINavigation
 
         private void Update()
         {
-            if (pauseClass.GetPauseState())
+            if (PauseClass.GetPauseState())
             {
                 return;
             }

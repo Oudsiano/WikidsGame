@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Combat;
+using Combat.Data;
+using Core;
 using Core.Camera;
+using Core.Health;
 using UnityEngine;
 using UnityEngine.UI;
 using RPG.Core;
@@ -204,19 +207,19 @@ public class UIManager : MonoBehaviour
     {
         OptionScr.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
-        pauseClass.IsOpenUI = false;
+        PauseClass.IsOpenUI = false;
     }
 
     private void OnClickBtnTest()
     {
-        uIBug.TryAddEquipToBug(IGame.Instance.QuestManager.allQuestsItems[0]);
+        uIBug.TryAddEquipToBug(IGame.Instance.QuestManager.AllQuestsItems[0]);
     }
 
     private void OnClickBtnOption()
     {
         OptionScr.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true);
-        pauseClass.IsOpenUI = true;
+        PauseClass.IsOpenUI = true;
     }
 
     public void UpdateIconMapPanel(string text)
@@ -278,7 +281,7 @@ public class UIManager : MonoBehaviour
     {
         PlayerInfoScr.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
-        pauseClass.IsOpenUI = false;
+        PauseClass.IsOpenUI = false;
     }
 
     private void onClickConfirmPLayersScr()
@@ -291,7 +294,7 @@ public class UIManager : MonoBehaviour
     private void OnClickUserInfo()
     {
         IGame.Instance.SavePlayerPosLikeaPause(true);
-        pauseClass.IsOpenUI = true;
+        PauseClass.IsOpenUI = true;
         PlayerInfoScr.SetActive(true);
         RegenPLayerInfoScr();
     }
@@ -307,7 +310,7 @@ public class UIManager : MonoBehaviour
     public void OnClickBtnCloseMap()
     {
         IGame.Instance.SavePlayerPosLikeaPause(false);
-        pauseClass.IsOpenUI = false;
+        PauseClass.IsOpenUI = false;
         MapCanvas.SetActive(false);
 
         GameObject MapCamera = GameObject.Find("CameraForMainMap");
@@ -325,7 +328,7 @@ public class UIManager : MonoBehaviour
             MapCanvas.gameObject.SetActive(true);
         }
         IGame.Instance.SavePlayerPosLikeaPause(true);
-        pauseClass.IsOpenUI = true;
+        PauseClass.IsOpenUI = true;
     }
 
     private void OnChangeMoney(double newValue)
@@ -338,7 +341,7 @@ public class UIManager : MonoBehaviour
         uIBug.regen();
         uIBug.gameObject.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true);
-        pauseClass.IsOpenUI = true;
+        PauseClass.IsOpenUI = true;
     }
 
     public void ShowAgainUi()
@@ -352,7 +355,7 @@ public class UIManager : MonoBehaviour
             _buttonCancelAgain.gameObject.SetActive(false);
 
         IGame.Instance.SavePlayerPosLikeaPause(true);
-        pauseClass.IsOpenUI = true;
+        PauseClass.IsOpenUI = true;
     }
 
     private void closeAgainUI(bool force = false)
@@ -364,7 +367,7 @@ public class UIManager : MonoBehaviour
         }
 
         IGame.Instance.SavePlayerPosLikeaPause(false);
-        pauseClass.IsOpenUI = false;
+        PauseClass.IsOpenUI = false;
     }
 
     public void OnClickButtonMarket() => OpenMarket(0, int.MaxValue);
@@ -374,7 +377,7 @@ public class UIManager : MonoBehaviour
         UiMarketPanel.Regen(minPrice, maxPrice);
         UiMarketPanel.gameObject.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true);
-        pauseClass.IsOpenUI = true;
+        PauseClass.IsOpenUI = true;
     }
 
     public void OnCLickCancelAgain() => closeAgainUI();
@@ -403,14 +406,14 @@ public class UIManager : MonoBehaviour
     {
         QuestScr.SetActive(true);
         IGame.Instance.SavePlayerPosLikeaPause(true);
-        pauseClass.IsOpenUI = true;
+        PauseClass.IsOpenUI = true;
     }
 
     private void HideQuestPanel()
     {
         QuestScr.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
-        pauseClass.IsOpenUI = false;
+        PauseClass.IsOpenUI = false;
     }
 
     private void OnClickBtnQuest()
@@ -471,14 +474,14 @@ public class UIManager : MonoBehaviour
     private void OnClickActivatePanel()
     {
         _testTableGenerator.gameObject.SetActive(true);
-        pauseClass.IsOpenUI = true;
+        PauseClass.IsOpenUI = true;
         _testTableGenerator.Regen();
     }
 
     private void OnClickClosePanel()
     {
         _testTableGenerator.gameObject.SetActive(false);
-        pauseClass.IsOpenUI = false;
+        PauseClass.IsOpenUI = false;
     }
     private void Update()
     {

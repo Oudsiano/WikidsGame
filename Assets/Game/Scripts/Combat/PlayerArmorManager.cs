@@ -1,3 +1,4 @@
+using Combat.Data;
 using UnityEngine;
 
 namespace Combat

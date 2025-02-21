@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Core.Quests
 {
     public class QuestSpecialEnemyName : MonoBehaviour
     {
-        [SerializeField] public string specialEnemyName;
+        [FormerlySerializedAs("specialEnemyName")] [SerializeField] public string SpecialEnemyName; // TODO OC error
     }
 }

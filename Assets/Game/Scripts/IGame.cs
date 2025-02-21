@@ -2,7 +2,10 @@ using RPG.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using AINavigation;
+using Core;
+using Core.Player;
 using Core.Quests;
+using Saving;
 using SceneManagement;
 using UnityEngine;
 

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Core.Quests.QuestsEnums;
 using FarrokhGames.Inventory.Examples;
 using UnityEngine;
 
-namespace Core.Quests
+namespace Core.Quests.Data
 {
     [CreateAssetMenu(fileName = "OneQuest", menuName = "OneQuest", order = 0)]
     public class OneQuest : ScriptableObject // TODO SO is DATA Rename

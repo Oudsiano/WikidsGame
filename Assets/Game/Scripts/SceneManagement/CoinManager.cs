@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using System;
+using Core;
+using Core.PickableItems;
 
 public class Curency
 {

@@ -3,7 +3,7 @@ using FarrokhGames.Inventory.Examples;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Combat
+namespace Combat.Data
 {
     [CreateAssetMenu(fileName = "Weapon", menuName = "Weapons", order = 0)]
     public class Weapon : ItemDefinition // TODO data -> its a data(SO)

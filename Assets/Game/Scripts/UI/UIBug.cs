@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Combat;
+using Combat.Data;
+using Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,7 +41,7 @@ public class UIBug : MonoBehaviour
     {
         gameObject.SetActive(false);
         IGame.Instance.SavePlayerPosLikeaPause(false);
-        pauseClass.IsOpenUI = false;
+        PauseClass.IsOpenUI = false;
     }
 
     public bool TryTakeQuestItem(string itemName, bool needDelete = false)
@@ -143,7 +145,7 @@ public class UIBug : MonoBehaviour
         }
         else
         {
-            Instantiate(IGame.Instance.WeaponArmorManager.dafaultPrefab,
+            Instantiate(IGame.Instance.WeaponArmorManager.DefaultPrefab,
                 new Vector3(posX, posY + 1, IGame.Instance.playerController.transform.localPosition.z),
                 Quaternion.Euler(0, 0, 0))
                 .GetComponent<PickableEquip>().SetItem(item);

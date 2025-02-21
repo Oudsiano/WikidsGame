@@ -2,57 +2,60 @@ using SceneManagement.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class DataPlayer : MonoBehaviour
+namespace Data
 {
-    [FormerlySerializedAs("playerData")] public PlayerData PlayerData = new();
-
-    public void SetSceneToLoad(allScenes sceneId)
+    public class DataPlayer : MonoBehaviour
     {
-        PlayerData.sceneToLoad = (int)sceneId;
-    }
+        [FormerlySerializedAs("playerData")] public PlayerData PlayerData = new();
 
-    public void SavePlayerPosition(int spawn)
-    {
-        PlayerData.spawnPoint = spawn;
-    }
-
-    public int LoadPlayerPosition()
-    {
-        return PlayerData.spawnPoint;
-    }
-
-    public bool IsTestComplete(int idTest)
-    {
-        if (PlayerData.progress == null || PlayerData.progress.Length == 0)
+        public void SetSceneToLoad(allScenes sceneId)
         {
-            return false;
+            PlayerData.sceneToLoad = (int)sceneId;
         }
 
-        foreach (OneLeson lesson in PlayerData.progress)
+        public void SavePlayerPosition(int spawn)
         {
-            if (lesson.tests != null)
+            PlayerData.spawnPoint = spawn;
+        }
+
+        public int LoadPlayerPosition()
+        {
+            return PlayerData.spawnPoint;
+        }
+
+        public bool IsTestComplete(int idTest)
+        {
+            if (PlayerData.progress == null || PlayerData.progress.Length == 0)
             {
-                foreach (OneTestQuestion test in lesson.tests)
+                return false;
+            }
+
+            foreach (OneLeson lesson in PlayerData.progress)
+            {
+                if (lesson.tests != null)
                 {
-                    if (test.id == idTest)
+                    foreach (OneTestQuestion test in lesson.tests)
                     {
-                        return test.completed;
+                        if (test.id == idTest)
+                        {
+                            return test.completed;
+                        }
                     }
                 }
             }
+
+            return false;
         }
 
-        return false;
-    }
-
-    private bool[] ResizeArray(bool[] array, int newSize)
-    {
-        bool[] newArray = new bool[newSize];
-        for (int i = 0; i < Mathf.Min(array.Length, newSize); i++)
+        private bool[] ResizeArray(bool[] array, int newSize)
         {
-            newArray[i] = array[i];
-        }
+            bool[] newArray = new bool[newSize];
+            for (int i = 0; i < Mathf.Min(array.Length, newSize); i++)
+            {
+                newArray[i] = array[i];
+            }
 
-        return newArray;
+            return newArray;
+        }
     }
 }

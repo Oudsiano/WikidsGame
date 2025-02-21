@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Combat;
+using Core;
 using Core.NPC;
 using Core.Player;
 using Core.Quests;
@@ -9,7 +10,7 @@ using UnityEngine.AI;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace Core.Health
+namespace Health
 {
     public class Health : MonoBehaviour
     {

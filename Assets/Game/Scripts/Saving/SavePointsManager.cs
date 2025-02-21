@@ -1,45 +1,49 @@
 ﻿using System.Collections.Generic;
+using Data;
 
-public class SavePointsManager // TODO rename
+namespace Saving
 {
-    private static Dictionary<int, SavePoint> allSavePoints;
-
-    public static Dictionary<int, SavePoint> AllSavePoints
+    public class SavePointsManager // TODO rename
     {
-        get
+        private static Dictionary<int, SavePoint> allSavePoints;
+
+        public static Dictionary<int, SavePoint> AllSavePoints
+        {
+            get
+            {
+                if (allSavePoints == null)
+                {
+                    allSavePoints = new Dictionary<int, SavePoint>();
+                }
+
+                return allSavePoints;
+            }
+            set => allSavePoints = value;
+        }
+
+        public static void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer, bool reset = false)
         {
             if (allSavePoints == null)
             {
-                allSavePoints = new Dictionary<int, SavePoint>();
+                return;
             }
 
-            return allSavePoints;
-        }
-        set => allSavePoints = value;
-    }
+            for (int i = 0; i < dataPlayer.PlayerData.stateSpawnPoints.Count; i++)
+            {
+                bool thisLast = i == dataPlayer.PlayerData.spawnPoint;
 
-    public static void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer, bool reset = false)
-    {
-        if (allSavePoints == null)
+                if (allSavePoints.Count > i)
+                    if (allSavePoints[i] != null)
+                    {
+                        allSavePoints[i].SetAlreadyEnabled(dataPlayer.PlayerData.stateSpawnPoints[i], thisLast);
+                    }
+            }
+        }
+
+        public static void ResetDict()
         {
-            return;
+            allSavePoints = new Dictionary<int, SavePoint>();
+            IGame.Instance.dataPlayer.PlayerData.stateSpawnPoints = new List<bool> { false };
         }
-
-        for (int i = 0; i < dataPlayer.PlayerData.stateSpawnPoints.Count; i++)
-        {
-            bool thisLast = i == dataPlayer.PlayerData.spawnPoint;
-
-            if (allSavePoints.Count > i)
-                if (allSavePoints[i] != null)
-                {
-                    allSavePoints[i].SetAlreadyEnabled(dataPlayer.PlayerData.stateSpawnPoints[i], thisLast);
-                }
-        }
-    }
-
-    public static void ResetDict()
-    {
-        allSavePoints = new Dictionary<int, SavePoint>();
-        IGame.Instance.dataPlayer.PlayerData.stateSpawnPoints = new List<bool> { false };
     }
 }

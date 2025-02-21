@@ -4,6 +4,7 @@ using AINavigation;
 using Core;
 using Core.Player;
 using Core.Quests;
+using Data;
 using Saving;
 using SceneManagement;
 using UI;

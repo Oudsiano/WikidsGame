@@ -1,22 +1,25 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
-public class DisplayPlayerData : MonoBehaviour
+namespace Data
 {
-    public TMP_Text dataText; // TODO rename
-    public DataPlayer dataPlayer; // TODO rename
-
-    private void Update()
+    public class DisplayPlayerData : MonoBehaviour
     {
-        if (dataPlayer != null)
+        public TMP_Text dataText; // TODO rename
+        public DataPlayer dataPlayer; // TODO rename
+
+        private void Update()
         {
-            string displayString =
-                $"ID: {dataPlayer.PlayerData.id}\nHealth: {dataPlayer.PlayerData.health}\nIsAlive: {dataPlayer.PlayerData.health}\nSceneToLoad: {dataPlayer.PlayerData.sceneToLoad} \ntestSuccess: {dataPlayer.PlayerData.testSuccess} \nspawnpoint: {dataPlayer.PlayerData.spawnPoint}";
-            dataText.text = displayString;
-        }
-        else
-        {
-            Debug.LogWarning("DataPlayer reference is not set in DisplayPlayerData script!");
+            if (dataPlayer != null)
+            {
+                string displayString =
+                    $"ID: {dataPlayer.PlayerData.id}\nHealth: {dataPlayer.PlayerData.health}\nIsAlive: {dataPlayer.PlayerData.health}\nSceneToLoad: {dataPlayer.PlayerData.sceneToLoad} \ntestSuccess: {dataPlayer.PlayerData.testSuccess} \nspawnpoint: {dataPlayer.PlayerData.spawnPoint}";
+                dataText.text = displayString;
+            }
+            else
+            {
+                Debug.LogWarning("DataPlayer reference is not set in DisplayPlayerData script!");
+            }
         }
     }
 }

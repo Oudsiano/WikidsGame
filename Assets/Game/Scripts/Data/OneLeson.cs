@@ -1,8 +1,11 @@
-﻿[System.Serializable]
-public class OneLeson // TODO rename
+﻿namespace Data
 {
-    public int id;
-    public string title;
-    public bool completed;
-    public OneTestQuestion[] tests;
+    [System.Serializable]
+    public class OneLeson // TODO rename
+    {
+        public int id;
+        public string title;
+        public bool completed;
+        public OneTestQuestion[] tests;
+    }
 }

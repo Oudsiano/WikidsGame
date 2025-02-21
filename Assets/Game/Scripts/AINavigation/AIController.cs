@@ -1,10 +1,8 @@
 ﻿using Combat;
 using Core;
 using Core.Camera;
-using Core.Health;
 using Core.Player;
 using Movement;
-using RPG.Core;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -41,7 +39,7 @@ namespace AINavigation
 
         private Fighter _fighter;
         private Mover _mover;
-        private Health _health;
+        private Health.Health _health;
 
         private GameObject _halfCircle; // TODO remove GO
         private MeshRenderer _halfCircleRenderer;
@@ -56,7 +54,7 @@ namespace AINavigation
         {
             _fighter = GetComponent<Fighter>();
             _mover = GetComponent<Mover>();
-            _health = GetComponent<Health>();
+            _health = GetComponent<Health.Health>();
 
             _guardLocation = transform.position;
             _guardRotation = transform.rotation;
@@ -196,7 +194,7 @@ namespace AINavigation
             var player = MainPlayer.Instance;
             bool isAttacked =
                 player.GetComponent<Fighter>().Target ==
-                gameObject.GetComponent<Health>(); // TODO Remove GetComponent in live fight
+                gameObject.GetComponent<Health.Health>(); // TODO Remove GetComponent in live fight
 
             return isAttacked;
         }

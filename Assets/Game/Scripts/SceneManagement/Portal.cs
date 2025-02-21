@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Combat.Data;
 using Core.Player;
+using Data;
 using DG.Tweening;
 using SceneManagement.Enums;
 using TMPro;

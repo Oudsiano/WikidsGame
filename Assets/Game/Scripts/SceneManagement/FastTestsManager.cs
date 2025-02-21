@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Core.Health;
 using UnityEngine;
 
 namespace SceneManagement
@@ -1291,7 +1290,7 @@ namespace SceneManagement
             Debug.Log(AvaliableTestsNow.Count);
         }
 
-        public void WasAttaked(Health target)
+        public void WasAttaked(Health.Health target)
         {
             ShowTest(1, target); //atleast one arrow anyway
         }
@@ -1301,7 +1300,7 @@ namespace SceneManagement
             ShowTest(countArrows, null);
         }
 
-        private void ShowTest(int count_arrow, Health target)
+        private void ShowTest(int count_arrow, Health.Health target)
         {
             if (AvaliableTestsNow.Count > 0)
             {

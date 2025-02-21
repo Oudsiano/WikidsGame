@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using Core.Health;
 using Core.Player;
+using Data;
+using Saving;
 using SceneManagement.Enums;
 using UnityEngine;
 using UnityEngine.AI;
@@ -120,7 +121,7 @@ namespace SceneManagement
             animator.Rebind();
             animator.Update(0f);
 
-            MainPlayer.Instance.gameObject.GetComponent<Health>().Restore();
+            MainPlayer.Instance.gameObject.GetComponent<Health.Health>().Restore();
 
             // Включаем навигацию для игрока
             MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = true;

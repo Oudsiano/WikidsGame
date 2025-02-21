@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadSceneAfterComix : MonoBehaviour
+namespace SceneManagement
 {
-    public void LoadSceneNext()
+    public class LoadSceneAfterComix : MonoBehaviour
     {
-        SceneManager.LoadScene("ChangeRegion"); // TODO can be cached
+        public void LoadSceneNext()
+        {
+            SceneManager.LoadScene("ChangeRegion"); // TODO can be cached
+        }
     }
 }

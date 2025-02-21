@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using Combat;
 using Combat.EnumsCombat;
 using Core;
-using Core.Health;
 using DialogueEditor;
 using Movement;
-using RPG.Core;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -41,7 +39,7 @@ namespace AINavigation
 
         private Fighter _fighter;
         private Mover _mover;
-        private Health _health;
+        private Health.Health _health;
         private int _enemyLayer = 9; // Номер слоя для врагов  // TODO change
 
         private List<Fighter> _allEnemies;
@@ -81,7 +79,7 @@ namespace AINavigation
         {
             _mover = GetComponent<Mover>(); // TODO RequieredComponents  
             _fighter = GetComponent<Fighter>();
-            _health = GetComponent<Health>();
+            _health = GetComponent<Health.Health>();
 
             PlayerArmorManager = FindObjectOfType<PlayerArmorManager>(); // TODO Delete
 
@@ -92,7 +90,7 @@ namespace AINavigation
             IGame.Instance.saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }
 
-        public Health GetHealth() => _health; // TODO move to properties
+        public Health.Health GetHealth() => _health; // TODO move to properties
 
         public Fighter GetFighter() => _fighter; // TODO move to properties
 

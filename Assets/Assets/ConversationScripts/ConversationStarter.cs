@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core;
 using Core.Quests;
 using Core.Quests.Data;
+using Data;
 using UnityEngine;
 using DialogueEditor;
 using Saving;

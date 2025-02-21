@@ -1,17 +1,20 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadSceneOnDestroy : MonoBehaviour
+namespace EndGame
 {
-    private void OnDestroy()
+    public class LoadSceneOnDestroy : MonoBehaviour
     {
-        // Проверка на то, что игра не завершена
-        if (Application.isPlaying == false)
+        private void OnDestroy()
         {
-            return;
-        }
+            // Проверка на то, что игра не завершена
+            if (Application.isPlaying == false)
+            {
+                return;
+            }
 
-        // Загружаем сцену номер 8
-        SceneManager.LoadScene(8); // TODO magic number
+            // Загружаем сцену номер 8
+            SceneManager.LoadScene(8); // TODO magic number
+        }
     }
 }

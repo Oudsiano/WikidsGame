@@ -1,9 +1,8 @@
-using Core;
-using Core.Health;
+using Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RPG.Core
+namespace Health
 {
     [RequireComponent(typeof(Health))]
     public class HealthSliderUpdater : MonoBehaviour

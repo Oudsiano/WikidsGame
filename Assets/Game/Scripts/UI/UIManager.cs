@@ -1,7 +1,6 @@
 using Combat.Data;
 using Core;
 using Core.Camera;
-using Core.Health;
 using DG.Tweening;
 using SceneManagement;
 using SceneManagement.Enums;
@@ -306,7 +305,7 @@ namespace UI
 
 
         public void RegenFastTestUI(int stratIndexFastTests, int endIndexFastTests, int count_arrows,
-            Health targetKillAterTest)
+            Health.Health targetKillAterTest)
             => fastTestUI.ShowTest(stratIndexFastTests, endIndexFastTests, count_arrows, targetKillAterTest);
         
         public void UpdateIconMapPanel(string text)

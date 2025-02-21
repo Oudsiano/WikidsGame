@@ -1,4 +1,3 @@
-using Core.Health;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -11,7 +10,7 @@ public class SpecificCharacterDeathHandler : MonoBehaviour
     {
         if (_specificCharacter != null)
         {
-            Health health = _specificCharacter.GetComponent<Health>();
+            Health.Health health = _specificCharacter.GetComponent<Health.Health>();
             
             if (health != null)
             {

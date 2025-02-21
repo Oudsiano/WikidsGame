@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Core.Quests;
 using Core.Quests.Data;
+using Data;
 using SceneManagement.Enums;
 using TMPro;
 using UnityEngine;

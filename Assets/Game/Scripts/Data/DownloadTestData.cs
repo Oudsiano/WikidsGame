@@ -2,20 +2,23 @@ using Saving;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class DownloadTestData : MonoBehaviour
+namespace Data
 {
-    [FormerlySerializedAs("gameAPI")][SerializeField] private GameAPI _gameAPI;
-    
-    public ConversationStarter starterConversation;
-    public int IDLesson;
-    
-    public void DownloadData()
+    public class DownloadTestData : MonoBehaviour
     {
-        _gameAPI = FindObjectOfType<GameAPI>(); // TODO find change
-        starterConversation = FindObjectOfType<ConversationStarter>(); // TODO find change
-        _gameAPI.UpdateDataTest(IDLesson, starterConversation);
+        [FormerlySerializedAs("gameAPI")][SerializeField] private GameAPI _gameAPI;
+    
+        public ConversationStarter starterConversation;
+        public int IDLesson;
+    
+        public void DownloadData()
+        {
+            _gameAPI = FindObjectOfType<GameAPI>(); // TODO find change
+            starterConversation = FindObjectOfType<ConversationStarter>(); // TODO find change
+            _gameAPI.UpdateDataTest(IDLesson, starterConversation);
        
 
-        //ConversationManager.Instance.SetBool("TestSuccess", true); // TODO not used code
+            //ConversationManager.Instance.SetBool("TestSuccess", true); // TODO not used code
+        }
     }
 }

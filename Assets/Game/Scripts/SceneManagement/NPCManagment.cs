@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core.Quests;
+using Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;

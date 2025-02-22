@@ -5,11 +5,11 @@ namespace SceneManagement
 {
     public class CoinManager : MonoBehaviour
     {
-        [SerializeField] private GameObject _Coin;
+        [SerializeField] private GameObject _Coin; // TODO GO
 
         private Currency coins;
 
-        public void Init()
+        public void Construct()
         {
             Coins = new Currency();
         }
@@ -22,7 +22,7 @@ namespace SceneManagement
             Instantiate(_Coin, pos, Quaternion.Euler(0, 0, 0))
                 .GetComponent<PickableCoin>()
                 .Init(count);
-            AudioManager.instance.PlaySound("CoinPickup");
+            AudioManager.instance.PlaySound("CoinPickup"); // TODO Instance AudioManager
 
         }
 

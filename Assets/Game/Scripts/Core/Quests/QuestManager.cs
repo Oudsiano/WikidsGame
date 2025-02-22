@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using Core.Quests.Data;
 using Core.Quests.QuestsEnums;
+using Data;
+using SceneManagement;
+using UI;
 using UI.Inventory;
 using UI.Inventory.Data;
 using UnityEngine;
@@ -25,11 +28,18 @@ namespace Core.Quests
         private List<int> _needRepeatTestQuests = new();
 
         private bool _alreadyDelegated;
+        private UIManager _uiManager;
+        private LevelChangeObserver _levelChangeObserver;
+        private DataPlayer _dataPlayer;
 
         public List<ItemDefinition> AllQuestsItems => _allQuestsItems;
 
-        public void Init() // TODO construct
+        public void Construct(DataPlayer dataPlayer, UIManager uiManager, LevelChangeObserver levelChangeObserver)
         {
+            _dataPlayer = dataPlayer;
+            _uiManager = uiManager;
+            _levelChangeObserver = levelChangeObserver;
+            
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             _questsInScene = new List<UiOneQuestElement>();
         }
@@ -39,19 +49,24 @@ namespace Core.Quests
             foreach (var item in _questsInScene)
             {
                 if (item.QuestData.CompleteWaitAward)
+                {
                     if (!item.QuestData.FullComplete)
+                    {
                         return true;
+                    }
+                }
             }
 
             return false;
         }
+
         public void StartNewQuest(OneQuest quest)
         {
-            GameObject newQuest = Instantiate(IGame.Instance.UIManager.OneQuestPref,
-                IGame.Instance.UIManager.QuestsContentScrollRect.content);
+            GameObject newQuest = Instantiate(_uiManager.OneQuestPref,
+                _uiManager.QuestsContentScrollRect.content);
 
             var questElement = newQuest.GetComponent<UiOneQuestElement>();
-            
+
             if (questElement != null)
             {
                 questElement.SetQuest(quest);
@@ -139,7 +154,7 @@ namespace Core.Quests
                 }
             }
         }
-        
+
         private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode)
         {
             GenerateListQuests();
@@ -165,16 +180,16 @@ namespace Core.Quests
             {
                 foreach (OneSceneListQuests OneList in _allQuestsInGame.Quests)
                 {
-                    if (OneList.SceneId == IGame.Instance.LevelChangeObserver.GetCurrentSceneId())
+                    if (OneList.SceneId == _levelChangeObserver.GetCurrentSceneId())
                     {
                         foreach (var quest in OneList.QuestsThisScene)
                         {
-                            if (IGame.Instance.dataPlayer.PlayerData.completedQuests == null)
+                            if (_dataPlayer.PlayerData.completedQuests == null)
                             {
                                 continue;
                             }
 
-                            if (IGame.Instance.dataPlayer.PlayerData.completedQuests.Contains(quest.name))
+                            if (_dataPlayer.PlayerData.completedQuests.Contains(quest.name))
                             {
                                 continue;
                             }
@@ -198,12 +213,12 @@ namespace Core.Quests
                 }
             }
 
-            if (IGame.Instance.UIManager.QuestsContentScrollRect != null &&
-                IGame.Instance.UIManager.QuestsContentScrollRect.content != null)
+            if (_uiManager.QuestsContentScrollRect != null &&
+                _uiManager.QuestsContentScrollRect.content != null)
             {
                 GameObject NotExitQuests = new GameObject();
 
-                foreach (Transform child in IGame.Instance.UIManager.QuestsContentScrollRect.content)
+                foreach (Transform child in _uiManager.QuestsContentScrollRect.content)
                 {
                     if (child.name == "NotExitQuests") // TODO change and can be cached
                     {
@@ -218,11 +233,12 @@ namespace Core.Quests
 
                 foreach (OneQuest quest in _questsScene)
                 {
-                    GameObject newQuest = Instantiate(IGame.Instance.UIManager.OneQuestPref, // TODO Create factory for creating quest
-                        IGame.Instance.UIManager.QuestsContentScrollRect.content);
+                    GameObject newQuest = Instantiate(
+                        _uiManager.OneQuestPref, // TODO Create factory for creating quest
+                        _uiManager.QuestsContentScrollRect.content);
 
                     var questElement = newQuest.GetComponent<UiOneQuestElement>();
-                    
+
                     if (questElement != null)
                     {
                         questElement.SetQuest(quest);
@@ -237,16 +253,16 @@ namespace Core.Quests
                 if (_questsInScene.Count == 0)
                 {
                     NotExitQuests.SetActive(true);
-                    IGame.Instance.UIManager.UpdateGreyBtnQuest(true);
+                    _uiManager.UpdateGreyBtnQuest(true);
                 }
                 else
                 {
                     NotExitQuests.SetActive(false);
-                    IGame.Instance.UIManager.UpdateGreyBtnQuest(false);
+                    _uiManager.UpdateGreyBtnQuest(false);
                 }
             }
 
-            IGame.Instance.UIManager.UpdateQuestBackImg();
+            _uiManager.UpdateQuestBackImg();
         }
     }
 }

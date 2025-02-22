@@ -29,16 +29,17 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
     [SerializeField] public UIManager UIManager;
     [SerializeField] public CoinManager CoinManager;
     [SerializeField] public BottleManager BottleManager;
-    [SerializeField] private WeaponArmorManager weaponArmorManager;
+    [SerializeField] private WeaponArmorManager weaponArmorManager; // TODO CHANGE
 
     private LevelChangeObserver levelChangeObserver;
     private QuestManager questManager;
     private PlayerArmorManager _playerArmorManager;
     private WeaponPanelUI _weaponPanelUI;
-
+    private MainPlayer _player;
+    
     public void Construct
     (
-        GameAPI gameAPI, DataPlayer dataPlayer, SaveGame saveGame,
+        MainPlayer player, GameAPI gameAPI, DataPlayer dataPlayer, SaveGame saveGame,
         PlayerController playerController, LevelChangeObserver levelChangeObserver,
         SavePointsManager savePointsManager, ArrowForPlayerManager arrowForPlayerManager,
         QuestManager questManager, NPCManagment npcManagment, FastTestsManager fastTestsManager,
@@ -46,6 +47,7 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         BottleManager bottleManager, WeaponArmorManager weaponArmorManager, 
         PlayerArmorManager playerArmorManager, WeaponPanelUI weaponPanelUI)
     {
+        _player = player;
         this.gameAPI = gameAPI;
         this.dataPlayer = dataPlayer;
         this.saveGame = saveGame;
@@ -64,13 +66,14 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         _playerArmorManager = playerArmorManager;
         _weaponPanelUI = weaponPanelUI;
         
-        NPCManagment.Init(); // TODO construct
-        questManager.Init(); // TODO construct
-        CoinManager.Init(); // TODO construct
-        UIManager.Init(); // TODO construct
-        playerController.Construct(_playerArmorManager, _weaponPanelUI, this.saveGame); // TODO construct
-        ArrowForPlayerManager.Init(); // TODO construct
-        FastTestsManager.Init(); // TODO construct
+        playerController.Construct(_playerArmorManager, _weaponPanelUI, this.saveGame); 
+        levelChangeObserver.Construct(SavePointsManager, this.dataPlayer, UIManager, _player, this.gameAPI);
+        ArrowForPlayerManager.Construct();
+        questManager.Construct(this.dataPlayer, UIManager, this.levelChangeObserver);
+        NPCManagment.Construct(this.dataPlayer);
+        FastTestsManager.Construct(this.dataPlayer, UIManager); 
+        UIManager.Construct(); // TODO construct // остановился здесь
+        CoinManager.Construct(); // TODO construct
     }
 
     // private void Init()
@@ -134,7 +137,7 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
             if (levelChangeObserver == null)
             {
                 levelChangeObserver = FindAnyObjectByType<LevelChangeObserver>();
-                levelChangeObserver.Init();
+                // levelChangeObserver.Init(); // 
             }
 
             return levelChangeObserver;

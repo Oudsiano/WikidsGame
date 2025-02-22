@@ -28,8 +28,7 @@ namespace Infrastructure.Installers
         [SerializeField] private UIManager _uiManagerPrefab;
         [SerializeField] private CoinManager _coinManagerPrefab;
         [SerializeField] private WeaponArmorManager _weaponArmorManagerPrefab;
-
-
+        
         public override void InstallBindings()
         {
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();

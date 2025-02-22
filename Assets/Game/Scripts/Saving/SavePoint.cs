@@ -87,7 +87,7 @@ namespace Saving
                 IGame.Instance.gameAPI.SaveUpdater();
                 //StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
 
-                SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки
+                SavePointsManager.UpdateStateSpawnPointsAfterLoad(dataPlayer); //Обновляем все метки // TODO savepoints to construct
 
                 IGame.Instance.playerController.GetHealth().Restore();
 

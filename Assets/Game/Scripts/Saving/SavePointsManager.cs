@@ -6,8 +6,9 @@ namespace Saving
     public class SavePointsManager // TODO rename
     {
         private static Dictionary<int, SavePoint> allSavePoints;
+        private DataPlayer _dataPlayer;
 
-        public static Dictionary<int, SavePoint> AllSavePoints
+        public Dictionary<int, SavePoint> AllSavePoints
         {
             get
             {
@@ -21,29 +22,36 @@ namespace Saving
             set => allSavePoints = value;
         }
 
-        public static void UpdateStateSpawnPointsAfterLoad(DataPlayer dataPlayer, bool reset = false)
+        public void Construct(DataPlayer dataPlayer)
+        {
+            _dataPlayer = dataPlayer;
+        }
+
+        public void UpdateStateSpawnPointsAfterLoad(bool reset = false) // TODO change
         {
             if (allSavePoints == null)
             {
                 return;
             }
 
-            for (int i = 0; i < dataPlayer.PlayerData.stateSpawnPoints.Count; i++)
+            for (int i = 0; i < _dataPlayer.PlayerData.stateSpawnPoints.Count; i++)
             {
-                bool thisLast = i == dataPlayer.PlayerData.spawnPoint;
+                bool thisLast = i == _dataPlayer.PlayerData.spawnPoint;
 
                 if (allSavePoints.Count > i)
+                {
                     if (allSavePoints[i] != null)
                     {
-                        allSavePoints[i].SetAlreadyEnabled(dataPlayer.PlayerData.stateSpawnPoints[i], thisLast);
+                        allSavePoints[i].SetAlreadyEnabled(_dataPlayer.PlayerData.stateSpawnPoints[i], thisLast);
                     }
+                }
             }
         }
 
-        public static void ResetDict()
+        public void ResetDict() // TODO change
         {
             allSavePoints = new Dictionary<int, SavePoint>();
-            IGame.Instance.dataPlayer.PlayerData.stateSpawnPoints = new List<bool> { false };
+            _dataPlayer.PlayerData.stateSpawnPoints = new List<bool> { false };
         }
     }
 }

@@ -62,8 +62,7 @@ namespace UI
         [SerializeField] private TMPro.TMP_Text IconMapText;
         [SerializeField] private GameObject TestNotAvaible;
         [SerializeField] private GameObject ForAttackTest;
-
-
+        
         [Header("QuestSector")] [SerializeField]
         private Image _btnQuestBack;
 
@@ -102,10 +101,11 @@ namespace UI
         [Header("Weapon Charges")] [SerializeField]
         private Button _buttonIncreaseCharges;
 
-        [SerializeField] public Weapon WeaponBow; // ?????? ?? ?????? ??????
-        [SerializeField] public TMPro.TMP_Text arrowCharges;
-        private FollowCamera followCamera;
-        private SceneLoader sceneLoader;
+        [SerializeField] public Weapon WeaponBow;
+        [SerializeField] public TMP_Text arrowCharges;
+
+        private FollowCamera _followCamera;
+        private SceneLoader _sceneLoader;
 
         public SceneLoader SceneLoader
         {
@@ -119,10 +119,12 @@ namespace UI
             set => followCamera = value;
         }
 
-        public void Init() // TODO construct
+        public void Construct(SceneLoader sceneLoader, FollowCamera followCamera) // TODO construct
         {
+            _sceneLoader = sceneLoader;
+            _followCamera = followCamera;
+
             fastTestUI.gameObject.SetActive(false);
-            SceneLoader = FindObjectOfType<SceneLoader>();
 
             _buttonAgain.onClick.AddListener(OnClickAgainRegen);
             _buttonGoToSceneZero.onClick.AddListener(OnClickGoToSceneZero);
@@ -146,8 +148,8 @@ namespace UI
             _btnClosePLayerInfoScr.onClick.AddListener(ClosePlayerScr);
             _btnComfirmPLayerInfoScr.onClick.AddListener(onClickConfirmPLayersScr);
 
-            IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
-            IGame.Instance.saveGame.OnChangePlayerName += SaveGame_OnChangePlayerName;
+            _coinManager.Coins.OnChangeCount += OnChangeMoney;
+            _saveGame.OnChangePlayerName += SaveGame_OnChangePlayerName;
 
             _toggleSound.onValueChanged.AddListener(OnChangeSoundState);
             _toggleMusic.onValueChanged.AddListener(OnChangeMusicState);
@@ -157,7 +159,7 @@ namespace UI
             _btnOptions.onClick.AddListener(OnClickBtnOption);
             _btnCloseOptionScr.onClick.AddListener(OnCLickCloseOption);
             QuestsContentScrollRect.scrollSensitivity = 20.0f;
-            SaveGame_OnChangePlayerName(IGame.Instance.saveGame.PlayerName);
+            SaveGame_OnChangePlayerName(_saveGame.PlayerName);
 
             _buttonMaxZoom.onClick.AddListener(OnClickMaxZoom);
             _buttonMinZoom.onClick.AddListener(OnClickMinZoom);
@@ -184,7 +186,7 @@ namespace UI
             if (_btnQuestBack.enabled)
                 _btnQuestBack.transform.Rotate(Vector3.forward, 25 * Time.deltaTime);
         }
-        
+
         private void OnDestroy()
         {
             // Отписка от события при уничтожении объекта
@@ -193,7 +195,7 @@ namespace UI
                 WeaponBow.Fired -= UpdateArrowCharges;
             }
         }
-        
+
         public void setEnergyCharger(string c)
         {
             _energyCharger.text = c;
@@ -213,7 +215,7 @@ namespace UI
 
         public void UpdateQuestBackImg()
         {
-            _btnQuestBack.enabled = IGame.Instance.QuestManager.ShowBackImgForBtn();
+            _btnQuestBack.enabled = _questManager.ShowBackImgForBtn();
         }
 
         public void IncreaseWeaponCharges(int count)
@@ -222,12 +224,12 @@ namespace UI
             Debug.Log($"Charges increased by {count}. Current charges: " + WeaponBow.GetCurrentCharges());
             UpdateArrowCharges();
         }
-        
+
         public void SetArrowsCount()
         {
             if (WeaponBow != null)
             {
-                WeaponBow._currentCharges = IGame.Instance.dataPlayer.PlayerData.arrowsCount;
+                WeaponBow._currentCharges = _dataPlayer.PlayerData.arrowsCount;
                 arrowCharges.text = WeaponBow.GetCurrentCharges().ToString();
             }
         }
@@ -238,10 +240,10 @@ namespace UI
             if (arrowCharges != null)
             {
                 arrowCharges.text = WeaponBow.GetCurrentCharges().ToString();
-                IGame.Instance.saveGame.MakeSave();
+                _savegame.MakeSave();
             }
         }
-        
+
         public void DisplayEmptyTestMessage()
         {
             Debug.Log("Тесты пусты");
@@ -272,7 +274,7 @@ namespace UI
                 });
             }
         }
-        
+
         private void SceneLoader_LevelChanged(Scene arg0, LoadSceneMode arg1)
         {
             GameObject MapCamera = GameObject.Find("CameraForMainMap"); // TODO Find change
@@ -301,13 +303,13 @@ namespace UI
         }
 
         private void OnButtonIncreaseChargesClick()
-            => IGame.Instance.FastTestsManager.NeedTestForArrows(1); // TODO magic numbers
+            => _fastTestsManager.NeedTestForArrows(1); // TODO magic numbers
 
 
         public void RegenFastTestUI(int stratIndexFastTests, int endIndexFastTests, int count_arrows,
             Health.Health targetKillAterTest)
             => fastTestUI.ShowTest(stratIndexFastTests, endIndexFastTests, count_arrows, targetKillAterTest);
-        
+
         public void UpdateIconMapPanel(string text)
         {
             if (text.Length > 0)
@@ -323,19 +325,19 @@ namespace UI
 
         public void UpdateParamsUI()
         {
-            _toggleSound.isOn = IGame.Instance.dataPlayer.PlayerData.soundOn;
-            _toggleMusic.isOn = IGame.Instance.dataPlayer.PlayerData.musicOn;
-            _sliderSound.value = IGame.Instance.dataPlayer.PlayerData.soundVol;
-            _sliderMusic.value = IGame.Instance.dataPlayer.PlayerData.musicVol;
+            _toggleSound.isOn = _dataPlayer.PlayerData.soundOn;
+            _toggleMusic.isOn = _dataPlayer.PlayerData.musicOn;
+            _sliderSound.value = _dataPlayer.PlayerData.soundVol;
+            _sliderMusic.value = _dataPlayer.PlayerData.musicVol;
         }
-        
+
         public void ShowNewArmor() => newArmorScr.SetActive(true);
-        
+
         public void ShowNewWeapon() => newWeaponScr.SetActive(true);
 
         public void OnClickBtnCloseMap()
         {
-            IGame.Instance.SavePlayerPosLikeaPause(false);
+            IGame.Instance.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
             PauseClass.IsOpenUI = false;
             MapCanvas.SetActive(false);
 
@@ -346,13 +348,13 @@ namespace UI
                 MapCamera.GetComponent<Camera>().enabled = false;
             }
         }
-        
+
         public void ShowAgainUi()
         {
             _againUI.SetActive(true);
             KeyBoardsEvents.escState = EscState.againScr;
 
-            if (IGame.Instance.dataPlayer.PlayerData.health > 0)
+            if (_dataPlayer.PlayerData.health > 0)
             {
                 _buttonCancelAgain.gameObject.SetActive(true);
             }
@@ -361,7 +363,7 @@ namespace UI
                 _buttonCancelAgain.gameObject.SetActive(false);
             }
 
-            IGame.Instance.SavePlayerPosLikeaPause(true);
+            IGame.Instance.SavePlayerPosLikeaPause(true);// TODO change instanse IGAME
             PauseClass.IsOpenUI = true;
         }
 
@@ -369,51 +371,51 @@ namespace UI
         {
             UiMarketPanel.Regen(minPrice, maxPrice);
             UiMarketPanel.gameObject.SetActive(true);
-            IGame.Instance.SavePlayerPosLikeaPause(true);
+            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
             PauseClass.IsOpenUI = true;
         }
 
         public void OnCLickCancelAgain() => closeAgainUI();
-        
+
         private void OnCLickCloseOption()
         {
             OptionScr.SetActive(false);
-            IGame.Instance.SavePlayerPosLikeaPause(false);
+            IGame.Instance.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
             PauseClass.IsOpenUI = false;
         }
 
         private void OnClickBtnTest() // TODO not used code
         {
-            uIBug.TryAddEquipToBug(IGame.Instance.QuestManager.AllQuestsItems[0]);
+            uIBug.TryAddEquipToBug(_questManager.AllQuestsItems[0]);
         }
 
         private void OnClickBtnOption()
         {
             OptionScr.SetActive(true);
-            IGame.Instance.SavePlayerPosLikeaPause(true);
+            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
             PauseClass.IsOpenUI = true;
         }
 
         private void OnChangeMusicVolume(float arg0)
         {
             SoundManager.SetMusicVolume(arg0);
-            AudioManager.instance.MusicVol = arg0;
+            AudioManager.instance.MusicVol = arg0; // TODO change instance AudioManager
         }
 
         private void OnChangeSoundVolume(float arg0)
         {
-            AudioManager.instance.SoundVol = arg0;
+            AudioManager.instance.SoundVol = arg0; // TODO change instance AudioManager
         }
 
         private void OnChangeMusicState(bool arg0)
         {
-            SoundManager.SetMusicMuted(arg0 == false);
-            AudioManager.instance.MusicON = arg0;
+            SoundManager.SetMusicMuted(arg0 == false); // TODO change instance AudioManager
+            AudioManager.instance.MusicON = arg0; // TODO change instance AudioManager
         }
 
         private void OnChangeSoundState(bool arg0)
         {
-            AudioManager.instance.SoundON = arg0;
+            AudioManager.instance.SoundON = arg0; // TODO change instance AudioManager
         }
 
         private void SaveGame_OnChangePlayerName(string obj)
@@ -432,28 +434,28 @@ namespace UI
         private void ClosePlayerScr()
         {
             PlayerInfoScr.SetActive(false);
-            IGame.Instance.SavePlayerPosLikeaPause(false);
-            PauseClass.IsOpenUI = false;
+            IGame.Instance.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
+            PauseClass.IsOpenUI = false; // TODO static
         }
 
         private void onClickConfirmPLayersScr()
         {
-            IGame.Instance.saveGame.PlayerName = _playerNameInputField.text;
-            IGame.Instance.saveGame.MakeSave();
+            _savegame.PlayerName = _playerNameInputField.text;
+            _savegame.MakeSave();
             ClosePlayerScr();
         }
 
         private void OnClickUserInfo()
         {
-            IGame.Instance.SavePlayerPosLikeaPause(true);
-            PauseClass.IsOpenUI = true;
+            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            PauseClass.IsOpenUI = true; // TODO static
             PlayerInfoScr.SetActive(true);
             RegenPLayerInfoScr();
         }
 
         private void RegenPLayerInfoScr()
         {
-            _playerNameInputField.text = IGame.Instance.saveGame.PlayerName;
+            _playerNameInputField.text = _savegame.PlayerName;
         }
 
         private void OnClickButtonMap()
@@ -470,8 +472,8 @@ namespace UI
                 MapCanvas.gameObject.SetActive(true);
             }
 
-            IGame.Instance.SavePlayerPosLikeaPause(true);
-            PauseClass.IsOpenUI = true;
+            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            PauseClass.IsOpenUI = true; // TODO static
         }
 
         private void OnChangeMoney(double newValue)
@@ -483,20 +485,20 @@ namespace UI
         {
             uIBug.Regen();
             uIBug.gameObject.SetActive(true);
-            IGame.Instance.SavePlayerPosLikeaPause(true);
-            PauseClass.IsOpenUI = true;
+            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            PauseClass.IsOpenUI = true; // TODO static
         }
 
         private void closeAgainUI(bool force = false)
         {
-            if ((IGame.Instance.dataPlayer.PlayerData.health > 0) || (force))
+            if (_dataPlayer.PlayerData.health > 0 || force)
             {
                 _againUI.SetActive(false);
                 KeyBoardsEvents.escState = EscState.none;
             }
 
-            IGame.Instance.SavePlayerPosLikeaPause(false);
-            PauseClass.IsOpenUI = false;
+            IGame.Instance.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
+            PauseClass.IsOpenUI = false; // TODO static
         }
 
         private void OnClickButtonMarket() => OpenMarket(0, int.MaxValue);
@@ -504,9 +506,9 @@ namespace UI
         private void OnClickGoToSceneZero()
         {
             closeAgainUI(true);
-            IGame.Instance.gameAPI.SaveUpdater();
+            _gameAPI.SaveUpdater();
             SceneLoader.TryChangeLevel(allScenes.regionSCene, 0);
-            AudioManager.instance.PlaySound("ButtonClick");
+            AudioManager.instance.PlaySound("ButtonClick"); // TODO change instance AudioManager
         }
 
         private void OnClickAgainRegen()
@@ -515,19 +517,19 @@ namespace UI
             closeAgainUI(true);
             AudioManager.instance.PlaySound("ButtonClick");
         }
-        
+
         private void ShowQuestPanel()
         {
             QuestScr.SetActive(true);
-            IGame.Instance.SavePlayerPosLikeaPause(true);
-            PauseClass.IsOpenUI = true;
+            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            PauseClass.IsOpenUI = true; // TODO static
         }
 
         private void HideQuestPanel()
         {
             QuestScr.SetActive(false);
-            IGame.Instance.SavePlayerPosLikeaPause(false);
-            PauseClass.IsOpenUI = false;
+            IGame.Instance.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
+            PauseClass.IsOpenUI = false; // TODO static
         }
 
         private void OnClickBtnQuest()
@@ -543,17 +545,17 @@ namespace UI
         private void OnClickActivatePanel()
         {
             _testTableGenerator.gameObject.SetActive(true);
-            PauseClass.IsOpenUI = true;
+            PauseClass.IsOpenUI = true; // TODO static
             _testTableGenerator.Regen();
         }
 
         private void OnClickClosePanel()
         {
             _testTableGenerator.gameObject.SetActive(false);
-            PauseClass.IsOpenUI = false;
+            PauseClass.IsOpenUI = false; // TODO static
         }
-        
-        private void OnClickMaxZoom() => FollowCamera.MaxZoom();
-        private void OnClickMinZoom() => FollowCamera.MinZoom();
+
+        private void OnClickMaxZoom() => _followCamera.MaxZoom();
+        private void OnClickMinZoom() => _followCamera.MinZoom();
     }
 }

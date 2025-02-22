@@ -3,6 +3,7 @@ using Core.Player;
 using Data;
 using Saving;
 using SceneManagement.Enums;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -18,7 +19,11 @@ namespace SceneManagement
         private Dictionary<allScenes, bool>
             dictForInfected = new(); //типа зеленые/красные кнопки в сыборе локации сюда запишутся дополнительно
 
-        [SerializeField] public DataPlayer data;
+        private SavePointsManager _savePointsManager;
+        private DataPlayer _dataPlayer;
+        private UIManager _uiManager;
+        private MainPlayer _player;
+        private GameAPI _gameAPI;
 
         public Dictionary<allScenes, bool> DictForInfected
         {
@@ -26,9 +31,17 @@ namespace SceneManagement
             set => dictForInfected = value;
         }
 
-        public void Init()
+        public void Construct(SavePointsManager savePointsManager, DataPlayer dataPlayer, UIManager uiManager, 
+            MainPlayer player, GameAPI gameAPI)
         {
+            _savePointsManager = savePointsManager;
+            _dataPlayer = dataPlayer;
+            _uiManager = uiManager;
+            _player = player;
+            _gameAPI = gameAPI;
+
             DAllScenes = new Dictionary<allScenes, string>();
+
             foreach (OneScene scene in AllScenes)
             {
                 if (DAllScenes.ContainsKey(scene.IdScene))
@@ -42,6 +55,23 @@ namespace SceneManagement
             // Подписываемся на событие изменения уровня загрузки.
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
+
+        // public void Init()
+        // {
+        //     DAllScenes = new Dictionary<allScenes, string>();
+        //     foreach (OneScene scene in AllScenes)
+        //     {
+        //         if (DAllScenes.ContainsKey(scene.IdScene))
+        //         {
+        //             Debug.LogError("scene already exist in manager");
+        //         }
+        //
+        //         DAllScenes[scene.IdScene] = scene.fileScene;
+        //     }
+        //
+        //     // Подписываемся на событие изменения уровня загрузки.
+        //     SceneManager.sceneLoaded += OnSceneLoaded;
+        // }
 
         public allScenes GetCurrentSceneId()
         {
@@ -65,12 +95,11 @@ namespace SceneManagement
             return allScenes.emptyScene;
         }
 
-
         private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
             allScenes newLevel = allScenes.emptyScene;
 
-            foreach (var item in IGame.Instance.LevelChangeObserver.DAllScenes)
+            foreach (var item in DAllScenes)
             {
                 if (item.Value == arg0.name)
                 {
@@ -78,53 +107,54 @@ namespace SceneManagement
                 }
             }
 
-            if (IGame.Instance.dataPlayer.PlayerData.spawnPoint == 0)
+            if (_dataPlayer.PlayerData.spawnPoint == 0)
             {
-                GameObject StartPos = GameObject.Find("StartPoint");
+                GameObject StartPos = GameObject.Find("StartPoint"); // TODO find
 
                 if (StartPos != null)
                 {
                     Vector3 position = StartPos.transform.position;
                     Quaternion rotation = StartPos.transform.rotation;
                     UpdatePlayerLocation(position, rotation);
-                    IGame.Instance.UIManager.FollowCamera.ActivateCommonZoomUpdate();
+                    _uiManager.FollowCamera.ActivateCommonZoomUpdate();
                 }
             }
-            else if (SavePointsManager.AllSavePoints.Count > 0)
+            else if (_savePointsManager.AllSavePoints.Count > 0)
             {
-                Vector3 posThere = SavePointsManager.AllSavePoints[IGame.Instance.dataPlayer.PlayerData.spawnPoint]
+                Vector3 posThere = _savePointsManager.AllSavePoints[_dataPlayer.PlayerData.spawnPoint]
                     .transform.position;
 
                 Quaternion rotation = new Quaternion();
                 UpdatePlayerLocation(posThere, rotation);
-                IGame.Instance.UIManager.FollowCamera.ActivateCommonZoomUpdate();
+                _uiManager.FollowCamera.ActivateCommonZoomUpdate();
             }
 
-            SavePointsManager.UpdateStateSpawnPointsAfterLoad(IGame.Instance.dataPlayer, true);
-            MainPlayer.Instance.ResetCountEnergy();
+            _savePointsManager.UpdateStateSpawnPointsAfterLoad( true); // TODO savepoints to construct
+            _player.ResetCountEnergy();
 
-            IGame.Instance.gameAPI.SaveUpdater();
+            _gameAPI.SaveUpdater();
         }
 
         // Метод для обновления местоположения игрока
         private void UpdatePlayerLocation(Vector3 spawnPoint, Quaternion rotation)
         {
             // Отключаем навигацию для игрока
-            MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = false; // TODO can be cached
+            _player.gameObject.GetComponent<NavMeshAgent>().enabled = false; // TODO can be cached
 
             // Устанавливаем позицию игрока в соответствии с порталом назначения
-            MainPlayer.Instance.transform.position = spawnPoint;
-            MainPlayer.Instance.transform.rotation = rotation;
+            _player.transform.position = spawnPoint;
+            _player.transform.rotation = rotation;
 
             Animator animator =
-                MainPlayer.Instance.gameObject.GetComponent<Animator>();
+                _player.gameObject.GetComponent<Animator>();
+            
             animator.Rebind();
             animator.Update(0f);
 
-            MainPlayer.Instance.gameObject.GetComponent<Health.Health>().Restore();
+            _player.gameObject.GetComponent<Health.Health>().Restore();
 
             // Включаем навигацию для игрока
-            MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = true;
+            _player.gameObject.GetComponent<NavMeshAgent>().enabled = true;
         }
     }
 }

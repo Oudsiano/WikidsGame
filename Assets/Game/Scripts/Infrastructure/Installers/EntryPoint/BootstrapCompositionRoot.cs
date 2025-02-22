@@ -35,7 +35,7 @@ namespace Infrastructure.Installers.EntryPoint
         private CoinManager _coinManager;
         private WeaponArmorManager _weaponArmorManager;
         private PlayerArmorManager _playerArmorManager;
-        
+
         private SceneLoader _sceneLoader;
         private SavePointsManager _savePointsManager;
         private ArrowForPlayerManager _arrowForPlayerManager;
@@ -55,7 +55,7 @@ namespace Infrastructure.Installers.EntryPoint
             _player = diContainer.Resolve<MainPlayer>(); //
             _dataPlayer = diContainer.Resolve<DataPlayer>(); //
             _playerController = diContainer.Resolve<PlayerController>(); //
-            _levelChangeObserver = diContainer.Resolve<LevelChangeObserver>();
+            _levelChangeObserver = diContainer.Resolve<LevelChangeObserver>(); //
             _bottleManager = diContainer.Resolve<BottleManager>(); // 
             _questManager = diContainer.Resolve<QuestManager>(); // 
             _npcManager = diContainer.Resolve<NPCManagment>(); // 
@@ -64,30 +64,39 @@ namespace Infrastructure.Installers.EntryPoint
             _coinManager = diContainer.Resolve<CoinManager>(); //
             _weaponArmorManager = diContainer.Resolve<WeaponArmorManager>(); //
             _playerArmorManager = diContainer.Resolve<PlayerArmorManager>(); //
-            _weaponPanelUI = diContainer.Resolve<WeaponPanelUI>();// Остановился здесь на прокидывании зависимостей в playerController -> WeaponPanelUI
-            
+            _weaponPanelUI = diContainer.Resolve<WeaponPanelUI>(); //
+
             _iGame = diContainer.Resolve<IGame>();
             _sceneLoader = diContainer.Resolve<SceneLoader>();
             _gameAPI = diContainer.Resolve<GameAPI>();
 
             ConstructComponents();
 
-            _iGame.Construct(_gameAPI, _dataPlayer, _saveGame, _playerController,
+            _iGame.Construct(_player, _gameAPI, _dataPlayer, _saveGame, _playerController,
                 _levelChangeObserver, _savePointsManager, _arrowForPlayerManager,
                 _questManager, _npcManager, _fastTestsManager,
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
-                _weaponArmorManager, _playerArmorManager , _weaponPanelUI);
+                _weaponArmorManager, _playerArmorManager, _weaponPanelUI);
         }
 
         private void ConstructComponents()
         {
-            _player.Construct();
-            _sceneLoader.Construct();
+            _savePointsManager.Construct(_dataPlayer);
+            _player.Construct(_dataPlayer, _uiManager, _playerController);
+            _sceneLoader.Construct(_dataPlayer, _levelChangeObserver, _savePointsManager);
             _gameAPI.Construct(_player, _sceneLoader, _dataPlayer, _saveGame, _fastTestsManager, _playerController,
                 _weaponArmorManager, _questManager);
 
             _saveGame.Construct(_gameAPI, _weaponArmorManager, _coinManager,
                 _dataPlayer, _uiManager);
+
+            //_playerController.Construct(); -> iGame.Construct
+            //_levelChangeObserver.Construct(); -> iGame.Construct
+            //_arrowForPlayerManager.Construct(); -> iGame.Construct
+            //_questManager.Construct(); -> iGame.Construct
+            //_npcManagment.Construct(); -> iGame.Construct
+            //_fastTestsManager.Construct(); -> iGame.Construct
+            //_cursorManager no need construct right now
         }
     }
 }

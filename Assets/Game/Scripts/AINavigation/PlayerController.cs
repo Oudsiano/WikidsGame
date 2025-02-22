@@ -60,7 +60,7 @@ namespace AINavigation
             PlayerArmorManager = playerArmorManager;
             WeaponPanelUI = weaponPanelUI;
 
-            WeaponPanelUI.Construct(); // TODO Construct
+            WeaponPanelUI.Construct(); // TODO Construct 
             
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             saveGame.OnLoadItems += SaveGame_OnOnLoadItems;

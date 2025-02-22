@@ -14,7 +14,7 @@ namespace Core.Player
             set => _allArrowForPlayers = value;
         }
 
-        public void Init() // TODO construct 
+        public void Construct() // TODO construct 
         {
             _allArrowForPlayers = new SortedDictionary<int, ArrowForPlayer>();
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;

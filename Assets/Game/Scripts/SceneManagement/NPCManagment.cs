@@ -14,10 +14,13 @@ namespace SceneManagement
         [FormerlySerializedAs("notComplite")] [SerializeField]
         private List<int> _notComplete;
 
+        private DataPlayer _dataPlayer;
+
         public List<int> NotComplete => _notComplete;
 
-        public void Init() // TODO construct
+        public void Construct(DataPlayer dataPlayer)
         {
+            _dataPlayer = dataPlayer;
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
         }
 
@@ -30,7 +33,8 @@ namespace SceneManagement
             foreach (int itemTestId in _npcTests.Keys)
             {
                 bool complete = false;
-                foreach (OneLeson lesson in IGame.Instance.dataPlayer.PlayerData.progress)
+                
+                foreach (OneLeson lesson in _dataPlayer.PlayerData.progress)
                 {
                     foreach (OneTestQuestion test in lesson.tests)
                     {
@@ -84,7 +88,7 @@ namespace SceneManagement
         {
             FindAllNPCWithTests();
 
-            foreach (OneLeson lesson in IGame.Instance.dataPlayer.PlayerData.progress)
+            foreach (OneLeson lesson in _dataPlayer.PlayerData.progress)
             {
                 foreach (OneTestQuestion test in lesson.tests)
                 {

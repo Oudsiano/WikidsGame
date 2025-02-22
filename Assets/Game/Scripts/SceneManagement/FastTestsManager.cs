@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Data;
+using UI;
 using UnityEngine;
 
 namespace SceneManagement
@@ -9,8 +11,18 @@ namespace SceneManagement
         private List<OneFastTest> AllFastTests;
         public List<OneFastTest> AvaliableTestsNow;
 
-        public void
-            Init() // TODO construct // TODO SHEEEEEEEEEEEEEEESH if we survive need to transfer to json/SO/XML tests...
+        private DataPlayer _dataPlayer;
+        private UIManager _uiManager;
+
+        public void Construct(DataPlayer dataPlayer, UIManager uiManager)
+        {
+            _dataPlayer = dataPlayer;
+            _uiManager = uiManager;
+
+            FillTests();
+        }
+
+        private void FillTests()
         {
             AllFastTests = new List<OneFastTest>();
             OneFastTest currentTest;
@@ -1249,16 +1261,18 @@ namespace SceneManagement
                 8514
             );
             AllFastTests.Add(currentTest);
-        }
+        } // TODO SHEEEEEEEEEEEEEEESH if we survive need to transfer to json/SO/XML tests...
 
         public void GenAvaliableTests()
         {
             if (AvaliableTestsNow == null)
+            {
                 AvaliableTestsNow = new List<OneFastTest>();
+            }
 
             AvaliableTestsNow.Clear();
 
-            foreach (var lesson in IGame.Instance.dataPlayer.PlayerData.progress)
+            foreach (var lesson in _dataPlayer.PlayerData.progress)
             {
                 foreach (var testQuestion in lesson.tests)
                 {
@@ -1272,7 +1286,7 @@ namespace SceneManagement
 
             foreach (var test in AllFastTests)
             {
-                if (IGame.Instance.dataPlayer.PlayerData.wasSuccessTests.Contains(test.TestIndex))
+                if (_dataPlayer.PlayerData.wasSuccessTests.Contains(test.TestIndex))
                 {
                     if (AvaliableTestsNow.Contains(test) == false) // TODO TryAdd
                     {
@@ -1304,13 +1318,13 @@ namespace SceneManagement
         {
             if (AvaliableTestsNow.Count > 0)
             {
-                IGame.Instance.UIManager.RegenFastTestUI(0, AvaliableTestsNow.Count, count_arrow, target);
+                _uiManager.RegenFastTestUI(0, AvaliableTestsNow.Count, count_arrow, target);
             }
             else
             {
                 if (target == null)
                 {
-                    IGame.Instance.UIManager.DisplayEmptyTestMessage(); // Вызов нового метода
+                    _uiManager.DisplayEmptyTestMessage(); // Вызов нового метода
                 }
                 else
                 {

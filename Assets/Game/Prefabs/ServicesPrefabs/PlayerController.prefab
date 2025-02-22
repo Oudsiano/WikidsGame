@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3208651843984623499
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6252691940415689708}
+  - component: {fileID: 1847232589753306016}
+  m_Layer: 0
+  m_Name: PlayerController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6252691940415689708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3208651843984623499}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 422.26834, y: 222.82422, z: 6.1188946}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1847232589753306016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3208651843984623499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082b53598d0679448be7bad5dffe459d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _invisibilityVFXPrefab: {fileID: 1578979681979112, guid: a4f63907440efa84492e58543e302e12,
+    type: 3}
+  _exitInvisibilityVFXPrefab: {fileID: 1382430444795516, guid: 22211b5004798d64a81e4b9aa602a06a,
+    type: 3}
+  _invisibilityAudioSource: {fileID: 0}
+  _exitInvisibilityAudioSource: {fileID: 0}
+  PlayerArmorManager: {fileID: 0}
+  WeaponPanelUI: {fileID: 0}
+  ModularCharacter: {fileID: 0}

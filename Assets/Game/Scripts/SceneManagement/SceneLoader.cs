@@ -22,7 +22,7 @@ namespace SceneManagement
             get { return _instance; }
         }
 
-        private void Awake() // TODO construct
+        public void Construct()
         {
             if (_instance != null && _instance != this)
             {
@@ -31,7 +31,6 @@ namespace SceneManagement
             else
             {
                 _instance = this;
-                DontDestroyOnLoad(gameObject);
             }
         }
 

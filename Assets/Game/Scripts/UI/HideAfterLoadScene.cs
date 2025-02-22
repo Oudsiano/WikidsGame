@@ -15,8 +15,5 @@ namespace UI
             yield return new WaitForSeconds(delay);
             gameObject.SetActive(false);
         }
-
-
-    
     }
 }

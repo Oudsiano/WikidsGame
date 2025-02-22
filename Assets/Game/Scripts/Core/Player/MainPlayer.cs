@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UI;
+using UnityEngine;
 
 namespace Core.Player
 {
@@ -11,7 +12,7 @@ namespace Core.Player
             get { return _instance; } // Возвращает текущий экземпляр
         }
 
-        private void Awake() // TODO construct project context
+        public void Construct()
         {
             if (_instance != null && _instance != this)
             {
@@ -23,6 +24,19 @@ namespace Core.Player
                 DontDestroyOnLoad(gameObject);
             }
         }
+        
+        // private void Awake() // TODO construct project context
+        // {
+        //     if (_instance != null && _instance != this)
+        //     {
+        //         Destroy(gameObject);
+        //     }
+        //     else
+        //     {
+        //         _instance = this;
+        //         DontDestroyOnLoad(gameObject);
+        //     }
+        // }
 
         public void ChangeCountEnergy(int value)
         {

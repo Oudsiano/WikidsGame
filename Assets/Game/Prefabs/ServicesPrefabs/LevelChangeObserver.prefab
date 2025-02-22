@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &524805501777298275
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2767746592985723254}
+  - component: {fileID: 8314870495757176829}
+  m_Layer: 0
+  m_Name: LevelChangeObserver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2767746592985723254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524805501777298275}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 422.26834, y: 222.82422, z: 6.1188946}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8314870495757176829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524805501777298275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485fa95d3141c4253ba19dc54f8c2450, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllScenes:
+  - IdScene: 0
+    fileScene: ChangeRegion
+  - IdScene: 1
+    fileScene: ChangeRegion
+  - IdScene: 2
+    fileScene: BattleScene
+  - IdScene: 3
+    fileScene: SceneFive
+  - IdScene: 4
+    fileScene: Library
+  - IdScene: 5
+    fileScene: Holl
+  - IdScene: 6
+    fileScene: BattleScene 1
+  - IdScene: 7
+    fileScene: BS_3
+  data: {fileID: 0}

@@ -5,6 +5,7 @@ using Combat.EnumsCombat;
 using Core;
 using DialogueEditor;
 using Movement;
+using Saving;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,6 +16,8 @@ namespace AINavigation
 {
     public class PlayerController : MonoBehaviour
     {
+        private PlayerArmorManager _playerArmorManager;
+
         [FormerlySerializedAs("invizVFXPrefab")] [SerializeField]
         private GameObject _invisibilityVFXPrefab; // TODO GO
 
@@ -47,6 +50,37 @@ namespace AINavigation
 
         private GameObject _activeInvisibilityVFX; // Текущий активный VFX объект для невидимости
 
+        public void Construct(PlayerArmorManager playerArmorManager, WeaponPanelUI weaponPanelUI, 
+            SaveGame saveGame)
+        {
+            _mover = GetComponent<Mover>();
+            _fighter = GetComponent<Fighter>();
+            _health = GetComponent<Health.Health>();
+
+            PlayerArmorManager = playerArmorManager;
+            WeaponPanelUI = weaponPanelUI;
+
+            WeaponPanelUI.Construct(); // TODO Construct
+            
+            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+            saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
+        }
+
+        // public void Init() // TODO Construct
+        // {
+        //     _mover = GetComponent<Mover>(); // TODO RequieredComponents  
+        //     _fighter = GetComponent<Fighter>();
+        //     _health = GetComponent<Health.Health>();
+        //
+        //     PlayerArmorManager = FindObjectOfType<PlayerArmorManager>(); // TODO Delete
+        //
+        //     WeaponPanelUI = FindObjectOfType<WeaponPanelUI>(); // TODO Delete
+        //     WeaponPanelUI.Init();
+        //
+        //     SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+        //     IGame.Instance.saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
+        // }
+
         private void Update()
         {
             if (PauseClass.GetPauseState())
@@ -73,21 +107,6 @@ namespace AINavigation
             {
                 return; // TODO not used
             }
-        }
-
-        public void Init() // TODO Construct
-        {
-            _mover = GetComponent<Mover>(); // TODO RequieredComponents  
-            _fighter = GetComponent<Fighter>();
-            _health = GetComponent<Health.Health>();
-
-            PlayerArmorManager = FindObjectOfType<PlayerArmorManager>(); // TODO Delete
-
-            WeaponPanelUI = FindObjectOfType<WeaponPanelUI>(); // TODO Delete
-            WeaponPanelUI.Init();
-
-            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
-            IGame.Instance.saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }
 
         public Health.Health GetHealth() => _health; // TODO move to properties
@@ -224,7 +243,7 @@ namespace AINavigation
             /*Ray ray = GetMouseRay();
             int layerMask = ~LayerMask.GetMask("PLayer");
             bool hasHit = Physics.Raycast(ray, out RaycastHit hit, layerMask);*/
-            
+
             if (Input.GetMouseButton(0))
                 if (EventSystem.current.IsPointerOverGameObject() == false)
                 {
@@ -233,7 +252,7 @@ namespace AINavigation
                     Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
 
                     RaycastHit hit;
-                    
+
                     for (int i = 0; i < hits.Length; i++)
                     {
                         if (hits[i].collider.gameObject.name != "Player") // TODO change logic call for name object

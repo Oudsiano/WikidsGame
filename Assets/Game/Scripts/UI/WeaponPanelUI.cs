@@ -19,7 +19,7 @@ namespace UI
 
         [FormerlySerializedAs("bowWeapon")] [SerializeField] private Weapon _bowWeapon;  
 
-        public void Init() // TODO construct
+        public void Construct() // TODO construct
         {
             CommonWeaponBTN.onClick.AddListener(OnCLickCommonWeaponBTN);
             FireballBTN.onClick.AddListener(OnCLickFireballBTN);

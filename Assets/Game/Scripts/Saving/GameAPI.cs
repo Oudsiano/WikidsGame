@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using AINavigation;
+using Core;
 using Core.Player;
+using Core.Quests;
 using Data;
 using DialogueEditor;
 using Newtonsoft.Json;
@@ -10,13 +13,21 @@ using SceneManagement;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Serialization;
 
 namespace Saving
 {
     public class GameAPI : MonoBehaviour
     {
-        private DataPlayer dataPlayer;
-        public SceneLoader sceneLoader;
+        private MainPlayer _player;
+        private SaveGame _saveGame;
+        private FastTestsManager _fastTestsManager;
+        private PlayerController _playerController;
+        private WeaponArmorManager _weaponArmorManager;
+        private QuestManager _questManager;
+        private DataPlayer _dataPlayer;
+
+        [FormerlySerializedAs("sceneLoader")] public SceneLoader _sceneLoader;
         public string playerID;
         public TMP_Text textForOtl;
         public bool idUpdate = false;
@@ -30,9 +41,18 @@ namespace Saving
 
         private bool needMakeSaveInNextUpdate = false;
 
-        public void Start() // TODO construct
+        public void Construct(MainPlayer player, SceneLoader sceneLoader, DataPlayer dataPlayer, SaveGame saveGame,
+            FastTestsManager fastTestsManager, PlayerController playerController,
+            WeaponArmorManager weaponArmorManager, QuestManager questManager)
         {
-            dataPlayer = IGame.Instance.dataPlayer;
+            _player = player;
+            _sceneLoader = sceneLoader;
+            _dataPlayer = dataPlayer;
+            _saveGame = saveGame;
+            _fastTestsManager = fastTestsManager;
+            _playerController = playerController;
+            _weaponArmorManager = weaponArmorManager;
+            _questManager = questManager;
 
             UpdateID();
 
@@ -102,18 +122,18 @@ namespace Saving
                 SL_objs sl_obj = new SL_objs(json);
                 sl_obj.Load(ref playerData.startedQuests, "startedQuests"); // TODO can be cached
 
-                dataPlayer.PlayerData = playerData;
+                _dataPlayer.PlayerData = playerData;
 
                 // Инициализация списка пройденных квестов
-                if (dataPlayer.PlayerData.completedQuests == null)
+                if (_dataPlayer.PlayerData.completedQuests == null)
                 {
-                    dataPlayer.PlayerData.completedQuests = new List<string>();
+                    _dataPlayer.PlayerData.completedQuests = new List<string>();
                 }
 
                 Debug.Log("Data downloaded successfully");
-                IGame.Instance.saveGame.MakeLoad();
+                _saveGame.MakeLoad();
 
-                IGame.Instance.FastTestsManager.GenAvaliableTests();
+                _fastTestsManager.GenAvaliableTests();
                 gameGet = true;
                 GameLoaded = true;
             }
@@ -124,12 +144,12 @@ namespace Saving
                 if ((errorResponse.message == "Game data not found") ||
                     (errorResponse.message == "User not found")) // TODO can be cached
                 {
-                    IGame.Instance.playerController.GetFighter()
+                    _playerController.GetFighter()
                         .EquipWeapon(
-                            IGame.Instance.WeaponArmorManager.TryGetWeaponByName("Sword")); // TODO can be cached
+                            _weaponArmorManager.TryGetWeaponByName("Sword")); // TODO can be cached
                     StartCoroutine(SaveGameData());
 
-                    IGame.Instance.FastTestsManager.GenAvaliableTests();
+                    _fastTestsManager.GenAvaliableTests();
                     GameLoaded = true;
                 }
                 else
@@ -154,13 +174,13 @@ namespace Saving
 
                 SL_objs sl_obj = new SL_objs(json);
                 sl_obj.Load(ref playerData.startedQuests, "startedQuests"); // TODO can be cached
-                dataPlayer.PlayerData = playerData;
+                _dataPlayer.PlayerData = playerData;
 
                 int countSuccessAnswer = 0;
 
-                if (IGame.Instance.dataPlayer.PlayerData.progress != null)
+                if (_dataPlayer.PlayerData.progress != null)
                 {
-                    foreach (OneLeson item in IGame.Instance.dataPlayer.PlayerData.progress)
+                    foreach (OneLeson item in _dataPlayer.PlayerData.progress)
                     {
                         if (item != null && item.id == IDLesson)
                         {
@@ -168,7 +188,7 @@ namespace Saving
                             {
                                 if (item2.completed)
                                 {
-                                    IGame.Instance.QuestManager.QuestFinished(item2.id.ToString());
+                                    _questManager.QuestFinished(item2.id.ToString());
                                     countSuccessAnswer++;
                                 }
                             }
@@ -177,7 +197,7 @@ namespace Saving
                 }
 
                 int countSuccessAnswers = countSuccessAnswer;
-                MainPlayer.Instance.ChangeCountEnergy(countSuccessAnswers);
+                _player.ChangeCountEnergy(countSuccessAnswers);
                 TestSuccessKey = countSuccessAnswers > 0;
                 ConversationManager.Instance.SetBool("TestSuccess", TestSuccessKey);
                 //ConversationManager.Instance.SetBool("LoadedData", true);
@@ -190,7 +210,7 @@ namespace Saving
                 Debug.Log("Успешные ответы: " + countSuccessAnswers);
                 Debug.Log("Data downloaded successfully");
 
-                IGame.Instance.FastTestsManager.GenAvaliableTests(); // TODO rename
+                _fastTestsManager.GenAvaliableTests(); // TODO rename
             }
             else
             {
@@ -209,16 +229,16 @@ namespace Saving
                 bool _calback = false;
                 string json = request.downloadHandler.text;
                 PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
-                dataPlayer.PlayerData = playerData;
+                _dataPlayer.PlayerData = playerData;
 
-                if (dataPlayer.PlayerData.progress != null)
+                if (_dataPlayer.PlayerData.progress != null)
                 {
-                    foreach (var lesson in dataPlayer.PlayerData.progress)
+                    foreach (var lesson in _dataPlayer.PlayerData.progress)
                     {
                         foreach (var test in lesson.tests)
                         {
                             if (test.completed)
-                                IGame.Instance.QuestManager.QuestFinished(test.id.ToString());
+                                _questManager.QuestFinished(test.id.ToString());
 
                             if (test.id == testId)
                             {
@@ -231,7 +251,7 @@ namespace Saving
                     }
                 }
 
-                IGame.Instance.FastTestsManager.GenAvaliableTests(); // TODO rename
+                _fastTestsManager.GenAvaliableTests(); // TODO rename
                 // Если тест не найден, вызываем колбэк с false
                 callback(_calback);
             }
@@ -244,14 +264,14 @@ namespace Saving
 
         private void UpdateID() // TODO Duplicate
         {
-            playerID = dataPlayer.PlayerData.id.ToString();
+            playerID = _dataPlayer.PlayerData.id.ToString();
             idUpdate = true;
         }
 
         private IEnumerator SaveGameData()
         {
-            //string json = JsonUtility.ToJson(IGame.Instance.dataPLayer.playerData);
-            string json = JsonConvert.SerializeObject(IGame.Instance.dataPlayer.PlayerData);
+            //string json = JsonUtility.ToJson(_dataPlayer.playerData);
+            string json = JsonConvert.SerializeObject(_dataPlayer.PlayerData);
             Debug.Log("JSON to send: " + json);
 
             byte[] bodyRaw = Encoding.UTF8.GetBytes(json);

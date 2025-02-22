@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using Combat.Data;
 using Combat.EnumsCombat;
+using Core;
+using Data;
 using DG.Tweening;
 using SceneManagement;
 using SceneManagement.Enums;
 using TMPro;
-using UI.Inventory;
+using UI;
 using UI.Inventory.Data;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,13 +29,38 @@ namespace Saving
         private double coins;
         private string playerName;
 
-        public SaveGame()
+        private WeaponArmorManager _weaponArmorManager;
+        private CoinManager _coinManager;
+        private DataPlayer _dataPlayer;
+        private GameAPI _gameAPI;
+        private UIManager _uiManager;
+
+        // public SaveGame()
+        // {
+        //     BugItems = new List<ItemDefinition>();
+        //
+        //     EquipedArmor = new Armor();
+        //     EquipedWeapon =
+        //         (Weapon)_weaponArmorManager.TryGetWeaponByName("Sword")
+        //             .CreateInstance(); // TODO expensive unboxing
+        // }
+
+        public void Construct(GameAPI gameAPI,
+            WeaponArmorManager weaponArmorManager,
+            CoinManager coinManager,
+            DataPlayer dataPlayer, UIManager uiManager)
         {
+            _weaponArmorManager = weaponArmorManager;
+            _coinManager = coinManager;
+            _dataPlayer = dataPlayer;
+            _gameAPI = gameAPI;
+            _uiManager = uiManager;
+
             BugItems = new List<ItemDefinition>();
 
             EquipedArmor = new Armor();
             EquipedWeapon =
-                (Weapon)IGame.Instance.WeaponArmorManager.TryGetWeaponByName("Sword")
+                (Weapon)_weaponArmorManager.TryGetWeaponByName("Sword")
                     .CreateInstance(); // TODO expensive unboxing
         }
 
@@ -58,7 +85,7 @@ namespace Saving
             set
             {
                 coins = value;
-                IGame.Instance.CoinManager.Coins.SetCount(value);
+                _coinManager.Coins.SetCount(value);
             }
         }
 
@@ -88,26 +115,26 @@ namespace Saving
         public void SetBonusWeaponAndArmorIfNeed()
         {
             if (IdSceneForPortal == allScenes.emptyScene ||
-                IGame.Instance.dataPlayer.PlayerData.FinishedRegionsIDs.Contains((int)IdSceneForPortal))
+                _dataPlayer.PlayerData.FinishedRegionsIDs.Contains((int)IdSceneForPortal))
             {
                 return;
             }
 
-            IGame.Instance.dataPlayer.PlayerData.FinishedRegionsIDs.Add((int)IdSceneForPortal);
+            _dataPlayer.PlayerData.FinishedRegionsIDs.Add((int)IdSceneForPortal);
 
             if (bonusWeapon != null) // TODO DUPLICATE
             {
-                if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(
-                        IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusWeapon.name)))
+                if (_uiManager.uIBug.AddEquipInBugIfNotExist(
+                        _weaponArmorManager.TryGetItemByName(bonusWeapon.name)))
                 {
                     Debug.Log("show weapon");
-                    IGame.Instance.UIManager.ShowNewWeapon();
-                    IGame.Instance.gameAPI.SaveUpdater();
+                    _uiManager.ShowNewWeapon();
+                    _gameAPI.SaveUpdater();
 
-                    if (IGame.Instance.dataPlayer.PlayerData.alreadyExistWeapons.Contains(bonusWeapon.name) ==
+                    if (_dataPlayer.PlayerData.alreadyExistWeapons.Contains(bonusWeapon.name) ==
                         false) // TODO try add
                     {
-                        IGame.Instance.dataPlayer.PlayerData.alreadyExistWeapons.Add(bonusWeapon.name);
+                        _dataPlayer.PlayerData.alreadyExistWeapons.Add(bonusWeapon.name);
                     }
                 }
                 else
@@ -121,16 +148,16 @@ namespace Saving
 
             if (bonusArmor != null) // TODO DUPLICATE
             {
-                if (IGame.Instance.UIManager.uIBug.AddEquipInBugIfNotExist(
-                        IGame.Instance.WeaponArmorManager.TryGetItemByName(bonusArmor.name)))
+                if (_uiManager.uIBug.AddEquipInBugIfNotExist(
+                        _weaponArmorManager.TryGetItemByName(bonusArmor.name)))
                 {
-                    IGame.Instance.UIManager.ShowNewArmor();
-                    IGame.Instance.gameAPI.SaveUpdater();
+                    _uiManager.ShowNewArmor();
+                    _gameAPI.SaveUpdater();
 
-                    if (IGame.Instance.dataPlayer.PlayerData.alreadyExistWeapons.Contains(bonusArmor.name) ==
+                    if (_dataPlayer.PlayerData.alreadyExistWeapons.Contains(bonusArmor.name) ==
                         false) // TODO try add DUPLICATE
                     {
-                        IGame.Instance.dataPlayer.PlayerData.alreadyExistWeapons.Add(bonusArmor.name);
+                        _dataPlayer.PlayerData.alreadyExistWeapons.Add(bonusArmor.name);
                     }
                 }
                 else
@@ -167,8 +194,8 @@ namespace Saving
 
         public void MakeSave()
         {
-            IGame.Instance.dataPlayer.PlayerData.armorIdToload = (int)EquipedArmor.ArmorName;
-            IGame.Instance.dataPlayer.PlayerData.weaponToLoad = EquipedWeapon.name;
+            _dataPlayer.PlayerData.armorIdToload = (int)EquipedArmor.ArmorName;
+            _dataPlayer.PlayerData.weaponToLoad = EquipedWeapon.name;
 
             List<OneItemForSave> tempBug = new List<OneItemForSave>();
             /*for (int i = BugItems.Count-1; i >= 0; i--)
@@ -192,78 +219,78 @@ namespace Saving
                 tempBug.Add(new OneItemForSave(item.CountItems, item.name));
             }
 
-            //IGame.Instance.dataPLayer.playerData.containsBug = tempBug.ToArray();
-            IGame.Instance.dataPlayer.PlayerData.containsBug = null;
-            IGame.Instance.dataPlayer.PlayerData.containsBug2 = tempBug;
-            IGame.Instance.dataPlayer.PlayerData.coins = Coins;
+            //_dataPLayer.playerData.containsBug = tempBug.ToArray();
+            _dataPlayer.PlayerData.containsBug = null;
+            _dataPlayer.PlayerData.containsBug2 = tempBug;
+            _dataPlayer.PlayerData.coins = Coins;
 
-            IGame.Instance.dataPlayer.PlayerData.playerName = PlayerName;
+            _dataPlayer.PlayerData.playerName = PlayerName;
 
-            IGame.Instance.dataPlayer.PlayerData.soundOn = AudioManager.instance.SoundON;
-            IGame.Instance.dataPlayer.PlayerData.soundVol = AudioManager.instance.SoundVol;
-            IGame.Instance.dataPlayer.PlayerData.musicOn = !SoundManager.GetMusicMuted();
-            IGame.Instance.dataPlayer.PlayerData.musicVol = SoundManager.GetMusicVolume();
+            _dataPlayer.PlayerData.soundOn = AudioManager.instance.SoundON;
+            _dataPlayer.PlayerData.soundVol = AudioManager.instance.SoundVol;
+            _dataPlayer.PlayerData.musicOn = !SoundManager.GetMusicMuted();
+            _dataPlayer.PlayerData.musicVol = SoundManager.GetMusicVolume();
 
-            IGame.Instance.dataPlayer.PlayerData.arrowsCount = IGame.Instance.UIManager.WeaponBow._currentCharges;
+            _dataPlayer.PlayerData.arrowsCount = _uiManager.WeaponBow._currentCharges;
 
-            IGame.Instance.gameAPI.SaveUpdater();
+            _gameAPI.SaveUpdater();
         }
 
         public void MakeLoad()
         {
-            IGame.Instance.UIManager.UpdateParamsUI();
+            _uiManager.UpdateParamsUI();
 
             BugItems.Clear();
             EquipedArmor =
-                IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPlayer.PlayerData
+                _weaponArmorManager.GerArmorById((armorID)_dataPlayer.PlayerData
                     .armorIdToload);
-            if (IGame.Instance.dataPlayer.PlayerData.weaponToLoad == "Basic Bow")
+            if (_dataPlayer.PlayerData.weaponToLoad == "Basic Bow")
             {
-                IGame.Instance.dataPlayer.PlayerData.weaponToLoad = "";
+                _dataPlayer.PlayerData.weaponToLoad = "";
             }
 
-            if (IGame.Instance.dataPlayer.PlayerData.weaponToLoad == "")
+            if (_dataPlayer.PlayerData.weaponToLoad == "")
             {
-                IGame.Instance.dataPlayer.PlayerData.weaponToLoad = "Sword";
+                _dataPlayer.PlayerData.weaponToLoad = "Sword";
             }
 
             EquipedWeapon =
-                IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPlayer.PlayerData.weaponToLoad);
+                _weaponArmorManager.TryGetWeaponByName(_dataPlayer.PlayerData.weaponToLoad);
 
-            if (IGame.Instance.dataPlayer.PlayerData.playerName != "")
+            if (_dataPlayer.PlayerData.playerName != "")
             {
-                PlayerName = IGame.Instance.dataPlayer.PlayerData.playerName;
+                PlayerName = _dataPlayer.PlayerData.playerName;
             }
 
-            if (IGame.Instance.dataPlayer.PlayerData.containsBug2 == null)
+            if (_dataPlayer.PlayerData.containsBug2 == null)
             {
-                IGame.Instance.dataPlayer.PlayerData.containsBug2 = new List<OneItemForSave>();
+                _dataPlayer.PlayerData.containsBug2 = new List<OneItemForSave>();
             }
 
-            if (IGame.Instance.dataPlayer.PlayerData.containsBug != null)
+            if (_dataPlayer.PlayerData.containsBug != null)
             {
-                if (IGame.Instance.dataPlayer.PlayerData.containsBug.Length > 99)
+                if (_dataPlayer.PlayerData.containsBug.Length > 99)
                 {
-                    IGame.Instance.dataPlayer.PlayerData.containsBug = new string[0];
+                    _dataPlayer.PlayerData.containsBug = new string[0];
                     MakeSave();
                 }
-                else if (IGame.Instance.dataPlayer.PlayerData.containsBug != null)
+                else if (_dataPlayer.PlayerData.containsBug != null)
                 {
-                    foreach (var item in IGame.Instance.dataPlayer.PlayerData.containsBug)
+                    foreach (var item in _dataPlayer.PlayerData.containsBug)
                     {
-                        BugItems.Add((ItemDefinition)IGame.Instance.WeaponArmorManager.TryGetItemByName(item)
+                        BugItems.Add((ItemDefinition)_weaponArmorManager.TryGetItemByName(item)
                             .CreateInstance()
                         );
                     }
                 }
             }
 
-            IGame.Instance.dataPlayer.PlayerData.containsBug2.RemoveAll(item =>
+            _dataPlayer.PlayerData.containsBug2.RemoveAll(item =>
                 item.name == "Basic Bow"); // TODO can be cached
 
-            foreach (var item in IGame.Instance.dataPlayer.PlayerData.containsBug2)
+            foreach (var item in _dataPlayer.PlayerData.containsBug2)
             {
-                ItemDefinition newI = IGame.Instance.WeaponArmorManager
+                ItemDefinition newI = _weaponArmorManager
                     .TryGetItemByName(item.name.Replace("(Clone)", ""))
                     .CreateInstance();
                 newI.CountItems = item.count;
@@ -272,13 +299,13 @@ namespace Saving
             }
 
             OnLoadItems?.Invoke();
-            Coins = IGame.Instance.dataPlayer.PlayerData.coins;
-            IGame.Instance.UIManager.SetArrowsCount();
+            Coins = _dataPlayer.PlayerData.coins;
+            _uiManager.SetArrowsCount();
         }
 
         private void TextDisplay(int coins, string text) // TODO refactor and create Canvas Factory
         {
-            IGame.Instance.CoinManager.Coins.ChangeCount(coins);
+            _coinManager.Coins.ChangeCount(coins);
 
             TextMeshProUGUI messageText;
             Canvas canvas;

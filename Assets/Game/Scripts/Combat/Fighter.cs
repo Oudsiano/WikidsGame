@@ -13,6 +13,8 @@ namespace Combat
 {
     public class Fighter : MonoBehaviour, IAction
     {
+        private IGame _igame;
+
         [FormerlySerializedAs("rightHandPosition")] [Header("Fighter Stats")] [Header("Weapon")] [SerializeField]
         private Transform _rightHandPosition = null;
 
@@ -44,8 +46,10 @@ namespace Combat
         private ActionScheduler _actionScheduler;
         private Animator _animator;
 
-        private void Awake() // TODO construct
+        public void Construct(IGame igame)
         {
+            _igame = igame;
+
             _mover = GetComponent<Mover>(); // TODO RequireComponents
             _actionScheduler = GetComponent<ActionScheduler>();
             _animator = GetComponent<Animator>();
@@ -53,9 +57,9 @@ namespace Combat
 
             if (_isPlayer)
             {
-                if (IGame.Instance.saveGame.EquipedWeapon != null)
+                if (_igame.saveGame.EquipedWeapon != null)
                 {
-                    EquipWeapon(IGame.Instance.saveGame.EquipedWeapon);
+                    EquipWeapon(_igame.saveGame.EquipedWeapon);
                 }
             }
 
@@ -64,6 +68,27 @@ namespace Combat
                 EquipWeapon(_defaultWeapon);
             }
         }
+
+        // private void Awake() // TODO construct
+        // {
+        //     _mover = GetComponent<Mover>(); // TODO RequireComponents
+        //     _actionScheduler = GetComponent<ActionScheduler>();
+        //     _animator = GetComponent<Animator>();
+        //     _isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
+        //
+        //     if (_isPlayer)
+        //     {
+        //         if (IGame.Instance.saveGame.EquipedWeapon != null)
+        //         {
+        //             EquipWeapon(IGame.Instance.saveGame.EquipedWeapon);
+        //         }
+        //     }
+        //
+        //     if (_equippedWeapon == false)
+        //     {
+        //         EquipWeapon(_defaultWeapon);
+        //     }
+        // }
 
         private void Update()
         {
@@ -106,13 +131,13 @@ namespace Combat
         {
             if (_isPlayer == false && GetComponent<Health.Health>().IsDead() == false)
             {
-                IGame.Instance.CursorManager.SetCursorSword();
+                _igame.CursorManager.SetCursorSword(); // TODO replace
             }
         }
 
         private void OnMouseExit()
         {
-            IGame.Instance.CursorManager.SetCursorDefault();
+            _igame.CursorManager.SetCursorDefault();
         }
 
         public void SetFireball()
@@ -130,10 +155,10 @@ namespace Combat
 
         public void SetCommonWeapon()
         {
-            if (_animator == null)
-            {
-                Awake(); // TODO CRITICAL CALL BACK AWAKE??
-            }
+            // if (_animator == null)
+            // {
+            //     Awake(); // TODO CRITICAL CALL BACK AWAKE??
+            // }
 
             _weapon = WeaponNow.common;
 
@@ -145,10 +170,10 @@ namespace Combat
 
         public void SetBow()
         {
-            if (_animator == null)
-            {
-                Awake(); // TODO CRITICAL CALL BACK AWAKE??
-            }
+            // if (_animator == null)
+            // {
+            //     Awake(); // TODO CRITICAL CALL BACK AWAKE??
+            // }
 
             _weapon = WeaponNow.bow;
 
@@ -188,7 +213,7 @@ namespace Combat
             {
                 if (IGame.Instance != null)
                 {
-                    IGame.Instance.saveGame.EquipedWeapon = weapon;
+                    _igame.saveGame.EquipedWeapon = weapon;
                 }
             }
         }
@@ -226,7 +251,7 @@ namespace Combat
             _equippedWeapon.DestroyWeaponOnPlayer(_rightHandPosition, _leftHandPosition, _animator);
             EquipWeapon(_defaultWeapon);
         }
-        
+
         public void Hit()
         {
             if (Target == false)
@@ -258,11 +283,11 @@ namespace Combat
             Vector3 hitPosition = new Vector3(Target.transform.position.x, Target.transform.position.y + 1.5f,
                 Target.transform.position.z - 1); // Использовать позицию цели для VFX // // TODO magic numbers
             _equippedWeapon.PlayHitVFX(hitPosition);
-            
+
             if (Target.IsDead())
             {
                 Animator targetAnim = Target.GetComponent<Animator>(); // TODO bad practice with O/C principle
-                
+
                 if (targetAnim != null)
                 {
                     targetAnim.SetTrigger("dead"); // Запуск анимации смерти // TODO can be cached
@@ -272,14 +297,14 @@ namespace Combat
             {
                 // Запустить анимацию получения урона у цели
                 Animator targetAnim = Target.GetComponent<Animator>(); // TODO bad practice with O/C principle
-                
+
                 if (targetAnim != null)
                 {
                     targetAnim.SetTrigger("takeDamage"); // TODO can be cached
                 }
             }
         }
-        
+
         // public void SetTarget(Health other) // TODO not used code
         // {
         //     Target = other;
@@ -296,7 +321,7 @@ namespace Combat
         //     Weapon weapon = Resources.Load<Weapon>(weaponName);
         //     EquipWeapon(weapon);
         // }
-        
+
         private float GetRangeCurrentWeapon()
         {
             switch (_weapon)
@@ -339,7 +364,7 @@ namespace Combat
             {
                 if (_isPlayer && _weapon == WeaponNow.fire)
                 {
-                    if (IGame.Instance.dataPlayer.PlayerData.chargeEnergy > 0)
+                    if (_igame.dataPlayer.PlayerData.chargeEnergy > 0)
                     {
                         MainPlayer.Instance.ChangeCountEnergy(-1); // TODO magic number
                         ShootFireball();
@@ -349,7 +374,7 @@ namespace Combat
                     }
                     else
                     {
-                        IGame.Instance.playerController.WeaponPanelUI.ResetWeaponToDefault();
+                        _igame.playerController.WeaponPanelUI.ResetWeaponToDefault();
                     }
                 }
 
@@ -364,7 +389,7 @@ namespace Combat
                     }
                     else
                     {
-                        IGame.Instance.playerController.WeaponPanelUI.ResetWeaponToDefault();
+                        _igame.playerController.WeaponPanelUI.ResetWeaponToDefault();
                     }
                 }
 
@@ -420,7 +445,7 @@ namespace Combat
             return angleBetween > 120f; // Угол, определяющий, что атака со спины (например, > 135 градусов)
             // TODO magic number
         }
-        
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;

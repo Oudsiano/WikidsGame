@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Core.Quests;
 using Core.Quests.Data;
 using Data;
+using Saving;
 using SceneManagement.Enums;
 using TMPro;
 using UnityEngine;
@@ -40,8 +41,19 @@ namespace SceneManagement
         private SceneWithTestsID _sceneWithTestsID;
         private List<string> _listNeedTests;
 
-        private void Awake() // TODO Construct
+        private DataPlayer _dataPlayer;
+        private LevelChangeObserver _levelChangeObserver;
+        private SceneLoader _sceneLoader;
+        private GameAPI _gameAPI;
+        
+        public void Construct(DataPlayer dataPlayer, LevelChangeObserver levelChangeObserver, SceneLoader sceneLoader,
+            GameAPI gameAPI)
         {
+            _dataPlayer = dataPlayer;
+            _levelChangeObserver = levelChangeObserver;
+            _sceneLoader = sceneLoader;
+            _gameAPI = gameAPI;
+            
             if (_multiLineText.hoverTexts.Length != _regions.Count)
             {
                 Debug.LogError("The number of hover texts does not match the number of regions.");
@@ -68,11 +80,11 @@ namespace SceneManagement
 
             _sceneWithTestsID = FindObjectOfType<SceneWithTestsID>(); // TODO find change
             UpdateColors();
-            SetupMaxRegion(IGame.Instance.dataPlayer.PlayerData.FinishedRegionsIDs);
+            SetupMaxRegion(_dataPlayer.PlayerData.FinishedRegionsIDs);
 
             if (_textID != null)
             {
-                _textID.text = IGame.Instance.dataPlayer.PlayerData.id.ToString();
+                _textID.text = _dataPlayer.PlayerData.id.ToString();
             }
 
             if (_continueButton != null)
@@ -80,7 +92,7 @@ namespace SceneManagement
                 _continueButton.onClick.AddListener(OnClickLoadFromSaveState);
             }
 
-            if (IGame.Instance.dataPlayer.PlayerData.sceneToLoad > 0)
+            if (_dataPlayer.PlayerData.sceneToLoad > 0)
             {
                 _continueButton.gameObject.SetActive(true);
             }
@@ -135,12 +147,12 @@ namespace SceneManagement
 
         private void UpdateColors()
         {
-            var playerData = IGame.Instance.dataPlayer.PlayerData.progress;
+            var playerData = _dataPlayer.PlayerData.progress;
 
             foreach (OneBtnChangeRegion region in _regions)
             {
                 region.SetGreen();
-                IGame.Instance.LevelChangeObserver.DictForInfected[region.loadedScene] = false;
+                _levelChangeObserver.DictForInfected[region.loadedScene] = false;
 
                 // Находим соответствующую сцену для текущего региона.
                 var sceneData = _sceneWithTestsID.SceneDataList
@@ -158,7 +170,7 @@ namespace SceneManagement
                     if (incompleteTestFound)
                     {
                         region.SetRed();
-                        IGame.Instance.LevelChangeObserver.DictForInfected[region.loadedScene] = true;
+                        _levelChangeObserver.DictForInfected[region.loadedScene] = true;
                         continue;
                     }
                 }
@@ -168,19 +180,19 @@ namespace SceneManagement
         private void OnClickLoadFromSaveState() // TODO rename
         {
             _loading.gameObject.SetActive(true);
-            //SceneLoader.Instance.TryChangeLevel((allScenes)2, 4);
-            SceneLoader.Instance.TryChangeLevel((allScenes)IGame.Instance.dataPlayer.PlayerData.sceneToLoad,
-                IGame.Instance.dataPlayer.PlayerData.spawnPoint);
+            //_sceneLoader.TryChangeLevel((allScenes)2, 4);
+            _sceneLoader.TryChangeLevel((allScenes)_dataPlayer.PlayerData.sceneToLoad,
+                _dataPlayer.PlayerData.spawnPoint);
             AudioManager.instance.PlaySound("ClickButton");
         }
 
         private void OnClick(allScenes sceneId)
         {
-            IGame.Instance.dataPlayer.SetSceneToLoad(sceneId);
+            _dataPlayer.SetSceneToLoad(sceneId);
             _loading.gameObject.SetActive(true);
-            IGame.Instance.gameAPI.SaveUpdater();
+            _gameAPI.SaveUpdater();
             //Invoke("LoadSceneAfterDelay", 2f); 
-            SceneLoader.Instance.TryChangeLevel(sceneId, 0);
+            _sceneLoader.TryChangeLevel(sceneId, 0);
             AudioManager.instance.PlaySound("ClickButton"); // TODO can be cached
         }
 
@@ -199,9 +211,9 @@ namespace SceneManagement
                         {
                             foreach (int testScene in scene.numbers)
                             {
-                                if (IGame.Instance.dataPlayer.PlayerData.progress != null)
+                                if (_dataPlayer.PlayerData.progress != null)
                                 {
-                                    foreach (OneLeson item in IGame.Instance.dataPlayer.PlayerData.progress)
+                                    foreach (OneLeson item in _dataPlayer.PlayerData.progress)
                                     {
                                         foreach (OneTestQuestion item2 in item.tests)
                                         {

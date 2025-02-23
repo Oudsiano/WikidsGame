@@ -4,7 +4,6 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-
     public static AudioManager instance;
 
     public Sound[] sounds;
@@ -33,7 +32,7 @@ public class AudioManager : MonoBehaviour
     public bool MusicON { get => musicON; set => musicON = value; }
     public float MusicVol { get => musicVol; set => musicVol = value; }
 
-    void Awake()
+    public void Construct()
     {
         if (instance != null)
         {
@@ -55,6 +54,29 @@ public class AudioManager : MonoBehaviour
             s.source.loop = s.loop;
         }
     }
+    
+    // void Awake()
+    // {
+    //     if (instance != null)
+    //     {
+    //         Destroy(gameObject);
+    //         return;
+    //     }
+    //     else
+    //     {
+    //         instance = this;
+    //         DontDestroyOnLoad(gameObject);
+    //     }
+    //
+    //     foreach (Sound s in sounds)
+    //     {
+    //         s.source = gameObject.AddComponent<AudioSource>();
+    //         s.source.clip = s.clip;
+    //         s.source.volume = s.volume;
+    //         s.source.pitch = s.pitch;
+    //         s.source.loop = s.loop;
+    //     }
+    // }
 
     public void PlayMusic(string music)
     {

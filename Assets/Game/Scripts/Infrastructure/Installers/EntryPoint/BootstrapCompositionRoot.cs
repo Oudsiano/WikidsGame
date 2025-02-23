@@ -21,6 +21,7 @@ namespace Infrastructure.Installers.EntryPoint
         private MainPlayer _player;
         private IGame _iGame;
 
+        private AudioManager _audioManager;
         private DataPlayer _dataPlayer;
         private GameAPI _gameAPI;
         private PlayerController _playerController;
@@ -51,6 +52,7 @@ namespace Infrastructure.Installers.EntryPoint
             _sceneLoader = _sceneContainer.Resolve<SceneLoader>();
             _gameAPI = _sceneContainer.Resolve<GameAPI>();
 
+            _audioManager = _sceneContainer.Resolve<AudioManager>();
             _savePointsManager = _sceneContainer.Resolve<SavePointsManager>(); // TODO move
             _arrowForPlayerManager = _sceneContainer.Resolve<ArrowForPlayerManager>();
             _fastTestsManager = _sceneContainer.Resolve<FastTestsManager>();
@@ -77,6 +79,7 @@ namespace Infrastructure.Installers.EntryPoint
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
                 _weaponArmorManager);
 
+            _audioManager.Construct();
             _savePointsManager.Construct(_dataPlayer);
             _sceneLoader.Construct(_dataPlayer, _levelChangeObserver, _savePointsManager);
             _gameAPI.Construct(_player, _sceneLoader, _dataPlayer, _saveGame, _fastTestsManager,

@@ -1,5 +1,6 @@
 using Data;
 using DG.Tweening;
+using Healths;
 using TMPro;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Saving
         [SerializeField] public GameObject ChekedSprite;
         [SerializeField] public GameObject LastSprite;
         [SerializeField] public GameObject NotActiveSprite;
-        [SerializeField] public Health.Health health;
+        [SerializeField] public Health health;
         [SerializeField] public DataPlayer dataPlayer;
         [SerializeField] public int spawnPoint;
 
@@ -24,7 +25,7 @@ namespace Saving
         {
             SavePointsManager.AllSavePoints[spawnPoint] = this;
             NotActiveSprite.SetActive(true);
-            health = FindObjectOfType<Health.Health>();
+            health = FindObjectOfType<Health>();
 
             if (transform.localScale != Vector3.one)
             {

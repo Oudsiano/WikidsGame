@@ -10,7 +10,7 @@ using UnityEngine.AI;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace Health
+namespace Healths
 {
     public class Health : MonoBehaviour
     {

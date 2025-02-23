@@ -4,6 +4,7 @@ using Core.Camera;
 using Core.Quests;
 using Data;
 using DG.Tweening;
+using Healths;
 using Saving;
 using SceneManagement;
 using SceneManagement.Enums;
@@ -325,7 +326,7 @@ namespace UI
 
 
         public void RegenFastTestUI(int stratIndexFastTests, int endIndexFastTests, int count_arrows,
-            Health.Health targetKillAterTest)
+            Health targetKillAterTest)
             => fastTestUI.ShowTest(stratIndexFastTests, endIndexFastTests, count_arrows, targetKillAterTest);
 
         public void UpdateIconMapPanel(string text)

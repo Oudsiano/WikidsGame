@@ -1,4 +1,5 @@
 ﻿using Core;
+using Healths;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -55,7 +56,7 @@ namespace Combat
                 return;
             }
 
-            bool isDead = _target.GetComponent<Health.Health>().IsDead(); // TODO getcomp
+            bool isDead = _target.GetComponent<Health>().IsDead(); // TODO getcomp
 
             if (_reachedCollider == false || isDead)
             {
@@ -81,9 +82,9 @@ namespace Combat
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject == _target.gameObject && _target.GetComponent<Health.Health>().IsDead() == false)
+            if (other.gameObject == _target.gameObject && _target.GetComponent<Health>().IsDead() == false)
             {
-                other.GetComponent<Health.Health>().TakeDamage(_damage); // TODO can be changed with Actions
+                other.GetComponent<Health>().TakeDamage(_damage); // TODO can be changed with Actions
 
                 // Рассчитываем позицию снаряда после попадания
                 Vector3 targetPos = GetTargetPosition();

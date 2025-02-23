@@ -20,6 +20,7 @@ namespace Infrastructure.Installers
         [SerializeField] private IGame _iGamePrefab;
 
         [SerializeField] private FollowCamera _followCameraPrefab;
+        [SerializeField] private AudioManager _audioManagerPrefab;
         [SerializeField] private MainPlayer _playerPrefab;
         [SerializeField] private DataPlayer _dataPlayerPrefab;
         [SerializeField] private LevelChangeObserver _levelChangeObserverPrefab;
@@ -49,7 +50,7 @@ namespace Infrastructure.Installers
         private void BindingComponents()
         {
             BindingUI();
-            
+            Container.Bind<AudioManager>().FromComponentInNewPrefab(_audioManagerPrefab).AsSingle().NonLazy();
             Container.Bind<FollowCamera>().FromComponentInNewPrefab(_followCameraPrefab).AsSingle().NonLazy();
             Container.Bind<DataPlayer>().FromComponentInNewPrefab(_dataPlayerPrefab).AsSingle().NonLazy();
             Container.Bind<LevelChangeObserver>().FromComponentInNewPrefab(_levelChangeObserverPrefab).AsSingle().NonLazy();

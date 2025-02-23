@@ -5,6 +5,7 @@ using Combat.EnumsCombat;
 using Core;
 using Data;
 using DialogueEditor;
+using Healths;
 using Movement;
 using Saving;
 using UI;
@@ -42,7 +43,7 @@ namespace AINavigation
         private DataPlayer _dataPlayer;
         private Fighter _fighter;
         private Mover _mover;
-        private Health.Health _health;
+        private Health _health;
         private int _enemyLayer = 9; // Номер слоя для врагов  // TODO change
 
         private List<Fighter> _allEnemies;
@@ -56,7 +57,7 @@ namespace AINavigation
             Debug.Log("Construct PlayerController");
             _mover = GetComponent<Mover>();
             _fighter = GetComponent<Fighter>();
-            _health = GetComponent<Health.Health>();
+            _health = GetComponent<Health>();
 
             PlayerArmorManager = playerArmorManager;
             WeaponPanelUI = weaponPanelUI;
@@ -70,7 +71,7 @@ namespace AINavigation
         // {
         //     _mover = GetComponent<Mover>(); // TODO RequieredComponents  
         //     _fighter = GetComponent<Fighter>();
-        //     _health = GetComponent<Health.Health>();
+        //     _health = GetComponent<Healths.Healths>();
         //
         //     PlayerArmorManager = FindObjectOfType<PlayerArmorManager>(); // TODO Delete
         //
@@ -109,7 +110,7 @@ namespace AINavigation
             }
         }
 
-        public Health.Health GetHealth() => _health; // TODO move to properties
+        public Health GetHealth() => _health; // TODO move to properties
 
         public Fighter GetFighter() => _fighter; // TODO move to properties
 

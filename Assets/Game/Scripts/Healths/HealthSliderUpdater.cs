@@ -2,7 +2,7 @@ using Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Health
+namespace Healths
 {
     [RequireComponent(typeof(Health))]
     public class HealthSliderUpdater : MonoBehaviour
@@ -17,11 +17,11 @@ namespace Health
 
             if (healthSlider == null)
             {
-                Debug.LogError("Health Slider is not assigned to " + gameObject.name);
+                Debug.LogError("Healths Slider is not assigned to " + gameObject.name);
             }
             else if (_health == null)
             {
-                Debug.LogError("Health component is not assigned to " + gameObject.name);
+                Debug.LogError("Healths component is not assigned to " + gameObject.name);
             }
 
             data = FindObjectOfType<DataPlayer>(); // TODO find change

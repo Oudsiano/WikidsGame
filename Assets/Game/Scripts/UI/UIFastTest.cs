@@ -1,6 +1,7 @@
 using System;
 using Core;
 using DG.Tweening;
+using Healths;
 using SceneManagement;
 using TMPro;
 using UnityEngine;
@@ -29,7 +30,7 @@ namespace UI
         [FormerlySerializedAs("testText")] [SerializeField]
         private TMP_Text _testText;
 
-        private Health.Health _targetKillAfterTest;
+        private Health _targetKillAfterTest;
         private OneFastTest _currentTest;
         private bool _isCorrect;
         private int _addArrows;
@@ -75,7 +76,7 @@ namespace UI
             button.GetComponent<Image>().color = Color.white;
         }
 
-        public void ShowTest(int stratIndexFastTests, int endIndexFastTests, int addArrows, Health.Health targetKillAfterTest)
+        public void ShowTest(int stratIndexFastTests, int endIndexFastTests, int addArrows, Health targetKillAfterTest)
         {
             _isCorrect = false;
             _addArrows = addArrows;

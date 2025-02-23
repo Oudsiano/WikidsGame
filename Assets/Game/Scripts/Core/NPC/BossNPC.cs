@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Healths;
 using UnityEngine;
 
 namespace Core.NPC
@@ -28,9 +29,9 @@ namespace Core.NPC
 
             foreach (GameObject enemy in Enemies)
             {
-                if (enemy.GetComponent<Health.Health>() == null) // TODO TryGetComp
+                if (enemy.GetComponent<Health>() == null) // TODO TryGetComp
                 {
-                    Debug.LogError($"У врага {enemy.name} нет компонента Health");
+                    Debug.LogError($"У врага {enemy.name} нет компонента Healths");
                 }
             }
 
@@ -38,7 +39,7 @@ namespace Core.NPC
 
             foreach (GameObject enemy in Enemies)
             {
-                Health.Health health = enemy.GetComponent<Health.Health>(); // TODO TryGetComp
+                Health health = enemy.GetComponent<Health>(); // TODO TryGetComp
                 
                 if (health == null)
                 {

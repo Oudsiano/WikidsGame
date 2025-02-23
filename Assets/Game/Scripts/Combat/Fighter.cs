@@ -3,6 +3,7 @@ using Combat.EnumsCombat;
 using Core;
 using Core.Interfaces;
 using Core.Player;
+using Healths;
 using Movement;
 using UI.Inventory;
 using UI.Inventory.Data;
@@ -33,7 +34,7 @@ namespace Combat
         [FormerlySerializedAs("bowWeapon")] [SerializeField]
         private Weapon _bowWeapon = null;
 
-        [FormerlySerializedAs("target")] public Health.Health Target;
+        [FormerlySerializedAs("target")] public Health Target;
 
         private float _timer = 20;
         private bool _isPlayer;
@@ -127,7 +128,7 @@ namespace Combat
 
         private void OnMouseEnter()
         {
-            if (_isPlayer == false && GetComponent<Health.Health>().IsDead() == false)
+            if (_isPlayer == false && GetComponent<Health>().IsDead() == false)
             {
                 _igame.CursorManager.SetCursorSword(); // TODO replace
             }
@@ -230,13 +231,13 @@ namespace Combat
             }
 
             _actionScheduler.Setup(this);
-            Target = combatTarget.GetComponent<Health.Health>(); // TODO replace getComp
+            Target = combatTarget.GetComponent<Health>(); // TODO replace getComp
             Target.GetComponent<Fighter>(); // TODO replace getComp
         }
 
         public bool CanAttack(GameObject target)
         {
-            return target && target.GetComponent<Health.Health>().IsDead() == false;
+            return target && target.GetComponent<Health>().IsDead() == false;
         }
 
         public void UnequipWeapon()
@@ -303,7 +304,7 @@ namespace Combat
             }
         }
 
-        // public void SetTarget(Health other) // TODO not used code
+        // public void SetTarget(Healths other) // TODO not used code
         // {
         //     Target = other;
         // }

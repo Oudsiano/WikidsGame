@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Core.Player;
 using Data;
+using Healths;
 using Saving;
 using SceneManagement.Enums;
 using UI;
@@ -151,7 +152,7 @@ namespace SceneManagement
             animator.Rebind();
             animator.Update(0f);
 
-            _player.gameObject.GetComponent<Health.Health>().Restore();
+            _player.gameObject.GetComponent<Health>().Restore();
 
             // Включаем навигацию для игрока
             _player.gameObject.GetComponent<NavMeshAgent>().enabled = true;

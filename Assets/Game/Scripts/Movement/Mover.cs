@@ -19,6 +19,7 @@ namespace Movement
         //TODO Public
         [FormerlySerializedAs("clickEffect")] // TODO Remove
         public ClickEffect ClickEffect; // Ссылка на скрипт для создания эффекта при нажатии на точку
+
         public float StrafeDistance = 3f;
         public NPCInteractable Target;
 
@@ -147,7 +148,10 @@ namespace Movement
                 return;
             }
 
-            _agent.isStopped = true; // Останавливаем движение
+            if (_agent.isOnNavMesh)
+            {
+                _agent.isStopped = true; // Останавливаем движение}
+            }
         }
 
         // Метод для проверки, находимся ли мы в заданной точке с некоторым допуском

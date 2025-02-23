@@ -68,7 +68,7 @@ namespace Combat
                 if (_item != null)
                 {
                     _item.CreateInstance();
-                    IGame.Instance.UIManager.uIBug.TryAddEquipToBug(_item);
+                    IGame.Instance._uiManager.uIBug.TryAddEquipToBug(_item);
                 }
                 else
                 {

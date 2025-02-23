@@ -12,7 +12,7 @@ namespace AINavigation
         public void TryAddItemItem()
         {
             if (_item != null)
-                IGame.Instance.UIManager.uIBug.TryAddEquipToBug(_item.CreateInstance());
+                IGame.Instance._uiManager.uIBug.TryAddEquipToBug(_item.CreateInstance());
         }
     }
 }

@@ -119,9 +119,9 @@ namespace SceneManagement
                     _uiManager.FollowCamera.ActivateCommonZoomUpdate();
                 }
             }
-            else if (_savePointsManager.AllSavePoints.Count > 0)
+            else if (SavePointsManager.AllSavePoints.Count > 0)
             {
-                Vector3 posThere = _savePointsManager.AllSavePoints[_dataPlayer.PlayerData.spawnPoint]
+                Vector3 posThere = SavePointsManager.AllSavePoints[_dataPlayer.PlayerData.spawnPoint]
                     .transform.position;
 
                 Quaternion rotation = new Quaternion();

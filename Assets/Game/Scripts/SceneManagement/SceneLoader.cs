@@ -31,6 +31,8 @@ namespace SceneManagement
         public void Construct(DataPlayer dataPlayer, LevelChangeObserver levelChangeObserver,
             SavePointsManager savePointsManager)
         {
+            Debug.Log("SceneLoader constructed");
+            
             _dataPlayer = dataPlayer;
             _levelChangeObserver = levelChangeObserver;
             _savePointsManager = savePointsManager;

@@ -1,6 +1,7 @@
 ﻿using AINavigation;
 using Combat;
 using Core;
+using Core.Camera;
 using Core.Player;
 using Core.Quests;
 using Data;
@@ -16,9 +17,6 @@ namespace Infrastructure.Installers.EntryPoint
     {
         [SerializeField] private SceneContext _sceneContext;
         private DiContainer _sceneContainer;
-
-        //UI
-        private WeaponPanelUI _weaponPanelUI;
 
         private MainPlayer _player;
         private IGame _iGame;
@@ -36,6 +34,7 @@ namespace Infrastructure.Installers.EntryPoint
         private WeaponArmorManager _weaponArmorManager;
         private PlayerArmorManager _playerArmorManager;
 
+        private FollowCamera _followCamera;
         private SceneLoader _sceneLoader;
         private SavePointsManager _savePointsManager;
         private ArrowForPlayerManager _arrowForPlayerManager;
@@ -47,48 +46,49 @@ namespace Infrastructure.Installers.EntryPoint
         {
             _sceneContainer = _sceneContext.Container;
 
-            _savePointsManager = diContainer.Resolve<SavePointsManager>(); // TODO move
-            _arrowForPlayerManager = diContainer.Resolve<ArrowForPlayerManager>();
-            _fastTestsManager = diContainer.Resolve<FastTestsManager>();
-            _saveGame = diContainer.Resolve<SaveGame>();
+            _iGame = _sceneContainer.Resolve<IGame>();
+            _followCamera = _sceneContainer.Resolve<FollowCamera>(); //
+            _sceneLoader = _sceneContainer.Resolve<SceneLoader>();
+            _gameAPI = _sceneContainer.Resolve<GameAPI>();
 
-            _player = diContainer.Resolve<MainPlayer>(); //
-            _dataPlayer = diContainer.Resolve<DataPlayer>(); //
-            _playerController = diContainer.Resolve<PlayerController>(); //
-            _levelChangeObserver = diContainer.Resolve<LevelChangeObserver>(); //
-            _bottleManager = diContainer.Resolve<BottleManager>(); // 
-            _questManager = diContainer.Resolve<QuestManager>(); // 
-            _npcManager = diContainer.Resolve<NPCManagment>(); // 
-            _cursorManager = diContainer.Resolve<CursorManager>(); // 
-            _uiManager = diContainer.Resolve<UIManager>(); //
-            _coinManager = diContainer.Resolve<CoinManager>(); //
-            _weaponArmorManager = diContainer.Resolve<WeaponArmorManager>(); //
-            _playerArmorManager = diContainer.Resolve<PlayerArmorManager>(); //
-            _weaponPanelUI = diContainer.Resolve<WeaponPanelUI>(); //
-
-            _iGame = diContainer.Resolve<IGame>();
-            _sceneLoader = diContainer.Resolve<SceneLoader>();
-            _gameAPI = diContainer.Resolve<GameAPI>();
+            _savePointsManager = _sceneContainer.Resolve<SavePointsManager>(); // TODO move
+            _arrowForPlayerManager = _sceneContainer.Resolve<ArrowForPlayerManager>();
+            _fastTestsManager = _sceneContainer.Resolve<FastTestsManager>();
+            _saveGame = _sceneContainer.Resolve<SaveGame>();
+            _player = _sceneContainer.Resolve<MainPlayer>(); //
+            _dataPlayer = _sceneContainer.Resolve<DataPlayer>(); //
+            _levelChangeObserver = _sceneContainer.Resolve<LevelChangeObserver>(); //
+            _bottleManager = _sceneContainer.Resolve<BottleManager>(); // 
+            _questManager = _sceneContainer.Resolve<QuestManager>(); // 
+            _npcManager = _sceneContainer.Resolve<NPCManagment>(); // 
+            _cursorManager = _sceneContainer.Resolve<CursorManager>(); // 
+            _uiManager = _sceneContainer.Resolve<UIManager>(); //
+            _coinManager = _sceneContainer.Resolve<CoinManager>(); //
+            _weaponArmorManager = _sceneContainer.Resolve<WeaponArmorManager>(); //
 
             ConstructComponents();
+        }
 
-            _iGame.Construct(_player, _gameAPI, _dataPlayer, _saveGame, _playerController,
+        private void ConstructComponents() // TODO check order
+        {
+            _iGame.Construct(_player, _gameAPI, _dataPlayer, _saveGame, _player.PlayerController,
                 _levelChangeObserver, _savePointsManager, _arrowForPlayerManager,
                 _questManager, _npcManager, _fastTestsManager,
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
-                _weaponArmorManager, _playerArmorManager, _weaponPanelUI);
-        }
+                _weaponArmorManager);
 
-        private void ConstructComponents()
-        {
             _savePointsManager.Construct(_dataPlayer);
-            _player.Construct(_dataPlayer, _uiManager, _playerController);
             _sceneLoader.Construct(_dataPlayer, _levelChangeObserver, _savePointsManager);
-            _gameAPI.Construct(_player, _sceneLoader, _dataPlayer, _saveGame, _fastTestsManager, _playerController,
+            _gameAPI.Construct(_player, _sceneLoader, _dataPlayer, _saveGame, _fastTestsManager,
+                _player.PlayerController,
                 _weaponArmorManager, _questManager);
 
             _saveGame.Construct(_gameAPI, _weaponArmorManager, _coinManager,
                 _dataPlayer, _uiManager);
+            _uiManager.Construct(_sceneLoader, _followCamera, _gameAPI, _coinManager, _saveGame, _questManager,
+                _dataPlayer, _fastTestsManager);
+            _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame);
+            _followCamera.Construct(_player);
 
             //_playerController.Construct(); -> iGame.Construct
             //_levelChangeObserver.Construct(); -> iGame.Construct

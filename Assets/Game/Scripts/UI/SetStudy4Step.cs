@@ -6,12 +6,12 @@ namespace UI
     {
         private void OnTriggerEnter(Collider other)
         {
-            IGame.Instance.UIManager.HelpInFirstScene.Study4();
+            IGame.Instance._uiManager.HelpInFirstScene.Study4();
         }
 
         private void OnTriggerExit(Collider other)
         {
-            IGame.Instance.UIManager.HelpInFirstScene.EndStudy4();
+            IGame.Instance._uiManager.HelpInFirstScene.EndStudy4();
         }
     }
 }

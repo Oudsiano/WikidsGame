@@ -128,12 +128,12 @@ namespace FarrokhGames.Inventory
                 {
                     if (originalController.inventory.isMarket && originalController!=currentController)
                     {
-                        IGame.Instance.UIManager.UiMarketPanel.InitConfirmMarketUI(OnMarketAccept, OnMarketDecline, grid, item);
+                        IGame.Instance._uiManager.UiMarketPanel.InitConfirmMarketUI(OnMarketAccept, OnMarketDecline, grid, item);
                     }
                     else if (currentController.inventory.isMarket && originalController != currentController)
                     {
-                        //Перенос В маркет
-                        IGame.Instance.UIManager.UiMarketPanel.SellItem(OnMarketAccept, OnMarketDecline, grid, item);
+                        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+                        IGame.Instance._uiManager.UiMarketPanel.SellItem(OnMarketAccept, OnMarketDecline, grid, item);
                     }
                     else
                     {

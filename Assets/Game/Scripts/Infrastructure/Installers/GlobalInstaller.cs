@@ -1,5 +1,7 @@
 ﻿using AINavigation;
+using Combat;
 using Core;
+using Core.Camera;
 using Core.Player;
 using Core.Quests;
 using Data;
@@ -17,8 +19,8 @@ namespace Infrastructure.Installers
         [SerializeField] private GameAPI _gameAPIPrefab;
         [SerializeField] private IGame _iGamePrefab;
 
+        [SerializeField] private FollowCamera _followCameraPrefab;
         [SerializeField] private MainPlayer _playerPrefab;
-        [SerializeField] private PlayerController _playerControllerPrefab;
         [SerializeField] private DataPlayer _dataPlayerPrefab;
         [SerializeField] private LevelChangeObserver _levelChangeObserverPrefab;
         [SerializeField] private BottleManager _bottleManagerPrefab;
@@ -31,6 +33,8 @@ namespace Infrastructure.Installers
         
         public override void InstallBindings()
         {
+            BindingComponents();
+            
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
             Container.Bind<IGame>().FromComponentInNewPrefab(_iGamePrefab).AsSingle().NonLazy();
             Container.Bind<GameAPI>().FromComponentInNewPrefab(_gameAPIPrefab).AsSingle().NonLazy();
@@ -40,9 +44,14 @@ namespace Infrastructure.Installers
             Container.Bind<ArrowForPlayerManager>().AsSingle().NonLazy();
             Container.Bind<FastTestsManager>().AsSingle().NonLazy();
             Container.Bind<SaveGame>().AsSingle().NonLazy();
+        }
+
+        private void BindingComponents()
+        {
+            BindingUI();
             
+            Container.Bind<FollowCamera>().FromComponentInNewPrefab(_followCameraPrefab).AsSingle().NonLazy();
             Container.Bind<DataPlayer>().FromComponentInNewPrefab(_dataPlayerPrefab).AsSingle().NonLazy();
-            Container.Bind<PlayerController>().FromComponentInNewPrefab(_playerControllerPrefab).AsSingle().NonLazy();
             Container.Bind<LevelChangeObserver>().FromComponentInNewPrefab(_levelChangeObserverPrefab).AsSingle().NonLazy();
             Container.Bind<BottleManager>().FromComponentInNewPrefab(_bottleManagerPrefab).AsSingle().NonLazy();
             Container.Bind<QuestManager>().FromComponentInNewPrefab(_questManagerPrefab).AsSingle().NonLazy();
@@ -51,6 +60,11 @@ namespace Infrastructure.Installers
             Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
             Container.Bind<CoinManager>().FromComponentInNewPrefab(_coinManagerPrefab).AsSingle().NonLazy();
             Container.Bind<WeaponArmorManager>().FromComponentInNewPrefab(_weaponArmorManagerPrefab).AsSingle().NonLazy();
+        }
+
+        private void BindingUI()
+        {
+            
         }
     }
 }

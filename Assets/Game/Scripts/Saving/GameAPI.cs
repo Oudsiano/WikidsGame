@@ -45,6 +45,7 @@ namespace Saving
             FastTestsManager fastTestsManager, PlayerController playerController,
             WeaponArmorManager weaponArmorManager, QuestManager questManager)
         {
+            Debug.Log("GameAPI constructed");
             _player = player;
             _sceneLoader = sceneLoader;
             _dataPlayer = dataPlayer;
@@ -54,12 +55,12 @@ namespace Saving
             _weaponArmorManager = weaponArmorManager;
             _questManager = questManager;
 
-            UpdateID();
+            //UpdateID();
 
             //TryInitDataServer();
-            SetupLoad();
-            textForOtl.text =
-                $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
+            //SetupLoad();
+            // textForOtl.text =
+            //     $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
         }
 
         public void FixedUpdate()

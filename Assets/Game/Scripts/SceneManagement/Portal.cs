@@ -64,7 +64,7 @@ namespace SceneManagement
             // Проверяем, что в область портала входит игрок и что переход между сценами не происходит в данный момент
             if (other.gameObject == MainPlayer.Instance.gameObject)
             {
-                IGame.Instance.UIManager.HelpInFirstScene.EndStudy5();
+                IGame.Instance._uiManager.HelpInFirstScene.EndStudy5();
 
                 if (IGame.Instance.NPCManagment.checkAllTestsComplite() == false)
                 {
@@ -137,7 +137,7 @@ namespace SceneManagement
 
         private void TextDisplay(int coins, string text) // TODO move Factory canvas
         {
-            IGame.Instance.CoinManager.Coins.ChangeCount(coins);
+            IGame.Instance._coinManager.Coins.ChangeCount(coins);
 
             TextMeshProUGUI messageText;
             Canvas canvas;

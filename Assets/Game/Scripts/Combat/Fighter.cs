@@ -40,8 +40,6 @@ namespace Combat
         private WeaponNow _weapon;
         //private bool isFireballNow = false; // TODO not used code
 
-        private Fighter _fighter;
-
         private Mover _mover;
         private ActionScheduler _actionScheduler;
         private Animator _animator;
@@ -233,7 +231,7 @@ namespace Combat
 
             _actionScheduler.Setup(this);
             Target = combatTarget.GetComponent<Health.Health>(); // TODO replace getComp
-            _fighter = Target.GetComponent<Fighter>(); // TODO replace getComp
+            Target.GetComponent<Fighter>(); // TODO replace getComp
         }
 
         public bool CanAttack(GameObject target)
@@ -261,7 +259,7 @@ namespace Combat
 
             if (_isPlayer && _weapon != WeaponNow.bow)
             {
-                if (_fighter._defaultWeapon == _bowWeapon)
+                if (_defaultWeapon == _bowWeapon)
                 {
                     return;
                 }
@@ -395,7 +393,7 @@ namespace Combat
 
                 if (_isPlayer && _weapon != WeaponNow.bow)
                 {
-                    if (_fighter._defaultWeapon == _bowWeapon)
+                    if (_defaultWeapon == _bowWeapon)
                     {
                         return;
                     }

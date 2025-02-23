@@ -80,12 +80,12 @@ namespace UI
 
         private void _OnMouseEnter()
         {
-            IGame.Instance.UIManager.UpdateIconMapPanel(description);
+            IGame.Instance._uiManager.UpdateIconMapPanel(description);
         }
 
         private void _OnMouseExit()
         {
-            IGame.Instance.UIManager.UpdateIconMapPanel("");
+            IGame.Instance._uiManager.UpdateIconMapPanel("");
         }
 
         private void OnDestroy()

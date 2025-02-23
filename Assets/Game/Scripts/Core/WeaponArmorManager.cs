@@ -35,7 +35,7 @@ namespace Core
 
         public Armor GerArmorById(armorID armrId) // TODO rename
         {
-            return _allArmorsInGame.Find((item) => item.ArmorName == armrId);
+            return _allArmorsInGame.Find((item) => item.ArmorName == armrId); // TODO change find
         }
 
         public bool IsWeaponInGame(string name)

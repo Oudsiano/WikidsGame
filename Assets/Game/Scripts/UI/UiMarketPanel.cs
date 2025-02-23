@@ -102,7 +102,7 @@ namespace UI
             InventoryAll.inventory.onItemAdded += HandleItemAdded;
             InventoryAll.inventory.onItemRemoved += HandleItemRemoved;
 
-            IGame.Instance.CoinManager.Coins.OnChangeCount += OnChangeMoney;
+            IGame.Instance._coinManager.Coins.OnChangeCount += OnChangeMoney;
         }
 
         public void Regen(int _minPrice, int _maxPrice)
@@ -395,7 +395,7 @@ namespace UI
                 InventoryBag.inventory.onItemRemoved -= HandleItemBugRemoved;
             }
 
-            IGame.Instance.CoinManager.Coins.OnChangeCount -= OnChangeMoney;
+            IGame.Instance._coinManager.Coins.OnChangeCount -= OnChangeMoney;
             _btnClose.onClick.RemoveAllListeners();
 
             _buttonAccept.onClick.RemoveAllListeners();

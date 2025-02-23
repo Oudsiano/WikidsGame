@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Data;
+using UnityEngine;
 
 namespace Saving
 {
@@ -8,7 +9,7 @@ namespace Saving
         private static Dictionary<int, SavePoint> allSavePoints;
         private DataPlayer _dataPlayer;
 
-        public Dictionary<int, SavePoint> AllSavePoints
+        public static Dictionary<int, SavePoint> AllSavePoints
         {
             get
             {
@@ -24,6 +25,7 @@ namespace Saving
 
         public void Construct(DataPlayer dataPlayer)
         {
+            Debug.Log("SavePointsManager constructed");
             _dataPlayer = dataPlayer;
         }
 
@@ -43,6 +45,27 @@ namespace Saving
                     if (allSavePoints[i] != null)
                     {
                         allSavePoints[i].SetAlreadyEnabled(_dataPlayer.PlayerData.stateSpawnPoints[i], thisLast);
+                    }
+                }
+            }
+        }
+        
+        public static void UpdateStateSpawnPointsAfterLoad(int _ = 1, bool reset = false) // TODO change
+        {
+            if (allSavePoints == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < IGame.Instance.dataPlayer.PlayerData.stateSpawnPoints.Count; i++)
+            {
+                bool thisLast = i == IGame.Instance.dataPlayer.PlayerData.spawnPoint;
+
+                if (allSavePoints.Count > i)
+                {
+                    if (allSavePoints[i] != null)
+                    {
+                        allSavePoints[i].SetAlreadyEnabled(IGame.Instance.dataPlayer.PlayerData.stateSpawnPoints[i], thisLast);
                     }
                 }
             }

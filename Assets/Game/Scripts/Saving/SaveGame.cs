@@ -50,6 +50,7 @@ namespace Saving
             CoinManager coinManager,
             DataPlayer dataPlayer, UIManager uiManager)
         {
+            Debug.Log("SaveGame constructed");
             _weaponArmorManager = weaponArmorManager;
             _coinManager = coinManager;
             _dataPlayer = dataPlayer;

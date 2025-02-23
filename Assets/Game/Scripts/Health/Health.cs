@@ -223,20 +223,20 @@ namespace Health
                 }
 
                 Destroy(gameObject, 5f); // TODO magic numbers
-                IGame.Instance.CoinManager.MakeGoldOnSceneWithCount(25,
+                IGame.Instance._coinManager.MakeGoldOnSceneWithCount(25,
                     this.gameObject.transform.position); // TODO magic numbers
 
                 var tempRandom = UnityEngine.Random.Range(0, 9); // TODO magic numbers
 
                 if (tempRandom > 6) //30%
                 {
-                    IGame.Instance.BottleManager.MakeBottleOnSceneWithCount(25,
+                    IGame.Instance._bottleManager.MakeBottleOnSceneWithCount(25,
                         this.gameObject.transform.position); // TODO magic numbers
                 }
             }
             else
             {
-                IGame.Instance.UIManager.DeathUI.ShowDeathScreen();
+                IGame.Instance._uiManager.DeathUI.ShowDeathScreen();
                 // Деактивируем необходимые компоненты
                 //GetComponent<NavMeshAgent>().enabled = false;
                 //GetComponent<Collider>().enabled = false;

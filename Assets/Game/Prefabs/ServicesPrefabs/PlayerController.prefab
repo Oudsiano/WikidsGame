@@ -10,6 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6252691940415689708}
   - component: {fileID: 1847232589753306016}
+  - component: {fileID: 3860880964782611226}
+  - component: {fileID: 625932395055682981}
+  - component: {fileID: 1034790165622204236}
+  - component: {fileID: 5885985021662833864}
+  - component: {fileID: 7290524773947191018}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -53,3 +58,80 @@ MonoBehaviour:
   PlayerArmorManager: {fileID: 0}
   WeaponPanelUI: {fileID: 0}
   ModularCharacter: {fileID: 0}
+--- !u!114 &3860880964782611226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3208651843984623499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1cafa4ed48613d4fad57526a90efa28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rightHandPosition: {fileID: 0}
+  _leftHandPosition: {fileID: 0}
+  _defaultWeapon: {fileID: 0}
+  _equippedWeapon: {fileID: 0}
+  _fireballWeapon: {fileID: 0}
+  _bowWeapon: {fileID: 0}
+  Target: {fileID: 0}
+--- !u!114 &625932395055682981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3208651843984623499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349eccfb59a03b84aaa950abf8ae93c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ClickEffect: {fileID: 5885985021662833864}
+  StrafeDistance: 3
+  Target: {fileID: 0}
+--- !u!114 &1034790165622204236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3208651843984623499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f578d81a8ed94821ae9508b8203aabbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RedHalfCircle: {fileID: 0}
+  healthBar: {fileID: 0}
+  maxHealth: 100
+  currentHealth: 100
+--- !u!114 &5885985021662833864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3208651843984623499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 519af89390db447aeba4c2ee889b1817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 0}
+--- !u!114 &7290524773947191018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3208651843984623499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37ef0942cfd964bf8ae3d0550f26acaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 0}
+  healthSlider: {fileID: 0}

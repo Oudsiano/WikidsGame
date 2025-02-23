@@ -13,6 +13,8 @@ namespace Core.Camera
     // Класс для управления камерой, следующей за целью
     public class FollowCamera : MonoBehaviour
     {
+        private MainPlayer _player;
+        
         [SerializeField] private float rotationSpeed = 10f; // Скорость вращения камеры
         [SerializeField] private float zoomSpeed = 10f; // Скорость приближения/удаления камеры
 
@@ -47,7 +49,7 @@ namespace Core.Camera
         private float _autoZoomForReturn;
 
         private allScenes _sceneId = allScenes.emptyScene;
-
+        
         // TODO static and rename
         public static event Action OnCameraRotation; // Для обучения
         public static event Action OnCameraScale; // Для обучения
@@ -59,15 +61,17 @@ namespace Core.Camera
         public float AutoZoomForReturn => _autoZoomForReturn;
 
         public bool CommonZoomUpdate => _commonZoomUpdate;
-
-        private void Start() // TODO Construct
+        
+        public void Construct(MainPlayer player)
         {
+            Debug.Log("FollowCamera constructed");
+            _player = player;
             _maxZoom = _maxZoomDefault;
             _minZoom = _minZoomDefault;
 
-            _mainCamera = UnityEngine.Camera.main; // Получаем главную камеру
-            _defaultCameraTransform = transform; // Сохраняем начальное положение камеры
-            _target = MainPlayer.Instance.transform; // Получаем цель (обычно игрока)
+            _mainCamera = UnityEngine.Camera.main; 
+            _defaultCameraTransform = transform; 
+            _target = _player.transform; 
             _autoZoomForReturn = _zoomTotal;
             Rotate();
 

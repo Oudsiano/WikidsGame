@@ -39,19 +39,19 @@ namespace UI
         {
             if (sceneState == SceneState.battle)
             {
-                if (IGame.Instance.UIManager.MapCanvas.gameObject.activeSelf)
+                if (IGame.Instance._uiManager.MapCanvas.gameObject.activeSelf)
                 {
-                    IGame.Instance.UIManager.OnClickBtnCloseMap();
+                    IGame.Instance._uiManager.OnClickBtnCloseMap();
                 }
                 else
                     switch (escState)
                     {
                         case EscState.none:
-                            IGame.Instance.UIManager.ShowAgainUi();
+                            IGame.Instance._uiManager.ShowAgainUi();
                             break;
                     
                         case EscState.againScr:
-                            IGame.Instance.UIManager.OnCLickCancelAgain();
+                            IGame.Instance._uiManager.OnCLickCancelAgain();
                             break;
                     }
             }

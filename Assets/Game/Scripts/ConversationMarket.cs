@@ -55,9 +55,9 @@ public class ConversationMarket : MonoBehaviour
 
     private void OnClickButton()
     {
-        if (IGame.Instance.UIManager.UiMarketPanel != null)
+        if (IGame.Instance._uiManager.UiMarketPanel != null)
         {
-            IGame.Instance.UIManager.OpenMarket(_minPriceMarket, _maxPriceMarket);
+            IGame.Instance._uiManager.OpenMarket(_minPriceMarket, _maxPriceMarket);
         }
     }
 }

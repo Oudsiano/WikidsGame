@@ -18,7 +18,7 @@ namespace UI
                 .OnComplete(() =>
                 {
                     gameObject.SetActive(false);
-                    IGame.Instance.UIManager.ShowAgainUi();
+                    IGame.Instance._uiManager.ShowAgainUi();
                 });
         }
     }

@@ -1,7 +1,10 @@
 using Combat.Data;
 using Core;
 using Core.Camera;
+using Core.Quests;
+using Data;
 using DG.Tweening;
+using Saving;
 using SceneManagement;
 using SceneManagement.Enums;
 using TMPro;
@@ -62,7 +65,7 @@ namespace UI
         [SerializeField] private TMPro.TMP_Text IconMapText;
         [SerializeField] private GameObject TestNotAvaible;
         [SerializeField] private GameObject ForAttackTest;
-        
+
         [Header("QuestSector")] [SerializeField]
         private Image _btnQuestBack;
 
@@ -106,23 +109,38 @@ namespace UI
 
         private FollowCamera _followCamera;
         private SceneLoader _sceneLoader;
+        private GameAPI _gameAPI;
+        private CoinManager _coinManager;
+        private SaveGame _saveGame;
+        private QuestManager _questManager;
+        private DataPlayer _dataPlayer;
+        private FastTestsManager _fastTestsManager;
 
         public SceneLoader SceneLoader
         {
-            get => sceneLoader;
-            set => sceneLoader = value;
+            get => _sceneLoader;
+            set => _sceneLoader = value;
         }
 
         public FollowCamera FollowCamera
         {
-            get => followCamera;
-            set => followCamera = value;
+            get => _followCamera;
+            set => _followCamera = value;
         }
 
-        public void Construct(SceneLoader sceneLoader, FollowCamera followCamera) // TODO construct
+        public void Construct(SceneLoader sceneLoader, FollowCamera followCamera, GameAPI gameAPI,
+            CoinManager coinManager, SaveGame saveGame, QuestManager questManager, DataPlayer dataPlayer,
+            FastTestsManager fastTestsManager) // TODO construct
         {
+            Debug.Log("Construct UIManager");
             _sceneLoader = sceneLoader;
             _followCamera = followCamera;
+            _gameAPI = gameAPI;
+            _coinManager = coinManager;
+            _saveGame = saveGame;
+            _questManager = questManager;
+            _dataPlayer = dataPlayer;
+            _fastTestsManager = fastTestsManager;
 
             fastTestUI.gameObject.SetActive(false);
 
@@ -240,7 +258,7 @@ namespace UI
             if (arrowCharges != null)
             {
                 arrowCharges.text = WeaponBow.GetCurrentCharges().ToString();
-                _savegame.MakeSave();
+                _saveGame.MakeSave();
             }
         }
 
@@ -363,7 +381,7 @@ namespace UI
                 _buttonCancelAgain.gameObject.SetActive(false);
             }
 
-            IGame.Instance.SavePlayerPosLikeaPause(true);// TODO change instanse IGAME
+            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
             PauseClass.IsOpenUI = true;
         }
 
@@ -440,8 +458,8 @@ namespace UI
 
         private void onClickConfirmPLayersScr()
         {
-            _savegame.PlayerName = _playerNameInputField.text;
-            _savegame.MakeSave();
+            _saveGame.PlayerName = _playerNameInputField.text;
+            _saveGame.MakeSave();
             ClosePlayerScr();
         }
 
@@ -455,7 +473,7 @@ namespace UI
 
         private void RegenPLayerInfoScr()
         {
-            _playerNameInputField.text = _savegame.PlayerName;
+            _playerNameInputField.text = _saveGame.PlayerName;
         }
 
         private void OnClickButtonMap()

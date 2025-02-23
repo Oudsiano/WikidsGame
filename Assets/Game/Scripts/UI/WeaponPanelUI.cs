@@ -1,4 +1,6 @@
+using AINavigation;
 using Combat.Data;
+using Data;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -17,10 +19,15 @@ namespace UI
 
         [FormerlySerializedAs("FireballText")] [SerializeField] private TMPro.TextMeshProUGUI _fireballText;
 
-        [FormerlySerializedAs("bowWeapon")] [SerializeField] private Weapon _bowWeapon;  
+        [FormerlySerializedAs("bowWeapon")] [SerializeField] private Weapon _bowWeapon;
 
-        public void Construct() // TODO construct
+        private PlayerController _playerController;
+        private DataPlayer _dataPlayer;
+        
+        public void Construct(PlayerController playerController, DataPlayer dataPlayer) // TODO construct
         {
+            _playerController = playerController;
+            _dataPlayer = dataPlayer;
             CommonWeaponBTN.onClick.AddListener(OnCLickCommonWeaponBTN);
             FireballBTN.onClick.AddListener(OnCLickFireballBTN);
             BowBTN.onClick.AddListener(OnClickBowBTN); 
@@ -31,7 +38,7 @@ namespace UI
         
         public void ResetWeaponToDefault()
         {
-            IGame.Instance.playerController.GetFighter().SetCommonWeapon();
+            _playerController.GetFighter().SetCommonWeapon();
             FireballPanell.SetActive(false);
             CommonWeaponPanell.SetActive(true);
             BowPanell.SetActive(false);
@@ -39,9 +46,9 @@ namespace UI
 
         public void ResetFireballCount()
         {
-            if (IGame.Instance.dataPlayer.PlayerData.chargeEnergy > 0)
+            if (_dataPlayer.PlayerData.chargeEnergy > 0)
             {
-                _fireballText.text = "Fireball";  // (" + IGame.Instance.dataPLayer.playerData.chargeEnergy.ToString() + ")";
+                _fireballText.text = "Fireball";  // (" + _dataPLayer.playerData.chargeEnergy.ToString() + ")";
                 FireballBTN.gameObject.SetActive(true);
             }
             else
@@ -53,7 +60,7 @@ namespace UI
         
         private void OnCLickFireballBTN()
         {
-            IGame.Instance.playerController.GetFighter().SetFireball();
+            _playerController.GetFighter().SetFireball();
             FireballPanell.SetActive(true);
             CommonWeaponPanell.SetActive(false);
             BowPanell.SetActive(false); 
@@ -63,7 +70,7 @@ namespace UI
 
         private void OnClickBowBTN()
         {
-            IGame.Instance.playerController.GetFighter().SetBow(); 
+            _playerController.GetFighter().SetBow(); 
             BowPanell.SetActive(true);
             CommonWeaponPanell.SetActive(false);
             FireballPanell.SetActive(false);  

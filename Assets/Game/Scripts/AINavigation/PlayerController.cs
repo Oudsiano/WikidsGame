@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Combat;
 using Combat.EnumsCombat;
 using Core;
+using Data;
 using DialogueEditor;
 using Movement;
 using Saving;
@@ -16,8 +17,6 @@ namespace AINavigation
 {
     public class PlayerController : MonoBehaviour
     {
-        private PlayerArmorManager _playerArmorManager;
-
         [FormerlySerializedAs("invizVFXPrefab")] [SerializeField]
         private GameObject _invisibilityVFXPrefab; // TODO GO
 
@@ -39,7 +38,8 @@ namespace AINavigation
 
         [FormerlySerializedAs("modularCharacter")]
         public GameObject ModularCharacter; // TODO O/C breach
-
+        
+        private DataPlayer _dataPlayer;
         private Fighter _fighter;
         private Mover _mover;
         private Health.Health _health;
@@ -50,18 +50,18 @@ namespace AINavigation
 
         private GameObject _activeInvisibilityVFX; // Текущий активный VFX объект для невидимости
 
-        public void Construct(PlayerArmorManager playerArmorManager, WeaponPanelUI weaponPanelUI, 
-            SaveGame saveGame)
+        public void Construct(IGame igame, PlayerArmorManager playerArmorManager, WeaponPanelUI weaponPanelUI,
+            SaveGame saveGame, DataPlayer dataPlayer)
         {
+            Debug.Log("Construct PlayerController");
             _mover = GetComponent<Mover>();
             _fighter = GetComponent<Fighter>();
             _health = GetComponent<Health.Health>();
 
             PlayerArmorManager = playerArmorManager;
             WeaponPanelUI = weaponPanelUI;
-
-            WeaponPanelUI.Construct(); // TODO Construct 
-            
+            _dataPlayer = dataPlayer;
+            _fighter.Construct(igame);
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }

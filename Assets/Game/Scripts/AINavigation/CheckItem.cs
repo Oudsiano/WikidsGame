@@ -29,7 +29,7 @@ namespace AINavigation
 
             foreach (var item in _items)
             {
-                if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item.Name) == false)
+                if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(item.Name) == false)
                 {
                     confirm = false;
                 }
@@ -37,13 +37,13 @@ namespace AINavigation
 
             foreach (var item in _itemsString)
             {
-                if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item) == false)
+                if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(item) == false)
                 {
                     confirm = false;
                 }
             }
 
-            if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(_nameItem) == false)
+            if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(_nameItem) == false)
             {
                 confirm = false;
             }
@@ -57,17 +57,17 @@ namespace AINavigation
 
             foreach (var item in _items)
             {
-                if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item.Name) == false)
+                if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(item.Name) == false)
                     confirm = false;
             }
 
             foreach (var item in _itemsString)
             {
-                if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(item) == false)
+                if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(item) == false)
                     confirm = false;
             }
 
-            if (IGame.Instance.UIManager.uIBug.TryTakeQuestItem(_nameItem) == false)
+            if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(_nameItem) == false)
             {
                 confirm = false;
             }
@@ -76,15 +76,15 @@ namespace AINavigation
             {
                 foreach (var item in _items)
                 {
-                    IGame.Instance.UIManager.uIBug.NeedDeleteItem(item.Name);
+                    IGame.Instance._uiManager.uIBug.NeedDeleteItem(item.Name);
                 }
 
                 foreach (var item in _itemsString)
                 {
-                    IGame.Instance.UIManager.uIBug.NeedDeleteItem(item);
+                    IGame.Instance._uiManager.uIBug.NeedDeleteItem(item);
                 }
 
-                IGame.Instance.UIManager.uIBug.NeedDeleteItem(_nameItem);
+                IGame.Instance._uiManager.uIBug.NeedDeleteItem(_nameItem);
             }
 
             ConversationManager.Instance.SetBool(_nameParamInNPC, confirm);

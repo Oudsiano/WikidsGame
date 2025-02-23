@@ -192,14 +192,14 @@ namespace Core.Quests
                     IGame.Instance.saveGame.Coins += Quest.countMoney;
                     break;
                 case QuestAwardType.item:
-                    IGame.Instance.UIManager.uIBug.TryAddEquipToBug(Quest.awardItem);
+                    IGame.Instance._uiManager.uIBug.TryAddEquipToBug(Quest.awardItem);
                     break;
             }
 
             MarkQuestAsComplete();
             FadeOutAndShrinkUIElement(gameObject);
             QuestData.FullComplete = true;
-            IGame.Instance.UIManager.UpdateQuestBackImg();
+            IGame.Instance._uiManager.UpdateQuestBackImg();
         }
 
         private void MarkQuestAsComplete()
@@ -265,7 +265,7 @@ namespace Core.Quests
             if (QuestData.CurrentProcess >= QuestData.TargetProcess)
             {
                 SetFinished();
-                IGame.Instance.UIManager.UpdateQuestBackImg();
+                IGame.Instance._uiManager.UpdateQuestBackImg();
             }
         }
 
@@ -295,7 +295,7 @@ namespace Core.Quests
 
         private void FadeOutAndShrinkUIElement(GameObject uiElement)
         {
-            VerticalLayoutGroup vertLGrroup = IGame.Instance.UIManager.QuestsContentScrollRect.content
+            VerticalLayoutGroup vertLGrroup = IGame.Instance._uiManager.QuestsContentScrollRect.content
                 .GetComponent<VerticalLayoutGroup>();
 
             CanvasGroup canvasGroup = uiElement.AddComponent<CanvasGroup>();

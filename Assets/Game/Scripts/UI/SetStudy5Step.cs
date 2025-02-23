@@ -6,7 +6,7 @@ namespace UI
     {
         private void OnTriggerEnter(Collider other)
         {
-            IGame.Instance.UIManager.HelpInFirstScene.Study5();
+            IGame.Instance._uiManager.HelpInFirstScene.Study5();
         }
 
     }

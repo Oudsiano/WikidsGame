@@ -31,6 +31,8 @@ namespace Infrastructure.Installers
         [SerializeField] private UIManager _uiManagerPrefab;
         [SerializeField] private CoinManager _coinManagerPrefab;
         [SerializeField] private WeaponArmorManager _weaponArmorManagerPrefab;
+        [SerializeField] private AllQuestsInGame _allQuests;
+        [SerializeField] private SceneWithTestsID _sceneWithTestsID;
         
         public override void InstallBindings()
         {
@@ -50,6 +52,8 @@ namespace Infrastructure.Installers
         private void BindingComponents()
         {
             BindingUI();
+            Container.Bind<AllQuestsInGame>().FromComponentInNewPrefab(_allQuests).AsSingle().NonLazy();
+            Container.Bind<SceneWithTestsID>().FromComponentInNewPrefab(_sceneWithTestsID).AsSingle().NonLazy();
             Container.Bind<AudioManager>().FromComponentInNewPrefab(_audioManagerPrefab).AsSingle().NonLazy();
             Container.Bind<FollowCamera>().FromComponentInNewPrefab(_followCameraPrefab).AsSingle().NonLazy();
             Container.Bind<DataPlayer>().FromComponentInNewPrefab(_dataPlayerPrefab).AsSingle().NonLazy();

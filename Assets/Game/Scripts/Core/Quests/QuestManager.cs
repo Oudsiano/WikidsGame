@@ -34,11 +34,15 @@ namespace Core.Quests
 
         public List<ItemDefinition> AllQuestsItems => _allQuestsItems;
 
-        public void Construct(DataPlayer dataPlayer, UIManager uiManager, LevelChangeObserver levelChangeObserver)
+        public void Construct(DataPlayer dataPlayer, UIManager uiManager,
+            LevelChangeObserver levelChangeObserver, AllQuestsInGame allQuestsInGame,
+            SceneWithTestsID sceneWithTestsID)
         {
             _dataPlayer = dataPlayer;
             _uiManager = uiManager;
             _levelChangeObserver = levelChangeObserver;
+            _allQuestsInGame = allQuestsInGame;
+            _sceneWithTestsID = sceneWithTestsID;
             
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             _questsInScene = new List<UiOneQuestElement>();
@@ -163,16 +167,6 @@ namespace Core.Quests
         private void GenerateListQuests() // TODO refactor overload method
         {
             _questsInScene = new List<UiOneQuestElement>();
-
-            if (_allQuestsInGame == null)
-            {
-                _allQuestsInGame = FindObjectOfType<AllQuestsInGame>(); // TODO find change
-            }
-
-            if (_sceneWithTestsID == null)
-            {
-                _sceneWithTestsID = FindObjectOfType<SceneWithTestsID>(); // TODO find change
-            }
 
             _questsScene = new List<OneQuest>();
 

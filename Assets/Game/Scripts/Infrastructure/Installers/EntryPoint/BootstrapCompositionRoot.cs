@@ -41,6 +41,8 @@ namespace Infrastructure.Installers.EntryPoint
         private ArrowForPlayerManager _arrowForPlayerManager;
         private FastTestsManager _fastTestsManager;
         private SaveGame _saveGame;
+        private AllQuestsInGame _allQuests;
+        private SceneWithTestsID _sceneWithTestsID;
 
         [Inject]
         public void Compose(DiContainer diContainer) // TODO change 
@@ -67,7 +69,9 @@ namespace Infrastructure.Installers.EntryPoint
             _uiManager = _sceneContainer.Resolve<UIManager>(); //
             _coinManager = _sceneContainer.Resolve<CoinManager>(); //
             _weaponArmorManager = _sceneContainer.Resolve<WeaponArmorManager>(); //
-
+            _allQuests = _sceneContainer.Resolve<AllQuestsInGame>();
+            _sceneWithTestsID = _sceneContainer.Resolve<SceneWithTestsID>();
+            
             ConstructComponents();
         }
 
@@ -77,7 +81,7 @@ namespace Infrastructure.Installers.EntryPoint
                 _levelChangeObserver, _savePointsManager, _arrowForPlayerManager,
                 _questManager, _npcManager, _fastTestsManager,
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
-                _weaponArmorManager);
+                _weaponArmorManager, _allQuests, _sceneWithTestsID);
 
             _audioManager.Construct();
             _savePointsManager.Construct(_dataPlayer);

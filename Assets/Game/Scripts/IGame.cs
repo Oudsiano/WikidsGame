@@ -85,7 +85,8 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
 
         NPCManagment.Construct(this.dataPlayer);
         _fastsTestsManager.Construct(this.dataPlayer, _uiManager);
-        _coinManager.Construct();
+        _coinManager.Construct(this.saveGame, CursorManager);
+        _bottleManager.Construct(CursorManager, this.playerController);
     }
 
     public FastTestsManager FastTestsManager => _fastsTestsManager;

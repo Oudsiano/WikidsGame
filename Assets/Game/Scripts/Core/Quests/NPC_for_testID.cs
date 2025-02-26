@@ -1,5 +1,7 @@
+using Data;
 using DialogueEditor;
 using Saving;
+using SceneManagement;
 using UI;
 using UnityEngine;
 
@@ -20,10 +22,19 @@ namespace Core.Quests
         private Transform _splashOrangeTransform;
 
         private GameObject _parentGO;
-
-        private void Start() // TODO construct
+        private GameAPI _gameAPI;
+        private DataPlayer _dataPlayer;
+        private FastTestsManager _fastTestsManager;
+        private SaveGame _saveGame;
+        
+        public void Construct(GameAPI gameAPI, DataPlayer dataPlayer, FastTestsManager fastTestsManager, SaveGame saveGame) // TODO construct
         {
+            _gameAPI = gameAPI;
+            _dataPlayer = dataPlayer;
+            _fastTestsManager = fastTestsManager;
+            _saveGame = saveGame;
             _thisOpenURL = GetComponent<OpenURL>();
+            
             var _oldOpenUrl = transform.parent.GetComponent<OpenURL>();
 
             if (_oldOpenUrl != null)
@@ -57,17 +68,17 @@ namespace Core.Quests
             {
                 Debug.LogError("Not have TestID in inspector");
             }
-
-            FindObjectOfType<GameAPI>().IsTestCompleted(TestID, (isCompleted) => // TODO find change
+            
+            _gameAPI.IsTestCompleted(TestID, (isCompleted) => 
             {
                 ConversationManager.Instance.SetBool("ThisTestCompleted", isCompleted); // TODO can be cached
 
                 if (isCompleted)
                 {
-                    if (IGame.Instance.dataPlayer.PlayerData.wasSuccessTests.Contains(TestID) == false)
+                    if (_dataPlayer.PlayerData.wasSuccessTests.Contains(TestID) == false)
                     {
-                        IGame.Instance.dataPlayer.PlayerData.wasSuccessTests.Add(TestID);
-                        IGame.Instance.FastTestsManager.GenAvaliableTests();
+                        _dataPlayer.PlayerData.wasSuccessTests.Add(TestID);
+                        _fastTestsManager.GenAvaliableTests();
                     }
                 }
             });
@@ -75,7 +86,7 @@ namespace Core.Quests
 
         private void AddCoinsToPlayer()
         {
-            IGame.Instance.saveGame.Coins += coins;
+            _saveGame.Coins += coins;
         }
 
         private void DeactivateInteract()

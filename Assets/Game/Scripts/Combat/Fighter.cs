@@ -41,14 +41,16 @@ namespace Combat
         private WeaponNow _weapon;
         //private bool isFireballNow = false; // TODO not used code
 
+        private MainPlayer _player;
         private Mover _mover;
         private ActionScheduler _actionScheduler;
         private Animator _animator;
 
-        public void Construct(IGame igame)
+        public void Construct(IGame igame, MainPlayer player)
         {
             _igame = igame;
-
+            _player = player;
+            
             _mover = GetComponent<Mover>(); // TODO RequireComponents
             _actionScheduler = GetComponent<ActionScheduler>();
             _animator = GetComponent<Animator>();
@@ -367,7 +369,7 @@ namespace Combat
                 {
                     if (_igame.dataPlayer.PlayerData.chargeEnergy > 0)
                     {
-                        MainPlayer.Instance.ChangeCountEnergy(-1); // TODO magic number
+                        _player.ChangeCountEnergy(-1); // TODO magic number
                         ShootFireball();
                         _timer = 0;
 

@@ -50,6 +50,11 @@ namespace Core.Quests
         private RectTransform _rectTransformButton;
         private List<bool> _pointSuccess;
 
+        public void Construct() // TODO TODO TODO TODO
+        {
+            
+        }
+        
         public QuestType QuestType
         {
             get => QuestData.QuestType;

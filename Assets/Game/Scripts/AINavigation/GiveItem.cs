@@ -1,3 +1,4 @@
+using UI;
 using UI.Inventory;
 using UI.Inventory.Data;
 using UnityEngine;
@@ -9,10 +10,17 @@ namespace AINavigation
     {
         [FormerlySerializedAs("Item")] [SerializeField] private ItemDefinition _item; // TODO rename
 
+        private UIManager _uiManager;
+        
+        public void Construct(UIManager uiManager)
+        {
+            _uiManager = uiManager;
+        }
+        
         public void TryAddItemItem()
         {
             if (_item != null)
-                IGame.Instance._uiManager.uIBug.TryAddEquipToBug(_item.CreateInstance());
+                _uiManager.uIBug.TryAddEquipToBug(_item.CreateInstance());
         }
     }
 }

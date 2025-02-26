@@ -1,3 +1,4 @@
+using AINavigation;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -7,17 +8,19 @@ namespace Core.Player
     {
         [SerializeField] public GameObject ArrowSprite; // TODO GO
         public int Index;
+
         [FormerlySerializedAs("ArrowImage")] [SerializeField]
         private GameObject _arrowImage;
 
+        private ArrowForPlayerManager _arrowManager;
+        private PlayerController _playerController;
         private bool _isTriggered = false;
 
-        private void Start() // TODO construct
+        public void Construct(ArrowForPlayerManager arrowManager, PlayerController playerController)
         {
-            if (IGame.Instance != null)
-            {
-                IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[Index] = this;
-            }
+            _arrowManager = arrowManager;
+            _playerController = playerController;
+            _arrowManager.AllArrowForPlayers[Index] = this;
 
             if (Index != 0)
             {
@@ -31,18 +34,19 @@ namespace Core.Player
 
             for (int i = Index; i >= 0; i--)
             {
-                if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.ContainsKey(i))
-                    if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[i].Index <= Index)
+                if (_arrowManager.AllArrowForPlayers.ContainsKey(i))
+                    if (_arrowManager.AllArrowForPlayers[i].Index <= Index)
                     {
-                        //if (IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.ContainsKey(IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[i].Index))
-                        { // TODO not used code
-                            IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers[i].gameObject.SetActive(false);
-                            IGame.Instance.ArrowForPlayerManager.AllArrowForPlayers.Remove(i);
+                        //if (_arrowManager.AllArrowForPlayers.ContainsKey(_arrowManager.AllArrowForPlayers[i].Index))
+                        {
+                            // TODO not used code
+                            _arrowManager.AllArrowForPlayers[i].gameObject.SetActive(false);
+                            _arrowManager.AllArrowForPlayers.Remove(i);
                         }
                     }
             }
 
-            IGame.Instance.ArrowForPlayerManager.StartArrow();
+            _arrowManager.StartArrow();
         }
 
         private void Update()
@@ -50,9 +54,9 @@ namespace Core.Player
             if (_isTriggered == false)
             {
                 Vector3 rotate = transform.eulerAngles;
-                Vector3 position = (transform.position - IGame.Instance.playerController.transform.position).normalized;
+                Vector3 position = (transform.position - _playerController.transform.position).normalized;
                 float yAngle = Mathf.Acos(position.z) * Mathf.Rad2Deg;
-                
+
                 if (position.x < 0)
                 {
                     yAngle = -yAngle;
@@ -62,8 +66,8 @@ namespace Core.Player
                 rotate.y = yAngle;
                 ArrowSprite.transform.rotation = Quaternion.Euler(rotate);
 
-                ArrowSprite.transform.position = IGame.Instance.playerController.transform.position +
-                                                 new Vector3(0, 1, 0) + position * 3;  // TODO magic number
+                ArrowSprite.transform.position = _playerController.transform.position +
+                                                 new Vector3(0, 1, 0) + position * 3; // TODO magic number
             }
         }
 

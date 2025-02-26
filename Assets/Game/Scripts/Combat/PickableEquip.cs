@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Core;
+using UI;
 using UI.Inventory;
 using UI.Inventory.Data;
 using UnityEngine;
@@ -28,6 +30,15 @@ namespace Combat
         }*/
         }
 
+        private UIManager _uiManager;
+        private WeaponArmorManager _weaponArmorManager;
+        
+        public void Construct(UIManager uiManager, WeaponArmorManager weaponArmorManager)
+        {
+            _uiManager = uiManager;
+            _weaponArmorManager = weaponArmorManager;
+        }
+        
         private void Update()
         {
             var ray = GetMouseRay(); // TODO Duplicate code
@@ -63,12 +74,12 @@ namespace Combat
 
         private void PickUpIt()
         {
-            if (IGame.Instance.WeaponArmorManager.IsWeaponInGame(_item.name))
+            if (_weaponArmorManager.IsWeaponInGame(_item.name))
             {
                 if (_item != null)
                 {
                     _item.CreateInstance();
-                    IGame.Instance._uiManager.uIBug.TryAddEquipToBug(_item);
+                    _uiManager.uIBug.TryAddEquipToBug(_item);
                 }
                 else
                 {

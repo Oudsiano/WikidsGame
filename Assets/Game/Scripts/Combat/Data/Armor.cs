@@ -1,5 +1,4 @@
 ﻿using Combat.EnumsCombat;
-using UI.Inventory;
 using UI.Inventory.Data;
 using UnityEngine;
 using UnityEngine.Serialization;

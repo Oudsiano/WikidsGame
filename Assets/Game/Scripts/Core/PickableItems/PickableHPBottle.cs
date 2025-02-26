@@ -1,4 +1,5 @@
 ﻿using AINavigation;
+using SceneManagement;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,8 +10,15 @@ namespace Core.PickableItems
         [FormerlySerializedAs("countHPRestore")] [SerializeField] private float _countHPRestore;
         [FormerlySerializedAs("pickUpVFX")] [SerializeField] private GameObject _pickUpVFX; // Add this line to include a VFX prefab
 
-        public void Init(float count)
+        private UnityEngine.Camera _camera;
+        private CursorManager _cursorManager;
+        private PlayerController _playerController;
+        
+        public void Construct(float count, CursorManager cursorManager, PlayerController playerController)
         {
+            _cursorManager = cursorManager;
+            _playerController = playerController;
+            _camera = UnityEngine.Camera.main;
             _countHPRestore = count;
             //textCount.text = count.ToString(); // TODO not used code
         }
@@ -19,7 +27,7 @@ namespace Core.PickableItems
         {
             if (Input.GetMouseButtonDown(0)) 
             {
-                Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);// TODO can be cached
+                Ray ray = _camera.ScreenPointToRay(Input.mousePosition);// TODO can be cached
                 RaycastHit hit;
 
                 if (Physics.Raycast(ray, out hit))
@@ -33,11 +41,11 @@ namespace Core.PickableItems
         }
         private void OnMouseEnter()
         {
-            IGame.Instance.CursorManager.SetCursorPickUp();
+            _cursorManager.SetCursorPickUp();
         }
         private void OnMouseExit()
         {
-            IGame.Instance.CursorManager.SetCursorDefault();
+            _cursorManager.SetCursorDefault();
         }
         
         private void OnTriggerEnter(Collider other)
@@ -50,7 +58,7 @@ namespace Core.PickableItems
 
         private void HandleClick()
         {
-            IGame.Instance.playerController.GetHealth().Heal(_countHPRestore); 
+            _playerController.GetHealth().Heal(_countHPRestore); 
             
             if (_pickUpVFX != null)
             {
@@ -58,7 +66,7 @@ namespace Core.PickableItems
             }
 
             Destroy(gameObject);
-            IGame.Instance.CursorManager.SetCursorDefault();
+            _cursorManager.SetCursorDefault();
         }
 
     }

@@ -59,7 +59,7 @@ namespace AINavigation
             _health = GetComponent<Health>();
 
             _player = player;
-            _fighter.Construct(igame);
+            _fighter.Construct(igame, _player);
             _guardLocation = transform.position;
             _guardRotation = transform.rotation;
 

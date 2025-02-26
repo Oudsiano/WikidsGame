@@ -38,10 +38,13 @@ namespace SceneManagement
         [Header("Bonus")] [SerializeField] private Weapon bonusWeapon; // TODO rename
         [SerializeField] private Armor bonusArmor; // TODO rename
 
-        private void Awake() // TODO construct
+        private MainPlayer _player;
+        
+        public void Construct(MainPlayer player, DataPlayer dataPlayer, SceneComponent sceneComponent) // TODO construct
         {
-            dataPlayer = FindObjectOfType<DataPlayer>();
-            sceneComponent = FindObjectOfType<SceneComponent>();
+            _player = player;
+            this.dataPlayer = dataPlayer;
+            this.sceneComponent = sceneComponent;
 
             if (sceneComponent == null)
             {
@@ -62,7 +65,7 @@ namespace SceneManagement
         private void OnTriggerEnter(Collider other)
         {
             // Проверяем, что в область портала входит игрок и что переход между сценами не происходит в данный момент
-            if (other.gameObject == MainPlayer.Instance.gameObject)
+            if (other.gameObject == _player.gameObject) // TODO change
             {
                 IGame.Instance._uiManager.HelpInFirstScene.EndStudy5();
 
@@ -127,12 +130,12 @@ namespace SceneManagement
         
         private void UpdatePlayerLocation(Portal otherPortal)
         {
-            MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = false;
+            _player.gameObject.GetComponent<NavMeshAgent>().enabled = false;
             
-            MainPlayer.Instance.transform.position = otherPortal.spawnPoint.position;
-            MainPlayer.Instance.transform.rotation = otherPortal.spawnPoint.rotation;
+            _player.transform.position = otherPortal.spawnPoint.position;
+            _player.transform.rotation = otherPortal.spawnPoint.rotation;
             
-            MainPlayer.Instance.gameObject.GetComponent<NavMeshAgent>().enabled = true;
+            _player.gameObject.GetComponent<NavMeshAgent>().enabled = true;
         }
 
         private void TextDisplay(int coins, string text) // TODO move Factory canvas

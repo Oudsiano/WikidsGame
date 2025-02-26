@@ -12,7 +12,7 @@ namespace Core.NPC
         private List<LineRenderer> lines = new();
         private NPCInteractable _NPCInteractable;
 
-        private void Awake() // TODO construct
+        public void Construct() 
         {
             _NPCInteractable = GetComponent<NPCInteractable>();
 

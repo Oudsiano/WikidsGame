@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DialogueEditor;
+using UI;
 using UI.Inventory;
 using UI.Inventory.Data;
 using UnityEngine;
@@ -23,13 +24,20 @@ namespace AINavigation
         [FormerlySerializedAs("itemsString")] [SerializeField]
         private List<string> _itemsString = new();
 
+        private UIManager _uiManager;
+        
+        public void Construct(UIManager uiManager)
+        {
+            _uiManager = uiManager;
+        }
+        
         public void CheсkItem() // TODO not used // TODO rename
         {
             bool confirm = true;
 
             foreach (var item in _items)
             {
-                if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(item.Name) == false)
+                if (_uiManager.uIBug.TryTakeQuestItem(item.Name) == false)
                 {
                     confirm = false;
                 }
@@ -37,13 +45,13 @@ namespace AINavigation
 
             foreach (var item in _itemsString)
             {
-                if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(item) == false)
+                if (_uiManager.uIBug.TryTakeQuestItem(item) == false)
                 {
                     confirm = false;
                 }
             }
 
-            if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(_nameItem) == false)
+            if (_uiManager.uIBug.TryTakeQuestItem(_nameItem) == false)
             {
                 confirm = false;
             }
@@ -57,17 +65,17 @@ namespace AINavigation
 
             foreach (var item in _items)
             {
-                if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(item.Name) == false)
+                if (_uiManager.uIBug.TryTakeQuestItem(item.Name) == false)
                     confirm = false;
             }
 
             foreach (var item in _itemsString)
             {
-                if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(item) == false)
+                if (_uiManager.uIBug.TryTakeQuestItem(item) == false)
                     confirm = false;
             }
 
-            if (IGame.Instance._uiManager.uIBug.TryTakeQuestItem(_nameItem) == false)
+            if (_uiManager.uIBug.TryTakeQuestItem(_nameItem) == false)
             {
                 confirm = false;
             }
@@ -76,15 +84,15 @@ namespace AINavigation
             {
                 foreach (var item in _items)
                 {
-                    IGame.Instance._uiManager.uIBug.NeedDeleteItem(item.Name);
+                    _uiManager.uIBug.NeedDeleteItem(item.Name);
                 }
 
                 foreach (var item in _itemsString)
                 {
-                    IGame.Instance._uiManager.uIBug.NeedDeleteItem(item);
+                    _uiManager.uIBug.NeedDeleteItem(item);
                 }
 
-                IGame.Instance._uiManager.uIBug.NeedDeleteItem(_nameItem);
+                _uiManager.uIBug.NeedDeleteItem(_nameItem);
             }
 
             ConversationManager.Instance.SetBool(_nameParamInNPC, confirm);

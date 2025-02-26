@@ -9,8 +9,6 @@ namespace Core.Player
 {
     public class MainPlayer : MonoBehaviour
     {
-        private static MainPlayer _instance; // TODO singleton
-        
         [SerializeField] private PlayerArmorManager _playerArmorManager;
         [SerializeField] private WeaponPanelUI _weaponPanelUI;
         [SerializeField] private PlayerController _playerController;
@@ -18,11 +16,6 @@ namespace Core.Player
         private DataPlayer _dataPlayer;
         private UIManager _uiManager;
         private SaveGame _saveGame;
-
-        public static MainPlayer Instance // TODO singleton
-        {
-            get { return _instance; } // Возвращает текущий экземпляр
-        }
         
         public PlayerController PlayerController => _playerController;
         
@@ -35,7 +28,7 @@ namespace Core.Player
             _uiManager = uiManager;
 
             _playerController.Construct(igame, _playerArmorManager, _weaponPanelUI, _saveGame, 
-                _dataPlayer);
+                _dataPlayer, this);
             _weaponPanelUI.Construct(_playerController, _dataPlayer);
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Combat;
 using Combat.EnumsCombat;
 using Core;
+using Core.Player;
 using Data;
 using DialogueEditor;
 using Healths;
@@ -52,7 +53,7 @@ namespace AINavigation
         private GameObject _activeInvisibilityVFX; // Текущий активный VFX объект для невидимости
 
         public void Construct(IGame igame, PlayerArmorManager playerArmorManager, WeaponPanelUI weaponPanelUI,
-            SaveGame saveGame, DataPlayer dataPlayer)
+            SaveGame saveGame, DataPlayer dataPlayer, MainPlayer player)
         {
             Debug.Log("Construct PlayerController");
             _mover = GetComponent<Mover>();
@@ -62,7 +63,7 @@ namespace AINavigation
             PlayerArmorManager = playerArmorManager;
             WeaponPanelUI = weaponPanelUI;
             _dataPlayer = dataPlayer;
-            _fighter.Construct(igame);
+            _fighter.Construct(igame, player);
             
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             saveGame.OnLoadItems += SaveGame_OnOnLoadItems;

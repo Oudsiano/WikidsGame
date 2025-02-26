@@ -42,7 +42,7 @@ namespace Combat
 
         private Rigidbody _rigidbody;
 
-        private void Start()
+        private void Start() // TODO construct
         {
             transform.LookAt(GetTargetPosition());
             _rigidbody = GetComponent<Rigidbody>(); // TODO RequireComp

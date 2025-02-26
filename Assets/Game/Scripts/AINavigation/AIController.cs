@@ -52,14 +52,14 @@ namespace AINavigation
         private float _startDistanceForShowIcon = 300f;
         private float _maxOpacity = 0.2f;
 
-        public void Construct(MainPlayer player)
+        public void Construct(MainPlayer player, IGame igame)
         {
             _fighter = GetComponent<Fighter>();
             _mover = GetComponent<Mover>();
             _health = GetComponent<Health>();
 
             _player = player;
-
+            _fighter.Construct(igame);
             _guardLocation = transform.position;
             _guardRotation = transform.rotation;
 

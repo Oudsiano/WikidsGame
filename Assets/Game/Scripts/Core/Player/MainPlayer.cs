@@ -10,12 +10,13 @@ namespace Core.Player
     public class MainPlayer : MonoBehaviour
     {
         private static MainPlayer _instance; // TODO singleton
+        
         [SerializeField] private PlayerArmorManager _playerArmorManager;
         [SerializeField] private WeaponPanelUI _weaponPanelUI;
-
+        [SerializeField] private PlayerController _playerController;
+        
         private DataPlayer _dataPlayer;
         private UIManager _uiManager;
-        [SerializeField] private PlayerController _playerController;
         private SaveGame _saveGame;
 
         public static MainPlayer Instance // TODO singleton
@@ -37,19 +38,6 @@ namespace Core.Player
                 _dataPlayer);
             _weaponPanelUI.Construct(_playerController, _dataPlayer);
         }
-
-        // private void Awake() // TODO construct project context
-        // {
-        //     if (_instance != null && _instance != this)
-        //     {
-        //         Destroy(gameObject);
-        //     }
-        //     else
-        //     {
-        //         _instance = this;
-        //         DontDestroyOnLoad(gameObject);
-        //     }
-        // }
 
         public void ChangeCountEnergy(int value)
         {

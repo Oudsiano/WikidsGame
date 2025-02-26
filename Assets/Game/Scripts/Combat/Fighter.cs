@@ -233,6 +233,8 @@ namespace Combat
             _actionScheduler.Setup(this);
             Target = combatTarget.GetComponent<Health>(); // TODO replace getComp
             Target.GetComponent<Fighter>(); // TODO replace getComp
+            
+            Debug.Log("Attack" + combatTarget.name);
         }
 
         public bool CanAttack(GameObject target)

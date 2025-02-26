@@ -63,6 +63,7 @@ namespace AINavigation
             WeaponPanelUI = weaponPanelUI;
             _dataPlayer = dataPlayer;
             _fighter.Construct(igame);
+            
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }

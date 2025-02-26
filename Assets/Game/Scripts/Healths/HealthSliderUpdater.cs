@@ -11,7 +11,7 @@ namespace Healths
         public Slider healthSlider; // TODO rename
         private Health _health;
 
-        private void Start()
+        private void Start() // TODO Construct
         {
             _health = GetComponent<Health>();
 

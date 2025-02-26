@@ -1,4 +1,5 @@
 ﻿using System;
+using Saving;
 
 namespace SceneManagement
 {
@@ -6,7 +7,14 @@ namespace SceneManagement
     {
         private double _count;
 
+        private SaveGame _saveGame;
+        
         public event Action<double> OnChangeCount;
+
+        public Currency(SaveGame saveGame)
+        {
+            _saveGame = saveGame;
+        }
         
         public double Count // TODO not used code
         {
@@ -31,7 +39,7 @@ namespace SceneManagement
         public void SetCount(double count) // TODO change to Increase, Decrease
         {
             _count = count;
-            IGame.Instance.saveGame.MakeSave();
+            _saveGame.MakeSave();
             OnChangeCount?.Invoke(_count);
         }
     }

@@ -3,6 +3,7 @@ using System.Linq;
 using Combat;
 using Combat.Data;
 using Combat.EnumsCombat;
+using Core.Quests;
 using UI.Inventory;
 using UI.Inventory.Data;
 using UnityEngine;
@@ -18,6 +19,13 @@ namespace Core
         [FormerlySerializedAs("allArmorsInGame")] [Header("Armors")] [SerializeField]
         private List<Armor> _allArmorsInGame;
 
+        private QuestManager _questManager;
+        
+        public void Construct(QuestManager questManager)
+        {
+            _questManager = questManager;
+        }
+        
         public List<Weapon> AllWeaponsInGame
         {
             get => _allWeaponsInGame;
@@ -94,7 +102,7 @@ namespace Core
                 }
             }
 
-            foreach (var item in IGame.Instance.QuestManager.AllQuestsItems)
+            foreach (var item in _questManager.AllQuestsItems)
             {
                 if (item.name == name)
                 {

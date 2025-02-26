@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Core.Quests.Data;
 using Core.Quests.QuestsEnums;
 using Data;
+using Saving;
 using SceneManagement;
 using UI;
 using UI.Inventory;
@@ -31,19 +32,23 @@ namespace Core.Quests
         private UIManager _uiManager;
         private LevelChangeObserver _levelChangeObserver;
         private DataPlayer _dataPlayer;
+        private SaveGame _saveGame;
+        private GameAPI _gameAPI;
 
         public List<ItemDefinition> AllQuestsItems => _allQuestsItems;
 
         public void Construct(DataPlayer dataPlayer, UIManager uiManager,
             LevelChangeObserver levelChangeObserver, AllQuestsInGame allQuestsInGame,
-            SceneWithTestsID sceneWithTestsID)
+            SceneWithTestsID sceneWithTestsID, SaveGame saveGame, GameAPI gameAPI)
         {
             _dataPlayer = dataPlayer;
             _uiManager = uiManager;
             _levelChangeObserver = levelChangeObserver;
             _allQuestsInGame = allQuestsInGame;
             _sceneWithTestsID = sceneWithTestsID;
-            
+            _saveGame = saveGame;
+            _gameAPI = gameAPI;
+
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             _questsInScene = new List<UiOneQuestElement>();
         }
@@ -73,6 +78,7 @@ namespace Core.Quests
 
             if (questElement != null)
             {
+                questElement.Construct(_dataPlayer, _saveGame, _uiManager, _gameAPI);
                 questElement.SetQuest(quest);
                 _questsInScene.Add(questElement);
             }
@@ -235,6 +241,7 @@ namespace Core.Quests
 
                     if (questElement != null)
                     {
+                        questElement.Construct(_dataPlayer, _saveGame, _uiManager, _gameAPI);
                         questElement.SetQuest(quest);
                         _questsInScene.Add(questElement);
                     }

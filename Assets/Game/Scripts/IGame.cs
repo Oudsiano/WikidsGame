@@ -67,7 +67,7 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         _levelChangeObserver = levelChangeObserver;
         _savePointsManager = savePointsManager;
         ArrowForPlayerManager = arrowForPlayerManager;
-        QuestManager = questManager;
+        _questManager = questManager;
         NPCManagment = npcManagment;
         _fastsTestsManager = fastTestsManager;
         CursorManager = cursorManager;
@@ -81,12 +81,13 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         levelChangeObserver.Construct(_savePointsManager, this.dataPlayer, _uiManager, _player, this.gameAPI);
         ArrowForPlayerManager.Construct();
         questManager.Construct(this.dataPlayer, _uiManager, _levelChangeObserver,
-            _allQuests, _sceneWithTestID);
+            _allQuests, _sceneWithTestID, this.saveGame, this.gameAPI);
 
         NPCManagment.Construct(this.dataPlayer);
         _fastsTestsManager.Construct(this.dataPlayer, _uiManager);
         _coinManager.Construct(this.saveGame, CursorManager);
         _bottleManager.Construct(CursorManager, this.playerController);
+        _weaponArmorManager.Construct(_questManager);
     }
 
     public FastTestsManager FastTestsManager => _fastsTestsManager;

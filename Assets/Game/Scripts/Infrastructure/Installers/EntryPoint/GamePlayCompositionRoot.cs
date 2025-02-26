@@ -20,6 +20,7 @@ namespace Infrastructure.Installers.EntryPoint
         [SerializeField] private ConversationManager _conversationManager; //
         [SerializeField] private SceneComponent _sceneComponent; //
 
+        [SerializeField] private AnswerHandler[] _answerHandlers;
         [SerializeField] private ArrowForPlayer[] _arrowsForPlayer;
         [SerializeField] private PickableEquip[] _pickableEquip;
         [SerializeField] private GiveItem[] _giveItems;
@@ -42,6 +43,11 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
+            foreach (AnswerHandler answerHandler in _answerHandlers)
+            {
+                answerHandler.Construct(_sceneContainer.Resolve<SaveGame>());
+            }
+
             foreach (ArrowForPlayer arrow in _arrowsForPlayer)
             {
                 arrow.Construct(_sceneContainer.Resolve<ArrowForPlayerManager>(),

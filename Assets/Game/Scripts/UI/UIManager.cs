@@ -151,7 +151,7 @@ namespace UI
 
             DeathUI.gameObject.SetActive(false);
             _againUI.SetActive(false);
-
+            DeathUI.Construct(this);
             UiMarketPanel.Init();
             uIBug.Init();
             _buttonMarket.onClick.AddListener(OnClickButtonMarket);

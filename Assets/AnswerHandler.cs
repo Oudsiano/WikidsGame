@@ -1,12 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Saving;
 using UnityEngine;
 
 public class AnswerHandler : MonoBehaviour
 {
+    private SaveGame _saveGame;
+    
+    public void Construct(SaveGame saveGame)
+    {
+        _saveGame = saveGame;
+    }
+    
     public void AddCoinsToPlayer()
     {
-        IGame.Instance.saveGame.Coins += 100;
+        _saveGame.Coins += 100; // TODO Change
     }
 
     public void DeactivateCollider(GameObject targetObject)

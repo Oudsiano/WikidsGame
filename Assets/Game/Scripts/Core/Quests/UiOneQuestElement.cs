@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using Core.Quests.Data;
 using Core.Quests.QuestsEnums;
+using Data;
 using DG.Tweening;
+using Saving;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UI;
 using UnityEngine.Serialization;
 
 namespace Core.Quests
@@ -49,10 +52,18 @@ namespace Core.Quests
 
         private RectTransform _rectTransformButton;
         private List<bool> _pointSuccess;
+        
+        private DataPlayer _dataPlayer;
+        private SaveGame _saveGame;
+        private UIManager _uiManager;
+        private GameAPI _gameAPI;
 
-        public void Construct() // TODO TODO TODO TODO
+        public void Construct(DataPlayer dataPlayer, SaveGame saveGame, UIManager uiManager, GameAPI gameAPI)
         {
-            
+            _dataPlayer = dataPlayer;
+            _saveGame = saveGame;
+            _uiManager = uiManager;
+            _gameAPI = gameAPI;
         }
         
         public QuestType QuestType
@@ -110,10 +121,10 @@ namespace Core.Quests
             SetUnfinished();
             _button.onClick.AddListener(OnClickButton);
 
-            if (IGame.Instance.dataPlayer.PlayerData.startedQuests != null &&
-                IGame.Instance.dataPlayer.PlayerData.startedQuests.ContainsKey(Quest.name))
+            if (_dataPlayer.PlayerData.startedQuests != null &&
+                _dataPlayer.PlayerData.startedQuests.ContainsKey(Quest.name))
             {
-                QuestData = IGame.Instance.dataPlayer.PlayerData.startedQuests[Quest.name];
+                QuestData = _dataPlayer.PlayerData.startedQuests[Quest.name];
                 CheckUpdateAndComplete(false);
             }
         }
@@ -194,27 +205,27 @@ namespace Core.Quests
                 case QuestAwardType.none:
                     break;
                 case QuestAwardType.money:
-                    IGame.Instance.saveGame.Coins += Quest.countMoney;
+                    _saveGame.Coins += Quest.countMoney;
                     break;
                 case QuestAwardType.item:
-                    IGame.Instance._uiManager.uIBug.TryAddEquipToBug(Quest.awardItem);
+                    _uiManager.uIBug.TryAddEquipToBug(Quest.awardItem);
                     break;
             }
 
             MarkQuestAsComplete();
             FadeOutAndShrinkUIElement(gameObject);
             QuestData.FullComplete = true;
-            IGame.Instance._uiManager.UpdateQuestBackImg();
+            _uiManager.UpdateQuestBackImg();
         }
 
         private void MarkQuestAsComplete()
         {
-            var dataPlayer = IGame.Instance.dataPlayer;
+            var dataPlayer = _dataPlayer;
 
             if (dataPlayer.PlayerData.completedQuests.Contains(Quest.name) == false)
             {
                 dataPlayer.PlayerData.completedQuests.Add(Quest.name);
-                IGame.Instance.gameAPI.SaveUpdater();
+                _gameAPI.SaveUpdater();
             }
         }
 
@@ -222,14 +233,14 @@ namespace Core.Quests
         {
             if (withSave)
             {
-                if (IGame.Instance.dataPlayer.PlayerData.startedQuests == null)
+                if (_dataPlayer.PlayerData.startedQuests == null)
                 {
-                    IGame.Instance.dataPlayer.PlayerData.startedQuests = new Dictionary<string, OneQuestData>();
+                    _dataPlayer.PlayerData.startedQuests = new Dictionary<string, OneQuestData>();
                 }
 
                 QuestData.QuestName = Quest.name;
-                IGame.Instance.dataPlayer.PlayerData.startedQuests[Quest.name] = QuestData;
-                IGame.Instance.gameAPI.SaveUpdater();
+                _dataPlayer.PlayerData.startedQuests[Quest.name] = QuestData;
+                _gameAPI.SaveUpdater();
             }
 
             switch (QuestType)
@@ -248,7 +259,7 @@ namespace Core.Quests
 
                         if (int.TryParse(itemId, out testId))
                         {
-                            if (IGame.Instance.dataPlayer.IsTestComplete(testId))
+                            if (_dataPlayer.IsTestComplete(testId))
                             {
                                 QuestData.CurrentProcess++;
                             }
@@ -270,7 +281,7 @@ namespace Core.Quests
             if (QuestData.CurrentProcess >= QuestData.TargetProcess)
             {
                 SetFinished();
-                IGame.Instance._uiManager.UpdateQuestBackImg();
+                _uiManager.UpdateQuestBackImg();
             }
         }
 
@@ -300,7 +311,7 @@ namespace Core.Quests
 
         private void FadeOutAndShrinkUIElement(GameObject uiElement)
         {
-            VerticalLayoutGroup vertLGrroup = IGame.Instance._uiManager.QuestsContentScrollRect.content
+            VerticalLayoutGroup vertLGrroup = _uiManager.QuestsContentScrollRect.content
                 .GetComponent<VerticalLayoutGroup>();
 
             CanvasGroup canvasGroup = uiElement.AddComponent<CanvasGroup>();

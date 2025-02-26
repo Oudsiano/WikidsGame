@@ -16,7 +16,8 @@ namespace SceneManagement
         {
             _saveGame = saveGame;
             _cursorManager = cursorManager;
-            Coins = new Currency();
+            
+            Coins = new Currency(_saveGame);
         }
 
         public Currency Coins

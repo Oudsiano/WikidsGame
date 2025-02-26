@@ -8,6 +8,13 @@ namespace UI
     {
         [SerializeField] private TextMeshProUGUI _deathText;
 
+        private UIManager _uiManager;
+
+        public void Construct(UIManager uiManager)
+        {
+            _uiManager = uiManager;
+        }
+        
         public void ShowDeathScreen()
         {
             gameObject.SetActive(true);
@@ -18,7 +25,7 @@ namespace UI
                 .OnComplete(() =>
                 {
                     gameObject.SetActive(false);
-                    IGame.Instance._uiManager.ShowAgainUi();
+                    _uiManager.ShowAgainUi();
                 });
         }
     }

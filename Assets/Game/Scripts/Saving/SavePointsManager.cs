@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Data;
+using Healths;
 using UnityEngine;
 
 namespace Saving
@@ -22,6 +23,8 @@ namespace Saving
             }
             set => allSavePoints = value;
         }
+
+        public Dictionary<int, SavePoint> AllSavesPoints => allSavePoints;
 
         public void Construct(DataPlayer dataPlayer)
         {

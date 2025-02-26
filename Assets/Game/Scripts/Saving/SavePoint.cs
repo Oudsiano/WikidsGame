@@ -21,12 +21,14 @@ namespace Saving
 
         private Vector3 _playerPosition;
 
-        private void Awake() // TODO construct
+        public void Construct(DataPlayer dataPlayer, Health health)
         {
-            SavePointsManager.AllSavePoints[spawnPoint] = this;
+            Debug.Log("SavePoint constructed");
+            SavePointsManager.AllSavePoints[spawnPoint] = this; // TODO change
             NotActiveSprite.SetActive(true);
-            health = FindObjectOfType<Health>();
-
+            this.health = health;
+            this.dataPlayer = dataPlayer;
+                
             if (transform.localScale != Vector3.one)
             {
                 Debug.LogError("Scale is not (1, 1, 1)");
@@ -69,7 +71,7 @@ namespace Saving
 
         private void Activate()
         {
-            dataPlayer = FindObjectOfType<DataPlayer>(); // TODO find change
+            //dataPlayer = FindObjectOfType<DataPlayer>(); // TODO find change
             // Сохраняем позицию игрока
             savePointUpdated.gameObject.SetActive(true);
             Debug.Log("включили партикл при сохранении");

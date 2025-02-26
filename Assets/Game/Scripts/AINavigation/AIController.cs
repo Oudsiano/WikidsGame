@@ -41,6 +41,7 @@ namespace AINavigation
         private Fighter _fighter;
         private Mover _mover;
         private Health _health;
+        private MainPlayer _player;
 
         private GameObject _halfCircle; // TODO remove GO
         private MeshRenderer _halfCircleRenderer;
@@ -51,11 +52,13 @@ namespace AINavigation
         private float _startDistanceForShowIcon = 300f;
         private float _maxOpacity = 0.2f;
 
-        private void Awake() // TODO Construct
+        public void Construct(MainPlayer player)
         {
             _fighter = GetComponent<Fighter>();
             _mover = GetComponent<Mover>();
             _health = GetComponent<Health>();
+
+            _player = player;
 
             _guardLocation = transform.position;
             _guardRotation = transform.rotation;
@@ -65,6 +68,21 @@ namespace AINavigation
 
             FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
         }
+
+        // private void Awake() // TODO Construct
+        // {
+        //     _fighter = GetComponent<Fighter>();
+        //     _mover = GetComponent<Mover>();
+        //     _health = GetComponent<Health>();
+        //
+        //     _guardLocation = transform.position;
+        //     _guardRotation = transform.rotation;
+        //
+        //     CreateHalfCircle();
+        //     _health.RedHalfCircle = _halfCircle;
+        //
+        //     FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
+        // }
 
         private void OnDestroy()
         {
@@ -139,7 +157,7 @@ namespace AINavigation
                 return;
             }
 
-            if (IGame.Instance.playerController.GetPlayerInvisibility() == false &&
+            if (_player.PlayerController.GetPlayerInvisibility() == false &&
                 DistanceToPlayer() < 40) // TODO magic number
             {
                 InteractWithCombat();
@@ -152,7 +170,7 @@ namespace AINavigation
             if (_health.GetCurrentHealth() < _lastHealth)
             {
                 _timeSinceLastHit = 0;
-                _lastKnownLocation = MainPlayer.Instance.transform.position;
+                _lastKnownLocation = _player.transform.position;
                 AttackBehavior();
             }
 
@@ -162,13 +180,13 @@ namespace AINavigation
 
         private float DistanceToPlayer() // TODO Vector3 Extensions
         {
-            return Vector3.Distance(MainPlayer.Instance.transform.position, transform.position);
+            return Vector3.Distance(_player.transform.position, transform.position);
         }
 
         private void InteractWithCombat()
         {
             if (IsPlayerInSight() && DistanceToPlayer() <= _chaseDistance &&
-                (_fighter.CanAttack(MainPlayer.Instance.gameObject) || IsAttacked()))
+                (_fighter.CanAttack(_player.gameObject) || IsAttacked()))
             {
                 if (IsPlayerBehind())
                 {
@@ -192,7 +210,7 @@ namespace AINavigation
 
         private bool IsAttacked()
         {
-            var player = MainPlayer.Instance;
+            var player = _player;
             bool isAttacked =
                 player.GetComponent<Fighter>().Target ==
                 gameObject.GetComponent<Health>(); // TODO Remove GetComponent in live fight
@@ -202,7 +220,7 @@ namespace AINavigation
 
         private bool IsPlayerInSight()
         {
-            Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
+            Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;
             float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
 
             if (angleBetween <= 120f) // TODO magic number 
@@ -215,7 +233,7 @@ namespace AINavigation
 
         private bool IsPlayerBehind()
         {
-            Vector3 directionToPlayer = (MainPlayer.Instance.transform.position - transform.position).normalized;
+            Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;
             float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
 
             return
@@ -287,8 +305,8 @@ namespace AINavigation
         private void AttackBehavior()
         {
             _timeSinceLastSawPlayer = 0;
-            _fighter.Attack(MainPlayer.Instance.gameObject);
-            _lastKnownLocation = MainPlayer.Instance.transform.position;
+            _fighter.Attack(_player.gameObject);
+            _lastKnownLocation = _player.transform.position;
         }
 
         private void FollowCamera_OnCameraDistance(float zoomTotal)
@@ -299,7 +317,8 @@ namespace AINavigation
                 {
                     _halfCircle.SetActive(true);
                     Color newColor = _halfCircleRenderer.material.color;
-                    newColor.a = Mathf.Min(((_startDistanceForShowIcon - zoomTotal) / 100f), _maxOpacity); // TODO magic number
+                    newColor.a =
+                        Mathf.Min(((_startDistanceForShowIcon - zoomTotal) / 100f), _maxOpacity); // TODO magic number
                     _halfCircleRenderer.material.color = newColor;
 
                     //float _scale = (startDistanceForShowIcon - obj) / 100f + 1;

@@ -166,6 +166,7 @@ namespace DialogueEditor
         public void SelectNextOption()
         {
             int next = m_currentSelectedIndex + 1;
+            
             if (next > m_uiOptions.Count - 1)
             {
                 next = 0;

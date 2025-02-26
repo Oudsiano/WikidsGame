@@ -9,6 +9,7 @@ using Saving;
 using SceneManagement;
 using UI;
 using UnityEngine;
+using Web;
 using Zenject;
 
 namespace Infrastructure.Installers.EntryPoint
@@ -18,6 +19,7 @@ namespace Infrastructure.Installers.EntryPoint
         [SerializeField] private SceneContext _sceneContext;
         private DiContainer _sceneContainer;
 
+        private JavaScriptHook _javaScriptHook;
         private MainPlayer _player;
         private IGame _iGame;
 
@@ -43,12 +45,15 @@ namespace Infrastructure.Installers.EntryPoint
         private SaveGame _saveGame;
         private AllQuestsInGame _allQuests;
         private SceneWithTestsID _sceneWithTestsID;
+        private KeyBoardsEvents _keyBoardsEvents;
 
         [Inject]
         public void Compose(DiContainer diContainer) // TODO change 
         {
             _sceneContainer = _sceneContext.Container;
 
+            _keyBoardsEvents = _sceneContainer.Resolve<KeyBoardsEvents>();
+            _javaScriptHook = _sceneContainer.Resolve<JavaScriptHook>();
             _iGame = _sceneContainer.Resolve<IGame>();
             _followCamera = _sceneContainer.Resolve<FollowCamera>(); //
             _sceneLoader = _sceneContainer.Resolve<SceneLoader>();
@@ -96,7 +101,9 @@ namespace Infrastructure.Installers.EntryPoint
                 _dataPlayer, _fastTestsManager);
             _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame);
             _followCamera.Construct(_player);
-
+            _javaScriptHook.Construct(_dataPlayer, _sceneLoader);
+            _keyBoardsEvents.Construct(_sceneLoader, _uiManager);
+            
             //_playerController.Construct(); -> iGame.Construct
             //_levelChangeObserver.Construct(); -> iGame.Construct
             //_arrowForPlayerManager.Construct(); -> iGame.Construct

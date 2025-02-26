@@ -9,6 +9,7 @@ using Saving;
 using SceneManagement;
 using UI;
 using UnityEngine;
+using Web;
 using Zenject;
 
 namespace Infrastructure.Installers
@@ -33,12 +34,15 @@ namespace Infrastructure.Installers
         [SerializeField] private WeaponArmorManager _weaponArmorManagerPrefab;
         [SerializeField] private AllQuestsInGame _allQuests;
         [SerializeField] private SceneWithTestsID _sceneWithTestsID;
+        [SerializeField] private KeyBoardsEvents _keyBoardsEvents;
+        [SerializeField] private JavaScriptHook _javaScriptHook;
         
         public override void InstallBindings()
         {
             BindingComponents();
             
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
+            Container.Bind<JavaScriptHook>().FromComponentInNewPrefab(_javaScriptHook).AsSingle().NonLazy();
             Container.Bind<IGame>().FromComponentInNewPrefab(_iGamePrefab).AsSingle().NonLazy();
             Container.Bind<GameAPI>().FromComponentInNewPrefab(_gameAPIPrefab).AsSingle().NonLazy();
             Container.Bind<SceneLoader>().FromComponentInNewPrefab(_sceneLoaderPrefab).AsSingle().NonLazy();
@@ -52,6 +56,8 @@ namespace Infrastructure.Installers
         private void BindingComponents()
         {
             BindingUI();
+            
+            Container.Bind<KeyBoardsEvents>().FromComponentInNewPrefab(_keyBoardsEvents).AsSingle().NonLazy();
             Container.Bind<AllQuestsInGame>().FromComponentInNewPrefab(_allQuests).AsSingle().NonLazy();
             Container.Bind<SceneWithTestsID>().FromComponentInNewPrefab(_sceneWithTestsID).AsSingle().NonLazy();
             Container.Bind<AudioManager>().FromComponentInNewPrefab(_audioManagerPrefab).AsSingle().NonLazy();

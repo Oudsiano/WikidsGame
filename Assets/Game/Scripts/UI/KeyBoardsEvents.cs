@@ -10,9 +10,15 @@ namespace UI
         public static EscState escState; // TODO static
         public static SceneState sceneState; // TODO static
 
-        private void Awake() // TODO construct
+        private SceneLoader _sceneLoader;
+        private UIManager _uiManager;
+
+        public void Construct(SceneLoader sceneLoader, UIManager uiManager)
         {
-            SceneLoader.LevelChanged += SceneLoader_LevelChanged;
+            _sceneLoader = sceneLoader;
+            _uiManager = uiManager;
+            
+            SceneLoader.LevelChanged += SceneLoader_LevelChanged; // Change static
         }
     
         private void Update()
@@ -39,19 +45,19 @@ namespace UI
         {
             if (sceneState == SceneState.battle)
             {
-                if (IGame.Instance._uiManager.MapCanvas.gameObject.activeSelf)
+                if (_uiManager.MapCanvas.gameObject.activeSelf)
                 {
-                    IGame.Instance._uiManager.OnClickBtnCloseMap();
+                    _uiManager.OnClickBtnCloseMap();
                 }
                 else
                     switch (escState)
                     {
                         case EscState.none:
-                            IGame.Instance._uiManager.ShowAgainUi();
+                            _uiManager.ShowAgainUi();
                             break;
                     
                         case EscState.againScr:
-                            IGame.Instance._uiManager.OnCLickCancelAgain();
+                            _uiManager.OnCLickCancelAgain();
                             break;
                     }
             }

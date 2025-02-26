@@ -9,13 +9,16 @@ namespace Web
 {
     public class JavaScriptHook : MonoBehaviour
     {
-        public SceneLoader sceneLoader; // TODO rename
+        public SceneLoader SceneLoader; // TODO rename
     
         [FormerlySerializedAs("dataText")][SerializeField] private TMP_Text _dataText; // Ссылка на текстовый объект
         [FormerlySerializedAs("dataPlayer")][SerializeField] private DataPlayer _dataPlayer; // Ссылка на экземпляр DataPlayer
 
-        private void Start() // TODO construct
+        public void Construct(DataPlayer dataPlayer, SceneLoader sceneLoader)
         {
+            SceneLoader = sceneLoader;
+            _dataPlayer = dataPlayer;
+            
             if (_dataText == null)
             {
                 Debug.LogError("Text object reference is not set!");

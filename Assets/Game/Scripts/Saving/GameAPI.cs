@@ -55,12 +55,12 @@ namespace Saving
             _weaponArmorManager = weaponArmorManager;
             _questManager = questManager;
 
-            //UpdateID();
+            UpdateID();
 
-            //TryInitDataServer();
-            //SetupLoad();
-            // textForOtl.text =
-            //     $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
+            TryInitDataServer();
+            SetupLoad();
+             textForOtl.text =
+              $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
         }
 
         public void FixedUpdate()

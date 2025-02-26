@@ -35,16 +35,6 @@ namespace Saving
         private GameAPI _gameAPI;
         private UIManager _uiManager;
 
-        // public SaveGame()
-        // {
-        //     BugItems = new List<ItemDefinition>();
-        //
-        //     EquipedArmor = new Armor();
-        //     EquipedWeapon =
-        //         (Weapon)_weaponArmorManager.TryGetWeaponByName("Sword")
-        //             .CreateInstance(); // TODO expensive unboxing
-        // }
-
         public void Construct(GameAPI gameAPI,
             WeaponArmorManager weaponArmorManager,
             CoinManager coinManager,
@@ -59,10 +49,10 @@ namespace Saving
 
             BugItems = new List<ItemDefinition>();
 
-            EquipedArmor = new Armor();
-            EquipedWeapon =
-                (Weapon)_weaponArmorManager.TryGetWeaponByName("Sword")
-                    .CreateInstance(); // TODO expensive unboxing
+            // EquipedArmor = new Armor();
+            // EquipedWeapon =
+            //     (Weapon)_weaponArmorManager.TryGetWeaponByName("Sword")
+            //         .CreateInstance(); // TODO expensive unboxing
         }
 
         public event Action<string> OnChangePlayerName;

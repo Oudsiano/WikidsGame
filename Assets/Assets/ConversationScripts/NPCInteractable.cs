@@ -6,12 +6,12 @@ using DialogueEditor;
 using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
+using SceneManagement;
 
 public enum InteractableType { Enemy, Item, NPC }
 
 public class NPCInteractable : MonoBehaviour
 {
-
     public InteractableType interactionType;
     public bool posibleInteract = true;
     [HideInInspector]
@@ -20,28 +20,32 @@ public class NPCInteractable : MonoBehaviour
 
     [SerializeField] private List<GameObject> InvisibleWhenCorrectAnswer = new List<GameObject>();
 
-    RaycastHit hit;
+    private RaycastHit hit;
+    private CursorManager _cursorManager;
+    private Camera _camera;
 
-    void Awake()
+    public void Construct(CursorManager cursorManager)
     {
+        _cursorManager = cursorManager;
+        _camera = Camera.main;
         conversationStarter = GetComponentInParent<ConversationStarter>();
-
     }
 
-    void OnMouseEnter()
+    private void OnMouseEnter()
     {
-        IGame.Instance.CursorManager.SetCursorManuscript();
+        _cursorManager.SetCursorManuscript();
     }
+    
     private void OnMouseExit()
     {
-        IGame.Instance.CursorManager.SetCursorDefault();
+        _cursorManager.SetCursorDefault();
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonUp(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
                 if (hit.transform.gameObject == gameObject)

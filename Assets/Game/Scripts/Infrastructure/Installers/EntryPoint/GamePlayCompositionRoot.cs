@@ -20,11 +20,14 @@ namespace Infrastructure.Installers.EntryPoint
         [SerializeField] private ConversationManager _conversationManager; //
         [SerializeField] private SceneComponent _sceneComponent; //
 
+        [SerializeField] private ConversationMarket _conversationMarket;
+        [SerializeField] private NPCInteractable[] _npcInteractable;
         [SerializeField] private AnswerHandler[] _answerHandlers;
         [SerializeField] private ArrowForPlayer[] _arrowsForPlayer;
         [SerializeField] private PickableEquip[] _pickableEquip;
         [SerializeField] private GiveItem[] _giveItems;
         [SerializeField] private CheckItem[] _checkItems;
+        [SerializeField] private IconForFarCamera[] _iconsForCamera;
         [SerializeField] private AIController[] _aiControllers;
         [SerializeField] private NPC_for_testID[] _npcForTestID;
         [SerializeField] private BossNPC[] _bosses;
@@ -43,6 +46,13 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
+            _conversationMarket.Construct(_sceneContainer.Resolve<UIManager>());
+
+            foreach (NPCInteractable npc in _npcInteractable)
+            {
+                npc.Construct(_sceneContainer.Resolve<CursorManager>());
+            }
+
             foreach (AnswerHandler answerHandler in _answerHandlers)
             {
                 answerHandler.Construct(_sceneContainer.Resolve<SaveGame>());
@@ -73,6 +83,11 @@ namespace Infrastructure.Installers.EntryPoint
             {
                 boss.Construct();
             }
+
+            // foreach (IconForFarCamera icon in _iconsForCamera)
+            // {
+            //     icon.Construct(_sceneContainer.Resolve<UIManager>()); // TODO Player 
+            // }
 
             foreach (AIController aiController in _aiControllers)
             {

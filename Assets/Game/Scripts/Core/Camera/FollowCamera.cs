@@ -1,4 +1,5 @@
 ﻿using System;
+using AINavigation;
 using Core.Player;
 using DG.Tweening;
 using SceneManagement;
@@ -14,6 +15,7 @@ namespace Core.Camera
     public class FollowCamera : MonoBehaviour
     {
         private MainPlayer _player;
+        private PlayerController _playerController;
         
         [SerializeField] private float rotationSpeed = 10f; // Скорость вращения камеры
         [SerializeField] private float zoomSpeed = 10f; // Скорость приближения/удаления камеры
@@ -62,10 +64,11 @@ namespace Core.Camera
 
         public bool CommonZoomUpdate => _commonZoomUpdate;
         
-        public void Construct(MainPlayer player)
+        public void Construct(MainPlayer player, PlayerController playerController)
         {
             Debug.Log("FollowCamera constructed");
             _player = player;
+            _playerController = playerController;
             _maxZoom = _maxZoomDefault;
             _minZoom = _minZoomDefault;
 
@@ -105,10 +108,10 @@ namespace Core.Camera
                 MinZoom();
             }
 
-            /*float delta = Math.Abs(camYRotation - IGame.Instance.playerController.transform.rotation.eulerAngles.y); // TODO not used code
-            float deltaX = camYRotation - IGame.Instance.playerController.transform.rotation.eulerAngles.y;
+            /*float delta = Math.Abs(camYRotation - _playerController.transform.rotation.eulerAngles.y); // TODO not used code
+            float deltaX = camYRotation - _playerController.transform.rotation.eulerAngles.y;
             float delta2 = Mathf.Sin(deltaX * Mathf.Deg2Rad);
-            Debug.Log(camYRotation + " " + IGame.Instance.playerController.transform.rotation.eulerAngles.y + " " + delta + " " + deltaX + " " + delta2);
+            Debug.Log(camYRotation + " " + _playerController.transform.rotation.eulerAngles.y + " " + delta + " " + deltaX + " " + delta2);
             */
 
             float step = 1f; // TODO magic numbers
@@ -238,7 +241,7 @@ namespace Core.Camera
             if (_canRotate && Input.GetMouseButton(1))
             {
                 Rotate();
-                newCameraRY = IGame.Instance.playerController.transform.localEulerAngles.y; // TODO not used code
+                newCameraRY = _playerController.transform.localEulerAngles.y; // TODO not used code
             }
 
             if (_canZoom)
@@ -332,8 +335,8 @@ namespace Core.Camera
 
         private void SetLocalPosition() // TODO magic numbers
         {
-            float delta = Math.Abs(_camYRotation - IGame.Instance.playerController.transform.rotation.eulerAngles.y);
-            float deltaX = _camYRotation - IGame.Instance.playerController.transform.rotation.eulerAngles.y;
+            float delta = Math.Abs(_camYRotation - _playerController.transform.rotation.eulerAngles.y);
+            float deltaX = _camYRotation - _playerController.transform.rotation.eulerAngles.y;
             float delta2 = Math.Abs(180 - delta);
             float delta2X = Mathf.Sin(deltaX * Mathf.Deg2Rad);
             float deltaCameraY = (delta2 - 90) / 90 * 0.04f * (Math.Abs(_zoomTotal) - 10);

@@ -1,4 +1,5 @@
 using Core.Camera;
+using Data;
 using SceneManagement.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -25,8 +26,12 @@ namespace SceneManagement
         [FormerlySerializedAs("text5")] [SerializeField]
         private GameObject _text5;
 
-        private void Awake() // TODO construct
+        private DataPlayer _dataPlayer;
+        
+        public void Construct(DataPlayer dataPlayer)
         {
+            _dataPlayer = dataPlayer;
+                
             SceneLoader.LevelChanged += SceneLoader_LevelChanged;
             FollowCamera.OnCameraRotation += FollowCamera_OnCameraRotation;
             FollowCamera.OnCameraScale += FollowCamera_OnCameraScale;
@@ -42,7 +47,11 @@ namespace SceneManagement
 
         public void Study3() // TODO duplicate
         {
-            if (IGame.Instance.dataPlayer.PlayerData.helpIndex != 2) return;
+            if (_dataPlayer.PlayerData.helpIndex != 2)
+            {
+                return;
+            }
+
             restTexts();
             _text3.SetActive(true);
             _panel.SetActive(true);
@@ -52,13 +61,20 @@ namespace SceneManagement
         {
             _panel.SetActive(false);
             _text3.SetActive(false);
-            if (IGame.Instance.dataPlayer.PlayerData.helpIndex != 2) return;
-            IGame.Instance.dataPlayer.PlayerData.helpIndex = 3;
+            
+            if (_dataPlayer.PlayerData.helpIndex != 2) return;
+            {
+                _dataPlayer.PlayerData.helpIndex = 3;
+            }
         }
 
         public void Study4() // TODO duplicate
         {
-            if (IGame.Instance.dataPlayer.PlayerData.helpIndex != 3) return;
+            if (_dataPlayer.PlayerData.helpIndex != 3)
+            {
+                return;
+            }
+
             restTexts();
             _text4.SetActive(true);
             _panel.SetActive(true);
@@ -68,8 +84,8 @@ namespace SceneManagement
         {
             _panel.SetActive(false);
             _text4.SetActive(false);
-            if (IGame.Instance.dataPlayer.PlayerData.helpIndex != 3) return;
-            IGame.Instance.dataPlayer.PlayerData.helpIndex = 4;
+            if (_dataPlayer.PlayerData.helpIndex != 3) return;
+            _dataPlayer.PlayerData.helpIndex = 4;
         }
 
         public void Study5() // TODO duplicate
@@ -77,7 +93,7 @@ namespace SceneManagement
             restTexts();
             _text5.SetActive(true);
             _panel.SetActive(true);
-            IGame.Instance.dataPlayer.PlayerData.helpIndex = 5;
+            _dataPlayer.PlayerData.helpIndex = 5;
         }
 
         public void EndStudy5() // TODO duplicate
@@ -85,7 +101,7 @@ namespace SceneManagement
             _panel.SetActive(false);
             _text5.SetActive(false);
         }
-    
+
         private void SceneLoader_LevelChanged(allScenes s)
         {
             Study1Show(s);
@@ -112,7 +128,7 @@ namespace SceneManagement
                 return;
             }
 
-            if (IGame.Instance.dataPlayer.PlayerData.helpIndex != 0)
+            if (_dataPlayer.PlayerData.helpIndex != 0)
             {
                 return;
             }
@@ -132,16 +148,16 @@ namespace SceneManagement
         {
             _text1.SetActive(false);
             _panel.SetActive(false);
-            if (IGame.Instance.dataPlayer.PlayerData.helpIndex != 0) return;
-            IGame.Instance.dataPlayer.PlayerData.helpIndex = 1;
+            if (_dataPlayer.PlayerData.helpIndex != 0) return;
+            _dataPlayer.PlayerData.helpIndex = 1;
             Study2();
         }
 
 
         private void Study2() // TODO duplicate
         {
-            if (IGame.Instance.dataPlayer.PlayerData.sceneToLoad != (int)allScenes.battle1) return;
-            if (IGame.Instance.dataPlayer.PlayerData.helpIndex != 1) return;
+            if (_dataPlayer.PlayerData.sceneToLoad != (int)allScenes.battle1) return;
+            if (_dataPlayer.PlayerData.helpIndex != 1) return;
             restTexts();
             _text2.SetActive(true);
             _panel.SetActive(true);
@@ -151,8 +167,8 @@ namespace SceneManagement
         {
             _panel.SetActive(false);
             _text2.SetActive(false);
-            if (IGame.Instance.dataPlayer.PlayerData.helpIndex != 1) return;
-            IGame.Instance.dataPlayer.PlayerData.helpIndex = 2;
+            if (_dataPlayer.PlayerData.helpIndex != 1) return;
+            _dataPlayer.PlayerData.helpIndex = 2;
         }
     }
 }

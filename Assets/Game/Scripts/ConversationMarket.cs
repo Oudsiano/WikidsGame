@@ -1,4 +1,5 @@
 using DialogueEditor;
+using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -17,8 +18,11 @@ public class ConversationMarket : MonoBehaviour
     [FormerlySerializedAs("MaxPriceMarket")] [SerializeField]
     private int _maxPriceMarket;
 
-    private void Awake()  // TODO Construct
+    private UIManager _uiManager;
+
+    public void Construct(UIManager uiManager) // TODO Construct
     {
+        _uiManager = uiManager;
         _marketButton.gameObject.SetActive(false);
         ConversationManager.OnConversationStarted += OnStartConversation;
         ConversationManager.OnConversationEnded += OnConversationEnded;
@@ -55,9 +59,9 @@ public class ConversationMarket : MonoBehaviour
 
     private void OnClickButton()
     {
-        if (IGame.Instance._uiManager.UiMarketPanel != null)
+        if (_uiManager.UiMarketPanel != null)
         {
-            IGame.Instance._uiManager.OpenMarket(_minPriceMarket, _maxPriceMarket);
+            _uiManager.OpenMarket(_minPriceMarket, _maxPriceMarket);
         }
     }
 }

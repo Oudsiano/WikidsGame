@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace UI
 {
-    public class SetStudy5Step : MonoBehaviour // TODO Duplicate
+    public class SetStudy5Step : SetStudyStep // TODO Duplicate
     {
         private void OnTriggerEnter(Collider other)
         {
-            IGame.Instance._uiManager.HelpInFirstScene.Study5();
+            UiManager.HelpInFirstScene.Study5();
         }
 
     }

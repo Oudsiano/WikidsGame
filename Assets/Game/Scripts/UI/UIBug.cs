@@ -1,7 +1,9 @@
+using AINavigation;
 using Combat;
 using Combat.Data;
 using Core;
 using FarrokhGames.Inventory;
+using Saving;
 using UI.Inventory;
 using UI.Inventory.Data;
 using UI.Inventory.Enums;
@@ -34,8 +36,18 @@ namespace UI
 
         private bool _noAddToSave;
 
-        public void Init() // TODO construct
+        private IGame _iGame;
+        private SaveGame _saveGame;
+        private PlayerController _playerController;
+        private WeaponArmorManager _weaponArmorManager;
+        
+        public void Construct(IGame iGame, SaveGame saveGame, PlayerController playerController, WeaponArmorManager weaponArmorManager) // TODO construct
         {
+            _iGame = iGame;
+            _saveGame = saveGame;
+            _playerController = playerController;
+            _weaponArmorManager = weaponArmorManager;
+            
             _marketInventoryController = InventoryBag.GetComponent<InventoryController>();
             InventoryBag.Init();
             _inventoryArmor.Init();
@@ -125,7 +137,7 @@ namespace UI
 
                 if (InventoryBag.inventory.TryAdd(item.CreateInstance()))
                 {
-                    IGame.Instance.saveGame.SaveItemToBug(item);
+                    _saveGame.SaveItemToBug(item);
                     _noAddToSave = false;
 
                     return true;
@@ -150,7 +162,7 @@ namespace UI
 
             if (InventoryBag.inventory.CanAdd(item))
             {
-                IGame.Instance.saveGame.SaveItemToBug(item);
+                _saveGame.SaveItemToBug(item);
                 InventoryBag.inventory.TryAdd(item.CreateInstance());
             }
             else
@@ -166,22 +178,22 @@ namespace UI
             _notAvaliableEvents = true;
             InventoryBag.inventory.Clear();
 
-            foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
+            foreach (ItemDefinition item in _saveGame.BugItems)
             {
                 InventoryBag.inventory.TryAdd(item);
             }
 
             _inventoryWeapon.inventory.Clear();
-            if (IGame.Instance.saveGame.EquipedWeapon.sprite != null)
+            if (_saveGame.EquipedWeapon.sprite != null)
             {
-                _inventoryWeapon.inventory.TryAdd(IGame.Instance.saveGame.EquipedWeapon.CreateInstance());
+                _inventoryWeapon.inventory.TryAdd(_saveGame.EquipedWeapon.CreateInstance());
             }
 
             _inventoryArmor.inventory.Clear();
 
-            if (IGame.Instance.saveGame.EquipedArmor.sprite != null)
+            if (_saveGame.EquipedArmor.sprite != null)
             {
-                _inventoryArmor.inventory.TryAdd(IGame.Instance.saveGame.EquipedArmor.CreateInstance());
+                _inventoryArmor.inventory.TryAdd(_saveGame.EquipedArmor.CreateInstance());
             }
 
             _notAvaliableEvents = false;
@@ -190,7 +202,7 @@ namespace UI
         private void OnClickClose()
         {
             gameObject.SetActive(false);
-            IGame.Instance.SavePlayerPosLikeaPause(false);
+            _iGame.SavePlayerPosLikeaPause(false);
             PauseClass.IsOpenUI = false;
         }
 
@@ -198,18 +210,18 @@ namespace UI
         {
             _notAvaliableEvents = true;
 
-            float posX = IGame.Instance.playerController.transform.localPosition.x + // TODO magic numbers
+            float posX = _playerController.transform.localPosition.x + // TODO magic numbers
                          UnityEngine.Random.Range(-10, 10) * 0.1f;
-            float posY = IGame.Instance.playerController.transform.localPosition.y + // TODO magic numbers
+            float posY = _playerController.transform.localPosition.y + // TODO magic numbers
                          UnityEngine.Random.Range(-10, 10) * 0.1f;
 
 
             if (item.Type == ItemType.Weapons)
             {
-                Weapon _tempW = IGame.Instance.WeaponArmorManager.TryGetWeaponByName(item.Name);
+                Weapon _tempW = _weaponArmorManager.TryGetWeaponByName(item.Name);
                 GameObject newObj = Instantiate(_tempW.WeaponPrefab,
                     new Vector3(posX, posY + 1,
-                        IGame.Instance.playerController.transform.localPosition.z), // TODO magic numbers
+                        _playerController.transform.localPosition.z), // TODO magic numbers
                     Quaternion.Euler(0, 0, 0));
 
                 PickableEquip _tempPE = newObj.GetComponent<PickableEquip>();
@@ -233,8 +245,8 @@ namespace UI
             }
             else
             {
-                Instantiate(IGame.Instance.WeaponArmorManager.DefaultPrefab,
-                        new Vector3(posX, posY + 1, IGame.Instance.playerController.transform.localPosition.z),
+                Instantiate(_weaponArmorManager.DefaultPrefab,
+                        new Vector3(posX, posY + 1, _playerController.transform.localPosition.z),
                         Quaternion.Euler(0, 0, 0))
                     .GetComponent<PickableEquip>().SetItem(item);
             }
@@ -255,22 +267,22 @@ namespace UI
         private void OnRemovedArmor(IInventoryItem obj)
         {
             if (_notAvaliableEvents) return;
-            IGame.Instance.WeaponArmorManager.TryGetArmorByName(obj.name).UnEquip();
-            IGame.Instance.saveGame.MakeSave();
+            _weaponArmorManager.TryGetArmorByName(obj.name).UnEquip();
+            _saveGame.MakeSave();
         }
 
         private void OnAddedArmor(IInventoryItem obj)
         {
             if (_notAvaliableEvents) return;
-            IGame.Instance.WeaponArmorManager.TryGetArmorByName(obj.name).EquipIt();
-            IGame.Instance.saveGame.MakeSave();
+            _weaponArmorManager.TryGetArmorByName(obj.name).EquipIt();
+            _saveGame.MakeSave();
         }
 
         private void OnRemovedWeapon(IInventoryItem obj)
         {
             if (_notAvaliableEvents) return;
-            IGame.Instance.playerController.GetFighter().UnequipWeapon();
-            IGame.Instance.saveGame.MakeSave();
+            _playerController.GetFighter().UnequipWeapon();
+            _saveGame.MakeSave();
         }
 
         private void OnAddedWeapon(IInventoryItem obj)
@@ -280,9 +292,9 @@ namespace UI
                 return;
             }
 
-            IGame.Instance.playerController.GetFighter()
-                .EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(obj.name));
-            IGame.Instance.saveGame.MakeSave();
+            _playerController.GetFighter()
+                .EquipWeapon(_weaponArmorManager.TryGetWeaponByName(obj.name));
+            _saveGame.MakeSave();
         }
 
         private void OnRemoved(IInventoryItem obj)
@@ -292,8 +304,8 @@ namespace UI
                 return;
             }
 
-            IGame.Instance.saveGame.BugItems.Remove((ItemDefinition)obj);
-            IGame.Instance.saveGame.MakeSave();
+            _saveGame.BugItems.Remove((ItemDefinition)obj);
+            _saveGame.MakeSave();
         }
 
         private void OnAdded(IInventoryItem obj)
@@ -305,10 +317,10 @@ namespace UI
 
             if (_noAddToSave == false)
             {
-                IGame.Instance.saveGame.BugItems.Add((ItemDefinition)obj);
+                _saveGame.BugItems.Add((ItemDefinition)obj);
             }
 
-            IGame.Instance.saveGame.MakeSave();
+            _saveGame.MakeSave();
         }
     }
 }

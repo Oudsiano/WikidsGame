@@ -21,7 +21,7 @@ namespace UI.Inventory
                 _text.text = string.Empty;
             }
 
-            _controllers = GameObject.FindObjectsOfType<InventoryController>(); // TODO find change
+            _controllers = FindObjectsOfType<InventoryController>(); // TODO find change
 
             foreach (var controller in _controllers)
             {

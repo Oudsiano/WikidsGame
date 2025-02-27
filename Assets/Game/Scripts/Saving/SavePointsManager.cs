@@ -60,7 +60,7 @@ namespace Saving
                 return;
             }
 
-            for (int i = 0; i < IGame.Instance.dataPlayer.PlayerData.stateSpawnPoints.Count; i++)
+            for (int i = 0; i < IGame.Instance.dataPlayer.PlayerData.stateSpawnPoints.Count; i++) // TODO change static
             {
                 bool thisLast = i == IGame.Instance.dataPlayer.PlayerData.spawnPoint;
 

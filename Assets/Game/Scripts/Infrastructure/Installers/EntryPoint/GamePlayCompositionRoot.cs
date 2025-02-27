@@ -21,6 +21,7 @@ namespace Infrastructure.Installers.EntryPoint
         [SerializeField] private SceneComponent _sceneComponent; //
 
         [SerializeField] private ConversationMarket _conversationMarket;
+        [SerializeField] private SetStudyStep[] _setStudySteps;
         [SerializeField] private NPCInteractable[] _npcInteractable;
         [SerializeField] private AnswerHandler[] _answerHandlers;
         [SerializeField] private ArrowForPlayer[] _arrowsForPlayer;
@@ -47,6 +48,12 @@ namespace Infrastructure.Installers.EntryPoint
         private void ConstructComponents()
         {
             _conversationMarket.Construct(_sceneContainer.Resolve<UIManager>());
+            _sceneComponent.Construct(_sceneContainer.Resolve<LevelChangeObserver>());
+
+            foreach (SetStudyStep step in _setStudySteps)
+            {
+                step.Construct(_sceneContainer.Resolve<UIManager>());
+            }
 
             foreach (NPCInteractable npc in _npcInteractable)
             {
@@ -109,7 +116,9 @@ namespace Infrastructure.Installers.EntryPoint
             foreach (Portal portal in _portals)
             {
                 portal.Construct(_sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<DataPlayer>(),
-                    _sceneComponent);
+                    _sceneComponent, _sceneContainer.Resolve<CursorManager>(), _sceneContainer.Resolve<UIManager>(),
+                    _sceneContainer.Resolve<NPCManagment>(), _sceneContainer.Resolve<SaveGame>(),
+                    _sceneContainer.Resolve<SceneLoader>(), _sceneContainer.Resolve<CoinManager>());
             }
         }
     }

@@ -3,8 +3,10 @@ using Combat.Data;
 using Core.Player;
 using Data;
 using DG.Tweening;
+using Saving;
 using SceneManagement.Enums;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -39,10 +41,25 @@ namespace SceneManagement
         [SerializeField] private Armor bonusArmor; // TODO rename
 
         private MainPlayer _player;
+        private CursorManager _cursorManager;
+        private UIManager _uiManager;
+        private NPCManagment _npcManagment;
+        private SaveGame _saveGame;
+        private SceneLoader _sceneLoader;
+        private CoinManager _coinManager;
         
-        public void Construct(MainPlayer player, DataPlayer dataPlayer, SceneComponent sceneComponent) // TODO construct
+        public void Construct(MainPlayer player, DataPlayer dataPlayer, SceneComponent sceneComponent,
+            CursorManager cursorManager, UIManager uiManager, NPCManagment npcManagment, SaveGame saveGame,
+            SceneLoader sceneLoader, CoinManager coinManager)
         {
             _player = player;
+            _cursorManager = cursorManager;
+            _uiManager = uiManager;
+            _npcManagment = npcManagment;
+            _saveGame = saveGame;
+            _sceneLoader = sceneLoader;
+            _coinManager = coinManager;
+            
             this.dataPlayer = dataPlayer;
             this.sceneComponent = sceneComponent;
 
@@ -54,12 +71,12 @@ namespace SceneManagement
 
         private void OnMouseEnter()
         {
-            IGame.Instance.CursorManager.SetCursorExit();
+            _cursorManager.SetCursorExit();
         }
 
         private void OnMouseExit()
         {
-            IGame.Instance.CursorManager.SetCursorDefault();
+            _cursorManager.SetCursorDefault();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -67,12 +84,12 @@ namespace SceneManagement
             // Проверяем, что в область портала входит игрок и что переход между сценами не происходит в данный момент
             if (other.gameObject == _player.gameObject) // TODO change
             {
-                IGame.Instance._uiManager.HelpInFirstScene.EndStudy5();
+                _uiManager.HelpInFirstScene.EndStudy5();
 
-                if (IGame.Instance.NPCManagment.checkAllTestsComplite() == false)
+                if (_npcManagment.checkAllTestsComplite() == false)
                 {
                     Debug.Log("Рано портироваться, ты еще не сделал все тесты" + // TODO can be cached
-                              string.Join(", ", IGame.Instance.NPCManagment.NotComplete));
+                              string.Join(", ", _npcManagment.NotComplete));
                     TextDisplay(0, "Рано портироваться, ты еще не сделал все тесты"); // TODO can be cached
 
                     return;
@@ -97,10 +114,10 @@ namespace SceneManagement
             }
 
             dataPlayer.SetSceneToLoad(sceneToLoad);
-            SceneLoader.Instance.TryChangeLevel(sceneToLoad, 0);
+            _sceneLoader.TryChangeLevel(sceneToLoad, 0);
 
-            IGame.Instance.CursorManager.SetCursorDefault();
-            IGame.Instance.saveGame.MakePortalSave(bonusWeapon, bonusArmor, sceneComponent);
+            _cursorManager.SetCursorDefault();
+            _saveGame.MakePortalSave(bonusWeapon, bonusArmor, sceneComponent);
 
             yield return new WaitForSeconds(betweenFadeTime); // Ждем некоторое время после загрузки сцены
         }
@@ -140,7 +157,7 @@ namespace SceneManagement
 
         private void TextDisplay(int coins, string text) // TODO move Factory canvas
         {
-            IGame.Instance._coinManager.Coins.ChangeCount(coins);
+            _coinManager.Coins.ChangeCount(coins);
 
             TextMeshProUGUI messageText;
             Canvas canvas;

@@ -17,8 +17,12 @@ namespace SceneManagement
         [Header("Infection Group")] [SerializeField]
         public GameObject InfectGroup; // TODO rename
 
-        private void Awake()
+        private LevelChangeObserver _levelChangeObserver;
+        
+        public void Construct(LevelChangeObserver levelChangeObserver)
         {
+            _levelChangeObserver = levelChangeObserver;
+            
             if (InfectGroup == null)
             {
                 InfectGroup = GameObject.Find("infection"); // TODO find change
@@ -29,9 +33,9 @@ namespace SceneManagement
                 }
             }
 
-            if (IGame.Instance.LevelChangeObserver.DictForInfected.ContainsKey(IdScene))
+            if (_levelChangeObserver.DictForInfected.ContainsKey(IdScene))
             {
-                SetInfectGroupActive(IGame.Instance.LevelChangeObserver.DictForInfected[IdScene]);
+                SetInfectGroupActive(_levelChangeObserver.DictForInfected[IdScene]);
             }
         }
 

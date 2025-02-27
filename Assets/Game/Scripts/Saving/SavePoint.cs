@@ -19,16 +19,18 @@ namespace Saving
         //[SerializeField] private bool alreadyEnabled; // TODO not used code
         // Переменная для хранения позиции игрока
 
+        private Camera _camera;
         private Vector3 _playerPosition;
 
         public void Construct(DataPlayer dataPlayer, Health health)
         {
+            _camera = Camera.main;
             Debug.Log("SavePoint constructed");
             SavePointsManager.AllSavePoints[spawnPoint] = this; // TODO change
             NotActiveSprite.SetActive(true);
             this.health = health;
             this.dataPlayer = dataPlayer;
-                
+
             if (transform.localScale != Vector3.one)
             {
                 Debug.LogError("Scale is not (1, 1, 1)");
@@ -46,7 +48,7 @@ namespace Saving
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // TODO find change TODO duplicate
+                Ray ray = _camera.ScreenPointToRay(Input.mousePosition); // TODO find change TODO duplicate
                 RaycastHit hit;
 
                 if (Physics.Raycast(ray, out hit))
@@ -90,7 +92,8 @@ namespace Saving
                 IGame.Instance.gameAPI.SaveUpdater();
                 //StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
 
-                SavePointsManager.UpdateStateSpawnPointsAfterLoad(1, dataPlayer); //Обновляем все метки // TODO savepoints to construct
+                SavePointsManager.UpdateStateSpawnPointsAfterLoad(1,
+                    dataPlayer); //Обновляем все метки // TODO savepoints to construct
 
                 IGame.Instance.playerController.GetHealth().Restore();
 
@@ -143,7 +146,7 @@ namespace Saving
             if (fastTextSavePoint != null)
             {
                 Transform messageTextTransform = fastTextSavePoint.transform.Find("MessageText");
-            
+
                 if (messageTextTransform != null)
                 {
                     TextMeshProUGUI textMeshPro = messageTextTransform.GetComponent<TextMeshProUGUI>();
@@ -154,7 +157,7 @@ namespace Saving
                 }
 
                 CanvasGroup canvasGroup = fastTextSavePoint.GetComponent<CanvasGroup>();
-            
+
                 if (canvasGroup == null)
                 {
                     canvasGroup = fastTextSavePoint.AddComponent<CanvasGroup>();
@@ -175,7 +178,7 @@ namespace Saving
         private GameObject FindInactiveObjectByName(string name)
         {
             Transform[] allObjects = Resources.FindObjectsOfTypeAll<Transform>();
-        
+
             foreach (Transform obj in allObjects)
             {
                 if (obj.name == name && obj.hideFlags == HideFlags.None)

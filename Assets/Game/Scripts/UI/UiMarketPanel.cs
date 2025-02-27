@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using AINavigation;
 using Combat.Data;
 using Core;
 using FarrokhGames.Inventory;
+using Saving;
+using SceneManagement;
 using UI.Inventory;
 using UI.Inventory.Data;
 using UI.Inventory.Enums;
@@ -51,9 +54,21 @@ namespace UI
         private int _maxPrice;
 
         private bool _notAvaliableEvents = false;
+        private PlayerController _playerController;
+        private CoinManager _coinManager;
+        private SaveGame _saveGame;
+        private WeaponArmorManager _weaponArmorManager;
+        private IGame _iGame;
 
-        private void Awake() // TODO construct
+        public void Construct(PlayerController playerController, CoinManager coinManager, SaveGame saveGame,
+            WeaponArmorManager weaponArmorManager, IGame iGame) 
         {
+            _playerController = playerController;
+            _coinManager = coinManager;
+            _saveGame = saveGame;
+            _weaponArmorManager = weaponArmorManager;
+            _iGame = iGame;
+            
             _buttonAccept.onClick.AddListener(OnClickAccept);
             _buttonDecline.onClick.AddListener(OnClickDecline);
 
@@ -86,7 +101,7 @@ namespace UI
                 _angleTryOnEquip -= 360;
             }
 
-            IGame.Instance.playerController.ModularCharacter.transform.localRotation =
+            _playerController.ModularCharacter.transform.localRotation =
                 Quaternion.Euler(0, _angleTryOnEquip, 0);
         }
         
@@ -102,7 +117,7 @@ namespace UI
             InventoryAll.inventory.onItemAdded += HandleItemAdded;
             InventoryAll.inventory.onItemRemoved += HandleItemRemoved;
 
-            IGame.Instance._coinManager.Coins.OnChangeCount += OnChangeMoney;
+            _coinManager.Coins.OnChangeCount += OnChangeMoney;
         }
 
         public void Regen(int _minPrice, int _maxPrice)
@@ -113,7 +128,7 @@ namespace UI
             _notAvaliableEvents = true;
             InventoryBag.inventory.Clear();
 
-            foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
+            foreach (ItemDefinition item in _saveGame.BugItems)
             {
                 InventoryBag.inventory.TryAdd(item);
             }
@@ -131,17 +146,17 @@ namespace UI
             _grid = grid;
             _item = item;
 
-            if (IGame.Instance.saveGame.Coins < _item.price)
+            if (_saveGame.Coins < _item.price)
             {
                 _decline?.Invoke();
 
                 return;
             }
 
-            _oldWeaponWhenTryOn = IGame.Instance.saveGame.EquipedWeapon;
-            _oldArmorWhenTryOn = IGame.Instance.saveGame.EquipedArmor;
+            _oldWeaponWhenTryOn = _saveGame.EquipedWeapon;
+            _oldArmorWhenTryOn = _saveGame.EquipedArmor;
 
-            ItemDefinition newItem = IGame.Instance.WeaponArmorManager.TryGetItemByName(item.name);
+            ItemDefinition newItem = _weaponArmorManager.TryGetItemByName(item.name);
 
             if (newItem.Type == ItemType.Armor)
             {
@@ -150,31 +165,31 @@ namespace UI
 
             if (newItem.Type == ItemType.Weapons)
             {
-                IGame.Instance.playerController.GetFighter()
-                    .EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(item.name));
+                _playerController.GetFighter()
+                    .EquipWeapon(_weaponArmorManager.TryGetWeaponByName(item.name));
             }
 
-            IGame.Instance.playerController.ModularCharacter.transform.localPosition =
+            _playerController.ModularCharacter.transform.localPosition =
                 new Vector3(1000, 1000, 1000); // TODO magic numbers
             _angleTryOnEquip = 0;
-            IGame.Instance.playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            _playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
             _confirmPanel.SetActive(true);
-            IGame.Instance.saveGame.MakeSave();
+            _saveGame.MakeSave();
         }
 
         public void SellItem(Action<Vector2Int> accept, Action decline, Vector2Int grid, IInventoryItem item)
         {
-            IGame.Instance.saveGame.Coins += (int)(item.price * InventoryBag.inventory.PriceMultiple);
+            _saveGame.Coins += (int)(item.price * InventoryBag.inventory.PriceMultiple);
             accept?.Invoke(grid);
-            IGame.Instance.saveGame.MakeSave();
+            _saveGame.MakeSave();
         }
 
         private void GenerateMarketItems()
         {
             _marketItems = new List<ItemDefinition>();
 
-            foreach (var item in IGame.Instance.WeaponArmorManager.AllWeaponsInGame)
+            foreach (var item in _weaponArmorManager.AllWeaponsInGame)
             {
                 if (item.sprite != null)
                 {
@@ -182,7 +197,7 @@ namespace UI
                 }
             }
 
-            foreach (var item in IGame.Instance.WeaponArmorManager.AllArmorsInGame)
+            foreach (var item in _weaponArmorManager.AllArmorsInGame)
             {
                 if (item.sprite != null)
                 {
@@ -199,7 +214,7 @@ namespace UI
         private void OnClickClose()
         {
             gameObject.SetActive(false);
-            IGame.Instance.SavePlayerPosLikeaPause(false);
+            _iGame.SavePlayerPosLikeaPause(false);
             PauseClass.IsOpenUI = false;
         }
 
@@ -251,11 +266,11 @@ namespace UI
                 return;
             }
 
-            foreach (ItemDefinition item in IGame.Instance.saveGame.BugItems)
+            foreach (ItemDefinition item in _saveGame.BugItems)
             {
                 if (item.sprite == obj.sprite)
                 {
-                    IGame.Instance.saveGame.BugItems.Remove(item);
+                    _saveGame.BugItems.Remove(item);
 
                     return;
                 }
@@ -269,19 +284,19 @@ namespace UI
                 return;
             }
 
-            foreach (var item in IGame.Instance.WeaponArmorManager.AllWeaponsInGame)
+            foreach (var item in _weaponArmorManager.AllWeaponsInGame)
             {
                 if (item.sprite == obj.sprite)
                 {
-                    IGame.Instance.saveGame.BugItems.Add(item);
+                    _saveGame.BugItems.Add(item);
                 }
             }
 
-            foreach (var item in IGame.Instance.WeaponArmorManager.AllArmorsInGame)
+            foreach (var item in _weaponArmorManager.AllArmorsInGame)
             {
                 if (item.sprite == obj.sprite)
                 {
-                    IGame.Instance.saveGame.BugItems.Add(item);
+                    _saveGame.BugItems.Add(item);
                 }
             }
         }
@@ -293,7 +308,7 @@ namespace UI
                 return;
             }
 
-            foreach (var item in IGame.Instance.WeaponArmorManager.AllWeaponsInGame)
+            foreach (var item in _weaponArmorManager.AllWeaponsInGame)
             {
                 if (item.sprite == obj.sprite)
                 {
@@ -301,7 +316,7 @@ namespace UI
                 }
             }
 
-            foreach (var item in IGame.Instance.WeaponArmorManager.AllArmorsInGame)
+            foreach (var item in _weaponArmorManager.AllArmorsInGame)
             {
                 if (item.sprite == obj.sprite)
                 {
@@ -338,12 +353,12 @@ namespace UI
                             }
                         }
 
-                        if (IGame.Instance.saveGame.EquipedArmor.name == item.name)
+                        if (_saveGame.EquipedArmor.name == item.name)
                         {
                             find = true;
                         }
 
-                        if (IGame.Instance.saveGame.EquipedWeapon.name == item.name)
+                        if (_saveGame.EquipedWeapon.name == item.name)
                         {
                             find = true;
                         }
@@ -368,8 +383,8 @@ namespace UI
             _confirmPanel.SetActive(false);
 
             _oldArmorWhenTryOn.EquipIt();
-            IGame.Instance.playerController.GetFighter()
-                .EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(_oldWeaponWhenTryOn.name));
+            _playerController.GetFighter()
+                .EquipWeapon(_weaponArmorManager.TryGetWeaponByName(_oldWeaponWhenTryOn.name));
         }
 
         private void OnClickAccept()
@@ -377,11 +392,11 @@ namespace UI
             _accept?.Invoke(_grid);
             _confirmPanel.SetActive(false);
 
-            IGame.Instance.saveGame.Coins -= _item.price;
+            _saveGame.Coins -= _item.price;
 
             _oldArmorWhenTryOn.EquipIt();
-            IGame.Instance.playerController.GetFighter()
-                .EquipWeapon(IGame.Instance.WeaponArmorManager.TryGetWeaponByName(_oldWeaponWhenTryOn.name));
+            _playerController.GetFighter()
+                .EquipWeapon(_weaponArmorManager.TryGetWeaponByName(_oldWeaponWhenTryOn.name));
         }
 
         private void OnDestroy()
@@ -395,7 +410,7 @@ namespace UI
                 InventoryBag.inventory.onItemRemoved -= HandleItemBugRemoved;
             }
 
-            IGame.Instance._coinManager.Coins.OnChangeCount -= OnChangeMoney;
+            _coinManager.Coins.OnChangeCount -= OnChangeMoney;
             _btnClose.onClick.RemoveAllListeners();
 
             _buttonAccept.onClick.RemoveAllListeners();

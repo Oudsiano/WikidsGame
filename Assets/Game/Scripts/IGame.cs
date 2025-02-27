@@ -113,7 +113,6 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
                     }
                 }
                 */
-                Debug.Log("ЗДЕСЬ ДОЛЖЕН БЫЛ СЛУЧИТЬСЯ ИНИТ!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 //instance.Init();
             }
 

@@ -36,9 +36,16 @@ namespace UI
         private int _addArrows;
 
         private CanvasGroup _canvasGroup;
+        private IGame _igame;
+        private FastTestsManager _fastTestsManager;
+        private UIManager _uiManager;
 
-        private void Awake() // TODO construct
+        public void Construct(IGame igame, FastTestsManager fastTestsManager, UIManager uiManager)
         {
+            _igame = igame;
+            _fastTestsManager = fastTestsManager;
+            _uiManager = uiManager;
+            
             _buttonClose.onClick.AddListener(OnClickClose);
 
             _button1.onClick.AddListener(() => OnAnswerClick(1)); // TODO magic numbers
@@ -82,7 +89,7 @@ namespace UI
             _addArrows = addArrows;
             _targetKillAfterTest = targetKillAfterTest;
 
-            var allTests = IGame.Instance.FastTestsManager.AvaliableTestsNow;
+            var allTests = _fastTestsManager.AvaliableTestsNow;
 
             if (allTests == null || allTests.Count == 0)
             {
@@ -103,7 +110,7 @@ namespace UI
                 if (_currentTest != null)
                 {
                     PauseClass.IsOpenUI = true;
-                    IGame.Instance.SavePlayerPosLikeaPause(true);
+                    _igame.SavePlayerPosLikeaPause(true);
                     gameObject.SetActive(true);
 
                     SetTexts(
@@ -147,7 +154,7 @@ namespace UI
 
             if (_isCorrect && _addArrows > 0)
             {
-                IGame.Instance._uiManager.IncreaseWeaponCharges(_addArrows); // ?????????? ????? ??? ?????????? ??????
+                _uiManager.IncreaseWeaponCharges(_addArrows); // ?????????? ????? ??? ?????????? ??????
             }
         }
 
@@ -174,7 +181,7 @@ namespace UI
         private void OnClickClose()
         {
             gameObject.SetActive(false);
-            IGame.Instance.SavePlayerPosLikeaPause(false);
+            _igame.SavePlayerPosLikeaPause(false);
             PauseClass.IsOpenUI = false;
 
             if (_targetKillAfterTest != null)

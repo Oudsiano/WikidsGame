@@ -97,8 +97,8 @@ namespace Infrastructure.Installers.EntryPoint
 
             _saveGame.Construct(_gameAPI, _weaponArmorManager, _coinManager,
                 _dataPlayer, _uiManager);
-            _uiManager.Construct(_sceneLoader, _followCamera, _gameAPI, _coinManager, _saveGame, _questManager,
-                _dataPlayer, _fastTestsManager);
+            _uiManager.Construct(_iGame, _sceneLoader, _followCamera, _gameAPI, _coinManager, _saveGame, _questManager,
+                _dataPlayer, _fastTestsManager, _player.PlayerController, _weaponArmorManager);
             _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame);
             _followCamera.Construct(_player, _player.PlayerController);
             _javaScriptHook.Construct(_dataPlayer, _sceneLoader);

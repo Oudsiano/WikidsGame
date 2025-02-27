@@ -17,17 +17,11 @@ namespace SceneManagement
         public static event Action<allScenes> LevelChanged;
 
         [SerializeField] private allScenes levelToLoad = 0; // TODO rename
-        private static SceneLoader _instance; // TODO rename
 
         private DataPlayer _dataPlayer;
         private LevelChangeObserver _levelChangeObserver;
         private SavePointsManager _savePointsManager;
-
-        public static SceneLoader Instance // TODO rename 
-        {
-            get { return _instance; }
-        }
-
+        
         public void Construct(DataPlayer dataPlayer, LevelChangeObserver levelChangeObserver,
             SavePointsManager savePointsManager)
         {
@@ -36,15 +30,6 @@ namespace SceneManagement
             _dataPlayer = dataPlayer;
             _levelChangeObserver = levelChangeObserver;
             _savePointsManager = savePointsManager;
-            
-            if (_instance != null && _instance != this)
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                _instance = this;
-            }
         }
 
         public void UpdateCurrentLevel()

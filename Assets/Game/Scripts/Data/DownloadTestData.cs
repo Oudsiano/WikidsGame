@@ -11,7 +11,7 @@ namespace Data
         public ConversationStarter starterConversation;
         public int IDLesson;
     
-        public void DownloadData()
+        public void DownloadData() 
         {
             _gameAPI = FindObjectOfType<GameAPI>(); // TODO find change
             starterConversation = FindObjectOfType<ConversationStarter>(); // TODO find change

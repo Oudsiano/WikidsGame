@@ -1,3 +1,4 @@
+using AINavigation;
 using Combat.Data;
 using Core;
 using Core.Camera;
@@ -108,6 +109,7 @@ namespace UI
         [SerializeField] public Weapon WeaponBow;
         [SerializeField] public TMP_Text arrowCharges;
 
+        private IGame _igame;
         private FollowCamera _followCamera;
         private SceneLoader _sceneLoader;
         private GameAPI _gameAPI;
@@ -129,11 +131,12 @@ namespace UI
             set => _followCamera = value;
         }
 
-        public void Construct(SceneLoader sceneLoader, FollowCamera followCamera, GameAPI gameAPI,
+        public void Construct(IGame igame, SceneLoader sceneLoader, FollowCamera followCamera, GameAPI gameAPI,
             CoinManager coinManager, SaveGame saveGame, QuestManager questManager, DataPlayer dataPlayer,
-            FastTestsManager fastTestsManager) // TODO construct
+            FastTestsManager fastTestsManager, PlayerController playerController, WeaponArmorManager weaponArmorManager) // TODO construct
         {
             Debug.Log("Construct UIManager");
+            _igame = igame;
             _sceneLoader = sceneLoader;
             _followCamera = followCamera;
             _gameAPI = gameAPI;
@@ -151,12 +154,13 @@ namespace UI
 
             DeathUI.gameObject.SetActive(false);
             _againUI.SetActive(false);
-            
+            fastTestUI.Construct(_igame, _fastTestsManager, this);
             DeathUI.Construct(this);
             HelpInFirstScene.Construct(_dataPlayer);
-            
-            UiMarketPanel.Init();
-            uIBug.Init();
+            _testTableGenerator.Construct(_fastTestsManager);
+            UiMarketPanel.Construct(playerController, coinManager, _saveGame, weaponArmorManager, _igame);
+            uIBug.Construct(_igame, _saveGame, playerController, weaponArmorManager);
+
             _buttonMarket.onClick.AddListener(OnClickButtonMarket);
             _buttonBug.onClick.AddListener(OnClickButtonBug);
             _btnQuestScr.onClick.AddListener(OnClickBtnQuest);
@@ -359,7 +363,7 @@ namespace UI
 
         public void OnClickBtnCloseMap()
         {
-            IGame.Instance.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
             PauseClass.IsOpenUI = false;
             MapCanvas.SetActive(false);
 
@@ -385,7 +389,7 @@ namespace UI
                 _buttonCancelAgain.gameObject.SetActive(false);
             }
 
-            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
             PauseClass.IsOpenUI = true;
         }
 
@@ -393,7 +397,7 @@ namespace UI
         {
             UiMarketPanel.Regen(minPrice, maxPrice);
             UiMarketPanel.gameObject.SetActive(true);
-            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
             PauseClass.IsOpenUI = true;
         }
 
@@ -402,7 +406,7 @@ namespace UI
         private void OnCLickCloseOption()
         {
             OptionScr.SetActive(false);
-            IGame.Instance.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
             PauseClass.IsOpenUI = false;
         }
 
@@ -414,7 +418,7 @@ namespace UI
         private void OnClickBtnOption()
         {
             OptionScr.SetActive(true);
-            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
             PauseClass.IsOpenUI = true;
         }
 
@@ -456,7 +460,7 @@ namespace UI
         private void ClosePlayerScr()
         {
             PlayerInfoScr.SetActive(false);
-            IGame.Instance.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
             PauseClass.IsOpenUI = false; // TODO static
         }
 
@@ -469,7 +473,7 @@ namespace UI
 
         private void OnClickUserInfo()
         {
-            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
             PauseClass.IsOpenUI = true; // TODO static
             PlayerInfoScr.SetActive(true);
             RegenPLayerInfoScr();
@@ -494,7 +498,7 @@ namespace UI
                 MapCanvas.gameObject.SetActive(true);
             }
 
-            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
             PauseClass.IsOpenUI = true; // TODO static
         }
 
@@ -507,7 +511,7 @@ namespace UI
         {
             uIBug.Regen();
             uIBug.gameObject.SetActive(true);
-            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
             PauseClass.IsOpenUI = true; // TODO static
         }
 
@@ -519,7 +523,7 @@ namespace UI
                 KeyBoardsEvents.escState = EscState.none;
             }
 
-            IGame.Instance.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
             PauseClass.IsOpenUI = false; // TODO static
         }
 
@@ -543,14 +547,14 @@ namespace UI
         private void ShowQuestPanel()
         {
             QuestScr.SetActive(true);
-            IGame.Instance.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
             PauseClass.IsOpenUI = true; // TODO static
         }
 
         private void HideQuestPanel()
         {
             QuestScr.SetActive(false);
-            IGame.Instance.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
+            _igame.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
             PauseClass.IsOpenUI = false; // TODO static
         }
 

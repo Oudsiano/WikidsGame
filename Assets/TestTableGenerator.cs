@@ -10,7 +10,15 @@ using UnityEngine.UI;
 
 public class TestTableGenerator : MonoBehaviour
 {
-    public TMP_Text outputText; // TMP_Text ??? ??????????? ???????
+    public TMP_Text outputText;
+
+    private FastTestsManager _fastTestsManager;
+    
+    public void Construct(FastTestsManager fastTestsManager)
+    {
+        _fastTestsManager = fastTestsManager;
+    }
+    
     private string GetCorrectAnswer(OneFastTest test, int correctAnswerIndex)
     {
         switch (correctAnswerIndex)
@@ -30,7 +38,7 @@ public class TestTableGenerator : MonoBehaviour
         table.Columns.Add("Question", typeof(string));
         table.Columns.Add("CorrectAnswer", typeof(string));
 
-        var allTests = IGame.Instance.FastTestsManager.AvaliableTestsNow;
+        var allTests = _fastTestsManager.AvaliableTestsNow;
 
         if (allTests != null && allTests.Count > 0)
         {

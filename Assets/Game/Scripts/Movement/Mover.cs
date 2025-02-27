@@ -64,10 +64,12 @@ namespace Movement
 
             // Проверяем, была ли нажата кнопка мыши            
             if (_isPlayer)
+            {
                 if (Input.GetMouseButtonDown(0))
                 {
                     CreateEffectAtMousePosition(); // Создаем эффект в позиции указателя мыши // TODO Expensive 
                 }
+            }
 
 
             //Вынес вызов диалогового окна в сам скрипт NPCInteractable // TODO Expensive Code

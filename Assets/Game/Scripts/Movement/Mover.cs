@@ -18,7 +18,7 @@ namespace Movement
         private bool _isPlayer;
 
         [FormerlySerializedAs("clickEffect")] [SerializeField]
-        private ClickEffect _clickEffect; // Ссылка на скрипт для создания эффекта при нажатии на точку
+        public ClickEffect ClickEffect; // Ссылка на скрипт для создания эффекта при нажатии на точку
 
         public float StrafeDistance = 3f;
         public NPCInteractable Target;
@@ -157,7 +157,7 @@ namespace Movement
 
             if (Physics.Raycast(ray, out hit))
             {
-                _clickEffect.CreateEffect(hit.point +
+                ClickEffect.CreateEffect(hit.point +
                                           new Vector3(0, 0.2f, 0)); // Создаем эффект в точке столкновения луча
 
                 // Если объект, в который попал луч, имеет тег "Interactable", устанавливаем его как цель взаимодействия

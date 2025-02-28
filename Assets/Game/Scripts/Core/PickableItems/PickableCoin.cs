@@ -8,19 +8,22 @@ namespace Core.PickableItems
 {
     public class PickableCoin : MonoBehaviour
     {
-        [FormerlySerializedAs("count")] [SerializeField] private float _count;
-        [FormerlySerializedAs("textCount")] [SerializeField] private TextMeshPro _textCount; // TODO change to VIEW
+        [FormerlySerializedAs("count")] [SerializeField]
+        private float _value;
+
+        [FormerlySerializedAs("textCount")] [SerializeField]
+        private TextMeshPro _textCount; // TODO change to VIEW
 
         private CursorManager _cursorManager;
         private SaveGame _saveGame;
         private UnityEngine.Camera _camera;
-        
-        public void Construct(float value, CursorManager cursorManager, SaveGame saveGame) // TODO Construct 
+
+        public void Construct(float value, CursorManager cursorManager, SaveGame saveGame)
         {
             _camera = UnityEngine.Camera.main;
             _saveGame = saveGame;
             _cursorManager = cursorManager;
-            _count = value;
+            _value = value;
 
             if (_textCount != null)
             {
@@ -28,7 +31,7 @@ namespace Core.PickableItems
             }
         }
 
-        // Метод, вызываемый при взаимодействии с коллайдером
+        // Метод, вызываемый при взаимодействии с коллайдером // TODO not used code
         /*private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<PlayerController>())
@@ -49,16 +52,16 @@ namespace Core.PickableItems
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0)) 
+            if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = _camera.ScreenPointToRay(Input.mousePosition); // TODO can be cached
                 RaycastHit hit;
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if (hit.collider.gameObject == gameObject || hit.collider.gameObject.name == "SM_Item_Coins_01") // TODO can be cached 
+                    if (hit.collider.gameObject.TryGetComponent(out PickableCoin _)) // TODO can be cached 
                     {
-                        _saveGame.Coins += _count;
+                        _saveGame.Coins += _value;
                         Destroy(gameObject);
                         _cursorManager.SetCursorDefault();
                     }

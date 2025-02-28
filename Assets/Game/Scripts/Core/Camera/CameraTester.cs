@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Core.Camera
 {
@@ -7,11 +8,11 @@ namespace Core.Camera
     {
         [SerializeField] private Transform _target;
         [SerializeField] private float _smoothSpeed;
-        [SerializeField] private Vector3 _offSet;
+        [FormerlySerializedAs("_offSet")] [SerializeField] private Vector3 _offset;
 
         private void LateUpdate()
         {
-            transform.position = _target.position + _offSet;
+            transform.position = _target.position + _offset;
         }
     }
 }

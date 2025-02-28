@@ -1,18 +1,21 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace UI
 {
     public class HideAfterLoadScene : MonoBehaviour
     {
+        private float _duration;
+        
         private void Start()
         {
-            StartCoroutine(CallFunctionWithDelay(1.0f)); // TODO magic numbers
+            CallFunctionWithDelay(_duration); // TODO magic numbers
         }
 
-        private IEnumerator CallFunctionWithDelay(float delay)
+        private async UniTask CallFunctionWithDelay(float delay)
         {
-            yield return new WaitForSeconds(delay);
+            await UniTask.Delay((int)1 * 1000);
+            
             gameObject.SetActive(false);
         }
     }

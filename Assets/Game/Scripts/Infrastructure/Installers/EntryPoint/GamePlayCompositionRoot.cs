@@ -17,9 +17,10 @@ namespace Infrastructure.Installers.EntryPoint
     public class GamePlayCompositionRoot : MonoBehaviour, ICompose
     {
         [SerializeField] private SceneContext _sceneContext;
-        [SerializeField] private ConversationManager _conversationManager; //
-        [SerializeField] private SceneComponent _sceneComponent; //
+        [SerializeField] private ConversationManager _conversationManager;
+        [SerializeField] private SceneComponent _sceneComponent;
 
+        [SerializeField] private DownloadTestData[] _downloadTestData;
         [SerializeField] private ConversationMarket _conversationMarket;
         [SerializeField] private SetStudyStep[] _setStudySteps;
         [SerializeField] private NPCInteractable[] _npcInteractable;
@@ -50,6 +51,11 @@ namespace Infrastructure.Installers.EntryPoint
             _conversationMarket.Construct(_sceneContainer.Resolve<UIManager>());
             _sceneComponent.Construct(_sceneContainer.Resolve<LevelChangeObserver>());
 
+            foreach (DownloadTestData data in _downloadTestData)
+            {
+                data.Construct(_sceneContainer.Resolve<GameAPI>());
+            }
+
             foreach (SetStudyStep step in _setStudySteps)
             {
                 step.Construct(_sceneContainer.Resolve<UIManager>());
@@ -57,7 +63,8 @@ namespace Infrastructure.Installers.EntryPoint
 
             foreach (NPCInteractable npc in _npcInteractable)
             {
-                npc.Construct(_sceneContainer.Resolve<CursorManager>());
+                npc.Construct(_sceneContainer.Resolve<CursorManager>(), _sceneContainer.Resolve<QuestManager>(),
+                    _sceneContainer.Resolve<DataPlayer>(), _sceneContainer.Resolve<GameAPI>());
             }
 
             foreach (AnswerHandler answerHandler in _answerHandlers)
@@ -91,14 +98,18 @@ namespace Infrastructure.Installers.EntryPoint
                 boss.Construct();
             }
 
-            // foreach (IconForFarCamera icon in _iconsForCamera)
-            // {
-            //     icon.Construct(_sceneContainer.Resolve<UIManager>()); // TODO Player 
-            // }
+            foreach (IconForFarCamera icon in _iconsForCamera)
+            {
+                icon.Construct(_sceneContainer.Resolve<UIManager>());
+            }
 
             foreach (AIController aiController in _aiControllers)
             {
-                aiController.Construct(_sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<IGame>());
+                aiController.Construct(_sceneContainer.Resolve<MainPlayer>().PlayerController,
+                    _sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<IGame>(),
+                    _sceneContainer.Resolve<FastTestsManager>(),
+                    _sceneContainer.Resolve<QuestManager>(), _sceneContainer.Resolve<CoinManager>(),
+                    _sceneContainer.Resolve<BottleManager>(), _sceneContainer.Resolve<UIManager>());
             }
 
             foreach (NPC_for_testID npc in _npcForTestID) // TODO MOVE TO NPC script
@@ -110,7 +121,9 @@ namespace Infrastructure.Installers.EntryPoint
             foreach (SavePoint savePoint in _savePoints)
             {
                 savePoint.Construct(_sceneContainer.Resolve<DataPlayer>(),
-                    _sceneContainer.Resolve<MainPlayer>().PlayerController.GetHealth());
+                    _sceneContainer.Resolve<MainPlayer>().PlayerController.GetHealth(),
+                    _sceneContainer.Resolve<CursorManager>(), _sceneContainer.Resolve<MainPlayer>().PlayerController,
+                    _sceneContainer.Resolve<GameAPI>());
             }
 
             foreach (Portal portal in _portals)

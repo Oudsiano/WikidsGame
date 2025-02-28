@@ -2,8 +2,11 @@
 using Core;
 using Core.Camera;
 using Core.Player;
+using Core.Quests;
 using Healths;
 using Movement;
+using SceneManagement;
+using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -52,14 +55,17 @@ namespace AINavigation
         private float _startDistanceForShowIcon = 300f;
         private float _maxOpacity = 0.2f;
 
-        public void Construct(MainPlayer player, IGame igame)
+        public void Construct(PlayerController playerController, MainPlayer player, IGame igame, FastTestsManager fastTestsManager,
+        QuestManager questManager, CoinManager coinManager, BottleManager bottleManager, UIManager uiManager)
         {
             _fighter = GetComponent<Fighter>();
             _mover = GetComponent<Mover>();
             _health = GetComponent<Health>();
-
+            
             _player = player;
             _fighter.Construct(igame, _player);
+            _health.Construct(playerController, fastTestsManager, questManager, coinManager, bottleManager, uiManager);
+            
             _guardLocation = transform.position;
             _guardRotation = transform.rotation;
 

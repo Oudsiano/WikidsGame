@@ -18,9 +18,12 @@ namespace UI
         private bool _isMouseOver = false;
 
         private SphereCollider _sphereCollider;
+        private readonly float _sphereColliderRadius = 0.5f;
+        private UIManager _uiManager;
 
-        private void Awake() // TODO construct
+        public void Construct(UIManager uiManager) // TODO construct
         {
+            _uiManager = uiManager;
             FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
             FollowCamera.NewYRotation += FollowCamera_NewYRotation;
             FollowCamera.NewXRotation += FollowCamera_NewXRotation;
@@ -33,7 +36,7 @@ namespace UI
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _sphereCollider = GetComponent<SphereCollider>();
             _sphereCollider.isTrigger = true;
-            _sphereCollider.radius = 0.5f; // TODO magic number
+            _sphereCollider.radius = _sphereColliderRadius; // TODO magic number
         }
 
         private void Update()
@@ -80,12 +83,12 @@ namespace UI
 
         private void _OnMouseEnter()
         {
-            IGame.Instance._uiManager.UpdateIconMapPanel(description);
+            _uiManager.UpdateIconMapPanel(description);
         }
 
         private void _OnMouseExit()
         {
-            IGame.Instance._uiManager.UpdateIconMapPanel("");
+            _uiManager.UpdateIconMapPanel("");
         }
 
         private void OnDestroy()
@@ -127,7 +130,7 @@ namespace UI
                 if (obj > startDistanceForShowIcon)
                 {
                     _image.gameObject.SetActive(true);
-                    Color newColor = _image.color; 
+                    Color newColor = _image.color;
                     newColor.a = Mathf.Min(((obj - startDistanceForShowIcon) / 50f), 1); // TODO magic numbers
                     _image.color = newColor;
 

@@ -4,11 +4,13 @@ using Combat;
 using Combat.EnumsCombat;
 using Core;
 using Core.Player;
+using Core.Quests;
 using Data;
 using DialogueEditor;
 using Healths;
 using Movement;
 using Saving;
+using SceneManagement;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -40,7 +42,8 @@ namespace AINavigation
 
         [FormerlySerializedAs("modularCharacter")]
         public GameObject ModularCharacter; // TODO O/C breach
-        
+
+        private SaveGame _saveGame;
         private DataPlayer _dataPlayer;
         private Fighter _fighter;
         private Mover _mover;
@@ -51,20 +54,27 @@ namespace AINavigation
         private bool _invisibilityState = false; // невидимость (Стелс) выключена
 
         private GameObject _activeInvisibilityVFX; // Текущий активный VFX объект для невидимости
+        private WeaponArmorManager _weaponArmorManager;
 
         public void Construct(IGame igame, PlayerArmorManager playerArmorManager, WeaponPanelUI weaponPanelUI,
-            SaveGame saveGame, DataPlayer dataPlayer, MainPlayer player)
+            SaveGame saveGame, DataPlayer dataPlayer, MainPlayer player, FastTestsManager fastTestsManager,
+            QuestManager questManager, CoinManager coinManager, BottleManager bottleManager, UIManager uiManager, WeaponArmorManager weaponArmorManager)
         {
             Debug.Log("Construct PlayerController");
+
             _mover = GetComponent<Mover>();
             _fighter = GetComponent<Fighter>();
             _health = GetComponent<Health>();
 
+            _weaponArmorManager = weaponArmorManager;
             PlayerArmorManager = playerArmorManager;
             WeaponPanelUI = weaponPanelUI;
             _dataPlayer = dataPlayer;
-            _fighter.Construct(igame, player);
+            _saveGame = saveGame;
             
+            _fighter.Construct(igame, player);
+            _health.Construct(this, fastTestsManager, questManager, coinManager, bottleManager, uiManager);
+
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }
@@ -81,7 +91,7 @@ namespace AINavigation
         //     WeaponPanelUI.Init();
         //
         //     SceneManager.sceneLoaded += SceneLoader_LevelChanged;
-        //     IGame.Instance.saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
+        //     _saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         // }
 
         private void Update()
@@ -156,14 +166,14 @@ namespace AINavigation
 
         private void SaveGame_OnOnLoadItems()
         {
-            _fighter.EquipItem(IGame.Instance.saveGame.EquipedArmor);
-            _fighter.EquipItem(IGame.Instance.saveGame.EquipedWeapon);
+            _fighter.EquipItem(_saveGame.EquipedArmor);
+            _fighter.EquipItem(_saveGame.EquipedWeapon);
         }
 
         private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode) // TODO move to one SceneLoaderService
         {
-            IGame.Instance.saveGame.MakeLoad();
-            IGame.Instance.saveGame.SetBonusWeaponAndArmorIfNeed(); //TODO перенести эту функцию куда то еще
+            _saveGame.MakeLoad();
+            _saveGame.SetBonusWeaponAndArmorIfNeed();
             EquipWeaponAndArmorAfterLoad();
         }
 
@@ -191,14 +201,14 @@ namespace AINavigation
 
         private void EquipWeaponAndArmorAfterLoad()
         {
-            if (IGame.Instance.dataPlayer.PlayerData.weaponToLoad.Length > 1) // TODO magic number
+            if (_dataPlayer.PlayerData.weaponToLoad.Length > 1) // TODO magic number
             {
                 _fighter.EquipWeapon(
-                    IGame.Instance.WeaponArmorManager.TryGetWeaponByName(IGame.Instance.dataPlayer.PlayerData
+                    _weaponArmorManager.TryGetWeaponByName(_dataPlayer.PlayerData
                         .weaponToLoad));
             }
 
-            IGame.Instance.WeaponArmorManager.GerArmorById((armorID)IGame.Instance.dataPlayer.PlayerData.armorIdToload)
+            _weaponArmorManager.GerArmorById((armorID)_dataPlayer.PlayerData.armorIdToload)
                 .EquipIt();
         }
 

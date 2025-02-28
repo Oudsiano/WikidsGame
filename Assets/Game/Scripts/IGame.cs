@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using AINavigation;
 using Combat;
-using Core;
+using Core; 
 using Core.Player;
 using Core.Quests;
 using Data;

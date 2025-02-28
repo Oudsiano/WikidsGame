@@ -1,6 +1,8 @@
+using AINavigation;
 using Data;
 using DG.Tweening;
 using Healths;
+using SceneManagement;
 using TMPro;
 using UnityEngine;
 
@@ -19,18 +21,26 @@ namespace Saving
         //[SerializeField] private bool alreadyEnabled; // TODO not used code
         // Переменная для хранения позиции игрока
 
+        private CursorManager _cursorManager;
+        private PlayerController _playerController;
+        private GameAPI _gameAPI;
         private Camera _camera;
         private Vector3 _playerPosition;
 
-        public void Construct(DataPlayer dataPlayer, Health health)
+        public void Construct(DataPlayer dataPlayer, Health health, CursorManager cursorManager, PlayerController playerController, GameAPI gameAPI)
         {
-            _camera = Camera.main;
             Debug.Log("SavePoint constructed");
-            SavePointsManager.AllSavePoints[spawnPoint] = this; // TODO change
-            NotActiveSprite.SetActive(true);
+            
+            _camera = Camera.main;
             this.health = health;
             this.dataPlayer = dataPlayer;
-
+            _cursorManager = cursorManager;
+            _playerController = playerController;
+            _gameAPI = gameAPI;
+            
+            SavePointsManager.AllSavePoints[spawnPoint] = this; // TODO change
+            NotActiveSprite.SetActive(true);
+            
             if (transform.localScale != Vector3.one)
             {
                 Debug.LogError("Scale is not (1, 1, 1)");
@@ -63,12 +73,12 @@ namespace Saving
 
         private void OnMouseEnter()
         {
-            IGame.Instance.CursorManager.SetCursorSave();
+            _cursorManager.SetCursorSave();
         }
 
         private void OnMouseExit()
         {
-            IGame.Instance.CursorManager.SetCursorDefault();
+            _cursorManager.SetCursorDefault();
         }
 
         private void Activate()
@@ -89,13 +99,13 @@ namespace Saving
                 }
 
                 // Если объект найден, продолжаем с сохранением игры
-                IGame.Instance.gameAPI.SaveUpdater();
+                _gameAPI.SaveUpdater();
                 //StartCoroutine(IGame.Instance.gameAPI.SaveGameData());
 
                 SavePointsManager.UpdateStateSpawnPointsAfterLoad(1,
                     dataPlayer); //Обновляем все метки // TODO savepoints to construct
 
-                IGame.Instance.playerController.GetHealth().Restore();
+                _playerController.GetHealth().Restore();
 
                 //gameObject.GetComponent<Collider>().enabled = false;
                 //if (spawnPoint!=0)

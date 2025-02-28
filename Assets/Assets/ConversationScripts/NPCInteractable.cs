@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Core.Quests;
+using Data;
 using UnityEngine;
 using DialogueEditor;
 using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
+using Saving;
 using SceneManagement;
 
 public enum InteractableType { Enemy, Item, NPC }
@@ -24,7 +26,7 @@ public class NPCInteractable : MonoBehaviour
     private CursorManager _cursorManager;
     private Camera _camera;
 
-    public void Construct(CursorManager cursorManager)
+    public void Construct(CursorManager cursorManager, QuestManager questManager, DataPlayer dataPlayer, GameAPI gameAPI)
     {
         _cursorManager = cursorManager;
         _camera = Camera.main;

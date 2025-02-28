@@ -59,7 +59,7 @@ namespace Core.Quests
                 }
             }
 
-            _icon = GetComponentInChildren<IconForFarCamera>();
+            _icon = transform.Find("Icon").GetComponent<IconForFarCamera>();
             _icon.description = _iconText;
         }
 

@@ -212,7 +212,7 @@ namespace Combat
 
             if (_isPlayer)
             {
-                if (IGame.Instance != null)
+                if (_igame != null)
                 {
                     _igame.saveGame.EquipedWeapon = weapon;
                 }

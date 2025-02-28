@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
+using AINavigation;
 using Combat;
 using Core;
 using Core.NPC;
 using Core.Player;
 using Core.Quests;
+using SceneManagement;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
@@ -27,7 +30,13 @@ namespace Healths
 
         private bool _isPlayer = false; // TODO rename
         private BossNPC _bossNPC; // TODO no need here
-
+        private BottleManager _bottleManager;
+        private CoinManager _coinManager;
+        private QuestManager _questManager;
+        private FastTestsManager _fastTestsManager;
+        private PlayerController _playerController;
+        private UIManager _uiManager;
+        
         public event Action OnDeath; // TODO rename
 
         public BossNPC BossNPC
@@ -36,8 +45,16 @@ namespace Healths
             set => _bossNPC = value;
         } // TODO no need here
 
-        private void Start() // TODO Construct
+        public void Construct(PlayerController playerController, FastTestsManager fastTestsManager,
+            QuestManager questManager, CoinManager coinManager, BottleManager bottleManager, UIManager uiManager) 
         {
+            _playerController = playerController;
+            _fastTestsManager = fastTestsManager;
+            _questManager = questManager;
+            _coinManager = coinManager;
+            _bottleManager = bottleManager;
+            _uiManager = uiManager;
+            
             currentHealth = maxHealth; // Устанавливаем текущее здоровье в максимальное значение при старте
             healthBar.value = currentHealth; // Устанавливаем значение полосы здоровья в текущее здоровье
 
@@ -86,7 +103,7 @@ namespace Healths
 
             if (fighter != null)
             {
-                fighter.Target = IGame.Instance.playerController.GetHealth();
+                fighter.Target = _playerController.GetHealth();
             }
         }
 
@@ -102,7 +119,7 @@ namespace Healths
 
             if (_isPlayer == false)
             {
-                IGame.Instance.FastTestsManager.WasAttaked(this); // TODO rename
+                _fastTestsManager.WasAttaked(this); // TODO rename
             }
         }
 
@@ -203,11 +220,11 @@ namespace Healths
 
                 if (SpecialEnemyName != null)
                 {
-                    IGame.Instance.QuestManager.KillNew(SpecialEnemyName.SpecialEnemyName);
+                    _questManager.KillNew(SpecialEnemyName.SpecialEnemyName);
                 }
                 else
                 {
-                    IGame.Instance.QuestManager.KillNew();
+                    _questManager.KillNew();
                 }
 
                 if (healthBar != null)
@@ -223,33 +240,33 @@ namespace Healths
                 }
 
                 Destroy(gameObject, 5f); // TODO magic numbers
-                IGame.Instance._coinManager.MakeGoldOnSceneWithCount(25,
-                    this.gameObject.transform.position); // TODO magic numbers
+                _coinManager.MakeGoldOnSceneWithCount(25,
+                    gameObject.transform.position); // TODO magic numbers
 
                 var tempRandom = UnityEngine.Random.Range(0, 9); // TODO magic numbers
 
                 if (tempRandom > 6) //30%
                 {
-                    IGame.Instance._bottleManager.MakeBottleOnSceneWithCount(25,
-                        this.gameObject.transform.position); // TODO magic numbers
+                    _bottleManager.MakeBottleOnSceneWithCount(25,
+                        gameObject.transform.position); // TODO magic numbers
                 }
             }
             else
             {
-                IGame.Instance._uiManager.DeathUI.ShowDeathScreen();
+                _uiManager.DeathUI.ShowDeathScreen();
                 // Деактивируем необходимые компоненты
                 //GetComponent<NavMeshAgent>().enabled = false;
                 //GetComponent<Collider>().enabled = false;
                 //this.enabled = false; // Отключаем скрипт здоровья
             }
         }
-        
+
         private void RemoveProjectiles()
         {
             Projectile[]
                 projectiles =
                     GetComponentsInChildren<Projectile>(); // Получаем все снаряды, находящиеся в дочерних объектах // TODO can be cached
-            
+
             foreach (Projectile projectile in projectiles) // Перебираем все снаряды
             {
                 Destroy(projectile.gameObject); // Уничтожаем снаряд

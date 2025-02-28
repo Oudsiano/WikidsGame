@@ -10,14 +10,17 @@ namespace Data
     
         public ConversationStarter starterConversation;
         public int IDLesson;
-    
+
+        public void Construct(GameAPI gameAPI)
+        {
+            _gameAPI = gameAPI;
+        }
+
         public void DownloadData() 
         {
-            _gameAPI = FindObjectOfType<GameAPI>(); // TODO find change
             starterConversation = FindObjectOfType<ConversationStarter>(); // TODO find change
             _gameAPI.UpdateDataTest(IDLesson, starterConversation);
-       
-
+            
             //ConversationManager.Instance.SetBool("TestSuccess", true); // TODO not used code
         }
     }

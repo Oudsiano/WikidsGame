@@ -270,7 +270,7 @@ namespace AINavigation
                 nextPos = GetCurrentWayPoint();
             }
 
-            _mover.StartMoveAction(nextPos);
+            _mover.SetupMove(nextPos);
 
             if (patrolPath == false && _mover.IsAtLocation(_tolerance))
             {
@@ -299,7 +299,7 @@ namespace AINavigation
 
         private void SuspicionBehavior()
         {
-            _mover.StartMoveAction(_lastKnownLocation);
+            _mover.SetupMove(_lastKnownLocation);
         }
 
         private void AttackBehavior()

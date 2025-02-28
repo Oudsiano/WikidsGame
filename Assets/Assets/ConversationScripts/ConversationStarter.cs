@@ -30,7 +30,7 @@ public class ConversationStarter : MonoBehaviour
             return;
         }
 
-        IGame.Instance.QuestManager.StartedConversation(this);
+        IGame.Instance.QuestManager.SetupConversation(this);
 
         DataPlayer playerData = FindObjectOfType<DataPlayer>();
         ConversationManager.OnConversationEnded += DialogEnded;  // ????????????? ?? ??????? ????????? ???????

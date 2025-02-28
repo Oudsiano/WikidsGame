@@ -3,27 +3,21 @@ using UnityEngine;
 
 namespace Core
 {
-    // Класс, отвечающий за планирование и управление действиями сущности
     public class ActionScheduler : MonoBehaviour
     {
-        private IAction _currentAction;
+        private IAction _action;
 
         // Метод для начала выполнения нового действия
         public void Setup(IAction action)
         {
-            // Если новое действие такое же, как текущее, то ничего не делаем
-            if (_currentAction == action)
+            if (_action == action)
             {
                 return;
             }
 
-            // Если текущее действие существует, отменяем его выполнение
-            if (_currentAction != null)
-            {
-                _currentAction.Cancel();
-            }
+            _action?.Cancel();
 
-            _currentAction = action;
+            _action = action;
         }
         
         public void Cancel()

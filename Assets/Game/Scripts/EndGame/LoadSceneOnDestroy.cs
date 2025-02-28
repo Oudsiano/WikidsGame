@@ -14,7 +14,7 @@ namespace EndGame
             }
 
             // Загружаем сцену номер 8
-            SceneManager.LoadScene(8); // TODO magic number
+            SceneManager.LoadScene(8); // TODO magic number // TODO scene Loader integrate
         }
     }
 }

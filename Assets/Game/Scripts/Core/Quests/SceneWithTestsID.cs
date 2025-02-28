@@ -7,8 +7,11 @@ using UnityEngine.Serialization;
 namespace Core.Quests
 {
     [Serializable]
-    public class SceneWithTestsID : MonoBehaviour // TODO ?
+    public class SceneWithTestsID : MonoBehaviour
     {
-        [FormerlySerializedAs("sceneDataList")] [SerializeField] public List<SceneData> SceneDataList = new();
+        [FormerlySerializedAs("sceneDataList")] [SerializeField]
+        private List<SceneData> _sceneDataList = new();
+
+        public IReadOnlyList<SceneData> SceneDataList => _sceneDataList;
     }
 }

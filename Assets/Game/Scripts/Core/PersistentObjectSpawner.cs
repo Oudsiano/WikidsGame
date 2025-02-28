@@ -6,18 +6,20 @@ namespace Core
     public class PersistentObjectSpawner : MonoBehaviour
     {
         [SerializeField] private string _saveFileLink; // TODO not used code
-        [FormerlySerializedAs("persistentObjectPrefab")] [SerializeField] private GameObject _persistentObjectPrefab;
 
-        public static bool IsSpawned = false; // TODO static
-        
+        [FormerlySerializedAs("persistentObjectPrefab")] [SerializeField]
+        private GameObject _persistentObjectPrefab;
+
+        private bool _isSpawned = false;
+
         private void Awake() // TODO Construct
         {
-            if (IsSpawned)
+            if (_isSpawned)
             {
                 return;
             }
 
-            IsSpawned = true;
+            _isSpawned = true;
             SpawnPersistentObjects();
         }
 

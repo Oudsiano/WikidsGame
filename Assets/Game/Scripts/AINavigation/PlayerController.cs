@@ -274,7 +274,7 @@ namespace AINavigation
 
                             if (readyToGo)
                             {
-                                _mover.StartMoveAction(hit.point);
+                                _mover.SetupMove(hit.point);
                             }
 
                             break; // Выходим, найдя первый подходящий объект

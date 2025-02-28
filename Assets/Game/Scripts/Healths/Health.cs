@@ -203,11 +203,11 @@ namespace Healths
 
                 if (SpecialEnemyName != null)
                 {
-                    IGame.Instance.QuestManager.NewKill(SpecialEnemyName.SpecialEnemyName);
+                    IGame.Instance.QuestManager.KillNew(SpecialEnemyName.SpecialEnemyName);
                 }
                 else
                 {
-                    IGame.Instance.QuestManager.NewKill();
+                    IGame.Instance.QuestManager.KillNew();
                 }
 
                 if (healthBar != null)

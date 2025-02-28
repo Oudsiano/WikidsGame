@@ -18,13 +18,11 @@ namespace Core
 
         [FormerlySerializedAs("allArmorsInGame")] [Header("Armors")] [SerializeField]
         private List<Armor> _allArmorsInGame;
-
-        private QuestManager _questManager;
         
-        public void Construct(QuestManager questManager)
-        {
-            _questManager = questManager;
-        }
+        [FormerlySerializedAs("dafaultPrefab")]
+        public PickableEquip DefaultPrefab;
+        
+        private QuestManager _questManager;
         
         public List<Weapon> AllWeaponsInGame
         {
@@ -37,9 +35,11 @@ namespace Core
             get => _allArmorsInGame;
             set => _allArmorsInGame = value;
         }
-
-        [FormerlySerializedAs("dafaultPrefab")]
-        public PickableEquip DefaultPrefab;
+        
+        public void Construct(QuestManager questManager)
+        {
+            _questManager = questManager;
+        }
 
         public Armor GerArmorById(armorID armrId) // TODO rename
         {
@@ -53,7 +53,7 @@ namespace Core
 
         public Weapon TryGetWeaponByName(string _name) // TODO need return bool
         {
-            if (_name == "" || _name == null)
+            if (string.IsNullOrEmpty(_name))
             {
                 _name = "Unarmed"; // TODO can be cached
             }
@@ -67,6 +67,7 @@ namespace Core
             }
 
             Debug.LogError("Can't return weapon. It can be mistake");
+            
             return null;
         }
 

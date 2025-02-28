@@ -14,6 +14,9 @@ namespace Core.Quests
 {
     public class UiOneQuestElement : MonoBehaviour // TODO move to UI
     {
+        private const float SIZE_DELTA_VALUE = 900;
+        private const string FORMAT = "F0";
+
         [FormerlySerializedAs("textAward")] [Header("Award")] [SerializeField]
         private TMP_Text _textAward;
 
@@ -39,24 +42,39 @@ namespace Core.Quests
         private Image _imageCheck;
 
         [FormerlySerializedAs("thisQuestData")] [SerializeField]
-        public OneQuestData QuestData;
+        private OneQuestData _questData;
 
-        [FormerlySerializedAs("quest")] public OneQuest Quest;
+        [FormerlySerializedAs("quest")] [SerializeField]
+        private OneQuest _quest;
 
-        [FormerlySerializedAs("rtimgProcess")] public RectTransform RectTransformProcess;
+        [FormerlySerializedAs("rtimgProcess")] [SerializeField]
+        private RectTransform _rectTransformProcess;
 
-        [FormerlySerializedAs("sizeDeltaImgProcess")]
-        public Vector2 SizeDeltaImageProcess;
+        [FormerlySerializedAs("sizeDeltaImgProcess")] [SerializeField]
+        private Vector2 _sizeDeltaImageProcess;
 
-        public List<string> ListNeedStartConversations;
-
+        [FormerlySerializedAs("ListNeedStartConversations")] [SerializeField]
+        private List<string> _listNeedStartConversations;
+        
+        private readonly Color _pastelGreenColor = new Color(0.81f, 0.952f, 0.768f);
+        private readonly Color _pastelPinkColor = new Color(0.9529412f, 0.8073038f, 0.7686275f);
         private RectTransform _rectTransformButton;
         private List<bool> _pointSuccess;
-        
+
         private DataPlayer _dataPlayer;
         private SaveGame _saveGame;
         private UIManager _uiManager;
         private GameAPI _gameAPI;
+        private Sequence _fadeOutSequence;
+
+        public OneQuestData QuestData => _questData;
+        public OneQuest Quest => _quest;
+
+        public QuestType QuestType
+        {
+            get => _questData.QuestType;
+            set => _questData.QuestType = value;
+        }
 
         public void Construct(DataPlayer dataPlayer, SaveGame saveGame, UIManager uiManager, GameAPI gameAPI)
         {
@@ -65,102 +83,39 @@ namespace Core.Quests
             _uiManager = uiManager;
             _gameAPI = gameAPI;
         }
-        
-        public QuestType QuestType
+
+        public void SetProgress(int count) // TODO not used code
         {
-            get => QuestData.QuestType;
-            set => QuestData.QuestType = value;
-        }
-
-        public void SetQuest(OneQuest quest) // TODO overload method
-        {
-            Quest = quest;
-            _rectTransformButton = _button.GetComponent<RectTransform>(); // TODO getcomp
-
-            _textTitle.text = Quest.questTitle;
-            _textDescription.text = Quest.questDescription;
-
-            QuestType = Quest.questType;
-            QuestData.TargetProcess = Quest.questTargetCount;
-
-            if (Quest.questType == QuestType.completeSpecialTest)
-            {
-                QuestData.TargetProcess = Quest.IdTests.Count;
-            }
-
-            RectTransformProcess = _imgProcess.GetComponent<RectTransform>(); // TODO getcomp
-            SizeDeltaImageProcess = RectTransformProcess.sizeDelta;
-
-            if (Quest.questType == QuestType.toSpeekNPC)
-            {
-                QuestData.TargetProcess = Quest.ListNeedConversationsStarter.Count;
-                _pointSuccess = new List<bool>();
-                ListNeedStartConversations = new List<string>();
-
-                for (int i = 0; i < Quest.ListNeedConversationsStarter.Count; i++)
-                {
-                    _pointSuccess.Add(false);
-                    ListNeedStartConversations.Add(Quest.ListNeedConversationsStarter[i]);
-                }
-            }
-
-            switch (Quest.questAwardType)
-            {
-                case QuestAwardType.none:
-                    _textAward.text = ""; // TODO can be cached
-                    break;
-                case QuestAwardType.money:
-                    _textAward.text =
-                        $"{Quest.awardFirstWord} {Quest.countMoney} {Quest.awardLastWord}"; // TODO can be cached
-                    break;
-                case QuestAwardType.item:
-                    _textAward.text = $"{Quest.awardFirstWord}  {Quest.awardItem.name}"; // TODO can be cached
-                    break;
-            }
-
-            SetUnfinished();
-            _button.onClick.AddListener(OnClickButton);
-
-            if (_dataPlayer.PlayerData.startedQuests != null &&
-                _dataPlayer.PlayerData.startedQuests.ContainsKey(Quest.name))
-            {
-                QuestData = _dataPlayer.PlayerData.startedQuests[Quest.name];
-                CheckUpdateAndComplete(false);
-            }
-        }
-
-        public void SetProgress(int count)
-        {
-            if (QuestData.AlreadyStarted == false)
+            if (_questData.AlreadyStarted == false)
             {
                 return;
             }
 
-            QuestData.CurrentProcess = count;
+            _questData.CurrentProcess = count;
             CheckUpdateAndComplete();
         }
 
         public void AddOneProcess()
         {
-            if (QuestData.AlreadyStarted == false)
+            if (_questData.AlreadyStarted == false)
             {
                 return;
             }
 
-            QuestData.CurrentProcess++;
+            _questData.CurrentProcess++;
             CheckUpdateAndComplete();
         }
 
-        public void StartedConversation(ConversationStarter conversationStarter)
+        public void SetupConversation(ConversationStarter conversationStarter)
         {
-            if (QuestData.AlreadyStarted == false)
+            if (_questData.AlreadyStarted == false)
             {
                 return;
             }
 
-            for (int i = 0; i < ListNeedStartConversations.Count; i++)
+            for (int i = 0; i < _listNeedStartConversations.Count; i++)
             {
-                if (ListNeedStartConversations[i] == conversationStarter.name)
+                if (_listNeedStartConversations[i] == conversationStarter.name)
                 {
                     if (_pointSuccess[i])
                     {
@@ -177,54 +132,134 @@ namespace Core.Quests
             {
                 if (item)
                 {
-                    QuestData.CurrentProcess++;
+                    _questData.CurrentProcess++;
                 }
             }
 
             CheckUpdateAndComplete();
         }
+
+        public void SetQuest(OneQuest quest)
+        {
+            _quest = quest;
+
+            InitializeQuestProperties();
+            ProcessQuestType();
+            SetQuestAwardText();
+            SetUnfinished();
+
+            _button.onClick.AddListener(OnClickButton);
+            LoadStartedQuestData();
+        }
         
+        internal void CheckTestCount()
+        {
+            CheckUpdateAndComplete(false);
+        }
+        
+        private void InitializeQuestProperties()
+        {
+            _rectTransformButton = _button.GetComponent<RectTransform>();
+            _textTitle.text = _quest.questTitle;
+            _textDescription.text = _quest.questDescription;
+            QuestType = _quest.questType;
+            _questData.TargetProcess = _quest.questTargetCount;
+        }
+
+        private void ProcessQuestType()
+        {
+            if (_quest.questType == QuestType.completeSpecialTest)
+            {
+                _questData.TargetProcess = _quest.IdTests.Count;
+            }
+
+            _rectTransformProcess = _imgProcess.GetComponent<RectTransform>();
+            _sizeDeltaImageProcess = _rectTransformProcess.sizeDelta;
+
+            if (_quest.questType == QuestType.toSpeekNPC)
+            {
+                _questData.TargetProcess = _quest.ListNeedConversationsStarter.Count;
+                _pointSuccess = new List<bool>();
+                _listNeedStartConversations = new List<string>();
+
+                foreach (var conversation in _quest.ListNeedConversationsStarter)
+                {
+                    _pointSuccess.Add(false);
+                    _listNeedStartConversations.Add(conversation);
+                }
+            }
+        }
+
+        private void SetQuestAwardText()
+        {
+            switch (_quest.questAwardType)
+            {
+                case QuestAwardType.none:
+                    _textAward.text = "";
+                    break;
+                case QuestAwardType.money:
+                    _textAward.text = $"{_quest.awardFirstWord} {_quest.countMoney} {_quest.awardLastWord}";
+                    break;
+                case QuestAwardType.item:
+                    _textAward.text = $"{_quest.awardFirstWord}  {_quest.awardItem.name}";
+                    break;
+            }
+        }
+
+        private void LoadStartedQuestData()
+        {
+            if (_dataPlayer.PlayerData.startedQuests != null &&
+                _dataPlayer.PlayerData.startedQuests.TryGetValue(_quest.name, out var quest))
+            {
+                _questData = quest;
+                CheckUpdateAndComplete(false);
+            }
+        }
+
         private void OnClickButton() // TODO magic numbers
         {
-            if (QuestData.CompleteWaitAward == false)
+            if (_questData.CompleteWaitAward == false)
             {
-                _rectTransformButton.DOShakeAnchorPos(1f, new Vector2(10, 0), vibrato: 8, randomness: 0,
+                int x = 10;
+                int y = 0;
+
+                _rectTransformButton.DOShakeAnchorPos(1f, new Vector2(x, y), vibrato: 8, randomness: 0,
                         snapping: false, fadeOut: false)
                     .OnComplete(() => _rectTransformButton.anchoredPosition = Vector2.zero);
 
                 return;
             }
 
-            if (QuestData.FullComplete)
+            if (_questData.FullComplete)
             {
                 return;
             }
 
-            switch (Quest.questAwardType)
+            switch (_quest.questAwardType)
             {
                 case QuestAwardType.none:
                     break;
+
                 case QuestAwardType.money:
-                    _saveGame.Coins += Quest.countMoney;
+                    _saveGame.Coins += _quest.countMoney;
                     break;
+
                 case QuestAwardType.item:
-                    _uiManager.uIBug.TryAddEquipToBug(Quest.awardItem);
+                    _uiManager.uIBug.TryAddEquipToBug(_quest.awardItem);
                     break;
             }
 
             MarkQuestAsComplete();
             FadeOutAndShrinkUIElement(gameObject);
-            QuestData.FullComplete = true;
+            _questData.FullComplete = true;
             _uiManager.UpdateQuestBackImg();
         }
 
         private void MarkQuestAsComplete()
         {
-            var dataPlayer = _dataPlayer;
-
-            if (dataPlayer.PlayerData.completedQuests.Contains(Quest.name) == false)
+            if (_dataPlayer.PlayerData.completedQuests.Contains(_quest.name) == false)
             {
-                dataPlayer.PlayerData.completedQuests.Add(Quest.name);
+                _dataPlayer.PlayerData.completedQuests.Add(_quest.name);
                 _gameAPI.SaveUpdater();
             }
         }
@@ -233,35 +268,33 @@ namespace Core.Quests
         {
             if (withSave)
             {
-                if (_dataPlayer.PlayerData.startedQuests == null)
-                {
-                    _dataPlayer.PlayerData.startedQuests = new Dictionary<string, OneQuestData>();
-                }
+                _dataPlayer.PlayerData.startedQuests ??= new Dictionary<string, OneQuestData>();
 
-                QuestData.QuestName = Quest.name;
-                _dataPlayer.PlayerData.startedQuests[Quest.name] = QuestData;
+                _questData.QuestName = _quest.name;
+                _dataPlayer.PlayerData.startedQuests[_quest.name] = _questData;
                 _gameAPI.SaveUpdater();
             }
 
             switch (QuestType)
             {
                 case QuestType.killEnemy:
-                    UpdateProcess(QuestData.CurrentProcess, QuestData.TargetProcess);
+                    UpdateProcess(_questData.CurrentProcess, _questData.TargetProcess);
                     break;
+                
                 case QuestType.toSpeekNPC:
-                    UpdateProcess(QuestData.CurrentProcess, QuestData.TargetProcess);
+                    UpdateProcess(_questData.CurrentProcess, _questData.TargetProcess);
                     break;
+                
                 case QuestType.completeSpecialTest:
-                    QuestData.CurrentProcess = 0;
-                    foreach (string itemId in Quest.IdTests)
+                    _questData.CurrentProcess = 0;
+                    
+                    foreach (string itemId in _quest.IdTests)
                     {
-                        int testId;
-
-                        if (int.TryParse(itemId, out testId))
+                        if (int.TryParse(itemId, out int testId))
                         {
                             if (_dataPlayer.IsTestComplete(testId))
                             {
-                                QuestData.CurrentProcess++;
+                                _questData.CurrentProcess++;
                             }
                         }
                         else
@@ -270,66 +303,63 @@ namespace Core.Quests
                         }
                     }
 
-                    UpdateProcess(QuestData.CurrentProcess, QuestData.TargetProcess);
+                    UpdateProcess(_questData.CurrentProcess, _questData.TargetProcess);
                     break;
 
                 default:
-                    UpdateProcess(QuestData.CurrentProcess, QuestData.TargetProcess);
+                    UpdateProcess(_questData.CurrentProcess, _questData.TargetProcess);
                     break;
             }
 
-            if (QuestData.CurrentProcess >= QuestData.TargetProcess)
+            if (_questData.CurrentProcess >= _questData.TargetProcess)
             {
-                SetFinished();
+                SetComplete();
                 _uiManager.UpdateQuestBackImg();
             }
         }
 
-        private void UpdateProcess(float current, float target) // TODO magic numbers
+        private void UpdateProcess(float current, float target)
         {
-            _textProcess.text = current.ToString("F0") + $"/" + target.ToString("F0");
-            SizeDeltaImageProcess.x = Mathf.Min(current / target * 900, 900);
-            RectTransformProcess.sizeDelta = SizeDeltaImageProcess;
+            _textProcess.text = current.ToString(FORMAT) + $"/" + target.ToString(FORMAT);
+            _sizeDeltaImageProcess.x = Mathf.Min(current / target * SIZE_DELTA_VALUE, SIZE_DELTA_VALUE);
+            _rectTransformProcess.sizeDelta = _sizeDeltaImageProcess;
         }
 
-        private void SetFinished()
+        private void SetComplete()
         {
-            QuestData.CompleteWaitAward = true;
-            _button.GetComponent<Image>().color = new Color(0.81f, 0.952f, 0.768f); // TODO magic numbers
+            _questData.CompleteWaitAward = true;
+            _button.GetComponent<Image>().color = _pastelGreenColor; // TODO magic numbers
             _imageCheckNo.gameObject.SetActive(false);
             _imageCheck.gameObject.SetActive(true);
         }
 
         private void SetUnfinished()
         {
-            QuestData.CompleteWaitAward = false;
-            _button.GetComponent<Image>().color = new Color(0.9529412f, 0.8073038f, 0.7686275f); // TODO magic numbers
+            _questData.CompleteWaitAward = false;
+            _button.GetComponent<Image>().color = _pastelPinkColor; // TODO magic numbers
             _imageCheckNo.gameObject.SetActive(true);
             _imageCheck.gameObject.SetActive(false);
-            QuestData.FullComplete = false;
+            _questData.FullComplete = false;
         }
 
         private void FadeOutAndShrinkUIElement(GameObject uiElement)
         {
+            float duration = 1f;
+            
             VerticalLayoutGroup vertLGrroup = _uiManager.QuestsContentScrollRect.content
                 .GetComponent<VerticalLayoutGroup>();
 
             CanvasGroup canvasGroup = uiElement.AddComponent<CanvasGroup>();
             RectTransform rectTransform = uiElement.GetComponent<RectTransform>();
 
-            Sequence sequence = DOTween.Sequence();
+            _fadeOutSequence = DOTween.Sequence();
+            
+            _fadeOutSequence.Append(canvasGroup.DOFade(0, duration));
+            _fadeOutSequence.Join(rectTransform.DOSizeDelta(new Vector2(rectTransform.sizeDelta.x, 0), duration));
 
-            sequence.Append(canvasGroup.DOFade(0, 1f));
-            sequence.Join(rectTransform.DOSizeDelta(new Vector2(rectTransform.sizeDelta.x, 0), 1f));
+            _fadeOutSequence.OnComplete(() => { uiElement.SetActive(false); });
 
-            sequence.OnComplete(() => { uiElement.SetActive(false); });
-
-            sequence.OnUpdate(() => { vertLGrroup.SetLayoutVertical(); });
-        }
-        
-        internal void CheckTestCount() // TODO why internal
-        {
-            CheckUpdateAndComplete(false);
+            _fadeOutSequence.OnUpdate(() => { vertLGrroup.SetLayoutVertical(); });
         }
     }
 }

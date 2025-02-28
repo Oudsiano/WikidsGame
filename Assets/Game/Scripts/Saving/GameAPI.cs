@@ -27,7 +27,9 @@ namespace Saving
         private QuestManager _questManager;
         private DataPlayer _dataPlayer;
 
-        [FormerlySerializedAs("sceneLoader")] public SceneLoader _sceneLoader;
+        [FormerlySerializedAs("sceneLoader")] [SerializeField]
+        private SceneLoader _sceneLoader;
+
         public string playerID;
         public TMP_Text textForOtl;
         public bool idUpdate = false;
@@ -35,9 +37,8 @@ namespace Saving
         public bool gameGet = false;
         private bool GameLoaded = false;
 
-        public bool
-            TestSuccessKey =
-                false; //Ключ нужен отдельно, потому, что диалог его сбрасывает. И нам надо хранить его запределами диалогов.
+        public bool TestSuccessKey = false; //Ключ нужен отдельно, потому,
+        //что диалог его сбрасывает. И нам надо хранить его запределами диалогов.
 
         private bool needMakeSaveInNextUpdate = false;
 
@@ -59,8 +60,8 @@ namespace Saving
 
             TryInitDataServer();
             SetupLoad();
-             textForOtl.text =
-              $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
+            textForOtl.text =
+                $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
         }
 
         public void FixedUpdate()
@@ -189,7 +190,7 @@ namespace Saving
                             {
                                 if (item2.completed)
                                 {
-                                    _questManager.QuestFinished(item2.id.ToString());
+                                    _questManager.CompleteQuest(item2.id.ToString());
                                     countSuccessAnswer++;
                                 }
                             }
@@ -239,7 +240,7 @@ namespace Saving
                         foreach (var test in lesson.tests)
                         {
                             if (test.completed)
-                                _questManager.QuestFinished(test.id.ToString());
+                                _questManager.CompleteQuest(test.id.ToString());
 
                             if (test.id == testId)
                             {

@@ -11,20 +11,21 @@ namespace Movement
     // Класс, отвечающий за перемещение персонажа и взаимодействие с ним
     public class Mover : MonoBehaviour, IAction
     {
+        private Camera _camera;
         private Animator _animator;
         private NavMeshAgent _agent;
         private ActionScheduler _actionScheduler; // Ссылка на планировщик действий
         private bool _isPlayer;
 
-        //TODO Public
-        [FormerlySerializedAs("clickEffect")] // TODO Remove
-        public ClickEffect ClickEffect; // Ссылка на скрипт для создания эффекта при нажатии на точку
+        [FormerlySerializedAs("clickEffect")] [SerializeField]
+        private ClickEffect _clickEffect; // Ссылка на скрипт для создания эффекта при нажатии на точку
 
         public float StrafeDistance = 3f;
         public NPCInteractable Target;
 
         private void Start() // TODO Construct
         {
+            _camera = UnityEngine.Camera.main;
             _isPlayer = gameObject.GetComponent<MainPlayer>()
                 ? true
                 : false; //Мувер должен знать на игроке он или нет // TODO MoverPlayer
@@ -45,7 +46,7 @@ namespace Movement
         {
             if (_isPlayer == false && _agent.isActiveAndEnabled)
             {
-                if (PauseClass.GetPauseState()) // TODO Update
+                if (PauseClass.GetPauseState())
                 {
                     _agent.isStopped = true;
                 }
@@ -55,14 +56,13 @@ namespace Movement
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Space)) // TODO Update
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 Strafe(Vector3.back);
             }
 
-            UpdateAnimator(); // Обновляем состояние аниматора
+            UpdateAnimator();
 
-            // Проверяем, была ли нажата кнопка мыши            
             if (_isPlayer)
             {
                 if (Input.GetMouseButtonDown(0))
@@ -70,40 +70,24 @@ namespace Movement
                     CreateEffectAtMousePosition(); // Создаем эффект в позиции указателя мыши // TODO Expensive 
                 }
             }
-
-
-            //Вынес вызов диалогового окна в сам скрипт NPCInteractable // TODO Expensive Code
-            /*
-            // Если есть цель для взаимодействия и мы достигли ее, выполняем взаимодействие
-            if (target != null)
-            {
-                if (!ConversationManager.Instance.IsConversationActive)
-                    if ((transform.position - target.transform.position).magnitude < 2f)
-                    {
-                        target.InteractWithNPC(); // Вызываем метод взаимодействия с NPC
-                    }
-            }*/
         }
 
         private void Strafe(Vector3 direction)
         {
-            // Выполняем уклонение, например, перемещая персонажа в сторону от направления снаряда
             Vector3 strafeDirection = Vector3.Cross(Vector3.up, direction).normalized;
             Vector3 targetPosition =
                 transform.position +
-                strafeDirection * StrafeDistance; // strafeDistance - расстояние, на которое нужно уклониться
+                strafeDirection * StrafeDistance;
 
             MoveTo(targetPosition);
         }
 
-        // Метод для начала действия перемещения к определенной точке
-        public void StartMoveAction(Vector3 newPosition)
+        public void SetupMove(Vector3 newPosition)
         {
-            _actionScheduler.Setup(this); // Устанавливаем текущее действие как перемещение
+            _actionScheduler.Setup(this);
             MoveTo(newPosition);
         }
 
-        // Метод для перемещения к указанной точке
         public void MoveTo(Vector3 position)
         {
             if (_agent.isActiveAndEnabled == false)
@@ -126,10 +110,9 @@ namespace Movement
                 _agent.destination = position;
             }
 
-            _agent.isStopped = false; // Возобновляем движение
+            _agent.isStopped = false;
         }
 
-        // Метод для обновления аниматора на основе скорости движения
         private void UpdateAnimator()
         {
             if (_agent == false)
@@ -138,12 +121,10 @@ namespace Movement
             }
 
             Vector3 localVelocity = transform.InverseTransformDirection(_agent.velocity);
-            // Устанавливаем значение параметра анимации "forwardSpeed" на основе скорости движения по оси Z
-            _animator.SetFloat("forwardSpeed", localVelocity.z); // TODO HardCode
+            _animator.SetFloat(Constants.ForwardSpeed, localVelocity.z);
         }
 
-        // Метод для отмены текущего действия
-        public void Cancel() // TODO Rename
+        public void Cancel()
         {
             if (_agent.isActiveAndEnabled == false)
             {
@@ -152,17 +133,15 @@ namespace Movement
 
             if (_agent.isOnNavMesh)
             {
-                _agent.isStopped = true; // Останавливаем движение}
+                _agent.isStopped = true;
             }
         }
 
-        // Метод для проверки, находимся ли мы в заданной точке с некоторым допуском
         public bool IsAtLocation(float tolerance) // TODO Extensions vector3
         {
             return Vector3.Distance(_agent.destination, transform.position) < tolerance;
         }
 
-        // Метод для восстановления состояния персонажа после загрузки сохранения
         public void RestoreState(object state) // TODO not used
         {
             _actionScheduler = GetComponent<ActionScheduler>(); // Получаем планировщик действий
@@ -171,26 +150,20 @@ namespace Movement
             _agent.enabled = true; // Включаем навигационный агент обратно
         }
 
-        // Метод для создания эффекта на поверхности в позиции указателя мыши
         private void CreateEffectAtMousePosition() // TODO Rename
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // TODO Camera
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition); // TODO Camera
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
             {
-                ClickEffect.CreateEffect(hit.point +
-                                         new Vector3(0, 0.2f, 0)); // Создаем эффект в точке столкновения луча
+                _clickEffect.CreateEffect(hit.point +
+                                          new Vector3(0, 0.2f, 0)); // Создаем эффект в точке столкновения луча
 
                 // Если объект, в который попал луч, имеет тег "Interactable", устанавливаем его как цель взаимодействия
-                if (hit.transform.CompareTag("Interactable")) // TODO Tag
-                {
-                    Target = hit.transform.GetComponent<NPCInteractable>();
-                }
-                else
-                {
-                    Target = null;
-                }
+                Target = hit.transform.CompareTag("Interactable")
+                    ? hit.transform.GetComponent<NPCInteractable>()
+                    : null; // TODO Tag
 
                 if (EventSystem.current.IsPointerOverGameObject()) // TODO not used
                 {

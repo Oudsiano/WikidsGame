@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using Core.Quests.Data;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Core.Quests
 {
     public class QuestsForThisScene : MonoBehaviour
     {
-        public List<OneQuest> QuestsThisScene; // TODO not used code
+        [FormerlySerializedAs("QuestsThisScene")] [SerializeField]
+        private List<OneQuest> _questsThisScene; // TODO not used code
+
+        public IReadOnlyList<OneQuest> QuestsThisScene => _questsThisScene;
     }
 }

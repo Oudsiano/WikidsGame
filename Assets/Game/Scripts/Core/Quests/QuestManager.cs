@@ -15,6 +15,9 @@ namespace Core.Quests
 {
     public class QuestManager : MonoBehaviour // TODO refactor 
     {
+        private const string NOTEXITQUESTS_NAME = "NotExitQuests";
+        private const string EMPTYSPACE_NAME = "EmptySpace";
+
         [FormerlySerializedAs("thisQuestsScene")] [SerializeField]
         private List<OneQuest> _questsScene;
 
@@ -59,7 +62,7 @@ namespace Core.Quests
             {
                 if (item.QuestData.CompleteWaitAward)
                 {
-                    if (!item.QuestData.FullComplete)
+                    if (item.QuestData.FullComplete == false)
                     {
                         return true;
                     }
@@ -72,7 +75,7 @@ namespace Core.Quests
         public void StartNewQuest(OneQuest quest)
         {
             GameObject newQuest = Instantiate(_uiManager.OneQuestPref,
-                _uiManager.QuestsContentScrollRect.content);
+                _uiManager.QuestsContentScrollRect.content); // TODO factory creator
 
             var questElement = newQuest.GetComponent<UiOneQuestElement>();
 
@@ -97,9 +100,9 @@ namespace Core.Quests
             StartNewQuest(quest);
         }
 
-        public void QuestFinished(string ID) // TODO not used ARG // TODO Rename
+        public void CompleteQuest(string _)
         {
-            foreach (UiOneQuestElement item in _questsInScene)
+            foreach (var item in _questsInScene)
             {
                 if (item.QuestType == QuestType.completeSpecialTest)
                 {
@@ -108,7 +111,7 @@ namespace Core.Quests
             }
         }
 
-        public void NewKill(string name = null) // TODO Rename
+        public void KillNew(string _ = null)
         {
             if (_questsInScene == null)
             {
@@ -136,7 +139,7 @@ namespace Core.Quests
             }
         }
 
-        public void StartedConversation(ConversationStarter conversationStarter) // TODO Rename
+        public void SetupConversation(ConversationStarter conversationStarter)
         {
             if (conversationStarter == null)
             {
@@ -160,7 +163,7 @@ namespace Core.Quests
 
                 if (item.QuestType == QuestType.toSpeekNPC)
                 {
-                    item.StartedConversation(conversationStarter);
+                    item.SetupConversation(conversationStarter);
                 }
             }
         }
@@ -170,97 +173,112 @@ namespace Core.Quests
             GenerateListQuests();
         }
 
-        private void GenerateListQuests() // TODO refactor overload method
+        private void GenerateListQuests()
         {
             _questsInScene = new List<UiOneQuestElement>();
-
             _questsScene = new List<OneQuest>();
 
-            if (_allQuestsInGame != null)
+            LoadQuestsForCurrentScene();
+            AddRepeatTestQuests();
+            ClearQuestUI();
+            PopulateQuestUI();
+            UpdateQuestUIState();
+        }
+
+        private void LoadQuestsForCurrentScene()
+        {
+            if (_allQuestsInGame == null)
             {
-                foreach (OneSceneListQuests OneList in _allQuestsInGame.Quests)
+                return;
+            }
+
+            foreach (OneSceneListQuests oneList in _allQuestsInGame.Quests)
+            {
+                if (oneList.SceneId == _levelChangeObserver.GetCurrentSceneId())
                 {
-                    if (OneList.SceneId == _levelChangeObserver.GetCurrentSceneId())
+                    foreach (var quest in oneList.QuestsThisScene)
                     {
-                        foreach (var quest in OneList.QuestsThisScene)
+                        if (_dataPlayer.PlayerData.completedQuests == null ||
+                            _dataPlayer.PlayerData.completedQuests.Contains(quest.name))
                         {
-                            if (_dataPlayer.PlayerData.completedQuests == null)
-                            {
-                                continue;
-                            }
-
-                            if (_dataPlayer.PlayerData.completedQuests.Contains(quest.name))
-                            {
-                                continue;
-                            }
-
-                            _questsScene.Add(quest);
+                            continue;
                         }
-                    }
-                }
 
-                foreach (int testID in _needRepeatTestQuests)
-                {
-                    foreach (var sceneData in _sceneWithTestsID.SceneDataList)
-                    {
-                        if (sceneData.numbers.Contains(testID))
-                        {
-                            //We need start quest with testID in scene OneSceneWithTestID.scene
-
-                            //TODO: There we should prepare list for visible NPC with tests
-                        }
+                        _questsScene.Add(quest);
                     }
                 }
             }
+        }
 
-            if (_uiManager.QuestsContentScrollRect != null &&
-                _uiManager.QuestsContentScrollRect.content != null)
+        private void AddRepeatTestQuests()
+        {
+            foreach (int testID in _needRepeatTestQuests)
             {
-                GameObject NotExitQuests = new GameObject();
-
-                foreach (Transform child in _uiManager.QuestsContentScrollRect.content)
+                foreach (var sceneData in _sceneWithTestsID.SceneDataList)
                 {
-                    if (child.name == "NotExitQuests") // TODO change and can be cached
+                    if (sceneData.numbers.Contains(testID))
                     {
-                        NotExitQuests = child.gameObject;
-                    }
-
-                    if (child.name != "EmptySpace" && child.name != "NotExitQuests") // TODO change and can be cached
-                    {
-                        Destroy(child.gameObject);
+                        // TODO: Prepare list for visible NPC with tests
                     }
                 }
+            }
+        }
 
-                foreach (OneQuest quest in _questsScene)
+        private void ClearQuestUI()
+        {
+            if (_uiManager.QuestsContentScrollRect == null ||
+                _uiManager.QuestsContentScrollRect.content == null)
+            {
+                return;
+            }
+
+            foreach (Transform child in _uiManager.QuestsContentScrollRect.content)
+            {
+                if (child.name != EMPTYSPACE_NAME && child.name != NOTEXITQUESTS_NAME) // TODO: Optimize caching
                 {
-                    GameObject newQuest = Instantiate(
-                        _uiManager.OneQuestPref, // TODO Create factory for creating quest
-                        _uiManager.QuestsContentScrollRect.content);
-
-                    var questElement = newQuest.GetComponent<UiOneQuestElement>();
-
-                    if (questElement != null)
-                    {
-                        questElement.Construct(_dataPlayer, _saveGame, _uiManager, _gameAPI);
-                        questElement.SetQuest(quest);
-                        _questsInScene.Add(questElement);
-                    }
-                    else
-                    {
-                        Debug.LogError("UiOneQuestElement component is missing on newQuest object");
-                    }
+                    Destroy(child.gameObject);
                 }
+            }
+        }
 
-                if (_questsInScene.Count == 0)
+        private void PopulateQuestUI()
+        {
+            if (_uiManager.QuestsContentScrollRect == null ||
+                _uiManager.QuestsContentScrollRect.content == null)
+            {
+                return;
+            }
+
+            foreach (OneQuest quest in _questsScene)
+            {
+                GameObject newQuest = Instantiate(
+                    _uiManager.OneQuestPref,
+                    _uiManager.QuestsContentScrollRect.content);
+
+                var questElement = newQuest.GetComponent<UiOneQuestElement>();
+
+                if (questElement != null)
                 {
-                    NotExitQuests.SetActive(true);
-                    _uiManager.UpdateGreyBtnQuest(true);
+                    questElement.Construct(_dataPlayer, _saveGame, _uiManager, _gameAPI);
+                    questElement.SetQuest(quest);
+                    _questsInScene.Add(questElement);
                 }
                 else
                 {
-                    NotExitQuests.SetActive(false);
-                    _uiManager.UpdateGreyBtnQuest(false);
+                    Debug.LogError("UiOneQuestElement component is missing on newQuest object");
                 }
+            }
+        }
+
+        private void UpdateQuestUIState()
+        {
+            GameObject notExitQuests = _uiManager.QuestsContentScrollRect.content.Find(NOTEXITQUESTS_NAME)?.gameObject;
+
+            if (notExitQuests != null)
+            {
+                bool noQuests = _questsInScene.Count == 0;
+                notExitQuests.SetActive(noQuests);
+                _uiManager.UpdateGreyBtnQuest(noQuests);
             }
 
             _uiManager.UpdateQuestBackImg();

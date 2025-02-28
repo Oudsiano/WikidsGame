@@ -34,7 +34,6 @@ namespace Infrastructure.Installers
         [SerializeField] private SceneWithTestsID _sceneWithTestsID;
         [SerializeField] private KeyBoardsEvents _keyBoardsEvents;
         [SerializeField] private JavaScriptHook _javaScriptHook;
-
         
         public override void InstallBindings()
         {

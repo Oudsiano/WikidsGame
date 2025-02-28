@@ -1,43 +1,12 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e927627221206e04dba83232f13d1949, type: 3}
-  m_Name: SM_Prop_Logs_01_lods
-  m_EditorClassIdentifier: 
-  overrideDefaults: 0
-  importSettings:
-    generateOnImport: 1
-    meshSimplifier: Unity.AutoLOD.QuadricMeshSimplifier, Unity.AutoLOD.Editor, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    batcher: 
-    maxLODGenerated: 2
-    initialLODMaxPolyCount: 500000
-  lod0:
-  - {fileID: 0}
-  lod1:
-  - {fileID: 0}
-  lod2:
-  - {fileID: 0}
-  lod3: []
-  lod4: []
-  lod5: []
-  lod6: []
-  lod7: []
---- !u!43 &1632530547395171704
+--- !u!43 &-4410268833800254921
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SM_Prop_Logs_01 LOD2
+  m_Name: SM_Prop_Logs_01 LOD1
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -196,13 +165,44 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!43 &6701387097413091107
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e927627221206e04dba83232f13d1949, type: 3}
+  m_Name: SM_Prop_Logs_01_lods
+  m_EditorClassIdentifier: 
+  overrideDefaults: 0
+  importSettings:
+    generateOnImport: 1
+    meshSimplifier: Unity.AutoLOD.QuadricMeshSimplifier, Unity.AutoLOD.Editor, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    batcher: 
+    maxLODGenerated: 2
+    initialLODMaxPolyCount: 500000
+  lod0:
+  - {fileID: 2300000, guid: 10663b4d35b9d4346bec8efe8600fe01, type: 3}
+  lod1:
+  - {fileID: -8765820901422617151, guid: 10663b4d35b9d4346bec8efe8600fe01, type: 3}
+  lod2:
+  - {fileID: -1331036207846376229, guid: 10663b4d35b9d4346bec8efe8600fe01, type: 3}
+  lod3: []
+  lod4: []
+  lod5: []
+  lod6: []
+  lod7: []
+--- !u!43 &5634995413943275888
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SM_Prop_Logs_01 LOD1
+  m_Name: SM_Prop_Logs_01 LOD2
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2

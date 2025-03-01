@@ -131,7 +131,8 @@ namespace Infrastructure.Installers.EntryPoint
                 portal.Construct(_sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<DataPlayer>(),
                     _sceneComponent, _sceneContainer.Resolve<CursorManager>(), _sceneContainer.Resolve<UIManager>(),
                     _sceneContainer.Resolve<NPCManagment>(), _sceneContainer.Resolve<SaveGame>(),
-                    _sceneContainer.Resolve<SceneLoader>(), _sceneContainer.Resolve<CoinManager>());
+                    _sceneContainer.Resolve<SceneLoaderService>(), _sceneContainer.Resolve<CoinManager>(),
+                    _sceneContainer.Resolve<LevelChangeObserver>());
             }
         }
     }

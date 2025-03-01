@@ -15,7 +15,7 @@ namespace Infrastructure.Installers
 {
     public class GlobalInstaller : MonoInstaller
     {
-        [SerializeField] private SceneLoader _sceneLoaderPrefab;
+        [SerializeField] private SceneLoaderService _sceneLoaderPrefab;
         [SerializeField] private GameAPI _gameAPIPrefab;
         [SerializeField] private IGame _iGamePrefab;
 
@@ -48,7 +48,7 @@ namespace Infrastructure.Installers
             Container.Bind<JavaScriptHook>().FromComponentInNewPrefab(_javaScriptHook).AsSingle().NonLazy();
             Container.Bind<IGame>().FromComponentInNewPrefab(_iGamePrefab).AsSingle().NonLazy();
             Container.Bind<GameAPI>().FromComponentInNewPrefab(_gameAPIPrefab).AsSingle().NonLazy();
-            Container.Bind<SceneLoader>().FromComponentInNewPrefab(_sceneLoaderPrefab).AsSingle().NonLazy();
+            Container.Bind<SceneLoaderService>().FromComponentInNewPrefab(_sceneLoaderPrefab).AsSingle().NonLazy();
 
             Container.Bind<SavePointsManager>().AsSingle().NonLazy();
             Container.Bind<ArrowForPlayerManager>().AsSingle().NonLazy();

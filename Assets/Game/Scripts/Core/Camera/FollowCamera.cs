@@ -33,7 +33,7 @@ namespace Core.Camera
         [FormerlySerializedAs("obstacleMask")] [SerializeField]
         private LayerMask _obstacleLayerMask;
 
-        private allScenes _sceneId = allScenes.emptyScene;
+        private int _sceneId = 0;
         private UnityEngine.Camera _mainCamera;
         private MainPlayer _player;
         private PlayerController _playerController;
@@ -55,13 +55,15 @@ namespace Core.Camera
         private bool _canZoom = true;
         private bool _commonZoomUpdate = false;
         private float _autoZoomForReturn;
+        private SceneLoaderService _sceneLoader;
 
-        public void Construct(MainPlayer player, PlayerController playerController)
+        public void Construct(MainPlayer player, PlayerController playerController, SceneLoaderService sceneLoaderService)
         {
             Debug.Log("FollowCamera constructed");
 
             _player = player;
             _playerController = playerController;
+            _sceneLoader = sceneLoaderService;
             _maxZoom = _maxZoomDefault;
             _minZoom = _minZoomDefault;
 
@@ -98,7 +100,7 @@ namespace Core.Camera
 
         private void Update() // TODO magic numbers
         {
-            if (_sceneId == allScenes.emptyScene || _sceneId == allScenes.regionSCene)
+            if (_sceneId == 0 || _sceneId == _sceneLoader.MapScene)
             {
                 return;
             }
@@ -219,7 +221,7 @@ namespace Core.Camera
                     _maxZoom = sceneComponent.newMaxZoomCamera;
                 }
 
-                _sceneId = sceneComponent.IdScene;
+                _sceneId = sceneComponent.SceneID;
             }
         }
 

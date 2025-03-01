@@ -9,12 +9,12 @@ namespace Web
 {
     public class JavaScriptHook : MonoBehaviour
     {
-        public SceneLoader SceneLoader; // TODO rename
+        public SceneLoaderService SceneLoader; // TODO rename
     
         [FormerlySerializedAs("dataText")][SerializeField] private TMP_Text _dataText; // Ссылка на текстовый объект
         [FormerlySerializedAs("dataPlayer")][SerializeField] private DataPlayer _dataPlayer; // Ссылка на экземпляр DataPlayer
 
-        public void Construct(DataPlayer dataPlayer, SceneLoader sceneLoader)
+        public void Construct(DataPlayer dataPlayer, SceneLoaderService sceneLoader)
         {
             SceneLoader = sceneLoader;
             _dataPlayer = dataPlayer;

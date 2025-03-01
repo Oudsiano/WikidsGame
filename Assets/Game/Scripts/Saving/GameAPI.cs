@@ -28,7 +28,7 @@ namespace Saving
         private DataPlayer _dataPlayer;
 
         [FormerlySerializedAs("sceneLoader")] [SerializeField]
-        private SceneLoader _sceneLoader;
+        private SceneLoaderService _sceneLoader;
 
         public string playerID;
         public TMP_Text textForOtl;
@@ -42,7 +42,7 @@ namespace Saving
 
         private bool needMakeSaveInNextUpdate = false;
 
-        public void Construct(MainPlayer player, SceneLoader sceneLoader, DataPlayer dataPlayer, SaveGame saveGame,
+        public void Construct(MainPlayer player, SceneLoaderService sceneLoader, DataPlayer dataPlayer, SaveGame saveGame,
             FastTestsManager fastTestsManager, PlayerController playerController,
             WeaponArmorManager weaponArmorManager, QuestManager questManager)
         {

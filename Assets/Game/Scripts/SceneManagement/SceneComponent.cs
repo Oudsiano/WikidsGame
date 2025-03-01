@@ -5,44 +5,39 @@ namespace SceneManagement
 {
     public class SceneComponent : MonoBehaviour
     {
-        [SerializeField] public allScenes IdScene; // TODO rename
+         [Header("Scene Settings")]
+        [SerializeField] public int SceneID; // Идентификатор сцены // TODO DELETE
 
-        //[SerializeField] public GameObject TheCore; // TODO not used code
+        [Header("Camera New Params")]
+        [SerializeField] public int newMinZoomCamera;
+        [SerializeField] public int newMaxZoomCamera;
 
-        [Header("Camera New Params")] [SerializeField]
-        public int newMinZoomCamera; // TODO rename
-
-        [SerializeField] public int newMaxZoomCamera; // TODO rename
-
-        [Header("Infection Group")] [SerializeField]
-        public GameObject InfectGroup; // TODO rename
+        [Header("Infection Group")]
+        [SerializeField] private GameObject infectGroup;
 
         private LevelChangeObserver _levelChangeObserver;
         
         public void Construct(LevelChangeObserver levelChangeObserver)
         {
             _levelChangeObserver = levelChangeObserver;
-            
-            if (InfectGroup == null)
-            {
-                InfectGroup = GameObject.Find("infection"); // TODO find change
-                
-                if (InfectGroup == null)
-                {
-                    InfectGroup = GameObject.Find("infested"); // TODO find change
-                }
-            }
 
-            if (_levelChangeObserver.DictForInfected.ContainsKey(IdScene))
-            {
-                SetInfectGroupActive(_levelChangeObserver.DictForInfected[IdScene]);
-            }
+            SceneID = _levelChangeObserver.IndexSceneToLoad;
+            // // Если объект не установлен, пробуем найти его в сцене
+            // if (infectGroup == null)
+            // {
+            //     infectGroup = GameObject.Find("infection") ?? GameObject.Find("infested");
+            // }
+            // // Если в LevelChangeObserver имеется информация для данного идентификатора, устанавливаем состояние infectGroup
+            // if (_levelChangeObserver.DictForInfected != null && _levelChangeObserver.DictForInfected.ContainsKey(sceneId))
+            // {
+            //     SetInfectGroupActive(_levelChangeObserver.DictForInfected[sceneId]);
+            // } // TODO Infected group refactor
         }
 
         private void SetInfectGroupActive(bool isActive)
         {
-            if (InfectGroup != null)
-                InfectGroup.SetActive(isActive);
+            if (infectGroup != null)
+                infectGroup.SetActive(isActive);
         }
     }
 }

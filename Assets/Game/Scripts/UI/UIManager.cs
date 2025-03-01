@@ -111,15 +111,16 @@ namespace UI
 
         private IGame _igame;
         private FollowCamera _followCamera;
-        private SceneLoader _sceneLoader;
+        private SceneLoaderService _sceneLoader;
         private GameAPI _gameAPI;
         private CoinManager _coinManager;
         private SaveGame _saveGame;
         private QuestManager _questManager;
         private DataPlayer _dataPlayer;
         private FastTestsManager _fastTestsManager;
+        private LevelChangeObserver _levelChangeObserver;
 
-        public SceneLoader SceneLoader
+        public SceneLoaderService SceneLoader
         {
             get => _sceneLoader;
             set => _sceneLoader = value;
@@ -131,9 +132,10 @@ namespace UI
             set => _followCamera = value;
         }
 
-        public void Construct(IGame igame, SceneLoader sceneLoader, FollowCamera followCamera, GameAPI gameAPI,
+        public void Construct(IGame igame, SceneLoaderService sceneLoader, FollowCamera followCamera, GameAPI gameAPI,
             CoinManager coinManager, SaveGame saveGame, QuestManager questManager, DataPlayer dataPlayer,
-            FastTestsManager fastTestsManager, PlayerController playerController, WeaponArmorManager weaponArmorManager) // TODO construct
+            FastTestsManager fastTestsManager, PlayerController playerController,
+            WeaponArmorManager weaponArmorManager, LevelChangeObserver levelChangeObserver) // TODO construct
         {
             Debug.Log("Construct UIManager");
             _igame = igame;
@@ -145,7 +147,7 @@ namespace UI
             _questManager = questManager;
             _dataPlayer = dataPlayer;
             _fastTestsManager = fastTestsManager;
-
+            _levelChangeObserver = levelChangeObserver;
             fastTestUI.gameObject.SetActive(false);
 
             _buttonAgain.onClick.AddListener(OnClickAgainRegen);
@@ -156,7 +158,7 @@ namespace UI
             _againUI.SetActive(false);
             fastTestUI.Construct(_igame, _fastTestsManager, this);
             DeathUI.Construct(this);
-            HelpInFirstScene.Construct(_dataPlayer);
+            HelpInFirstScene.Construct(_dataPlayer, _sceneLoader);
             _testTableGenerator.Construct(_fastTestsManager);
             UiMarketPanel.Construct(playerController, coinManager, _saveGame, weaponArmorManager, _igame);
             uIBug.Construct(_igame, _saveGame, playerController, weaponArmorManager);
@@ -313,9 +315,9 @@ namespace UI
 
             if (sceneComponent != null)
             {
-                if (sceneComponent.IdScene == allScenes.library ||
-                    sceneComponent.IdScene == allScenes.holl ||
-                    sceneComponent.IdScene == allScenes.town1)
+                if (sceneComponent.SceneID == _sceneLoader.LibraryScene ||
+                    sceneComponent.SceneID == _sceneLoader.HollScene ||
+                    sceneComponent.SceneID == _sceneLoader.FirstTownScene)
                 {
                     _buttonMaxZoom.gameObject.SetActive(false);
                     _buttonMinZoom.gameObject.SetActive(false);
@@ -330,8 +332,7 @@ namespace UI
 
         private void OnButtonIncreaseChargesClick()
             => _fastTestsManager.NeedTestForArrows(1); // TODO magic numbers
-
-
+        
         public void RegenFastTestUI(int stratIndexFastTests, int endIndexFastTests, int count_arrows,
             Health targetKillAterTest)
             => fastTestUI.ShowTest(stratIndexFastTests, endIndexFastTests, count_arrows, targetKillAterTest);
@@ -533,13 +534,13 @@ namespace UI
         {
             closeAgainUI(true);
             _gameAPI.SaveUpdater();
-            SceneLoader.TryChangeLevel(allScenes.regionSCene, 0);
+            _levelChangeObserver.TryChangeLevel(_sceneLoader.MapScene, 0);
             AudioManager.instance.PlaySound("ButtonClick"); // TODO change instance AudioManager
         }
 
         private void OnClickAgainRegen()
         {
-            SceneLoader.UpdateCurrentLevel();
+            _levelChangeObserver.UpdateCurrentLevel();
             closeAgainUI(true);
             AudioManager.instance.PlaySound("ButtonClick");
         }

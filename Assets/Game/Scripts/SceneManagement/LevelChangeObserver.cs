@@ -13,26 +13,16 @@ namespace SceneManagement
 {
     public class LevelChangeObserver : MonoBehaviour // TODO check
     {
-        [SerializeField] public List<OneScene> AllScenes = new();
-
-        public Dictionary<allScenes, string> DAllScenes;
-
-        private Dictionary<allScenes, bool>
-            dictForInfected = new(); //типа зеленые/красные кнопки в сыборе локации сюда запишутся дополнительно
-
+        private int _indexSceneToLoad = 0;
         private SavePointsManager _savePointsManager;
         private DataPlayer _dataPlayer;
         private UIManager _uiManager;
         private MainPlayer _player;
         private GameAPI _gameAPI;
 
-        public Dictionary<allScenes, bool> DictForInfected
-        {
-            get => dictForInfected;
-            set => dictForInfected = value;
-        }
-
-        public void Construct(SavePointsManager savePointsManager, DataPlayer dataPlayer, UIManager uiManager, 
+        public int IndexSceneToLoad => _indexSceneToLoad;
+        
+        public void Construct(SavePointsManager savePointsManager, DataPlayer dataPlayer, UIManager uiManager,
             MainPlayer player, GameAPI gameAPI)
         {
             _savePointsManager = savePointsManager;
@@ -41,121 +31,86 @@ namespace SceneManagement
             _player = player;
             _gameAPI = gameAPI;
 
-            DAllScenes = new Dictionary<allScenes, string>();
-
-            foreach (OneScene scene in AllScenes)
-            {
-                if (DAllScenes.ContainsKey(scene.IdScene))
-                {
-                    Debug.LogError("scene already exist in manager");
-                }
-
-                DAllScenes[scene.IdScene] = scene.fileScene;
-            }
-
             // Подписываемся на событие изменения уровня загрузки.
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        // public void Init()
-        // {
-        //     DAllScenes = new Dictionary<allScenes, string>();
-        //     foreach (OneScene scene in AllScenes)
-        //     {
-        //         if (DAllScenes.ContainsKey(scene.IdScene))
-        //         {
-        //             Debug.LogError("scene already exist in manager");
-        //         }
-        //
-        //         DAllScenes[scene.IdScene] = scene.fileScene;
-        //     }
-        //
-        //     // Подписываемся на событие изменения уровня загрузки.
-        //     SceneManager.sceneLoaded += OnSceneLoaded;
-        // }
-
-        public allScenes GetCurrentSceneId()
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            string currentSceneName = SceneManager.GetActiveScene().name; // TODO sceneLoader here
-
-            // Ищем объект OneScene, соответствующий текущей сцене
-            foreach (var sceneInfo in AllScenes)
-            {
-                if (sceneInfo.fileScene == currentSceneName)
-                {
-                    return sceneInfo.IdScene;
-                }
-            }
-
-            // Если сцена не найдена в списке, можно вернуть null или выполнить другую логику
-            if (currentSceneName != "OpenScene")
-            {
-                Debug.LogError("ErRrOrR Current scene info not found in AllScenes list: " + currentSceneName);
-            }
-
-            return allScenes.emptyScene;
-        }
-
-        private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
-        {
-            allScenes newLevel = allScenes.emptyScene;
-
-            foreach (var item in DAllScenes)
-            {
-                if (item.Value == arg0.name)
-                {
-                    newLevel = item.Key;
-                }
-            }
-
             if (_dataPlayer.PlayerData.spawnPoint == 0)
             {
-                GameObject StartPos = GameObject.Find("StartPoint"); // TODO find
-
-                if (StartPos != null)
+                GameObject startPos = GameObject.Find("StartPoint");
+                
+                if (startPos != null)
                 {
-                    Vector3 position = StartPos.transform.position;
-                    Quaternion rotation = StartPos.transform.rotation;
-                    UpdatePlayerLocation(position, rotation);
+                    UpdatePlayerLocation(startPos.transform.position, startPos.transform.rotation);
                     _uiManager.FollowCamera.ActivateCommonZoomUpdate();
                 }
             }
             else if (SavePointsManager.AllSavePoints.Count > 0)
             {
-                Vector3 posThere = SavePointsManager.AllSavePoints[_dataPlayer.PlayerData.spawnPoint]
-                    .transform.position;
-
-                Quaternion rotation = new Quaternion();
-                UpdatePlayerLocation(posThere, rotation);
+                Vector3 pos = SavePointsManager.AllSavePoints[_dataPlayer.PlayerData.spawnPoint].transform.position;
+                UpdatePlayerLocation(pos, Quaternion.identity);
                 _uiManager.FollowCamera.ActivateCommonZoomUpdate();
             }
-
-            _savePointsManager.UpdateStateSpawnPointsAfterLoad( true); // TODO savepoints to construct
+            
+            _savePointsManager.UpdateStateSpawnPointsAfterLoad(true);
             _player.ResetCountEnergy();
-
             _gameAPI.SaveUpdater();
         }
-
+        
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+        
+        public void TryChangeLevel(int indexScene, int newSpawnPoint)
+        {
+            _savePointsManager.ResetDict();
+            _dataPlayer.PlayerData.spawnPoint = newSpawnPoint;
+            LoadLevel(indexScene);
+        }
+        
+        public void UpdateCurrentLevel()
+        {
+            LoadLevel(_dataPlayer.PlayerData.sceneToLoad);
+        }
+        
+        public void OnFadeComplete()
+        {
+            SceneManager.LoadScene(_indexSceneToLoad);
+        }
+        
+        private void LoadLevel(int newIndex)
+        {
+             _indexSceneToLoad = newIndex;
+             Debug.Log("Уровень загрузки изменен на " + newIndex);
+             
+             SceneManager.LoadScene(_indexSceneToLoad);
+        }
+        
         // Метод для обновления местоположения игрока
         private void UpdatePlayerLocation(Vector3 spawnPoint, Quaternion rotation)
         {
-            // Отключаем навигацию для игрока
-            _player.gameObject.GetComponent<NavMeshAgent>().enabled = false; // TODO can be cached
+            NavMeshAgent agent = _player.gameObject.GetComponent<NavMeshAgent>();
+            if (agent != null)
+                agent.enabled = false;
 
-            // Устанавливаем позицию игрока в соответствии с порталом назначения
             _player.transform.position = spawnPoint;
             _player.transform.rotation = rotation;
 
-            Animator animator =
-                _player.gameObject.GetComponent<Animator>();
+            Animator animator = _player.gameObject.GetComponent<Animator>();
             
-            animator.Rebind();
-            animator.Update(0f);
+            if (animator != null)
+            {
+                animator.Rebind();
+                animator.Update(0f);
+            }
 
-            _player.gameObject.GetComponent<Health>().Restore();
+            _player.gameObject.GetComponent<Health>()?.Restore();
 
-            // Включаем навигацию для игрока
-            _player.gameObject.GetComponent<NavMeshAgent>().enabled = true;
+            if (agent != null)
+                agent.enabled = true;
         }
     }
 }

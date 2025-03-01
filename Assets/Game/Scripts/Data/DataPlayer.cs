@@ -8,9 +8,9 @@ namespace Data
     {
         [FormerlySerializedAs("playerData")] public PlayerData PlayerData = new();
 
-        public void SetSceneToLoad(allScenes sceneId)
+        public void SetSceneToLoad(int sceneId)
         {
-            PlayerData.sceneToLoad = (int)sceneId;
+            PlayerData.sceneToLoad = sceneId;
         }
 
         public void SavePlayerPosition(int spawn)

@@ -43,10 +43,10 @@ namespace SceneManagement
 
         private DataPlayer _dataPlayer;
         private LevelChangeObserver _levelChangeObserver;
-        private SceneLoader _sceneLoader;
+        private SceneLoaderService _sceneLoader;
         private GameAPI _gameAPI;
         
-        public void Construct(DataPlayer dataPlayer, LevelChangeObserver levelChangeObserver, SceneLoader sceneLoader,
+        public void Construct(DataPlayer dataPlayer, LevelChangeObserver levelChangeObserver, SceneLoaderService sceneLoader,
             GameAPI gameAPI)
         {
             _dataPlayer = dataPlayer;
@@ -152,11 +152,11 @@ namespace SceneManagement
             foreach (OneBtnChangeRegion region in _regions)
             {
                 region.SetGreen();
-                _levelChangeObserver.DictForInfected[region.loadedScene] = false;
+                //_levelChangeObserver.DictForInfected[region.loadedScene] = false;
 
                 // Находим соответствующую сцену для текущего региона.
                 var sceneData = _sceneWithTestsID.SceneDataList
-                    .FirstOrDefault(scene => scene.scene == region.loadedScene);
+                    .FirstOrDefault(scene => scene.indexScene == region.loadedScene);
 
                 if (sceneData != null && playerData != null)
                 {
@@ -170,7 +170,7 @@ namespace SceneManagement
                     if (incompleteTestFound)
                     {
                         region.SetRed();
-                        _levelChangeObserver.DictForInfected[region.loadedScene] = true;
+                        //_levelChangeObserver.DictForInfected[region.loadedScene] = true;
                         continue;
                     }
                 }
@@ -181,18 +181,18 @@ namespace SceneManagement
         {
             _loading.gameObject.SetActive(true);
             //_sceneLoader.TryChangeLevel((allScenes)2, 4);
-            _sceneLoader.TryChangeLevel((allScenes)_dataPlayer.PlayerData.sceneToLoad,
+            _levelChangeObserver.TryChangeLevel(_dataPlayer.PlayerData.sceneToLoad,
                 _dataPlayer.PlayerData.spawnPoint);
             AudioManager.instance.PlaySound("ClickButton");
         }
 
-        private void OnClick(allScenes sceneId)
+        private void OnClick(int sceneIndex)
         {
-            _dataPlayer.SetSceneToLoad(sceneId);
+            _dataPlayer.SetSceneToLoad(sceneIndex);
             _loading.gameObject.SetActive(true);
             _gameAPI.SaveUpdater();
             //Invoke("LoadSceneAfterDelay", 2f); 
-            _sceneLoader.TryChangeLevel(sceneId, 0);
+            _levelChangeObserver.TryChangeLevel(sceneIndex, 0);
             AudioManager.instance.PlaySound("ClickButton"); // TODO can be cached
         }
 
@@ -207,7 +207,7 @@ namespace SceneManagement
                 {
                     foreach (SceneData scene in _sceneWithTestsID.SceneDataList)
                     {
-                        if (scene.scene == _regions[index].loadedScene)
+                        if (scene.indexScene == _regions[index].loadedScene)
                         {
                             foreach (int testScene in scene.numbers)
                             {

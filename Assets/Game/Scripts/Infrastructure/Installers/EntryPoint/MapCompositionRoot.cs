@@ -26,7 +26,7 @@ namespace Infrastructure.Installers.EntryPoint
         {
             _locationChange.Construct(_sceneContainer.Resolve<DataPlayer>(),
                 _sceneContainer.Resolve<LevelChangeObserver>(), 
-                _sceneContainer.Resolve<SceneLoader>(),
+                _sceneContainer.Resolve<SceneLoaderService>(),
                 _sceneContainer.Resolve<GameAPI>());
         }
     }

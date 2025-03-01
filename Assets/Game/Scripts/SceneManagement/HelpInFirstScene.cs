@@ -2,6 +2,7 @@ using Core.Camera;
 using Data;
 using SceneManagement.Enums;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 namespace SceneManagement
@@ -27,18 +28,27 @@ namespace SceneManagement
         private GameObject _text5;
 
         private DataPlayer _dataPlayer;
+
+        private SceneLoaderService _sceneLoader;
         
-        public void Construct(DataPlayer dataPlayer)
+        public void Construct(DataPlayer dataPlayer, SceneLoaderService sceneLoader)
         {
+            _sceneLoader = sceneLoader;
             _dataPlayer = dataPlayer;
                 
-            SceneLoader.LevelChanged += SceneLoader_LevelChanged;
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            
             FollowCamera.OnCameraRotation += FollowCamera_OnCameraRotation;
             FollowCamera.OnCameraScale += FollowCamera_OnCameraScale;
 
             restTexts();
         }
 
+        private void OnSceneLoaded(Scene scene, LoadSceneMode _)
+        {
+            Study1Show(scene.buildIndex);
+        }
+        
         private void OnDestroy()
         {
             FollowCamera.OnCameraRotation -= FollowCamera_OnCameraRotation;
@@ -102,11 +112,6 @@ namespace SceneManagement
             _text5.SetActive(false);
         }
 
-        private void SceneLoader_LevelChanged(allScenes s)
-        {
-            Study1Show(s);
-        }
-
         private void FollowCamera_OnCameraRotation() => EndStudy1();
         private void FollowCamera_OnCameraScale() => EndStudy2();
 
@@ -121,9 +126,9 @@ namespace SceneManagement
             _panel.SetActive(false);
         }
 
-        private void Study1Show(allScenes s) // TODO duplicate
+        private void Study1Show(int scene) // TODO duplicate
         {
-            if (s != allScenes.battle1)
+            if (scene != _sceneLoader.OpenScene)
             {
                 return;
             }
@@ -156,7 +161,7 @@ namespace SceneManagement
 
         private void Study2() // TODO duplicate
         {
-            if (_dataPlayer.PlayerData.sceneToLoad != (int)allScenes.battle1) return;
+            if (_dataPlayer.PlayerData.sceneToLoad != _sceneLoader.SecondBattleScene) return;
             if (_dataPlayer.PlayerData.helpIndex != 1) return;
             restTexts();
             _text2.SetActive(true);

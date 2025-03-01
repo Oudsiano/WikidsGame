@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4457535500279874688}
-  - component: {fileID: 3782132994420179724}
+  - component: {fileID: 3250123924558618044}
   m_Layer: 0
   m_Name: SceneLoader
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3782132994420179724
+--- !u!114 &3250123924558618044
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6609461646858883754}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a88e76bc29a96243ac72aa4372cd774, type: 3}
+  m_Script: {fileID: 11500000, guid: 9309d3c57c6144779a291972cfedcf90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelToLoad: 1
+  _openScene: 1
+  _mapScene: 2
+  _firstBattleScene: 3
+  _secondBattleScene: 5
+  _thirdBattleScene: 0
+  _librarySceneScene: 6
+  _hollSceneScene: 7
+  _firstTownSceneScene: 4

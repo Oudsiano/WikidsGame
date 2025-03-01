@@ -2,7 +2,7 @@
 {
     public enum SceneState
     {
-        meny,
-        battle
+        Menu,
+        Battle
     }
 }

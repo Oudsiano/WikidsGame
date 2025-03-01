@@ -2,6 +2,7 @@ using SceneManagement;
 using SceneManagement.Enums;
 using UI.Enums;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UI
 {
@@ -10,17 +11,17 @@ namespace UI
         public static EscState escState; // TODO static
         public static SceneState sceneState; // TODO static
 
-        private SceneLoader _sceneLoader;
+        private SceneLoaderService _sceneLoader;
         private UIManager _uiManager;
 
-        public void Construct(SceneLoader sceneLoader, UIManager uiManager)
+        public void Construct(SceneLoaderService sceneLoader, UIManager uiManager)
         {
             _sceneLoader = sceneLoader;
             _uiManager = uiManager;
-            
-            SceneLoader.LevelChanged += SceneLoader_LevelChanged; // Change static
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
-    
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -28,22 +29,15 @@ namespace UI
                 ChangeEscState();
             }
         }
-    
-        private void SceneLoader_LevelChanged(allScenes obj)
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode _)
         {
-            if (obj == 0)
-            {
-                sceneState = SceneState.meny;
-            }
-            else
-            {
-                sceneState = SceneState.battle;
-            }
+            sceneState = scene.buildIndex == _sceneLoader.OpenScene ? SceneState.Menu : SceneState.Battle;
         }
 
         private void ChangeEscState()
         {
-            if (sceneState == SceneState.battle)
+            if (sceneState == SceneState.Battle)
             {
                 if (_uiManager.MapCanvas.gameObject.activeSelf)
                 {
@@ -55,7 +49,7 @@ namespace UI
                         case EscState.none:
                             _uiManager.ShowAgainUi();
                             break;
-                    
+
                         case EscState.againScr:
                             _uiManager.OnCLickCancelAgain();
                             break;

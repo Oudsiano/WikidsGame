@@ -3,6 +3,7 @@ using Combat.Data;
 using Core.Player;
 using Data;
 using DG.Tweening;
+using NaughtyAttributes;
 using Saving;
 using SceneManagement.Enums;
 using TMPro;
@@ -17,8 +18,7 @@ namespace SceneManagement
     // Класс для портала, переносящего игрока между сценами
     public class Portal : MonoBehaviour // TODO Restruct
     {
-        [SerializeField]
-        private allScenes sceneToLoad = allScenes.emptyScene; // Индекс сцены для загрузки // TODO rename
+        [Scene] [SerializeField] private int sceneToLoad; // Индекс сцены для загрузки // TODO rename
 
         [SerializeField] private Transform spawnPoint; // Точка спавна в новой сцене // TODO rename
 
@@ -45,12 +45,13 @@ namespace SceneManagement
         private UIManager _uiManager;
         private NPCManagment _npcManagment;
         private SaveGame _saveGame;
-        private SceneLoader _sceneLoader;
+        private SceneLoaderService _sceneLoader;
         private CoinManager _coinManager;
-        
+        private LevelChangeObserver _levelChangeObserver;
+
         public void Construct(MainPlayer player, DataPlayer dataPlayer, SceneComponent sceneComponent,
             CursorManager cursorManager, UIManager uiManager, NPCManagment npcManagment, SaveGame saveGame,
-            SceneLoader sceneLoader, CoinManager coinManager)
+            SceneLoaderService sceneLoader, CoinManager coinManager, LevelChangeObserver levelChangeObserver)
         {
             _player = player;
             _cursorManager = cursorManager;
@@ -59,9 +60,10 @@ namespace SceneManagement
             _saveGame = saveGame;
             _sceneLoader = sceneLoader;
             _coinManager = coinManager;
-            
+
             this.dataPlayer = dataPlayer;
             this.sceneComponent = sceneComponent;
+            _levelChangeObserver = levelChangeObserver;
 
             if (sceneComponent == null)
             {
@@ -95,7 +97,7 @@ namespace SceneManagement
                     return;
                 }
 
-                if (sceneToLoad != sceneComponent.IdScene)
+                if (sceneToLoad != 0 )
                 {
                     StartCoroutine(Transition()); // Запускаем переход между сценами
                 }
@@ -108,13 +110,8 @@ namespace SceneManagement
 
         private IEnumerator Transition()
         {
-            if (sceneToLoad == allScenes.emptyScene)
-            {
-                Debug.LogError("Empty scene on portal. It's mistake");
-            }
-
             dataPlayer.SetSceneToLoad(sceneToLoad);
-            _sceneLoader.TryChangeLevel(sceneToLoad, 0);
+            _levelChangeObserver.TryChangeLevel(sceneToLoad, 0);
 
             _cursorManager.SetCursorDefault();
             _saveGame.MakePortalSave(bonusWeapon, bonusArmor, sceneComponent);
@@ -144,14 +141,14 @@ namespace SceneManagement
 
             return null; // Если портал не найден, возвращаем null
         }
-        
+
         private void UpdatePlayerLocation(Portal otherPortal)
         {
             _player.gameObject.GetComponent<NavMeshAgent>().enabled = false;
-            
+
             _player.transform.position = otherPortal.spawnPoint.position;
             _player.transform.rotation = otherPortal.spawnPoint.rotation;
-            
+
             _player.gameObject.GetComponent<NavMeshAgent>().enabled = true;
         }
 

@@ -1,10 +1,13 @@
-﻿using AINavigation;
+﻿using System.Collections.Generic;
+using AINavigation;
 using Combat;
 using Core;
 using Core.Camera;
 using Core.Player;
 using Core.Quests;
+using Cysharp.Threading.Tasks;
 using Data;
+using Loading;
 using Saving;
 using SceneManagement;
 using UI;
@@ -47,10 +50,13 @@ namespace Infrastructure.Installers.EntryPoint
         private SceneWithTestsID _sceneWithTestsID;
         private KeyBoardsEvents _keyBoardsEvents;
 
+        private LoadingScreenProvider _loadingProvider;
+
         [Inject]
         public void Compose(DiContainer diContainer) // TODO change 
         {
             _sceneContainer = _sceneContext.Container;
+            _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
 
             _keyBoardsEvents = _sceneContainer.Resolve<KeyBoardsEvents>();
             _javaScriptHook = _sceneContainer.Resolve<JavaScriptHook>();
@@ -76,8 +82,14 @@ namespace Infrastructure.Installers.EntryPoint
             _weaponArmorManager = _sceneContainer.Resolve<WeaponArmorManager>(); //
             _allQuests = _sceneContainer.Resolve<AllQuestsInGame>();
             _sceneWithTestsID = _sceneContainer.Resolve<SceneWithTestsID>();
-            
+
             ConstructComponents();
+
+            var loadingOperations = new Queue<ILoadingOperation>();
+            // TODO Сюда добавить операцию добавления ассетов и тд
+            loadingOperations.Enqueue(new OpenSceneLoadingOperation());
+
+            _loadingProvider.LoadAndDestroy(loadingOperations).Forget();
         }
 
         private void ConstructComponents() // TODO check order
@@ -99,11 +111,12 @@ namespace Infrastructure.Installers.EntryPoint
                 _dataPlayer, _uiManager);
             _uiManager.Construct(_iGame, _sceneLoader, _followCamera, _gameAPI, _coinManager, _saveGame, _questManager,
                 _dataPlayer, _fastTestsManager, _player.PlayerController, _weaponArmorManager);
-            _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame, _fastTestsManager, _questManager, _coinManager, _bottleManager, _weaponArmorManager);
+            _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame, _fastTestsManager, _questManager,
+                _coinManager, _bottleManager, _weaponArmorManager);
             _followCamera.Construct(_player, _player.PlayerController);
             _javaScriptHook.Construct(_dataPlayer, _sceneLoader);
             _keyBoardsEvents.Construct(_sceneLoader, _uiManager);
-            
+
             //_playerController.Construct(); -> iGame.Construct
             //_levelChangeObserver.Construct(); -> iGame.Construct
             //_arrowForPlayerManager.Construct(); -> iGame.Construct

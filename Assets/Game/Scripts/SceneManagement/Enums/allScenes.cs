@@ -12,5 +12,6 @@
         battleScene1,
         BS3,
         VikingScene,
+        BootstrapScene,
     }
 }

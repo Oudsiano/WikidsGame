@@ -121,7 +121,7 @@ namespace Movement
             }
 
             Vector3 localVelocity = transform.InverseTransformDirection(_agent.velocity);
-            _animator.SetFloat(Constants.ForwardSpeed, localVelocity.z);
+            _animator.SetFloat(Constants.Constants.ForwardSpeed, localVelocity.z);
         }
 
         public void Cancel()

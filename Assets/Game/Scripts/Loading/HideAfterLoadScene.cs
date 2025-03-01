@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace UI
+namespace Loading
 {
     public class HideAfterLoadScene : MonoBehaviour
     {
@@ -14,7 +14,7 @@ namespace UI
 
         private async UniTask CallFunctionWithDelay(float delay)
         {
-            await UniTask.Delay((int)1 * 1000);
+            await UniTask.Delay(1 * 1000);
             
             gameObject.SetActive(false);
         }

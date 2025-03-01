@@ -3,6 +3,7 @@ using Core.Camera;
 using Core.Player;
 using Core.Quests;
 using Data;
+using Loading;
 using Saving;
 using SceneManagement;
 using UI;
@@ -34,11 +35,15 @@ namespace Infrastructure.Installers
         [SerializeField] private SceneWithTestsID _sceneWithTestsID;
         [SerializeField] private KeyBoardsEvents _keyBoardsEvents;
         [SerializeField] private JavaScriptHook _javaScriptHook;
-        
+
+        private LoadingScreenProvider _loadingProvider;
+
         public override void InstallBindings()
         {
+            Container.Bind<LoadingScreenProvider>().AsSingle().NonLazy();
+
             BindingComponents();
-            
+
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
             Container.Bind<JavaScriptHook>().FromComponentInNewPrefab(_javaScriptHook).AsSingle().NonLazy();
             Container.Bind<IGame>().FromComponentInNewPrefab(_iGamePrefab).AsSingle().NonLazy();
@@ -54,26 +59,27 @@ namespace Infrastructure.Installers
         private void BindingComponents()
         {
             BindingUI();
-            
+
             Container.Bind<KeyBoardsEvents>().FromComponentInNewPrefab(_keyBoardsEvents).AsSingle().NonLazy();
             Container.Bind<AllQuestsInGame>().FromComponentInNewPrefab(_allQuests).AsSingle().NonLazy();
             Container.Bind<SceneWithTestsID>().FromComponentInNewPrefab(_sceneWithTestsID).AsSingle().NonLazy();
             Container.Bind<AudioManager>().FromComponentInNewPrefab(_audioManagerPrefab).AsSingle().NonLazy();
             Container.Bind<FollowCamera>().FromComponentInNewPrefab(_followCameraPrefab).AsSingle().NonLazy();
             Container.Bind<DataPlayer>().FromComponentInNewPrefab(_dataPlayerPrefab).AsSingle().NonLazy();
-            Container.Bind<LevelChangeObserver>().FromComponentInNewPrefab(_levelChangeObserverPrefab).AsSingle().NonLazy();
+            Container.Bind<LevelChangeObserver>().FromComponentInNewPrefab(_levelChangeObserverPrefab).AsSingle()
+                .NonLazy();
             Container.Bind<BottleManager>().FromComponentInNewPrefab(_bottleManagerPrefab).AsSingle().NonLazy();
             Container.Bind<QuestManager>().FromComponentInNewPrefab(_questManagerPrefab).AsSingle().NonLazy();
             Container.Bind<NPCManagment>().FromComponentInNewPrefab(_npcManagerPrefab).AsSingle().NonLazy();
             Container.Bind<CursorManager>().FromComponentInNewPrefab(_cursorManagerPrefab).AsSingle().NonLazy();
             Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
             Container.Bind<CoinManager>().FromComponentInNewPrefab(_coinManagerPrefab).AsSingle().NonLazy();
-            Container.Bind<WeaponArmorManager>().FromComponentInNewPrefab(_weaponArmorManagerPrefab).AsSingle().NonLazy();
+            Container.Bind<WeaponArmorManager>().FromComponentInNewPrefab(_weaponArmorManagerPrefab).AsSingle()
+                .NonLazy();
         }
 
         private void BindingUI()
         {
-            
         }
     }
 }

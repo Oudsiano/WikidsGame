@@ -32,7 +32,7 @@ namespace SceneManagement
             Instantiate(_Coin, pos, Quaternion.Euler(0, 0, 0))
                 .GetComponent<PickableCoin>()
                 .Construct(count, _cursorManager, _saveGame);
-            AudioManager.instance.PlaySound("CoinPickup"); // TODO Instance AudioManager
+            AudioManager.Instance.PlaySound("CoinPickup"); // TODO Instance AudioManager
         }
     }
 }

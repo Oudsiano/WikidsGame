@@ -426,23 +426,23 @@ namespace UI
         private void OnChangeMusicVolume(float arg0)
         {
             SoundManager.SetMusicVolume(arg0);
-            AudioManager.instance.MusicVol = arg0; // TODO change instance AudioManager
+            AudioManager.Instance.MusicVol = arg0; // TODO change instance AudioManager
         }
 
         private void OnChangeSoundVolume(float arg0)
         {
-            AudioManager.instance.SoundVol = arg0; // TODO change instance AudioManager
+            AudioManager.Instance.SoundVol = arg0; // TODO change instance AudioManager
         }
 
         private void OnChangeMusicState(bool arg0)
         {
             SoundManager.SetMusicMuted(arg0 == false); // TODO change instance AudioManager
-            AudioManager.instance.MusicON = arg0; // TODO change instance AudioManager
+            AudioManager.Instance.MusicON = arg0; // TODO change instance AudioManager
         }
 
         private void OnChangeSoundState(bool arg0)
         {
-            AudioManager.instance.SoundON = arg0; // TODO change instance AudioManager
+            AudioManager.Instance.SoundON = arg0; // TODO change instance AudioManager
         }
 
         private void SaveGame_OnChangePlayerName(string obj)
@@ -535,14 +535,14 @@ namespace UI
             closeAgainUI(true);
             _gameAPI.SaveUpdater();
             _levelChangeObserver.TryChangeLevel(_sceneLoader.MapScene, 0);
-            AudioManager.instance.PlaySound("ButtonClick"); // TODO change instance AudioManager
+            AudioManager.Instance.PlaySound("ButtonClick"); // TODO change instance AudioManager
         }
 
         private void OnClickAgainRegen()
         {
             _levelChangeObserver.UpdateCurrentLevel();
             closeAgainUI(true);
-            AudioManager.instance.PlaySound("ButtonClick");
+            AudioManager.Instance.PlaySound("ButtonClick");
         }
 
         private void ShowQuestPanel()

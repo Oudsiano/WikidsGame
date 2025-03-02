@@ -171,7 +171,7 @@ namespace Movement
                 }
                 else
                 {
-                    AudioManager.instance.PlaySound("Walk");
+                    AudioManager.Instance.PlaySound("Walk");
                 }
             }
         }

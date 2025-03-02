@@ -216,8 +216,8 @@ namespace Saving
 
             _dataPlayer.PlayerData.playerName = PlayerName;
 
-            _dataPlayer.PlayerData.soundOn = AudioManager.instance.SoundON;
-            _dataPlayer.PlayerData.soundVol = AudioManager.instance.SoundVol;
+            _dataPlayer.PlayerData.soundOn = AudioManager.Instance.SoundON;
+            _dataPlayer.PlayerData.soundVol = AudioManager.Instance.SoundVol;
             _dataPlayer.PlayerData.musicOn = !SoundManager.GetMusicMuted();
             _dataPlayer.PlayerData.musicVol = SoundManager.GetMusicVolume();
 

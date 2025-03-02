@@ -183,7 +183,7 @@ namespace SceneManagement
             //_sceneLoader.TryChangeLevel((allScenes)2, 4);
             _levelChangeObserver.TryChangeLevel(_dataPlayer.PlayerData.sceneToLoad,
                 _dataPlayer.PlayerData.spawnPoint);
-            AudioManager.instance.PlaySound("ClickButton");
+            AudioManager.Instance.PlaySound("ClickButton");
         }
 
         private void OnClick(int sceneIndex)
@@ -193,7 +193,7 @@ namespace SceneManagement
             _gameAPI.SaveUpdater();
             //Invoke("LoadSceneAfterDelay", 2f); 
             _levelChangeObserver.TryChangeLevel(sceneIndex, 0);
-            AudioManager.instance.PlaySound("ClickButton"); // TODO can be cached
+            AudioManager.Instance.PlaySound("ClickButton"); // TODO can be cached
         }
 
         private void OnPointerEnter(int index) // TODO SUPPPPPPER OVERLOAD METHOD

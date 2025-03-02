@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Loading;
+using SceneManagement;
+using UnityEngine;
 using Zenject;
 
 namespace Infrastructure.Installers.EntryPoint
@@ -6,12 +8,17 @@ namespace Infrastructure.Installers.EntryPoint
     public class OpenSceneCompositionRoot : MonoBehaviour, ICompose
     {
         [SerializeField] private SceneContext _sceneContext;
-        
-        private DiContainer _sceneContainer; 
-        
+        [SerializeField] private LoadSceneAfterComix _loaderMapScene;
+
+        private DiContainer _sceneContainer;
+
+        [Inject]
         public void Compose(DiContainer diContainer)
         {
-            Debug.Log("Open Scene compose");
+            _sceneContainer = _sceneContext.Container;
+            
+            _loaderMapScene.Construct(_sceneContainer.Resolve<LoadingScreenProvider>(),
+                _sceneContainer.Resolve<SceneLoaderService>());
         }
     }
 }

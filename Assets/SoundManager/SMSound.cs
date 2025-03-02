@@ -62,8 +62,7 @@ public class SMSound
             Source.transform.position = position;
         return this;
     }
-
-    // SoundHandler not valid after this call
+    
     public void Stop()
     {
         if (IsValid)

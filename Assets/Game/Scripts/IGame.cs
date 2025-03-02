@@ -1,9 +1,10 @@
 using AINavigation;
 using Combat;
-using Core; 
+using Core;
 using Core.Player;
 using Core.Quests;
 using Data;
+using Loading;
 using Saving;
 using SceneManagement;
 using UI;
@@ -54,7 +55,7 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         QuestManager questManager, NPCManagment npcManagment, FastTestsManager fastTestsManager,
         CursorManager cursorManager, UIManager uiManager, CoinManager coinManager,
         BottleManager bottleManager, WeaponArmorManager weaponArmorManager, AllQuestsInGame allQuests,
-        SceneWithTestsID sceneWithTestsID)
+        SceneWithTestsID sceneWithTestsID, LoadingScreenProvider loadingScreenProvider)
     {
         Debug.Log("Construct iagem");
         _player = player;
@@ -75,8 +76,8 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         _weaponArmorManager = weaponArmorManager;
         _allQuests = allQuests;
         _sceneWithTestID = sceneWithTestsID;
-        
-        levelChangeObserver.Construct(_savePointsManager, this.dataPlayer, _uiManager, _player, this.gameAPI);
+
+        levelChangeObserver.Construct(_savePointsManager, this.dataPlayer, _uiManager, _player, this.gameAPI, loadingScreenProvider);
         ArrowForPlayerManager.Construct();
         questManager.Construct(this.dataPlayer, _uiManager, _levelChangeObserver,
             _allQuests, _sceneWithTestID, this.saveGame, this.gameAPI);

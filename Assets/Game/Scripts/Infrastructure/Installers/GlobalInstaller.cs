@@ -36,14 +36,10 @@ namespace Infrastructure.Installers
         [SerializeField] private KeyBoardsEvents _keyBoardsEvents;
         [SerializeField] private JavaScriptHook _javaScriptHook;
 
-        private LoadingScreenProvider _loadingProvider;
-
         public override void InstallBindings()
         {
             Container.Bind<LoadingScreenProvider>().AsSingle().NonLazy();
-
-            BindingComponents();
-
+            
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
             Container.Bind<JavaScriptHook>().FromComponentInNewPrefab(_javaScriptHook).AsSingle().NonLazy();
             Container.Bind<IGame>().FromComponentInNewPrefab(_iGamePrefab).AsSingle().NonLazy();
@@ -54,6 +50,8 @@ namespace Infrastructure.Installers
             Container.Bind<ArrowForPlayerManager>().AsSingle().NonLazy();
             Container.Bind<FastTestsManager>().AsSingle().NonLazy();
             Container.Bind<SaveGame>().AsSingle().NonLazy();
+            
+            BindingComponents();
         }
 
         private void BindingComponents()

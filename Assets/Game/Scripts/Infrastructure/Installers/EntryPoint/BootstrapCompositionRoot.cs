@@ -8,6 +8,7 @@ using Core.Quests;
 using Cysharp.Threading.Tasks;
 using Data;
 using Loading;
+using Loading.LoadingOperations;
 using Saving;
 using SceneManagement;
 using UI;
@@ -53,11 +54,11 @@ namespace Infrastructure.Installers.EntryPoint
         private LoadingScreenProvider _loadingProvider;
 
         [Inject]
-        public void Compose(DiContainer diContainer) // TODO change 
+        public void Compose(DiContainer diContainer) 
         {
             _sceneContainer = _sceneContext.Container;
             _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
-
+            
             _keyBoardsEvents = _sceneContainer.Resolve<KeyBoardsEvents>();
             _javaScriptHook = _sceneContainer.Resolve<JavaScriptHook>();
             _iGame = _sceneContainer.Resolve<IGame>();
@@ -84,12 +85,7 @@ namespace Infrastructure.Installers.EntryPoint
             _sceneWithTestsID = _sceneContainer.Resolve<SceneWithTestsID>();
 
             ConstructComponents();
-
-            var loadingOperations = new Queue<ILoadingOperation>();
-            // TODO Сюда добавить операцию добавления ассетов и тд
-            loadingOperations.Enqueue(new OpenSceneLoadingOperation(_sceneLoader));
-
-            _loadingProvider.LoadAndDestroy(loadingOperations).Forget();
+            LoadingOperations();
         }
 
         private void ConstructComponents() // TODO check order
@@ -98,7 +94,7 @@ namespace Infrastructure.Installers.EntryPoint
                 _levelChangeObserver, _savePointsManager, _arrowForPlayerManager,
                 _questManager, _npcManager, _fastTestsManager,
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
-                _weaponArmorManager, _allQuests, _sceneWithTestsID);
+                _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider);
 
             _audioManager.Construct();
             _savePointsManager.Construct(_dataPlayer);
@@ -116,14 +112,17 @@ namespace Infrastructure.Installers.EntryPoint
             _followCamera.Construct(_player, _player.PlayerController, _sceneLoader);
             _javaScriptHook.Construct(_dataPlayer, _sceneLoader);
             _keyBoardsEvents.Construct(_sceneLoader, _uiManager);
+        }
 
-            //_playerController.Construct(); -> iGame.Construct
-            //_levelChangeObserver.Construct(); -> iGame.Construct
-            //_arrowForPlayerManager.Construct(); -> iGame.Construct
-            //_questManager.Construct(); -> iGame.Construct
-            //_npcManagment.Construct(); -> iGame.Construct
-            //_fastTestsManager.Construct(); -> iGame.Construct
-            //_cursorManager no need construct right now
+        private void LoadingOperations()
+        {
+            var loadingOperations = new Queue<ILoadingOperation>();
+            
+            loadingOperations.Enqueue(new AssetProvider());
+            loadingOperations.Enqueue(new ConfigOperation());
+            loadingOperations.Enqueue(new OpenSceneLoadingOperation(_sceneLoader));
+
+            _loadingProvider.LoadAndDestroy(loadingOperations).Forget();
         }
     }
 }

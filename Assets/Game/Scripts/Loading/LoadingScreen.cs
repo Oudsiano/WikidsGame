@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Loading.LoadingOperations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,12 @@ namespace Loading
 
         public async UniTask Load(Queue<ILoadingOperation> loadingOperations)
         {
+            if (!gameObject.activeInHierarchy)
+            {
+                Debug.LogError("LoadingScreen is inactive. Cannot start loading.");
+                return;
+            }
+            
             _canvas.enabled = true;
             StartCoroutine(UpdateProgressBar());
 

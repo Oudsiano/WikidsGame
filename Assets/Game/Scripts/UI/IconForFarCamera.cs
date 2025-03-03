@@ -1,3 +1,4 @@
+using System;
 using Core.Camera;
 using UnityEngine;
 
@@ -24,19 +25,21 @@ namespace UI
         public void Construct(UIManager uiManager) // TODO construct
         {
             _uiManager = uiManager;
+        }
+
+        private void Awake()
+        {
             FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
             FollowCamera.NewYRotation += FollowCamera_NewYRotation;
             FollowCamera.NewXRotation += FollowCamera_NewXRotation;
             FollowCamera.OnupdateEulerAngles += FollowCamera_OnupdateEulerAngles;
-
             _image = GetComponent<SpriteRenderer>();
             _image.gameObject.SetActive(false);
             _eulerAngles = _image.transform.eulerAngles;
-
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _sphereCollider = GetComponent<SphereCollider>();
             _sphereCollider.isTrigger = true;
-            _sphereCollider.radius = _sphereColliderRadius; // TODO magic number
+            _sphereCollider.radius = _sphereColliderRadius;
         }
 
         private void Update()

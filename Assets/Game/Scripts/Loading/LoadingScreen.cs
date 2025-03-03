@@ -20,7 +20,7 @@ namespace Loading
 
         public async UniTask Load(Queue<ILoadingOperation> loadingOperations)
         {
-            if (!gameObject.activeInHierarchy)
+            if (gameObject.activeInHierarchy == false)
             {
                 Debug.LogError("LoadingScreen is inactive. Cannot start loading.");
                 return;

@@ -86,13 +86,13 @@ namespace PsychoticLab
         // randomize character creating button
         void OnGUI()
         {
-            /*
+            
             if (GUI.Button(new Rect(10, 10, 150, 50), "Randomize Character"))
             {
                 // call randomization method
                 Randomize();
             }
-            */
+            
 
             GUIStyle style = new GUIStyle();
             style.normal.textColor = Color.white;
@@ -595,11 +595,18 @@ namespace PsychoticLab
             // find character parts parent object in the scene
             foreach (Transform t in rootTransform)
             {
+                Debug.Log($"Проверка объекта: {t.gameObject.name}"); 
                 if (t.gameObject.name == characterPart)
                 {
                     targetRoot = t;
                     break;
                 }
+            }
+            
+            if (targetRoot == null)
+            {
+                Debug.LogError($"[BuildList] Не найден объект с именем {characterPart} в сцене!");
+                return;
             }
 
             // clears targeted list of all objects

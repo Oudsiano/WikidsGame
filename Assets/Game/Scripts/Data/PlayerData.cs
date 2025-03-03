@@ -5,13 +5,14 @@ using Saving;
 namespace Data
 {
     [System.Serializable]
-    public class PlayerData // TODO need restruct
+    public class PlayerData
     {
         public int id;
         public string playerName;
         public int health;
         public double coins;
         public bool isAlive;
+        public string sceneNameToLoad;
         public int sceneToLoad;
         public bool testSuccess;
         public int spawnPoint; // Новое поле для хранения позиции объекта
@@ -22,7 +23,8 @@ namespace Data
         public OneLeson[] progress;
         public int chargeEnergy;
         public List<int> FinishedRegionsIDs;
-
+        public List<string> FinishedRegionsName;
+        
         public string[] containsBug;
         public List<OneItemForSave> containsBug2;
         public List<string> completedQuests;

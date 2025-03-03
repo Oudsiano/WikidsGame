@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Utils;
 
 namespace SceneManagement
 {
@@ -45,15 +46,16 @@ namespace SceneManagement
         private LevelChangeObserver _levelChangeObserver;
         private SceneLoaderService _sceneLoader;
         private GameAPI _gameAPI;
-        
-        public void Construct(DataPlayer dataPlayer, LevelChangeObserver levelChangeObserver, SceneLoaderService sceneLoader,
+
+        public void Construct(DataPlayer dataPlayer, LevelChangeObserver levelChangeObserver,
+            SceneLoaderService sceneLoader,
             GameAPI gameAPI)
         {
             _dataPlayer = dataPlayer;
             _levelChangeObserver = levelChangeObserver;
             _sceneLoader = sceneLoader;
             _gameAPI = gameAPI;
-            
+
             if (_multiLineText.hoverTexts.Length != _regions.Count)
             {
                 Debug.LogError("The number of hover texts does not match the number of regions.");
@@ -80,7 +82,7 @@ namespace SceneManagement
 
             _sceneWithTestsID = FindObjectOfType<SceneWithTestsID>(); // TODO find change
             UpdateColors();
-            SetupMaxRegion(_dataPlayer.PlayerData.FinishedRegionsIDs);
+            SetupMaxRegion(_dataPlayer.PlayerData.FinishedRegionsName);
 
             if (_textID != null)
             {
@@ -92,7 +94,8 @@ namespace SceneManagement
                 _continueButton.onClick.AddListener(OnClickLoadFromSaveState);
             }
 
-            if (_dataPlayer.PlayerData.sceneToLoad > 0)
+            if (_dataPlayer.PlayerData.sceneNameToLoad != Constants.Scenes.OpenScene &&
+                _dataPlayer.PlayerData.sceneNameToLoad != Constants.Scenes.BootstrapScene)
             {
                 _continueButton.gameObject.SetActive(true);
             }
@@ -107,28 +110,27 @@ namespace SceneManagement
             _loading.gameObject.SetActive(false);
         }
 
-        private void SetupMaxRegion(List<int> n)
+        private void SetupMaxRegion(List<string> finishedRegionsIDs)
         {
-            int findedIndex = -1;
+            int foundIndex = -1;
 
             for (int i = _regions.Count - 1; i >= 0; i--)
             {
-                if (n.Contains((int)_regions[i].loadedScene))
+                if (finishedRegionsIDs.Contains(_regions[i].loadedScene))
                 {
-                    findedIndex = i;
-
+                    foundIndex = i;
                     break;
                 }
             }
 
-            if (findedIndex + 1 < _regions.Count) // TODO magic numbers
+            if (foundIndex + 1 < _regions.Count)
             {
-                findedIndex++;
+                foundIndex++;
             }
 
             for (int i = 0; i < _regions.Count; i++)
             {
-                if (i <= findedIndex)
+                if (i <= foundIndex)
                 {
                     _regions[i].Button.interactable = true;
                 }
@@ -138,12 +140,50 @@ namespace SceneManagement
                     _regions[i].SetNormal();
                 }
 
-                if (i == findedIndex)
+                if (i == foundIndex)
                 {
                     _regions[i].SetNormal();
                 }
             }
         }
+
+        // private void SetupMaxRegion(List<int> n)
+        // {
+        //     int findedIndex = -1;
+        //
+        //     for (int i = _regions.Count - 1; i >= 0; i--)
+        //     {
+        //         if (n.Contains((int)_regions[i].loadedScene))
+        //         {
+        //             findedIndex = i;
+        //
+        //             break;
+        //         }
+        //     }
+        //
+        //     if (findedIndex + 1 < _regions.Count) // TODO magic numbers
+        //     {
+        //         findedIndex++;
+        //     }
+        //
+        //     for (int i = 0; i < _regions.Count; i++)
+        //     {
+        //         if (i <= findedIndex)
+        //         {
+        //             _regions[i].Button.interactable = true;
+        //         }
+        //         else
+        //         {
+        //             _regions[i].Button.interactable = false;
+        //             _regions[i].SetNormal();
+        //         }
+        //
+        //         if (i == findedIndex)
+        //         {
+        //             _regions[i].SetNormal();
+        //         }
+        //     }
+        // }
 
         private void UpdateColors()
         {
@@ -154,7 +194,6 @@ namespace SceneManagement
                 region.SetGreen();
                 //_levelChangeObserver.DictForInfected[region.loadedScene] = false;
 
-                // Находим соответствующую сцену для текущего региона.
                 var sceneData = _sceneWithTestsID.SceneDataList
                     .FirstOrDefault(scene => scene.indexScene == region.loadedScene);
 
@@ -181,18 +220,18 @@ namespace SceneManagement
         {
             _loading.gameObject.SetActive(true);
             //_sceneLoader.TryChangeLevel((allScenes)2, 4);
-            _levelChangeObserver.TryChangeLevel(_dataPlayer.PlayerData.sceneToLoad,
+            _levelChangeObserver.TryChangeLevel(_dataPlayer.PlayerData.sceneNameToLoad,
                 _dataPlayer.PlayerData.spawnPoint);
             AudioManager.Instance.PlaySound("ClickButton");
         }
 
-        private void OnClick(int sceneIndex)
+        private void OnClick(string sceneName)
         {
-            _dataPlayer.SetSceneToLoad(sceneIndex);
+            _dataPlayer.SetSceneToLoad(sceneName);
             _loading.gameObject.SetActive(true);
             _gameAPI.SaveUpdater();
             //Invoke("LoadSceneAfterDelay", 2f); 
-            _levelChangeObserver.TryChangeLevel(sceneIndex, 0);
+            _levelChangeObserver.TryChangeLevel(sceneName, 0);
             AudioManager.Instance.PlaySound("ClickButton"); // TODO can be cached
         }
 

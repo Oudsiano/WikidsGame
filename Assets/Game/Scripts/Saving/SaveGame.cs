@@ -20,7 +20,7 @@ namespace Saving
         //Порталы в неправильном порядке работают. Их надо сохранять в начале след карты. А для этого запоминать.
         public Weapon bonusWeapon;
         public Armor bonusArmor;
-        private int IdSceneForPortal = 0;
+        private string _sceneNameForPortal;
 
         private List<ItemDefinition> bugItems; // TODO rename bag
         private Armor equipedArmor;
@@ -100,17 +100,17 @@ namespace Saving
         {
             bonusWeapon = _bonusw;
             bonusArmor = _bonusA;
-            IdSceneForPortal = _sceneComponent.SceneID;
+            _sceneNameForPortal = _sceneComponent.SceneName;
         }
 
         public void SetBonusWeaponAndArmorIfNeed()
         {
-            if (_dataPlayer.PlayerData.FinishedRegionsIDs.Contains(IdSceneForPortal))
+            if (_dataPlayer.PlayerData.FinishedRegionsName.Contains(_sceneNameForPortal))
             {
                 return;
             }
 
-            _dataPlayer.PlayerData.FinishedRegionsIDs.Add(IdSceneForPortal);
+            _dataPlayer.PlayerData.FinishedRegionsName.Add(_sceneNameForPortal);
 
             if (bonusWeapon != null) // TODO DUPLICATE
             {
@@ -161,7 +161,7 @@ namespace Saving
 
             bonusWeapon = null;
             bonusArmor = null;
-            IdSceneForPortal = 0;
+            _sceneNameForPortal = null;
         }
 
         public void SaveItemToBug(ItemDefinition item)

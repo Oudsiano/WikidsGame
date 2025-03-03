@@ -15,6 +15,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Utils;
 
 namespace UI
 {
@@ -315,9 +316,9 @@ namespace UI
 
             if (sceneComponent != null)
             {
-                if (sceneComponent.SceneID == _sceneLoader.LibraryScene ||
-                    sceneComponent.SceneID == _sceneLoader.HollScene ||
-                    sceneComponent.SceneID == _sceneLoader.FirstTownScene)
+                if (sceneComponent.SceneName == Constants.Scenes.LibraryScene ||
+                    sceneComponent.SceneName == Constants.Scenes.HollScene ||
+                    sceneComponent.SceneName == Constants.Scenes.FirstTownScene)
                 {
                     _buttonMaxZoom.gameObject.SetActive(false);
                     _buttonMinZoom.gameObject.SetActive(false);
@@ -534,7 +535,7 @@ namespace UI
         {
             closeAgainUI(true);
             _gameAPI.SaveUpdater();
-            _levelChangeObserver.TryChangeLevel(_sceneLoader.MapScene, 0);
+            _levelChangeObserver.TryChangeLevel(Constants.Scenes.MapScene, 0);
             AudioManager.Instance.PlaySound("ButtonClick"); // TODO change instance AudioManager
         }
 

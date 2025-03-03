@@ -1,4 +1,5 @@
 ﻿using Loading;
+using Loading.LoadingOperations;
 using SceneManagement;
 using UnityEngine;
 using Zenject;
@@ -18,7 +19,7 @@ namespace Infrastructure.Installers.EntryPoint
             _sceneContainer = _sceneContext.Container;
             
             _loaderMapScene.Construct(_sceneContainer.Resolve<LoadingScreenProvider>(),
-                _sceneContainer.Resolve<SceneLoaderService>());
+                _sceneContainer.Resolve<SceneLoaderService>(), _sceneContainer.Resolve<AssetProvider>());
         }
     }
 }

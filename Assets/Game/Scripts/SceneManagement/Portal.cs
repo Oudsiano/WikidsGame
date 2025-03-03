@@ -11,6 +11,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Utils;
 
 // Пространство имен для управления сценами игры
 namespace SceneManagement
@@ -18,7 +19,7 @@ namespace SceneManagement
     // Класс для портала, переносящего игрока между сценами
     public class Portal : MonoBehaviour // TODO Restruct
     {
-        [Scene] [SerializeField] private int sceneToLoad; // Индекс сцены для загрузки // TODO rename
+        [SerializeField] private string sceneToLoad; // имя сцены для загрузки
 
         [SerializeField] private Transform spawnPoint; // Точка спавна в новой сцене // TODO rename
 
@@ -97,7 +98,7 @@ namespace SceneManagement
                     return;
                 }
 
-                if (sceneToLoad != 0 )
+                if (sceneToLoad != Constants.Scenes.OpenScene)
                 {
                     StartCoroutine(Transition()); // Запускаем переход между сценами
                 }

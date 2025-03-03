@@ -1,6 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
@@ -21,13 +22,29 @@ namespace Loading.LoadingOperations
             _isReady = true;
         }
 
-        public async UniTask<SceneInstance> LoadSceneAdditive(int sceneID)
+        public async UniTask<SceneInstance> LoadSceneAdditive(string nameScene)
         {
             await WaitUntilReady();
 
-            var operation = Addressables.LoadSceneAsync(sceneID, LoadSceneMode.Additive);
+            var operation = Addressables.LoadSceneAsync(nameScene, LoadSceneMode.Additive);
 
             return await operation.Task;
+        }
+
+        public async UniTask<SceneInstance> LoadScene(string nameScene)
+        {
+            await WaitUntilReady();
+
+            var operation = Addressables.LoadSceneAsync(nameScene);
+
+            await operation.Task;
+
+            if (operation.Status == AsyncOperationStatus.Failed)
+            {
+                throw new ArgumentException($"Scene '{nameScene}' not found or failed to load.");
+            }
+
+            return operation.Result;
         }
 
         public async UniTask UnloadAdditiveScene(SceneInstance scene)

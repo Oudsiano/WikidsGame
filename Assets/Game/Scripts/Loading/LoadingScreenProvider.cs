@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Constants;
+using Utils;
 using Cysharp.Threading.Tasks;
 using Loading.LoadingOperations;
 
@@ -17,7 +17,7 @@ namespace Loading
 
         public async UniTask LoadAndDestroy(Queue<ILoadingOperation> loadingOperations)
         {
-            var loadingScreen = await LoadAndInstantiate<LoadingScreen>(AssetsConstants.LoadingScreen);
+            var loadingScreen = await LoadAndInstantiate<LoadingScreen>(Constants.Assets.LoadingScreen);
 
             await loadingScreen.Load(loadingOperations);
 

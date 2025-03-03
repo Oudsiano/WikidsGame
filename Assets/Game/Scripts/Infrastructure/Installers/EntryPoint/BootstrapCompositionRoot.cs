@@ -52,12 +52,14 @@ namespace Infrastructure.Installers.EntryPoint
         private KeyBoardsEvents _keyBoardsEvents;
 
         private LoadingScreenProvider _loadingProvider;
-
+        private AssetProvider _assetProvider;
+        
         [Inject]
         public void Compose(DiContainer diContainer) 
         {
             _sceneContainer = _sceneContext.Container;
             _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
+            _assetProvider = _sceneContainer.Resolve<AssetProvider>();
             
             _keyBoardsEvents = _sceneContainer.Resolve<KeyBoardsEvents>();
             _javaScriptHook = _sceneContainer.Resolve<JavaScriptHook>();
@@ -83,7 +85,7 @@ namespace Infrastructure.Installers.EntryPoint
             _weaponArmorManager = _sceneContainer.Resolve<WeaponArmorManager>(); //
             _allQuests = _sceneContainer.Resolve<AllQuestsInGame>();
             _sceneWithTestsID = _sceneContainer.Resolve<SceneWithTestsID>();
-
+            
             ConstructComponents();
             LoadingOperations();
         }
@@ -94,7 +96,7 @@ namespace Infrastructure.Installers.EntryPoint
                 _levelChangeObserver, _savePointsManager, _arrowForPlayerManager,
                 _questManager, _npcManager, _fastTestsManager,
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
-                _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider);
+                _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider, _assetProvider);
 
             _audioManager.Construct();
             _savePointsManager.Construct(_dataPlayer);
@@ -118,9 +120,9 @@ namespace Infrastructure.Installers.EntryPoint
         {
             var loadingOperations = new Queue<ILoadingOperation>();
             
-            loadingOperations.Enqueue(new AssetProvider());
+            loadingOperations.Enqueue(_assetProvider);
             loadingOperations.Enqueue(new ConfigOperation());
-            loadingOperations.Enqueue(new OpenSceneLoadingOperation(_sceneLoader));
+            loadingOperations.Enqueue(new OpenSceneLoadingOperation(_sceneLoader, _assetProvider));
 
             _loadingProvider.LoadAndDestroy(loadingOperations).Forget();
         }

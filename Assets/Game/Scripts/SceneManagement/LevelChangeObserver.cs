@@ -16,18 +16,20 @@ namespace SceneManagement
 {
     public class LevelChangeObserver : MonoBehaviour // TODO check
     {
-        private int _indexSceneToLoad = 0;
+        private string _indexSceneToLoad;
         private SavePointsManager _savePointsManager;
         private DataPlayer _dataPlayer;
         private UIManager _uiManager;
         private MainPlayer _player;
         private GameAPI _gameAPI;
         private LoadingScreenProvider _loadingScreenProvider;
+        private AssetProvider _assetProvider;
 
-        public int IndexSceneToLoad => _indexSceneToLoad;
+        public string IndexSceneToLoad => _indexSceneToLoad;
 
         public void Construct(SavePointsManager savePointsManager, DataPlayer dataPlayer, UIManager uiManager,
-            MainPlayer player, GameAPI gameAPI, LoadingScreenProvider loadingScreenProvider)
+            MainPlayer player, GameAPI gameAPI, LoadingScreenProvider loadingScreenProvider,
+            AssetProvider assetProvider)
         {
             _savePointsManager = savePointsManager;
             _dataPlayer = dataPlayer;
@@ -35,7 +37,7 @@ namespace SceneManagement
             _player = player;
             _gameAPI = gameAPI;
             _loadingScreenProvider = loadingScreenProvider;
-
+            _assetProvider = assetProvider;
             // Подписываемся на событие изменения уровня загрузки.
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -69,29 +71,30 @@ namespace SceneManagement
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
-        public void TryChangeLevel(int indexScene, int newSpawnPoint)
+        public void TryChangeLevel(string sceneName, int newSpawnPoint)
         {
             _savePointsManager.ResetDict();
             _dataPlayer.PlayerData.spawnPoint = newSpawnPoint;
-            LoadLevel(indexScene);
+            LoadLevel(sceneName);
         }
 
         public void UpdateCurrentLevel()
         {
-            LoadLevel(_dataPlayer.PlayerData.sceneToLoad);
+            LoadLevel(_dataPlayer.PlayerData.sceneNameToLoad);
         }
 
         public void OnFadeComplete()
         {
-            SceneManager.LoadScene(_indexSceneToLoad);
+            //SceneManager.LoadScene(_indexSceneToLoad);
+            Debug.Log("OnFadeComplete");
         }
 
-        private void LoadLevel(int newIndex)
+        private void LoadLevel(string newName)
         {
-            _indexSceneToLoad = newIndex;
-            Debug.Log("Уровень загрузки изменен на " + newIndex);
-            
-            _loadingScreenProvider.LoadAndDestroy(new NextSceneOperation(_indexSceneToLoad)).Forget();
+            _indexSceneToLoad = newName;
+            Debug.Log("Уровень загрузки изменен на " + newName);
+
+            _loadingScreenProvider.LoadAndDestroy(new BattleSceneOperation(_indexSceneToLoad, _assetProvider)).Forget();
         }
 
         // Метод для обновления местоположения игрока

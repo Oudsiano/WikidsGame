@@ -4,6 +4,7 @@ using Core.Player;
 using Core.Quests;
 using Data;
 using Loading;
+using Loading.LoadingOperations;
 using Saving;
 using SceneManagement;
 using UI;
@@ -39,6 +40,7 @@ namespace Infrastructure.Installers
         public override void InstallBindings()
         {
             Container.Bind<LoadingScreenProvider>().AsSingle().NonLazy();
+            Container.Bind<AssetProvider>().AsSingle().NonLazy();
             
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
             Container.Bind<JavaScriptHook>().FromComponentInNewPrefab(_javaScriptHook).AsSingle().NonLazy();

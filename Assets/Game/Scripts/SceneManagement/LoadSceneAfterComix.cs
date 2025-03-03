@@ -9,16 +9,18 @@ namespace SceneManagement
     {
         private SceneLoaderService _sceneLoaderService;
         private LoadingScreenProvider _loadingScreenProvider;
+        private AssetProvider _assetProvider;
 
-        public void Construct(LoadingScreenProvider loadingScreenProvider, SceneLoaderService sceneLoaderService)
+        public void Construct(LoadingScreenProvider loadingScreenProvider, SceneLoaderService sceneLoaderService, AssetProvider assetProvider)
         {
             _loadingScreenProvider = loadingScreenProvider;
             _sceneLoaderService = sceneLoaderService;
+            _assetProvider = assetProvider;
         }
 
         public void LoadSceneNext()
         {
-            _loadingScreenProvider.LoadAndDestroy(new MapSceneOperation(_sceneLoaderService)).Forget();
+            _loadingScreenProvider.LoadAndDestroy(new MapSceneOperation(_sceneLoaderService, _assetProvider)).Forget();
         }
     }
 }

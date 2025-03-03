@@ -10,7 +10,7 @@ namespace SceneManagement
     public class OneBtnChangeRegion // TODO rename
     {
         public Button Button;
-        [Scene] public int loadedScene;
+        public string loadedScene;
 
         public void SetRed()
         {

@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Utils;
+
 namespace DialogueEditor
 {
     public class ConversationManager : MonoBehaviour
@@ -663,7 +665,7 @@ namespace DialogueEditor
         {
             // Проверяем, является ли текущая сцена "OpenScene" или "EndScene"
 
-            if (SceneManager.GetActiveScene().name == "OpenScene" || SceneManager.GetActiveScene().name == "EndScene")
+            if (SceneManager.GetActiveScene().name == Constants.Scenes.OpenScene || SceneManager.GetActiveScene().name == Constants.Scenes.EndScene)
             {
                 return; // Не показываем кнопку, если сцена "OpenScene" или "EndScene"
             }

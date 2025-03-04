@@ -7,6 +7,7 @@ using SceneManagement.Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Utils;
 
 // Пространство имен для ядра игры
 namespace Core.Camera
@@ -33,7 +34,7 @@ namespace Core.Camera
         [FormerlySerializedAs("obstacleMask")] [SerializeField]
         private LayerMask _obstacleLayerMask;
 
-        private int _sceneId = 0;
+        private string _sceneName;
         private UnityEngine.Camera _mainCamera;
         private MainPlayer _player;
         private PlayerController _playerController;
@@ -100,7 +101,7 @@ namespace Core.Camera
 
         private void Update() // TODO magic numbers
         {
-            if (_sceneId == 0 || _sceneId == _sceneLoader.MapScene)
+            if (_sceneName == Constants.Scenes.OpenScene || _sceneName == Constants.Scenes.MapScene || _sceneName == Constants.Scenes.BootstrapScene) 
             {
                 return;
             }
@@ -220,8 +221,8 @@ namespace Core.Camera
                 {
                     _maxZoom = sceneComponent.newMaxZoomCamera;
                 }
-
-                _sceneId = sceneComponent.SceneID;
+                
+                _sceneName = sceneComponent.SceneName;
             }
         }
 

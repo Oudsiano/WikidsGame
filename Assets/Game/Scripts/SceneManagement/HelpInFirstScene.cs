@@ -4,6 +4,7 @@ using SceneManagement.Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Utils;
 
 namespace SceneManagement
 {
@@ -30,14 +31,14 @@ namespace SceneManagement
         private DataPlayer _dataPlayer;
 
         private SceneLoaderService _sceneLoader;
-        
+
         public void Construct(DataPlayer dataPlayer, SceneLoaderService sceneLoader)
         {
             _sceneLoader = sceneLoader;
             _dataPlayer = dataPlayer;
-                
+
             SceneManager.sceneLoaded += OnSceneLoaded;
-            
+
             FollowCamera.OnCameraRotation += FollowCamera_OnCameraRotation;
             FollowCamera.OnCameraScale += FollowCamera_OnCameraScale;
 
@@ -48,7 +49,7 @@ namespace SceneManagement
         {
             Study1Show(scene.buildIndex);
         }
-        
+
         private void OnDestroy()
         {
             FollowCamera.OnCameraRotation -= FollowCamera_OnCameraRotation;
@@ -71,7 +72,7 @@ namespace SceneManagement
         {
             _panel.SetActive(false);
             _text3.SetActive(false);
-            
+
             if (_dataPlayer.PlayerData.helpIndex != 2) return;
             {
                 _dataPlayer.PlayerData.helpIndex = 3;
@@ -161,7 +162,11 @@ namespace SceneManagement
 
         private void Study2() // TODO duplicate
         {
-            if (_dataPlayer.PlayerData.sceneToLoad != _sceneLoader.SecondBattleScene) return;
+            if (_dataPlayer.PlayerData.sceneNameToLoad != Constants.Scenes.SecondBattleScene)
+            {
+                return;
+            }
+
             if (_dataPlayer.PlayerData.helpIndex != 1) return;
             restTexts();
             _text2.SetActive(true);

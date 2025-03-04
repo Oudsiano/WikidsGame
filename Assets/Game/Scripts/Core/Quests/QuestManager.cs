@@ -194,7 +194,7 @@ namespace Core.Quests
 
             foreach (OneSceneListQuests oneList in _allQuestsInGame.Quests)
             {
-                if (oneList.SceneId == SceneManager.GetActiveScene().buildIndex)
+                if (oneList.SceneId == SceneManager.GetActiveScene().name)
                 {
                     foreach (var quest in oneList.QuestsThisScene)
                     {

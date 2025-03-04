@@ -1,13 +1,16 @@
 using SceneManagement.Enums;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace SceneManagement
 {
     public class SceneComponent : MonoBehaviour
     {
+         [FormerlySerializedAs("SceneID")]
          [Header("Scene Settings")]
-        [SerializeField] public int SceneID; // Идентификатор сцены // TODO DELETE
-
+        [SerializeField] public string SceneName;
+        
         [Header("Camera New Params")]
         [SerializeField] public int newMinZoomCamera;
         [SerializeField] public int newMaxZoomCamera;
@@ -21,7 +24,7 @@ namespace SceneManagement
         {
             _levelChangeObserver = levelChangeObserver;
 
-            SceneID = _levelChangeObserver.IndexSceneToLoad;
+            SceneName = SceneManager.GetActiveScene().name;
             // // Если объект не установлен, пробуем найти его в сцене
             // if (infectGroup == null)
             // {

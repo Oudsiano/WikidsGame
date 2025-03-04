@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using Utils;
 
 namespace Movement
 {
@@ -121,7 +122,7 @@ namespace Movement
             }
 
             Vector3 localVelocity = transform.InverseTransformDirection(_agent.velocity);
-            _animator.SetFloat(Constants.Constants.ForwardSpeed, localVelocity.z);
+            _animator.SetFloat(Constants.Animator.ForwardSpeed, localVelocity.z);
         }
 
         public void Cancel()
@@ -171,7 +172,7 @@ namespace Movement
                 }
                 else
                 {
-                    AudioManager.instance.PlaySound("Walk");
+                    AudioManager.Instance.PlaySound("Walk");
                 }
             }
         }

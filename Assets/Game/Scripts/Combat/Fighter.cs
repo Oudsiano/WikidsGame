@@ -270,7 +270,7 @@ namespace Combat
                 }
             }
 
-            AudioManager.instance.PlaySound("Attack"); // TODO can be cached
+            AudioManager.Instance.PlaySound("Attack"); // TODO can be cached
 
             if (IsBehindTarget() && Target.GetComponent<MainPlayer>() == false &&
                 Target.GetComponent<Boss>() == false) // Проверка, если атака сзади и цель не игрок и не босс

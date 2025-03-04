@@ -21,8 +21,7 @@ public class SoundManagerSettings : ScriptableObject {
 
     private bool _mutedMusic;
     private bool _mutedSound;
-
-
+    
     public void SaveSettings()
     {
         PlayerPrefs.SetFloat("SM_MusicVolume", _volumeMusic);

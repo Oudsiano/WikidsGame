@@ -141,7 +141,7 @@ namespace Combat.Data
             var proj = Instantiate(_projectile, FindTransformOfHand(rightHand, leftHand).position, Quaternion.identity);
             proj.SetTarget(target, _weaponDamage);
 
-            AudioManager.instance.PlaySound("Shot");
+            AudioManager.Instance.PlaySound("Shot");
             Fired?.Invoke(); // Вызов события
         }
 

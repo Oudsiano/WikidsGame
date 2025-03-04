@@ -10,7 +10,7 @@ namespace Core.Quests
     [System.Serializable]
     public class OneSceneListQuests
     {
-        [Scene] [SerializeField] public int SceneId; // TODO using error
+        [SerializeField] public string SceneId; // TODO using error
         [SerializeField] public List<OneQuest> QuestsThisScene; // TODO O/C error
     }
 }

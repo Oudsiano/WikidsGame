@@ -12,7 +12,10 @@ namespace Infrastructure.Installers.EntryPoint
 
         [SerializeField] private LocationChange _locationChange;
         
+        [SerializeField] private LocationChange _locationChangeMobie;
+        
         private DiContainer _sceneContainer;
+        
 
         [Inject]
         public void Compose(DiContainer diContainer)
@@ -25,6 +28,11 @@ namespace Infrastructure.Installers.EntryPoint
         private void ConstructComponents()
         {
             _locationChange.Construct(_sceneContainer.Resolve<DataPlayer>(),
+                _sceneContainer.Resolve<LevelChangeObserver>(), 
+                _sceneContainer.Resolve<SceneLoaderService>(),
+                _sceneContainer.Resolve<GameAPI>());
+            
+            _locationChangeMobie.Construct(_sceneContainer.Resolve<DataPlayer>(),
                 _sceneContainer.Resolve<LevelChangeObserver>(), 
                 _sceneContainer.Resolve<SceneLoaderService>(),
                 _sceneContainer.Resolve<GameAPI>());

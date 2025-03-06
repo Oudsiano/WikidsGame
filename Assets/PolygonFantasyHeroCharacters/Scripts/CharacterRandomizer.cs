@@ -84,22 +84,22 @@ namespace PsychoticLab
 		float y = -30;
 
         // randomize character creating button
-        void OnGUI()
-        {
-            /*
-            if (GUI.Button(new Rect(10, 10, 150, 50), "Randomize Character"))
-            {
-                // call randomization method
-                Randomize();
-            }
-            */
-
-            GUIStyle style = new GUIStyle();
-            style.normal.textColor = Color.white;
-            style.fontStyle = FontStyle.Bold;
-            style.fontSize = 24;
-            GUI.Label(new Rect(10, 10, 150, 50), "Hold Right Mouse Button Down\nor use W A S D To Rotate.", style);
-        }
+        // void OnGUI()
+        // {
+        //     
+        //     if (GUI.Button(new Rect(10, 10, 150, 50), "Randomize Character"))
+        //     {
+        //         // call randomization method
+        //         Randomize();
+        //     }
+        //     
+        //
+        //     GUIStyle style = new GUIStyle();
+        //     style.normal.textColor = Color.white;
+        //     style.fontStyle = FontStyle.Bold;
+        //     style.fontSize = 24;
+        //     GUI.Label(new Rect(10, 10, 150, 50), "Hold Right Mouse Button Down\nor use W A S D To Rotate.", style);
+        // }
 
         private void Start()
         {
@@ -119,32 +119,33 @@ namespace PsychoticLab
             enabledObjects.Clear();
 
             // set default male character
-            ActivateItem(male.headAllElements[0]);
-            ActivateItem(male.eyebrow[0]);
-            ActivateItem(male.facialHair[0]);
-            ActivateItem(male.torso[0]);
-            ActivateItem(male.arm_Upper_Right[0]);
-            ActivateItem(male.arm_Upper_Left[0]);
-            ActivateItem(male.arm_Lower_Right[0]);
-            ActivateItem(male.arm_Lower_Left[0]);
-            ActivateItem(male.hand_Right[0]);
-            ActivateItem(male.hand_Left[0]);
-            ActivateItem(male.hips[0]);
-            ActivateItem(male.leg_Right[0]);
-            ActivateItem(male.leg_Left[0]);
+            // ActivateItem(male.headAllElements[0]);
+            // ActivateItem(male.eyebrow[0]);
+            // ActivateItem(male.facialHair[0]);
+            // ActivateItem(male.torso[0]);
+            // ActivateItem(male.arm_Upper_Right[0]);
+            // ActivateItem(male.arm_Upper_Left[0]);
+            // ActivateItem(male.arm_Lower_Right[0]);
+            // ActivateItem(male.arm_Lower_Left[0]);
+            // ActivateItem(male.hand_Right[0]);
+            // ActivateItem(male.hand_Left[0]);
+            // ActivateItem(male.hips[0]);
+            // ActivateItem(male.leg_Right[0]);
+            // ActivateItem(male.leg_Left[0]);
 
             // setting up the camera position, rotation, and reference for use
-            Transform cam = Camera.main.transform;
-            if(cam)
-            {
-                cam.position = transform.position + new Vector3(0, 0.3f, 2);
-                cam.rotation = Quaternion.Euler(0, -180, 0);
-                camHolder = new GameObject().transform;
-                camHolder.position = transform.position + new Vector3(0, 1, 0);
-                cam.LookAt(camHolder);
-                cam.SetParent(camHolder);
-            }
+            // Transform cam = Camera.main.transform;
+            // if(cam)
+            // {
+            //     cam.position = transform.position + new Vector3(0, 0.3f, 2);
+            //     cam.rotation = Quaternion.Euler(0, -180, 0);
+            //     camHolder = new GameObject().transform;
+            //     camHolder.position = transform.position + new Vector3(0, 1, 0);
+            //     cam.LookAt(camHolder);
+            //     cam.SetParent(camHolder);
+            // }
 
+            Randomize();
             // if repeat on play is checked in the inspector, repeat the randomize method based on the shuffle speed, also defined in the inspector
             if (repeatOnPlay)
                 InvokeRepeating("Randomize", shuffleSpeed, shuffleSpeed);
@@ -595,11 +596,18 @@ namespace PsychoticLab
             // find character parts parent object in the scene
             foreach (Transform t in rootTransform)
             {
+                Debug.Log($"Проверка объекта: {t.gameObject.name}"); 
                 if (t.gameObject.name == characterPart)
                 {
                     targetRoot = t;
                     break;
                 }
+            }
+            
+            if (targetRoot == null)
+            {
+                Debug.LogError($"[BuildList] Не найден объект с именем {characterPart} в сцене!");
+                return;
             }
 
             // clears targeted list of all objects

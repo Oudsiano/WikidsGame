@@ -10,6 +10,7 @@ public class SetMusicForThisScene : MonoBehaviour
         if (_musicFileName.Length > 0)
         {
             SoundManager.PlayMusic(_musicFileName);
+            Debug.Log("music is playing "+_musicFileName);
         }
     }
 }

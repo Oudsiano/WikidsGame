@@ -5158,7 +5158,7 @@ MonoBehaviour:
   QuestsContentScrollRect: {fileID: 8415602112231829572}
   _btnOptions: {fileID: 6444488984366074562}
   OptionScr: {fileID: 1285525833341440494}
-  _btnCloseOptionScr: {fileID: 1051102370018799570}
+  _btnCloseOptionScr: {fileID: 2550430508410285144}
   _toggleSound: {fileID: 4390873556847040062}
   _sliderSound: {fileID: 6559291727847552826}
   _toggleMusic: {fileID: 1961905597144342757}
@@ -8766,6 +8766,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5458149899098301489}
     m_Modifications:
+    - target: {fileID: 49526536528378092, guid: 4949f880a092f084e89ac4d7fc2a1b6d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 570768080257077127, guid: 4949f880a092f084e89ac4d7fc2a1b6d,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -9158,6 +9163,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2550430508410285144 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 49526536528378092, guid: 4949f880a092f084e89ac4d7fc2a1b6d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2579163010164036788}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4390873556847040062 stripped
@@ -11055,18 +11072,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a774a451f2cb0747a26f7057cebe41d, type: 3}
---- !u!114 &1051102370018799570 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6574846054563790273, guid: 8a774a451f2cb0747a26f7057cebe41d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6172411642331894291}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &8981294346842487840 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2957519359283080755, guid: 8a774a451f2cb0747a26f7057cebe41d,

@@ -29,6 +29,10 @@ public class SoundManagerSettings : ScriptableObject {
 
         PlayerPrefs.SetInt("SM_MusicMute", _mutedMusic ? 1 : 0);
         PlayerPrefs.SetInt("SM_SoundMute", _mutedSound ? 1 : 0);
+        Debug.Log("Saved music settings");
+        
+        Debug.Log("Music Mute: " + (_mutedMusic ? "Muted" : "Not Muted"));
+        Debug.Log("Sound Mute: " + (_mutedSound ? "Muted" : "Not Muted"));
     }
 
     public void LoadSettings()
@@ -38,6 +42,9 @@ public class SoundManagerSettings : ScriptableObject {
 
         _mutedMusic = PlayerPrefs.GetInt("SM_MusicMute", 0) == 1;
         _mutedSound = PlayerPrefs.GetInt("SM_SoundMute", 0) == 1;
+        Debug.Log("Load music settings");
+        Debug.Log("Music Mute: " + (_mutedMusic ? "Muted" : "Not Muted"));
+        Debug.Log("Sound Mute: " + (_mutedSound ? "Muted" : "Not Muted"));
     }
 
     public void SetMusicVolume(float volume)

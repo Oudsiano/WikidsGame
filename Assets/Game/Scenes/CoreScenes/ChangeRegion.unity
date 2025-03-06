@@ -8313,6 +8313,100 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1267485466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1267485469}
+  - component: {fileID: 1267485468}
+  - component: {fileID: 1267485467}
+  m_Layer: 0
+  m_Name: LocationChange
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1267485467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267485466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403938d2a16cb4d3889c372ab739e307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverTexts:
+  - "\u0417\u043D\u0430\u043D\u0438\u0435 \u0441\u0432\u0435\u0442\u0438\u0442,\n\u041D\u0435\u0432\u0435\u0436\u0435\u0441\u0442\u0432\u043E
+    \u043A\u0430\u043A \u0442\u044C\u043C\u0430,\n\u0411\u0438\u0442\u0432\u0430
+    \u0432\u0435\u0447\u043D\u0430\u044F."
+  - "\u041C\u0443\u0434\u0440\u044B\u0439 \u0433\u043E\u0440\u043E\u0434 \u0441\u043F\u0438\u0442,\n\u0417\u043D\u0430\u043D\u0438\u044F
+    \u0442\u0435\u043A\u0443\u0442 \u0440\u0435\u043A\u043E\u0439,\n\u0423\u0447\u0435\u043D\u0438\u043A
+    \u0440\u0430\u0441\u0442\u0451\u0442."
+  - "\u0411\u0438\u0442\u0432\u0430 \u0432 \u0441\u0435\u0440\u0434\u0446\u0435 \u0436\u0434\u0451\u0442,\n\u0423\u0447\u0435\u043D\u044C\u0435
+    \u2014 \u0441\u0432\u0435\u0442 \u0432 \u0442\u0435\u043C\u043D\u043E\u0442\u0435,\n\u0412\u043E\u0438\u043D
+    \u0437\u043D\u0430\u043D\u0438\u0439 \u0438\u0434\u0451\u0442."
+  - "\u0412\u0440\u0430\u0433 \u0432 \u0442\u0435\u043D\u0438 \u0436\u0434\u0451\u0442,\n\u0417\u043D\u0430\u043D\u0438\u044F
+    \u2014 \u043C\u043E\u0439 \u0434\u0440\u0443\u0433,\n\u0411\u0438\u0431\u043B\u0438\u043E\u0442\u0435\u043A\u0430."
+  - "\u0414\u043E\u0431\u0440\u043E \u0438 \u0437\u043B\u043E \u0432 \u043D\u0430\u0441,\n\u0412\u0435\u0447\u043D\u0430\u044F
+    \u0431\u0438\u0442\u0432\u0430 \u0438\u0434\u0451\u0442,\n\u0421\u0432\u0435\u0442
+    \u0438 \u0442\u044C\u043C\u0430 \u0432 \u0434\u0443\u0448\u0435."
+  - "\u0412 \u0437\u0430\u043C\u043A\u0435 \u0445\u043E\u043B\u043B \u0436\u0434\u0451\u0442,\n\u0411\u043B\u0438\u0437\u043A\u0430
+    \u043F\u043E\u0431\u0435\u0434\u0430 \u043C\u043E\u044F,\n\u0422\u044C\u043C\u0430
+    \u043E\u0442\u0441\u0442\u0443\u043F\u0438\u0442."
+--- !u!114 &1267485468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267485466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e13ed0be09474160975e27adc578f5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _regions:
+  - Button: {fileID: 1694597919}
+    loadedScene: BattleScene
+  - Button: {fileID: 1280437528}
+    loadedScene: 4
+  - Button: {fileID: 929967037}
+    loadedScene: 5
+  - Button: {fileID: 524284825}
+    loadedScene: 6
+  - Button: {fileID: 199411046}
+    loadedScene: 8
+  - Button: {fileID: 364107487}
+    loadedScene: 7
+  _loading: {fileID: 8930295531173044807}
+  _hoverTextDisplay: {fileID: 951526516}
+  _testsTextDisplay: {fileID: 523454169}
+  _multiLineText: {fileID: 1267485467}
+  _textID: {fileID: 249607521}
+  _continueButton: {fileID: 1893331853}
+--- !u!4 &1267485469
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267485466}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 587.92, y: -5.72, z: 39.84}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1279737550
 GameObject:
   m_ObjectHideFlags: 0
@@ -9314,7 +9408,7 @@ GameObject:
   - component: {fileID: 1586310093}
   - component: {fileID: 1586310095}
   m_Layer: 0
-  m_Name: LocationChange
+  m_Name: LocationChangeMobile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10639,7 +10733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2146272571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11698,7 +11792,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &6728745065759076509
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11807,4 +11901,5 @@ SceneRoots:
   - {fileID: 4657274256295833479}
   - {fileID: 2146272575}
   - {fileID: 1586310094}
+  - {fileID: 1267485469}
   - {fileID: 1198664096}

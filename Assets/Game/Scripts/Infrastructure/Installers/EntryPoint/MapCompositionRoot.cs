@@ -12,7 +12,10 @@ namespace Infrastructure.Installers.EntryPoint
 
         [SerializeField] private LocationChange _locationChange;
         
+        [SerializeField] private LocationChange _locationChangeMobie;
+        
         private DiContainer _sceneContainer;
+        
 
         [Inject]
         public void Compose(DiContainer diContainer)

@@ -113,6 +113,7 @@ namespace Saving
 
         private IEnumerator FirstGetGameData()
         {
+            Debug.Log("Requesting game data for playerID: " + playerID);
             UnityWebRequest
                 request = UnityWebRequest.Get("https://wikids.ru/api/v1/game/" + playerID); // TODO can be cached
             yield return request.SendWebRequest();

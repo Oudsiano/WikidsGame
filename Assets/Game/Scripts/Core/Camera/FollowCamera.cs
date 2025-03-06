@@ -56,9 +56,11 @@ namespace Core.Camera
         private bool _canZoom = true;
         private bool _commonZoomUpdate = false;
         private float _autoZoomForReturn;
+        
         private SceneLoaderService _sceneLoader;
 
-        public void Construct(MainPlayer player, PlayerController playerController, SceneLoaderService sceneLoaderService)
+        public void Construct(MainPlayer player, PlayerController playerController,
+            SceneLoaderService sceneLoaderService)
         {
             Debug.Log("FollowCamera constructed");
 
@@ -101,48 +103,37 @@ namespace Core.Camera
 
         private void Update() // TODO magic numbers
         {
-            if (_sceneName == Constants.Scenes.OpenScene || _sceneName == Constants.Scenes.MapScene || _sceneName == Constants.Scenes.BootstrapScene) 
+            if (_sceneName == Constants.Scenes.OpenScene ||
+                _sceneName == Constants.Scenes.MapScene ||
+                _sceneName == Constants.Scenes.BootstrapScene)
             {
                 return;
             }
 
             if (PauseClass.GetPauseState())
-            {
                 return;
-            }
 
             if (_zoomTotal < _minZoom)
             {
                 MinZoom();
             }
-
-            /*float delta = Math.Abs(camYRotation - _playerController.transform.rotation.eulerAngles.y); // TODO not used code
-            float deltaX = camYRotation - _playerController.transform.rotation.eulerAngles.y;
-            float delta2 = Mathf.Sin(deltaX * Mathf.Deg2Rad);
-            Debug.Log(camYRotation + " " + _playerController.transform.rotation.eulerAngles.y + " " + delta + " " + deltaX + " " + delta2);
-            */
-
+            
             Vector3 targetPos = _target.position + new Vector3Int(0, 1, 0);
             Vector3 tempV1 = _target.position + (_mainCamera.transform.forward * ((_zoomTotal - _step * 2) * 0.2f));
             var direction = (targetPos - tempV1).normalized;
             RaycastHit hit;
 
-            // Проверка, есть ли препятствие между камерой и целью
-            if (Physics.Raycast(tempV1, direction, out hit, Vector3.Distance(tempV1, targetPos) - 7,
-                    _obstacleLayerMask))
+            if (Physics.Raycast(tempV1, direction, out hit, Vector3.Distance(tempV1, targetPos) - 7, _obstacleLayerMask))
             {
                 if (hit.transform.gameObject.TryGetComponent<MainPlayer>(out _))
                 {
                     ZoomUpdateByZoomTotal(_step);
-                    //Debug.Log(hit.transform.gameObject.name);
                 }
             }
             else if (_zoomTotal > _autoZoomForReturn)
             {
                 Vector3 tempV2 = _target.position + (_mainCamera.transform.forward * ((_zoomTotal - _step * 3) * 0.2f));
-
-                if (Physics.Raycast(tempV2, direction, out hit,
-                        Vector3.Distance(_mainCamera.transform.position, targetPos), _obstacleLayerMask) == false)
+                if (!Physics.Raycast(tempV2, direction, out hit, Vector3.Distance(_mainCamera.transform.position, targetPos), _obstacleLayerMask))
                 {
                     ZoomUpdateByZoomTotal(-_step);
                 }
@@ -152,20 +143,15 @@ namespace Core.Camera
         public void MaxZoom()
         {
             float targetZoom = _maxZoom;
-
             for (int i = _zoomLevels.Length - 1; i >= 0; i--)
             {
-                if (_zoomLevels[i] > _zoomTotal) // TODO sure:?
+                if (_zoomLevels[i] > _zoomTotal)
                 {
                     targetZoom = _zoomLevels[i];
                     break;
                 }
             }
-
-            if (targetZoom > _maxZoom)
-            {
-                targetZoom = _maxZoom;
-            }
+            targetZoom = Mathf.Min(targetZoom, _maxZoom);
 
             DOTween.To(() => _zoomTotal, x =>
             {
@@ -178,7 +164,6 @@ namespace Core.Camera
         public void MinZoom()
         {
             float targetZoom = _minZoom;
-
             for (int i = 0; i < _zoomLevels.Length; i++)
             {
                 if (_zoomLevels[i] < _zoomTotal)
@@ -187,18 +172,14 @@ namespace Core.Camera
                     break;
                 }
             }
-
-            if (targetZoom < _minZoom)
-            {
-                targetZoom = _minZoom;
-            }
+            targetZoom = Mathf.Max(targetZoom, _minZoom);
 
             DOTween.To(() => _zoomTotal, x =>
             {
                 _zoomTotal = x;
                 _autoZoomForReturn = _zoomTotal;
                 _commonZoomUpdate = true;
-            }, targetZoom, 0.5f); // TODO magic numbers
+            }, targetZoom, 0.5f);
         }
 
         public void ActivateCommonZoomUpdate() => _commonZoomUpdate = true;
@@ -221,7 +202,7 @@ namespace Core.Camera
                 {
                     _maxZoom = sceneComponent.newMaxZoomCamera;
                 }
-                
+
                 _sceneName = sceneComponent.SceneName;
             }
         }
@@ -229,27 +210,28 @@ namespace Core.Camera
         private void Follow()
         {
             if (PauseClass.GetPauseState())
-            {
                 return;
-            }
 
-            // Переключаем отслеживание игрока при нажатии клавиши LeftControl
             if (Input.GetKeyDown(KeyCode.LeftControl))
-            {
                 _trackPlayer = !_trackPlayer;
-            }
 
             if (_trackPlayer)
             {
-                transform.position = _target.position;
+                // Если FollowCamera имеет родителя, переводим мировую позицию цели в локальные координаты родителя
+                if (transform.parent != null)
+                {
+                    transform.localPosition = transform.parent.InverseTransformPoint(_target.position);
+                }
+                else
+                {
+                    transform.position = _target.position;
+                }
             }
-
-            float newCameraRY = 0;
 
             if (_canRotate && Input.GetMouseButton(1))
             {
                 Rotate();
-                newCameraRY = _playerController.transform.localEulerAngles.y; // TODO not used code
+                NewYRotation?.Invoke(_camYRotation);
             }
 
             if (_canZoom)
@@ -260,47 +242,46 @@ namespace Core.Camera
 
         private void Rotate()
         {
-            var MX = Input.GetAxis(MOUSE_X_NAME);
-            //if (MX == 0) return; // TODO not used code
-
-            // Получаем значения вращения по осям X и Y
+            float MX = Input.GetAxis(MOUSE_X_NAME);
             _camYRotation = transform.localEulerAngles.y + (MX * rotationSpeed * Time.deltaTime);
             _camXRotation += (Input.GetAxis(MOUSE_Y_NAME) * rotationSpeed * Time.deltaTime);
-
-            // Ограничиваем вращение по оси X
             _camXRotation = Mathf.Clamp(_camXRotation, 45, 90);
 
-            transform.localEulerAngles = new Vector3(_camXRotation, _camYRotation, 0);
-            OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
+            Quaternion desiredWorldRotation = Quaternion.Euler(_camXRotation, _camYRotation, 0);
+            if (transform.parent != null)
+            {
+                transform.localRotation = Quaternion.Inverse(transform.parent.rotation) * desiredWorldRotation;
+            }
+            else
+            {
+                transform.rotation = desiredWorldRotation;
+            }
+            
+            OnupdateEulerAngles?.Invoke(transform.eulerAngles);
             OnCameraRotation?.Invoke();
             NewYRotation?.Invoke(_camYRotation);
 
             SetLocalPosition();
-            //NewXRotation?.Invoke(camXRotation); // TODO not used code
         }
 
         private void Zoom()
         {
-            float scrollWheelValue = Input.GetAxis(MOUSE_SCROLLWHEEL_NAME);
-
-            if (scrollWheelValue == 0)
+            float scrollValue = Input.GetAxis(MOUSE_SCROLLWHEEL_NAME);
+            
+            if (scrollValue == 0)
             {
                 return;
             }
-
-            ZoomUpdate(scrollWheelValue);
+            
+            ZoomUpdate(scrollValue);
             _autoZoomForReturn = _zoomTotal;
         }
 
         private void ZoomUpdate(float value)
         {
-            // Получаем количество изменения масштаба
             _zoomAmount = value * zoomSpeed * Time.deltaTime;
-            // Прибавляем это изменение к общему изменению масштаба
             _zoomTotal += _zoomAmount;
-            // Ограничиваем общее изменение масштаба
             _zoomTotal = Mathf.Clamp(_zoomTotal, _minZoom, _maxZoom);
-
             _commonZoomUpdate = true;
         }
 
@@ -313,46 +294,34 @@ namespace Core.Camera
         private void CommonZoom()
         {
             _commonZoomUpdate = false;
-            Vector3 newZoomPos; //= mainCam.transform.position + (mainCam.transform.forward * zoomAmt);
-            if (_zoomTotal < _minZoom)
+            _zoomTotal = Mathf.Clamp(_zoomTotal, _minZoom, _maxZoom);
+            
+            if (_mainCamera.transform.parent == transform)
             {
-                _zoomTotal = _minZoom;
+                _mainCamera.transform.localPosition = new Vector3(0f, 0f, _zoomTotal * 0.2f);
             }
-
-            if (_zoomTotal > _maxZoom)
+            else
             {
-                _zoomTotal = _maxZoom;
+                Vector3 desiredPos = _target.position + transform.forward * (_zoomTotal * 0.2f);
+                _mainCamera.transform.position = desiredPos;
             }
-
-            // Масштабируем камеру, если она находится в пределах допустимого масштабирования
-            newZoomPos = _target.position + _mainCamera.transform.forward * (_zoomTotal * 0.2f); // TODO magic numbers
-            _mainCamera.transform.position = newZoomPos;
-
+            
             SetLocalPosition();
 
-            //Debug.Log(mainCam.transform.position);
-            //Debug.Log(mainCam.transform.localPosition); // TODO not used code
-
-            OnupdateEulerAngles?.Invoke(transform.localEulerAngles);
-            OnCameraDistance?.Invoke(Math.Abs(_zoomTotal));
-
-            //Debug.Log($"Zoom Total: {zoomTotal}"); // Отладочное сообщение для отслеживания zoomTotal // TODO not used code
-
+            OnupdateEulerAngles?.Invoke(transform.eulerAngles);
+            OnCameraDistance?.Invoke(Mathf.Abs(_zoomTotal));
             OnCameraScale?.Invoke();
         }
 
         private void SetLocalPosition() // TODO magic numbers
         {
-            float delta = Math.Abs(_camYRotation - _playerController.transform.rotation.eulerAngles.y);
-            float deltaX = _camYRotation - _playerController.transform.rotation.eulerAngles.y;
-            float delta2 = Math.Abs(180 - delta);
-            float delta2X = Mathf.Sin(deltaX * Mathf.Deg2Rad);
-            float deltaCameraY = (delta2 - 90) / 90 * 0.04f * (Math.Abs(_zoomTotal) - 10);
-            float deltaCameraX = -delta2X * 0.04f * (Math.Abs(_zoomTotal) - 10);
-            Vector3 newZoomPos = _mainCamera.transform.localPosition;
-            newZoomPos.y = deltaCameraY;
-            newZoomPos.x = deltaCameraX;
-            _mainCamera.transform.localPosition = newZoomPos;
+            if (_mainCamera.transform.parent == transform)
+            {
+                Vector3 pos = _mainCamera.transform.localPosition;
+                pos.x = 0f;
+                pos.y = 0f;
+                _mainCamera.transform.localPosition = pos;
+            }
         }
     }
 }

@@ -33,6 +33,7 @@ namespace UI
             FollowCamera.NewYRotation += FollowCamera_NewYRotation;
             FollowCamera.NewXRotation += FollowCamera_NewXRotation;
             FollowCamera.OnupdateEulerAngles += FollowCamera_OnupdateEulerAngles;
+            
             _image = GetComponent<SpriteRenderer>();
             _image.gameObject.SetActive(false);
             _eulerAngles = _image.transform.eulerAngles;
@@ -149,7 +150,7 @@ namespace UI
             }
             else
             {
-                Debug.LogWarning("�� ������� ��������, ���� ���������"); // TODO UTF-8 ERROR
+                Debug.LogWarning("Нет изображения для иконки"); 
             }
         }
     }

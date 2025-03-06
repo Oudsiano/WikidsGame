@@ -205,11 +205,6 @@ namespace UI
             }
         }
 
-        private void Start() // TODO construct
-        {
-            FollowCamera = FindObjectOfType<FollowCamera>();
-        }
-
         private void Update()
         {
             if (_btnQuestBack.enabled)
@@ -320,8 +315,8 @@ namespace UI
                     sceneComponent.SceneName == Constants.Scenes.HollScene ||
                     sceneComponent.SceneName == Constants.Scenes.FirstTownScene)
                 {
-                    _buttonMaxZoom.gameObject.SetActive(false);
-                    _buttonMinZoom.gameObject.SetActive(false);
+                    _buttonMaxZoom.gameObject.SetActive(true);
+                    _buttonMinZoom.gameObject.SetActive(true);
                 }
                 else
                 {

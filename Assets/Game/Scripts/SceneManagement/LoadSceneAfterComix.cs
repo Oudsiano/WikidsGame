@@ -6,7 +6,7 @@ using UnityEngine;
 namespace SceneManagement
 {
     public class LoadSceneAfterComix : MonoBehaviour
-    {
+    {   
         private SceneLoaderService _sceneLoaderService;
         private LoadingScreenProvider _loadingScreenProvider;
         private AssetProvider _assetProvider;

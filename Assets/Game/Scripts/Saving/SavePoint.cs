@@ -43,14 +43,16 @@ namespace Saving
             
             if (transform.localScale != Vector3.one)
             {
-                Debug.LogError("Scale is not (1, 1, 1)");
+                transform.localScale = Vector3.one;
+                Debug.Log("Scale is not (1, 1, 1)");
             }
 
             BoxCollider collider = GetComponent<BoxCollider>();
 
             if (collider != null && collider.size != Vector3.one)
             {
-                Debug.LogError("Box Collider size is not (1, 1, 1)");
+                collider.size = Vector3.one;
+                Debug.Log("Box Collider size is not (1, 1, 1)");
             }
         }
 

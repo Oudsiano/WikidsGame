@@ -1,5 +1,4 @@
-﻿
-namespace Utils
+﻿namespace Utils
 {
     public sealed class Constants
     {
@@ -17,13 +16,24 @@ namespace Utils
         {
             public const string BootstrapScene = "BootstrapScene";
             public const string OpenScene = "OpenScene";
-            public const string MapScene = "ChangeRegion";
-            public const string FirstBattleScene = "BattleScene";
-            public const string SecondBattleScene = "BattleScene 1";
-            public const string LibraryScene = "Library";
-            public const string HollScene = "Holl";
-            public const string EndScene = "EndScene";
+            public const string MapScene = "MapScene";
+
             public const string FirstTownScene = "FirstTownScene";
+            public const string FirstBattleScene = "FirstBattleScene";
+            public const string SecondBattleScene = "SecondBattleScene";
+            public const string ThirdBattleScene = "ThirdBattleScene";
+            
+            public const string FourthBattleSceneDark = "FourthBattleSceneDark";
+            
+            public const string FifthBattleSceneKingdom = "FifthBattleSceneKingdom";
+            public const string SixthBattleSceneKingdom = "SixthBattleSceneKingdom";
+            
+            public const string SeventhBattleSceneViking = "SeventhBattleSceneViking";
+
+            public const string LibraryScene = "LibraryScene";
+            public const string HollScene = "HollScene";
+
+            public const string EndScene = "EndScene";
         }
     }
 }

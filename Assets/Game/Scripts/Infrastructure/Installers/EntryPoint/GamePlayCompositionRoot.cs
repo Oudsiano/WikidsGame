@@ -48,91 +48,143 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
-            _conversationMarket.Construct(_sceneContainer.Resolve<UIManager>());
-            _sceneComponent.Construct(_sceneContainer.Resolve<LevelChangeObserver>());
-
-            foreach (DownloadTestData data in _downloadTestData)
+            if (_conversationMarket != null)
             {
-                data.Construct(_sceneContainer.Resolve<GameAPI>());
+                _conversationMarket.Construct(_sceneContainer.Resolve<UIManager>());
             }
 
-            foreach (SetStudyStep step in _setStudySteps)
+            if (_sceneComponent != null)
             {
-                step.Construct(_sceneContainer.Resolve<UIManager>());
+                _sceneComponent.Construct(_sceneContainer.Resolve<LevelChangeObserver>());
             }
 
-            foreach (NPCInteractable npc in _npcInteractable)
+            if (_downloadTestData.Length > 0)
             {
-                npc.Construct(_sceneContainer.Resolve<CursorManager>(), _sceneContainer.Resolve<QuestManager>(),
-                    _sceneContainer.Resolve<DataPlayer>(), _sceneContainer.Resolve<GameAPI>());
+                foreach (DownloadTestData data in _downloadTestData)
+                {
+                    data.Construct(_sceneContainer.Resolve<GameAPI>());
+                }
             }
 
-            foreach (AnswerHandler answerHandler in _answerHandlers)
+            if (_setStudySteps.Length > 0)
             {
-                answerHandler.Construct(_sceneContainer.Resolve<SaveGame>());
+                foreach (SetStudyStep step in _setStudySteps)
+                {
+                    step.Construct(_sceneContainer.Resolve<UIManager>());
+                }
             }
 
-            foreach (ArrowForPlayer arrow in _arrowsForPlayer)
+            if (_npcInteractable.Length > 0)
             {
-                arrow.Construct(_sceneContainer.Resolve<ArrowForPlayerManager>(),
-                    _sceneContainer.Resolve<MainPlayer>().PlayerController);
+                foreach (NPCInteractable npc in _npcInteractable)
+                {
+                    npc.Construct(_sceneContainer.Resolve<CursorManager>(), _sceneContainer.Resolve<QuestManager>(),
+                        _sceneContainer.Resolve<DataPlayer>(), _sceneContainer.Resolve<GameAPI>());
+                }
             }
 
-            foreach (PickableEquip item in _pickableEquip)
+            if (_answerHandlers.Length > 0)
             {
-                item.Construct(_sceneContainer.Resolve<UIManager>(), _sceneContainer.Resolve<WeaponArmorManager>());
+                foreach (AnswerHandler answerHandler in _answerHandlers)
+                {
+                    answerHandler.Construct(_sceneContainer.Resolve<SaveGame>());
+                }
             }
 
-            foreach (GiveItem item in _giveItems)
+            if (_arrowsForPlayer.Length > 0)
             {
-                item.Construct(_sceneContainer.Resolve<UIManager>());
+                foreach (ArrowForPlayer arrow in _arrowsForPlayer)
+                {
+                    arrow.Construct(_sceneContainer.Resolve<ArrowForPlayerManager>(),
+                        _sceneContainer.Resolve<MainPlayer>().PlayerController);
+                }
             }
 
-            foreach (CheckItem item in _checkItems)
+            if (_pickableEquip.Length > 0)
             {
-                item.Construct(_sceneContainer.Resolve<UIManager>());
+                foreach (PickableEquip item in _pickableEquip)
+                {
+                    item.Construct(_sceneContainer.Resolve<UIManager>(),
+                        _sceneContainer.Resolve<WeaponArmorManager>());
+                }
             }
 
-            foreach (BossNPC boss in _bosses)
+            if (_giveItems.Length > 0)
             {
-                boss.Construct();
+                foreach (GiveItem item in _giveItems)
+                {
+                    item.Construct(_sceneContainer.Resolve<UIManager>());
+                }
             }
 
-            foreach (IconForFarCamera icon in _iconsForCamera)
+            if (_checkItems.Length > 0)
             {
-                icon.Construct(_sceneContainer.Resolve<UIManager>());
+                foreach (CheckItem item in _checkItems)
+                {
+                    item.Construct(_sceneContainer.Resolve<UIManager>());
+                }
             }
 
-            foreach (AIController aiController in _aiControllers)
+            if (_bosses.Length > 0)
             {
-                aiController.Construct(_sceneContainer.Resolve<MainPlayer>().PlayerController,
-                    _sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<IGame>(),
-                    _sceneContainer.Resolve<FastTestsManager>(),
-                    _sceneContainer.Resolve<QuestManager>(), _sceneContainer.Resolve<CoinManager>(),
-                    _sceneContainer.Resolve<BottleManager>(), _sceneContainer.Resolve<UIManager>());
+                foreach (BossNPC boss in _bosses)
+                {
+                    boss.Construct();
+                }
             }
 
-            foreach (NPC_for_testID npc in _npcForTestID) // TODO MOVE TO NPC script
+            if (_iconsForCamera.Length > 0)
             {
-                npc.Construct(_sceneContainer.Resolve<GameAPI>(), _sceneContainer.Resolve<DataPlayer>(),
-                    _sceneContainer.Resolve<FastTestsManager>(), _sceneContainer.Resolve<SaveGame>());
+                foreach (IconForFarCamera icon in _iconsForCamera)
+                {
+                    icon.Construct(_sceneContainer.Resolve<UIManager>());
+                }
             }
 
-            foreach (SavePoint savePoint in _savePoints)
+            if (_aiControllers.Length > 0)
             {
-                savePoint.Construct(_sceneContainer.Resolve<DataPlayer>(),
-                    _sceneContainer.Resolve<MainPlayer>().PlayerController.GetHealth(),
-                    _sceneContainer.Resolve<CursorManager>(), _sceneContainer.Resolve<MainPlayer>().PlayerController,
-                    _sceneContainer.Resolve<GameAPI>());
+                foreach (AIController aiController in _aiControllers)
+                {
+                    aiController.Construct(_sceneContainer.Resolve<MainPlayer>().PlayerController,
+                        _sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<IGame>(),
+                        _sceneContainer.Resolve<FastTestsManager>(),
+                        _sceneContainer.Resolve<QuestManager>(), _sceneContainer.Resolve<CoinManager>(),
+                        _sceneContainer.Resolve<BottleManager>(), _sceneContainer.Resolve<UIManager>());
+                }
             }
 
-            foreach (Portal portal in _portals)
+            if (_npcForTestID.Length > 0)
             {
-                portal.Construct(_sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<DataPlayer>(),
-                    _sceneComponent, _sceneContainer.Resolve<CursorManager>(), _sceneContainer.Resolve<UIManager>(),
-                    _sceneContainer.Resolve<NPCManagment>(), _sceneContainer.Resolve<SaveGame>(),
-                    _sceneContainer.Resolve<SceneLoaderService>(), _sceneContainer.Resolve<CoinManager>(),
-                    _sceneContainer.Resolve<LevelChangeObserver>());
+                foreach (NPC_for_testID npc in _npcForTestID)
+                {
+                    npc.Construct(_sceneContainer.Resolve<GameAPI>(), _sceneContainer.Resolve<DataPlayer>(),
+                        _sceneContainer.Resolve<FastTestsManager>(), _sceneContainer.Resolve<SaveGame>());
+                }
+            }
+
+            if (_savePoints.Length > 0)
+            {
+                foreach (SavePoint savePoint in _savePoints)
+                {
+                    savePoint.Construct(_sceneContainer.Resolve<DataPlayer>(),
+                        _sceneContainer.Resolve<MainPlayer>().PlayerController.GetHealth(),
+                        _sceneContainer.Resolve<CursorManager>(),
+                        _sceneContainer.Resolve<MainPlayer>().PlayerController,
+                        _sceneContainer.Resolve<GameAPI>());
+                }
+            }
+
+            if (_portals.Length > 0)
+            {
+                foreach (Portal portal in _portals)
+                {
+                    portal.Construct(_sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<DataPlayer>(),
+                        _sceneComponent, _sceneContainer.Resolve<CursorManager>(),
+                        _sceneContainer.Resolve<UIManager>(),
+                        _sceneContainer.Resolve<NPCManagment>(), _sceneContainer.Resolve<SaveGame>(),
+                        _sceneContainer.Resolve<SceneLoaderService>(), _sceneContainer.Resolve<CoinManager>(),
+                        _sceneContainer.Resolve<LevelChangeObserver>());
+                }
             }
         }
     }

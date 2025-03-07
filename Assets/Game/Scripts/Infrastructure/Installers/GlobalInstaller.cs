@@ -59,7 +59,7 @@ namespace Infrastructure.Installers
 
         private void BindingComponents()
         {
-            BindingUI();
+            
 
             Container.Bind<KeyBoardsEvents>().FromComponentInNewPrefab(_keyBoardsEvents).AsSingle().NonLazy();
             Container.Bind<AllQuestsInGame>().FromComponentInNewPrefab(_allQuests).AsSingle().NonLazy();
@@ -73,7 +73,8 @@ namespace Infrastructure.Installers
             Container.Bind<QuestManager>().FromComponentInNewPrefab(_questManagerPrefab).AsSingle().NonLazy();
             Container.Bind<NPCManagment>().FromComponentInNewPrefab(_npcManagerPrefab).AsSingle().NonLazy();
             Container.Bind<CursorManager>().FromComponentInNewPrefab(_cursorManagerPrefab).AsSingle().NonLazy();
-             Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
+            BindingUI();
+             // Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
             // Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerMobilePrefab).AsSingle().NonLazy(); //TO DO озможно нужно будет в этом месте делать проверку на девайс
             Container.Bind<CoinManager>().FromComponentInNewPrefab(_coinManagerPrefab).AsSingle().NonLazy();
             Container.Bind<WeaponArmorManager>().FromComponentInNewPrefab(_weaponArmorManagerPrefab).AsSingle()
@@ -82,6 +83,14 @@ namespace Infrastructure.Installers
 
         private void BindingUI()
         {
+                    if (DeviceChecker.IsMobileDevice())
+                    {
+                        Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerMobilePrefab).AsSingle().NonLazy();
+                    }
+                    else
+                    {
+                        Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
+                    }
         }
     }
 }

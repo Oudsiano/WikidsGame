@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Combat.Data;
 using Core.Player;
 using Data;
@@ -13,13 +14,11 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using Utils;
 
-// Пространство имен для управления сценами игры
 namespace SceneManagement
 {
-    // Класс для портала, переносящего игрока между сценами
     public class Portal : MonoBehaviour // TODO Restruct
     {
-        [SerializeField] private string sceneToLoad; // имя сцены для загрузки
+        [Dropdown("GetSceneNames")][SerializeField] private string sceneToLoad; // имя сцены для загрузки
 
         [SerializeField] private Transform spawnPoint; // Точка спавна в новой сцене // TODO rename
 
@@ -71,7 +70,32 @@ namespace SceneManagement
                 Debug.LogError("Errrorr! na scene net SceneComponent.");
             }
         }
-
+        
+        private List<string> GetSceneNames()
+        {
+            return new List<string>
+            {
+                Constants.Scenes.BootstrapScene,
+                Constants.Scenes.OpenScene,
+                Constants.Scenes.MapScene,
+                Constants.Scenes.FirstTownScene,
+                Constants.Scenes.FirstBattleScene,
+                Constants.Scenes.SecondBattleScene,
+                Constants.Scenes.ThirdBattleScene,
+                Constants.Scenes.FourthBattleSceneDark,
+                Constants.Scenes.FifthBattleSceneKingdom,
+                Constants.Scenes.SixthBattleSceneKingdom,
+                Constants.Scenes.SeventhBattleSceneViking,
+                Constants.Scenes.BossFightDarkScene,
+                Constants.Scenes.BossFightKingdom1Scene,
+                Constants.Scenes.BossFightKingdom2Scene,
+                Constants.Scenes.BossFightViking1Scene,
+                Constants.Scenes.LibraryScene,
+                Constants.Scenes.HollScene,
+                Constants.Scenes.EndScene
+            };
+        }
+        
         private void OnMouseEnter()
         {
             _cursorManager.SetCursorExit();

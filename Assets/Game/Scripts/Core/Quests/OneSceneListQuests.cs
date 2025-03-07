@@ -29,6 +29,10 @@ namespace Core.Quests
                 Constants.Scenes.FifthBattleSceneKingdom,
                 Constants.Scenes.SixthBattleSceneKingdom,
                 Constants.Scenes.SeventhBattleSceneViking,
+                Constants.Scenes.BossFightDarkScene,
+                Constants.Scenes.BossFightKingdom1Scene,
+                Constants.Scenes.BossFightKingdom2Scene,
+                Constants.Scenes.BossFightViking1Scene,
                 Constants.Scenes.LibraryScene,
                 Constants.Scenes.HollScene,
                 Constants.Scenes.EndScene

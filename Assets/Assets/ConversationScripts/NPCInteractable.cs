@@ -95,6 +95,10 @@ public class NPCInteractable : MonoBehaviour
             if (_npc != null)
                 _npc.SetParent(gameObject);
         }
+        else
+        {
+            Debug.Log("conv = null");
+        }
     }
 
     public void InteractWithItem()

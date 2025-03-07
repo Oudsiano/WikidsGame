@@ -5174,6 +5174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1721233273}
   - component: {fileID: 1721233272}
+  - component: {fileID: 1721233274}
   m_Layer: 0
   m_Name: CompositionRoot
   m_TagString: Untagged
@@ -5194,8 +5195,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sceneContext: {fileID: 2027723860}
-  _locationChange: {fileID: 1267485468}
-  _locationChangeMobie: {fileID: 1586310093}
+  _canvasSwitcher: {fileID: 1721233274}
+  _locationChangeDesktop: {fileID: 1267485468}
+  _locationChangeMobile: {fileID: 1586310093}
 --- !u!4 &1721233273
 Transform:
   m_ObjectHideFlags: 0
@@ -5212,6 +5214,20 @@ Transform:
   - {fileID: 2027723861}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1721233274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721233271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2d5d8f7de5282f4899d553466abbed4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasDesktop: {fileID: 441507593638128785}
+  _canvasMobile: {fileID: 2146272574}
 --- !u!1 &1856091614
 GameObject:
   m_ObjectHideFlags: 0
@@ -6277,7 +6293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &6728745065759076509
 CanvasRenderer:
   m_ObjectHideFlags: 0

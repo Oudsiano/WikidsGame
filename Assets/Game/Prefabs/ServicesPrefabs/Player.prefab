@@ -286,6 +286,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0acf3e2328a87429b3a7a4acde3a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvasMobile: {fileID: 1477762946796174785}
+  _canvasDesktop: {fileID: 1612291659094591580}
+  _weaponPanelUIModile: {fileID: 4177656685472055660}
+  _weaponPanelUIDesktop: {fileID: 86899785422372908}
 --- !u!1 &3786395368469470478
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,7 +801,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6943271934864498423
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1555,6 +1559,7 @@ MonoBehaviour:
   _weaponPanelUI: {fileID: 86899785422372908}
   _playerController: {fileID: 75780036546815673}
   _icon: {fileID: 3066496538987114723}
+  _canvasPlayerSwitcher: {fileID: 4894676080675336992}
 --- !u!114 &9040928548955586838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1785,6 +1790,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeaponPanelMobile
       objectReference: {fileID: 0}
+    - target: {fileID: 6932285452432452287, guid: 2eec25215f94dd348972223761e5243c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8965457081513309192, guid: 2eec25215f94dd348972223761e5243c,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1826,6 +1836,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 240155568554615025}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4177656685472055660 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4228652075679916445, guid: 2eec25215f94dd348972223761e5243c,
+    type: 3}
+  m_PrefabInstance: {fileID: 240155568554615025}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e50b35fb5d54434f879294986ddbe90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1081752984829056995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1957,12 +1979,12 @@ PrefabInstance:
     - target: {fileID: 4834721942541052728, guid: 469053bd898da4c1fa119b38ab18c0d1,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.747
       objectReference: {fileID: 0}
     - target: {fileID: 4834721942541052728, guid: 469053bd898da4c1fa119b38ab18c0d1,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8040803121581346194, guid: 469053bd898da4c1fa119b38ab18c0d1,
         type: 3}

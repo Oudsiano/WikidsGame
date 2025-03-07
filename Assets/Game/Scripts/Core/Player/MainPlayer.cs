@@ -12,10 +12,11 @@ namespace Core.Player
     public class MainPlayer : MonoBehaviour
     {
         [SerializeField] private PlayerArmorManager _playerArmorManager;
-        [SerializeField] private WeaponPanelUI _weaponPanelUI;
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private IconForFarCamera _icon;
+        [SerializeField] private CanvasPlayerSwitcher _canvasPlayerSwitcher;
 
+        private WeaponPanelUI _weaponPanelUI;
         private DataPlayer _dataPlayer;
         private UIManager _uiManager;
         private SaveGame _saveGame;
@@ -31,6 +32,9 @@ namespace Core.Player
             _saveGame = saveGame;
             _dataPlayer = dataPlayer;
             _uiManager = uiManager;
+            
+            _canvasPlayerSwitcher.ChangePlayerCanvases();
+            _weaponPanelUI = _canvasPlayerSwitcher.GetWeaponPanelUI();
 
             _playerController.Construct(igame, _playerArmorManager, _weaponPanelUI, _saveGame,
                 _dataPlayer, this, fastTestsManager, questManager, coinManager, bottleManager, _uiManager, weaponArmorManager);

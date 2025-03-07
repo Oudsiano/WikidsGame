@@ -75,7 +75,7 @@ namespace Infrastructure.Installers
             Container.Bind<CursorManager>().FromComponentInNewPrefab(_cursorManagerPrefab).AsSingle().NonLazy();
             BindingUI();
              // Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
-            // Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerMobilePrefab).AsSingle().NonLazy(); //TO DO озможно нужно будет в этом месте делать проверку на девайс
+            // Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerMobilePrefab).AsSingle().NonLazy();
             Container.Bind<CoinManager>().FromComponentInNewPrefab(_coinManagerPrefab).AsSingle().NonLazy();
             Container.Bind<WeaponArmorManager>().FromComponentInNewPrefab(_weaponArmorManagerPrefab).AsSingle()
                 .NonLazy();

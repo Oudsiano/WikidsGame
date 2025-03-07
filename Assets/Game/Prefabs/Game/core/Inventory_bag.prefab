@@ -330,6 +330,7 @@ MonoBehaviour:
   _isMarket: 0
   _dropedFromThere: 0
   _priceMultiple: 0
+  _showPricesThere: 0
 --- !u!114 &4301537262104622206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,6 +646,7 @@ MonoBehaviour:
   _isMarket: 0
   _dropedFromThere: 0
   _priceMultiple: 0
+  _showPricesThere: 0
 --- !u!114 &779900081864373768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -743,6 +745,7 @@ MonoBehaviour:
   _isMarket: 0
   _dropedFromThere: 0
   _priceMultiple: 0
+  _showPricesThere: 0
 --- !u!114 &6375833001358082927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1318,6 +1321,7 @@ MonoBehaviour:
   _isMarket: 0
   _dropedFromThere: 0
   _priceMultiple: 0
+  _showPricesThere: 0
 --- !u!114 &3015500063395705316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1700,10 +1704,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InventoryBag: {fileID: 1478296416743616945}
-  InventoryWeapon: {fileID: 9215466038218069711}
-  InventoryArmor: {fileID: 8099294346571587631}
-  DropPlace: {fileID: 2671456472024135791}
-  btnClose: {fileID: 7553674194991825303}
+  _inventoryWeapon: {fileID: 9215466038218069711}
+  _inventoryArmor: {fileID: 8099294346571587631}
+  _dropPlace: {fileID: 2671456472024135791}
+  _buttonClose: {fileID: 7553674194991825303}
 --- !u!1 &6985626002731877705
 GameObject:
   m_ObjectHideFlags: 0
@@ -2141,9 +2145,9 @@ RectTransform:
   - {fileID: 8152821609674336407}
   m_Father: {fileID: 5452505989118157942}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1098, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 948, y: -350}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5779193480686467050

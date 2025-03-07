@@ -162,6 +162,9 @@ namespace UI
             HelpInFirstScene.Construct(_dataPlayer, _sceneLoader);
             _testTableGenerator.Construct(_fastTestsManager);
             UiMarketPanel.Construct(playerController, coinManager, _saveGame, weaponArmorManager, _igame);
+            
+
+           
             uIBug.Construct(_igame, _saveGame, playerController, weaponArmorManager);
 
             _buttonMarket.onClick.AddListener(OnClickButtonMarket);

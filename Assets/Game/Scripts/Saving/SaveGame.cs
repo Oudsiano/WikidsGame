@@ -110,9 +110,9 @@ namespace Saving
                 return;
             }
 
-            _dataPlayer.PlayerData.FinishedRegionsName.Add(_sceneNameForPortal);
+            AddFinishedRegion(_sceneNameForPortal);
 
-            if (bonusWeapon != null) // TODO DUPLICATE
+            if (bonusWeapon != null)
             {
                 if (_uiManager.uIBug.AddEquipInBugIfNotExist(
                         _weaponArmorManager.TryGetItemByName(bonusWeapon.name)))
@@ -292,7 +292,36 @@ namespace Saving
             Coins = _dataPlayer.PlayerData.coins;
             _uiManager.SetArrowsCount();
         }
+        
+        public void AddFinishedRegion(string regionName)
+        {
+             if (string.IsNullOrEmpty(regionName))
+            {
+                return;
+            }
 
+            if (_dataPlayer == null || _dataPlayer.PlayerData == null)
+            {
+                return;
+            }
+
+            if (_dataPlayer.PlayerData.FinishedRegionsName == null)
+            {
+                return;
+            }
+
+            int regionHash = regionName.GetHashCode();
+
+            // Проверяем, есть ли уже такой хэш в списке
+            bool isDuplicate = _dataPlayer.PlayerData.FinishedRegionsName
+                .Exists(region => region.GetHashCode() == regionHash && region == regionName);
+
+            if (!isDuplicate) // Если дубликата нет, добавляем
+            {
+                _dataPlayer.PlayerData.FinishedRegionsName.Add(regionName);
+            }
+        }
+        
         private void TextDisplay(int coins, string text) // TODO refactor and create Canvas Factory
         {
             _coinManager.Coins.ChangeCount(coins);

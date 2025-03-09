@@ -32,10 +32,10 @@ namespace Infrastructure.Installers.EntryPoint
                 _sceneContainer.Resolve<SceneLoaderService>(),
                 _sceneContainer.Resolve<GameAPI>());
             
-            _locationChangeMobie.Construct(_sceneContainer.Resolve<DataPlayer>(),
-                _sceneContainer.Resolve<LevelChangeObserver>(), 
-                _sceneContainer.Resolve<SceneLoaderService>(),
-                _sceneContainer.Resolve<GameAPI>());
+            // _locationChangeMobie.Construct(_sceneContainer.Resolve<DataPlayer>(),
+            //     _sceneContainer.Resolve<LevelChangeObserver>(), 
+            //     _sceneContainer.Resolve<SceneLoaderService>(),
+            //     _sceneContainer.Resolve<GameAPI>());
         }
     }
 }

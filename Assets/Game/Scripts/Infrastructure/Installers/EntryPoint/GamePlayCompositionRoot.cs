@@ -17,11 +17,10 @@ namespace Infrastructure.Installers.EntryPoint
     public class GamePlayCompositionRoot : MonoBehaviour, ICompose
     {
         [SerializeField] private SceneContext _sceneContext;
-        [SerializeField] private ConversationManager _conversationManager;
         [SerializeField] private SceneComponent _sceneComponent;
 
+        [SerializeField] private ConversationStarter[] _conversationStarters;
         [SerializeField] private DownloadTestData[] _downloadTestData;
-        [SerializeField] private ConversationMarket _conversationMarket;
         [SerializeField] private SetStudyStep[] _setStudySteps;
         [SerializeField] private NPCInteractable[] _npcInteractable;
         [SerializeField] private AnswerHandler[] _answerHandlers;
@@ -48,14 +47,18 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
-            if (_conversationMarket != null)
-            {
-                _conversationMarket.Construct(_sceneContainer.Resolve<UIManager>());
-            }
-
             if (_sceneComponent != null)
             {
                 _sceneComponent.Construct(_sceneContainer.Resolve<LevelChangeObserver>());
+            }
+
+            if (_conversationStarters.Length > 0)
+            {
+                foreach (ConversationStarter starter in _conversationStarters)
+                {
+                    starter.Construct(_sceneContainer.Resolve<QuestManager>(), _sceneContainer.Resolve<DataPlayer>(),
+                        _sceneContainer.Resolve<GameAPI>());
+                }
             }
 
             if (_downloadTestData.Length > 0)

@@ -79,6 +79,18 @@ namespace UI
             _confirmPanel.SetActive(false);
 
             _btnClose.onClick.AddListener(OnClickClose);
+            
+            _marketInventoryController = InventoryAll.GetComponent<InventoryController>();
+            InventoryAll.Init();
+            InventoryBag.Init();
+            GenerateMarketItems();
+
+            InventoryBag.inventory.onItemAdded += HandleItemBugAdded;
+            InventoryBag.inventory.onItemRemoved += HandleItemBugRemoved;
+            InventoryAll.inventory.onItemAdded += HandleItemAdded;
+            InventoryAll.inventory.onItemRemoved += HandleItemRemoved;
+
+            _coinManager.Coins.OnChangeCount += OnChangeMoney;
         }
 
         private void Update()
@@ -105,21 +117,6 @@ namespace UI
                 Quaternion.Euler(0, _angleTryOnEquip, 0);
         }
         
-        public void Init() // TODO constrct
-        {
-            _marketInventoryController = InventoryAll.GetComponent<InventoryController>();
-            InventoryAll.Init();
-            InventoryBag.Init();
-            GenerateMarketItems();
-
-            InventoryBag.inventory.onItemAdded += HandleItemBugAdded;
-            InventoryBag.inventory.onItemRemoved += HandleItemBugRemoved;
-            InventoryAll.inventory.onItemAdded += HandleItemAdded;
-            InventoryAll.inventory.onItemRemoved += HandleItemRemoved;
-
-            _coinManager.Coins.OnChangeCount += OnChangeMoney;
-        }
-
         public void Regen(int _minPrice, int _maxPrice)
         {
             this._minPrice = _minPrice;

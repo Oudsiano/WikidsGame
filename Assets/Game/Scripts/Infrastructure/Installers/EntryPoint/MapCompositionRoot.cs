@@ -2,7 +2,6 @@
 using Saving;
 using SceneManagement;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace Infrastructure.Installers.EntryPoint
@@ -11,14 +10,11 @@ namespace Infrastructure.Installers.EntryPoint
     {
         [SerializeField] private SceneContext _sceneContext;
 
-        [SerializeField] private CanvasSwitcher _canvasSwitcher;
-        [FormerlySerializedAs("_locationChange")] [SerializeField] private LocationChange _locationChangeDesktop;
+        [SerializeField] private LocationChange _locationChange;
         
-        [FormerlySerializedAs("_locationChangeMobie")] [SerializeField] private LocationChange _locationChangeMobile;
+        [SerializeField] private LocationChange _locationChangeMobie;
         
         private DiContainer _sceneContainer;
-        
-        private LocationChange _locationChange;
         
 
         [Inject]
@@ -26,7 +22,6 @@ namespace Infrastructure.Installers.EntryPoint
         {
             _sceneContainer = _sceneContext.Container;
 
-            SetLocationChange();
             ConstructComponents();
         }
 
@@ -36,15 +31,11 @@ namespace Infrastructure.Installers.EntryPoint
                 _sceneContainer.Resolve<LevelChangeObserver>(), 
                 _sceneContainer.Resolve<SceneLoaderService>(),
                 _sceneContainer.Resolve<GameAPI>());
-        }
-
-        private void SetLocationChange()
-        {
-            bool isMobile = DeviceChecker.IsMobileDevice();
-
-            _locationChange = isMobile ? _locationChangeMobile : _locationChangeDesktop;
             
-            _canvasSwitcher.SetCanvasChange(isMobile);
+            // _locationChangeMobie.Construct(_sceneContainer.Resolve<DataPlayer>(),
+            //     _sceneContainer.Resolve<LevelChangeObserver>(), 
+            //     _sceneContainer.Resolve<SceneLoaderService>(),
+            //     _sceneContainer.Resolve<GameAPI>());
         }
     }
 }

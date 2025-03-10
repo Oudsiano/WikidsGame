@@ -162,9 +162,8 @@ namespace UI
             HelpInFirstScene.Construct(_dataPlayer, _sceneLoader);
             _testTableGenerator.Construct(_fastTestsManager);
             UiMarketPanel.Construct(playerController, coinManager, _saveGame, weaponArmorManager, _igame);
-            
 
-           
+
             uIBug.Construct(_igame, _saveGame, playerController, weaponArmorManager);
 
             _buttonMarket.onClick.AddListener(OnClickButtonMarket);
@@ -331,7 +330,7 @@ namespace UI
 
         private void OnButtonIncreaseChargesClick()
             => _fastTestsManager.NeedTestForArrows(1); // TODO magic numbers
-        
+
         public void RegenFastTestUI(int stratIndexFastTests, int endIndexFastTests, int count_arrows,
             Health targetKillAterTest)
             => fastTestUI.ShowTest(stratIndexFastTests, endIndexFastTests, count_arrows, targetKillAterTest);

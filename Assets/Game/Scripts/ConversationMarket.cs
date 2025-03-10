@@ -20,9 +20,9 @@ public class ConversationMarket : MonoBehaviour
 
     private UIManager _uiManager;
 
-    public void Construct(UIManager uiManager) // TODO Construct
+    private void Awake() 
     {
-        _uiManager = uiManager;
+        _uiManager = IGame.Instance._uiManager;
         _marketButton.gameObject.SetActive(false);
         ConversationManager.OnConversationStarted += OnStartConversation;
         ConversationManager.OnConversationEnded += OnConversationEnded;

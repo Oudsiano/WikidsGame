@@ -37,7 +37,7 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
     public BottleManager _bottleManager;
 
     [FormerlySerializedAs("weaponArmorManager")] [SerializeField]
-    private WeaponArmorManager _weaponArmorManager; // TODO CHANGE
+    private WeaponArmorManager _weaponArmorManager;
 
     private SavePointsManager _savePointsManager;
     private LevelChangeObserver _levelChangeObserver;

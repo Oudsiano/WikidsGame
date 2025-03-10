@@ -33,7 +33,7 @@ public class ConversationStarter : MonoBehaviour
         _questManager = questManager;
         _dataPlayer = dataPlayer;
         _gameAPI = gameAPI;
-        //_downloadData = FindObjectOfType<DownloadTestData>();
+        _downloadData = FindObjectOfType<DownloadTestData>();
     }
     
     public void StartDialog()
@@ -58,7 +58,7 @@ public class ConversationStarter : MonoBehaviour
 
     private void Update()
     {
-        if (waitStartSecondDialog)
+        if (waitStartSecondDialog && ConversationManager.Instance != null)
         {
             if (!ConversationManager.Instance.IsConversationActive)
                 StartSecondDialog();

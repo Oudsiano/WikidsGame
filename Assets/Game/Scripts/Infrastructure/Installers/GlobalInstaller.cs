@@ -89,6 +89,8 @@ namespace Infrastructure.Installers
                     {
                         Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
                     }
+                    
+                    Debug.Log("IsMobile "+DeviceChecker.IsMobileDevice());
         }
     }
 }

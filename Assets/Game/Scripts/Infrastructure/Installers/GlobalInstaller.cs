@@ -59,8 +59,6 @@ namespace Infrastructure.Installers
 
         private void BindingComponents()
         {
-            
-
             Container.Bind<KeyBoardsEvents>().FromComponentInNewPrefab(_keyBoardsEvents).AsSingle().NonLazy();
             Container.Bind<AllQuestsInGame>().FromComponentInNewPrefab(_allQuests).AsSingle().NonLazy();
             Container.Bind<SceneWithTestsID>().FromComponentInNewPrefab(_sceneWithTestsID).AsSingle().NonLazy();
@@ -91,6 +89,8 @@ namespace Infrastructure.Installers
                     {
                         Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
                     }
+                    
+                    Debug.Log("IsMobile "+DeviceChecker.IsMobileDevice());
         }
     }
 }

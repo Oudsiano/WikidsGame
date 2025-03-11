@@ -28,8 +28,8 @@ namespace UI
             _button.onClick.AddListener(OnClick);
 
             _timeAnimate = false;
-            _background.color = new Color(0.6036846f, 0.9622642f, 0.606497f, 0.509804f); // TODO magic numbers
-            _sectorImage.fillAmount = 0;
+            // _background.color = new Color(0.6036846f, 0.9622642f, 0.606497f, 0.509804f); // TODO magic numbers
+            // _sectorImage.fillAmount = 0;
 
             // Load a font that supports Cyrillic characters
             TMPro.TMP_FontAsset

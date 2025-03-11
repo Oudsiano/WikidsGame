@@ -41,7 +41,7 @@ namespace UI
             _playerController.GetFighter().SetCommonWeapon();
             FireballPanell.SetActive(false);
             CommonWeaponPanell.SetActive(true);
-            BowPanell.SetActive(false);
+            // BowPanell.SetActive(false);
         }
 
         public void ResetFireballCount()
@@ -62,7 +62,7 @@ namespace UI
         {
             _playerController.GetFighter().SetFireball();
             FireballPanell.SetActive(true);
-            CommonWeaponPanell.SetActive(false);
+            // CommonWeaponPanell.SetActive(false);
             BowPanell.SetActive(false); 
         }
 
@@ -72,7 +72,7 @@ namespace UI
         {
             _playerController.GetFighter().SetBow(); 
             BowPanell.SetActive(true);
-            CommonWeaponPanell.SetActive(false);
+            // CommonWeaponPanell.SetActive(false);
             FireballPanell.SetActive(false);  
         }
     }

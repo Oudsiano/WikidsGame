@@ -59,6 +59,8 @@ namespace DialogueEditor
         public UIConversationButton ButtonPrefab;
         // Default values
         public Sprite BlankSprite;
+        
+        public SpeechNode CurrentSpeechNode=> m_currentSpeech;
 
         // Getter properties
         public bool IsConversationActive

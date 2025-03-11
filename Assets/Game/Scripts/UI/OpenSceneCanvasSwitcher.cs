@@ -66,6 +66,7 @@ public class OpenSceneCanvasSwitcher : MonoBehaviour
             if (conn is OptionConnection optionConn)
             {
                 Debug.Log(" -> Option: " + optionConn.OptionNode.Text);
+                Debug.Log("Current Text" + ConversationManager.Instance.CurrentSpeechNode.Text);
                 if (optionConn.OptionNode.Text == text)
                 {
                     return optionConn.OptionNode;

@@ -105,7 +105,7 @@ namespace PsychoticLab
         {
             // rebuild all lists
             BuildLists();
-
+        
             // disable any enabled objects before clear
             if (enabledObjects.Count != 0)
             {
@@ -114,25 +114,25 @@ namespace PsychoticLab
                     g.SetActive(false);
                 }
             }
-
+        
             // clear enabled objects list
             enabledObjects.Clear();
-
+        
             // set default male character
-            // ActivateItem(male.headAllElements[0]);
-            // ActivateItem(male.eyebrow[0]);
-            // ActivateItem(male.facialHair[0]);
-            // ActivateItem(male.torso[0]);
-            // ActivateItem(male.arm_Upper_Right[0]);
-            // ActivateItem(male.arm_Upper_Left[0]);
-            // ActivateItem(male.arm_Lower_Right[0]);
-            // ActivateItem(male.arm_Lower_Left[0]);
-            // ActivateItem(male.hand_Right[0]);
-            // ActivateItem(male.hand_Left[0]);
-            // ActivateItem(male.hips[0]);
-            // ActivateItem(male.leg_Right[0]);
-            // ActivateItem(male.leg_Left[0]);
-
+            ActivateItem(male.headAllElements[0]);
+            ActivateItem(male.eyebrow[0]);
+            ActivateItem(male.facialHair[0]);
+            ActivateItem(male.torso[0]);
+            ActivateItem(male.arm_Upper_Right[0]);
+            ActivateItem(male.arm_Upper_Left[0]);
+            ActivateItem(male.arm_Lower_Right[0]);
+            ActivateItem(male.arm_Lower_Left[0]);
+            ActivateItem(male.hand_Right[0]);
+            ActivateItem(male.hand_Left[0]);
+            ActivateItem(male.hips[0]);
+            ActivateItem(male.leg_Right[0]);
+            ActivateItem(male.leg_Left[0]);
+        
             // setting up the camera position, rotation, and reference for use
             // Transform cam = Camera.main.transform;
             // if(cam)
@@ -144,8 +144,8 @@ namespace PsychoticLab
             //     cam.LookAt(camHolder);
             //     cam.SetParent(camHolder);
             // }
-
-            Randomize();
+        
+            // Randomize();
             // if repeat on play is checked in the inspector, repeat the randomize method based on the shuffle speed, also defined in the inspector
             if (repeatOnPlay)
                 InvokeRepeating("Randomize", shuffleSpeed, shuffleSpeed);

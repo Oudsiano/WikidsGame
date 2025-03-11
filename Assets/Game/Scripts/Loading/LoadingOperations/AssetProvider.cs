@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
@@ -15,10 +18,6 @@ namespace Loading.LoadingOperations
 
         public async UniTask Load(Action<float> progress)
         {
-            var operation = Addressables.InitializeAsync();
-
-            await operation.Task;
-
             _isReady = true;
         }
 
@@ -35,13 +34,22 @@ namespace Loading.LoadingOperations
         {
             await WaitUntilReady();
 
-            var operation = Addressables.LoadSceneAsync(nameScene);
+            Debug.Log($"[AssetProvider] Trying to load scene: {nameScene}");
 
+            var locations = await Addressables.LoadResourceLocationsAsync(nameScene).ToUniTask();
+
+            if (locations == null || locations.Count == 0)
+            {
+                Debug.LogError($"[AssetProvider] Scene '{nameScene}' not found in Addressables.");
+                throw new ArgumentException($"Scene '{nameScene}' not found in Addressables.");
+            }
+
+            var operation = Addressables.LoadSceneAsync(nameScene);
             await operation.Task;
 
             if (operation.Status == AsyncOperationStatus.Failed)
             {
-                throw new ArgumentException($"Scene '{nameScene}' not found or failed to load.");
+                throw new ArgumentException($"Scene '{nameScene}' failed to load.");
             }
 
             return operation.Result;

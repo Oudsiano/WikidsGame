@@ -4,8 +4,6 @@ using SceneManagement;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceProviders;
-using UnityEngine.SceneManagement;
 using Utils;
 
 namespace Loading.LoadingOperations
@@ -26,6 +24,7 @@ namespace Loading.LoadingOperations
         public async UniTask Load(Action<float> onProgress)
         {
             onProgress?.Invoke(0f);
+
             var handle = await _assetProvider.LoadScene(Constants.Scenes.OpenScene);
 
             onProgress?.Invoke(0.85f);

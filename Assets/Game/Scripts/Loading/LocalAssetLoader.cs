@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 
 namespace Loading
 {
     public class LocalAssetLoader
     {
+        private Dictionary<string, AsyncOperationHandle> _loadedAssets = new Dictionary<string, AsyncOperationHandle>();
         private GameObject _cachedObject;
 
         public async UniTask<T> Load<T>(string assetId) where T : Component
@@ -20,7 +24,7 @@ namespace Loading
                 throw new NullReferenceException($"Failed to load prefab with assetId: {assetId}");
             }
 
-            if (!prefab.TryGetComponent(out T component))
+            if (prefab.TryGetComponent(out T component) == false)
             {
                 throw new NullReferenceException($"Object of type {typeof(T)} is null on " +
                                                  "attempt to load it from addressables");
@@ -32,6 +36,7 @@ namespace Loading
         public async UniTask<T> LoadAndInstantiate<T>(string assetId, Transform parent = null)
         {
             var handle = Addressables.InstantiateAsync(assetId, parent);
+
             _cachedObject = await handle.Task;
 
             if (_cachedObject.TryGetComponent(out T component) == false)
@@ -53,7 +58,9 @@ namespace Loading
         public void Unload()
         {
             if (_cachedObject == null)
+            {
                 return;
+            }
 
             _cachedObject.SetActive(false);
             Addressables.ReleaseInstance(_cachedObject);

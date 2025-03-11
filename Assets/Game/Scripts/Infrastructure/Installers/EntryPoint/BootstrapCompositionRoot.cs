@@ -13,6 +13,8 @@ using Saving;
 using SceneManagement;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Utils;
 using Web;
 using Zenject;
 
@@ -53,6 +55,7 @@ namespace Infrastructure.Installers.EntryPoint
 
         private LoadingScreenProvider _loadingProvider;
         private AssetProvider _assetProvider;
+        private MultiScenePreloader _multiScenePreloader;
         
         [Inject]
         public void Compose(DiContainer diContainer) 
@@ -87,7 +90,8 @@ namespace Infrastructure.Installers.EntryPoint
             _sceneWithTestsID = _sceneContainer.Resolve<SceneWithTestsID>();
             
             ConstructComponents();
-            LoadingOperations();
+
+            SceneManager.LoadScene(Constants.Scenes.OpenScene);
         }
 
         private void ConstructComponents() // TODO check order
@@ -120,8 +124,16 @@ namespace Infrastructure.Installers.EntryPoint
         {
             var loadingOperations = new Queue<ILoadingOperation>();
             
+            var availableScenes = new List<string>
+            {
+                Constants.Scenes.OpenScene,
+                Constants.Scenes.MapScene,
+            };
+
+            _multiScenePreloader = new MultiScenePreloader(availableScenes);
+            
             loadingOperations.Enqueue(_assetProvider);
-            loadingOperations.Enqueue(new ConfigOperation());
+            loadingOperations.Enqueue(_multiScenePreloader);
             loadingOperations.Enqueue(new OpenSceneLoadingOperation(_sceneLoader, _assetProvider));
 
             _loadingProvider.LoadAndDestroy(loadingOperations).Forget();

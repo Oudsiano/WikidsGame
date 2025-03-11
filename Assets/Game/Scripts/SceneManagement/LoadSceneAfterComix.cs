@@ -2,6 +2,8 @@ using Cysharp.Threading.Tasks;
 using Loading;
 using Loading.LoadingOperations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Utils;
 
 namespace SceneManagement
 {
@@ -20,7 +22,7 @@ namespace SceneManagement
 
         public void LoadSceneNext()
         {
-            _loadingScreenProvider.LoadAndDestroy(new MapSceneOperation(_sceneLoaderService, _assetProvider)).Forget();
+            SceneManager.LoadScene(Constants.Scenes.MapScene);
         }
     }
 }

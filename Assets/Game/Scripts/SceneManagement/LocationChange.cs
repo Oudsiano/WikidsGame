@@ -110,6 +110,22 @@ namespace SceneManagement
             _loading.gameObject.SetActive(false);
         }
 
+        public List<string> GetOpenedScenesInReverseOrder()
+        {
+            var openedScenes = new List<string>();
+
+            for (int i = _regions.Count - 1; i >= 0; i--)
+            {
+                if (_regions[i].Button != null && _regions[i].Button.interactable)
+                {
+                    openedScenes.Add(_regions[i].loadedScene);
+                }
+            }
+
+            return openedScenes;
+        }
+
+        
         private void SetupMaxRegion(List<string> finishedRegionsIDs)
         {
             int foundIndex = -1;

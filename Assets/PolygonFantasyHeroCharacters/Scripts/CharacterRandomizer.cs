@@ -596,7 +596,7 @@ namespace PsychoticLab
             // find character parts parent object in the scene
             foreach (Transform t in rootTransform)
             {
-                Debug.Log($"Проверка объекта: {t.gameObject.name}"); 
+                //Debug.Log($"Проверка объекта: {t.gameObject.name}"); 
                 if (t.gameObject.name == characterPart)
                 {
                     targetRoot = t;

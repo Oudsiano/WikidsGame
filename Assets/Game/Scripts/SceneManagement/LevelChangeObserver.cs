@@ -9,6 +9,7 @@ using Saving;
 using SceneManagement.Enums;
 using UI;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
@@ -93,7 +94,7 @@ namespace SceneManagement
         {
             _indexSceneToLoad = newName;
             Debug.Log("Уровень загрузки изменен на " + newName);
-
+            
             _loadingScreenProvider.LoadAndDestroy(new BattleSceneOperation(_indexSceneToLoad, _assetProvider)).Forget();
         }
 

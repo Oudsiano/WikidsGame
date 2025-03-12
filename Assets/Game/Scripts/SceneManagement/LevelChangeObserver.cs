@@ -42,7 +42,7 @@ namespace SceneManagement
             _loadingScreenProvider = loadingScreenProvider;
             _assetProvider = assetProvider;
             _assetPreloader = assetPreloader;
-            // Подписываемся на событие изменения уровня загрузки.
+
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
@@ -51,7 +51,7 @@ namespace SceneManagement
             if (_dataPlayer.PlayerData.spawnPoint == 0)
             {
                 GameObject startPos = GameObject.Find("StartPoint");
-
+                Debug.Log(startPos);
                 if (startPos != null)
                 {
                     UpdatePlayerLocation(startPos.transform.position, startPos.transform.rotation);

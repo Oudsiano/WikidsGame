@@ -78,22 +78,7 @@ namespace AINavigation
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }
-
-        // public void Init() // TODO Construct
-        // {
-        //     _mover = GetComponent<Mover>(); // TODO RequieredComponents  
-        //     _fighter = GetComponent<Fighter>();
-        //     _health = GetComponent<Healths.Healths>();
-        //
-        //     PlayerArmorManager = FindObjectOfType<PlayerArmorManager>(); // TODO Delete
-        //
-        //     WeaponPanelUI = FindObjectOfType<WeaponPanelUI>(); // TODO Delete
-        //     WeaponPanelUI.Init();
-        //
-        //     SceneManager.sceneLoaded += SceneLoader_LevelChanged;
-        //     _saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
-        // }
-
+        
         private void Update()
         {
             if (PauseClass.GetPauseState())
@@ -172,6 +157,7 @@ namespace AINavigation
 
         private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode) // TODO move to one SceneLoaderService
         {
+            Debug.Log("Player SceneLoader_LevelChanged");
             _saveGame.MakeLoad();
             _saveGame.SetBonusWeaponAndArmorIfNeed();
             EquipWeaponAndArmorAfterLoad();

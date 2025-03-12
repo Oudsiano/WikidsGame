@@ -45,7 +45,7 @@ namespace Movement
 
         private void Update()
         {
-            if (_isPlayer == false && _agent.isActiveAndEnabled)
+            if (_isPlayer == false && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
             {
                 if (PauseClass.GetPauseState())
                 {
@@ -91,7 +91,7 @@ namespace Movement
 
         public void MoveTo(Vector3 position)
         {
-            if (_agent.isActiveAndEnabled == false)
+            if (_agent == null || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
             {
                 return;
             }

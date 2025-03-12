@@ -3,6 +3,7 @@ using Core.Player;
 using Cysharp.Threading.Tasks;
 using Data;
 using Healths;
+using Infrastructure;
 using Loading;
 using Loading.LoadingOperations;
 using Saving;
@@ -11,6 +12,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AI;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using Utils;
 
@@ -18,6 +20,8 @@ namespace SceneManagement
 {
     public class LevelChangeObserver : MonoBehaviour // TODO check
     {
+        private NavMeshDataInstance _navMeshInstance;
+        
         private string _indexSceneToLoad;
         private SavePointsManager _savePointsManager;
         private DataPlayer _dataPlayer;
@@ -43,9 +47,30 @@ namespace SceneManagement
             _assetProvider = assetProvider;
             _assetPreloader = assetPreloader;
 
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            //SceneManager.sceneLoaded += OnSceneLoaded;
         }
+        
+        private async UniTask LoadNavMesh(AssetReferenceT<NavMeshData> navMeshData)
+        {
+            if (_navMeshInstance.valid)
+            {
+                NavMesh.RemoveNavMeshData(_navMeshInstance);
+            }
 
+            var handle = navMeshData.LoadAssetAsync();
+            await handle.ToUniTask();
+
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                NavMeshData data = handle.Result;
+                _navMeshInstance = NavMesh.AddNavMeshData(data);
+            }
+            else
+            {
+                Debug.LogError("Не удалось загрузить NavMeshData");
+            }
+        }
+        
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (_dataPlayer.PlayerData.spawnPoint == 0)
@@ -97,16 +122,38 @@ namespace SceneManagement
         {
             _indexSceneToLoad = newName;
             Debug.Log("Уровень загрузки изменен на " + newName);
-            
+
             await SceneManager.LoadSceneAsync(Constants.Scenes.GamePlayScene, LoadSceneMode.Single);
-            
+
             await UniTask.Yield();
-            
+
             var prefab = _assetPreloader.GetLoadedAsset(newName);
-            
+
             if (prefab != null)
             {
                 Instantiate(prefab);
+                await LoadNavMesh(prefab.GetComponent<NavMeshDataHolder>().NavMeshData);
+                
+                if (_dataPlayer.PlayerData.spawnPoint == 0)
+                {
+                    GameObject startPos = GameObject.Find("StartPoint");
+                    Debug.Log(startPos);
+                    if (startPos != null)
+                    {
+                        UpdatePlayerLocation(startPos.transform.position, startPos.transform.rotation);
+                        _uiManager.FollowCamera.ActivateCommonZoomUpdate();
+                    }
+                }
+                else if (SavePointsManager.AllSavePoints.Count > 0)
+                {
+                    Vector3 pos = SavePointsManager.AllSavePoints[_dataPlayer.PlayerData.spawnPoint].transform.position;
+                    UpdatePlayerLocation(pos, Quaternion.identity);
+                    _uiManager.FollowCamera.ActivateCommonZoomUpdate();
+                }
+
+                _savePointsManager.UpdateStateSpawnPointsAfterLoad(true);
+                _player.ResetCountEnergy();
+                _gameAPI.SaveUpdater();
             }
             else
             {

@@ -93,7 +93,7 @@ namespace Infrastructure.Installers.EntryPoint
             
             ConstructComponents();
 
-            await _assetPreloader.LoadAllAssets();
+            await _assetPreloader.LoadOpenedScenes(_dataPlayer.PlayerData.FinishedRegionsName);
             SceneManager.LoadScene(Constants.Scenes.OpenScene);
         }
 

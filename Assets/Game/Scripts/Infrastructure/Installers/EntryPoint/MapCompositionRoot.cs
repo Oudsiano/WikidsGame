@@ -6,7 +6,6 @@ using Loading.LoadingOperations;
 using Saving;
 using SceneManagement;
 using UnityEngine;
-using Utils;
 using Zenject;
 
 namespace Infrastructure.Installers.EntryPoint
@@ -23,8 +22,7 @@ namespace Infrastructure.Installers.EntryPoint
         private AssetProvider _assetProvider;
         private LoadingScreenProvider _loadingProvider;
         private SceneLoaderService _sceneLoader;
-
-
+        
         [Inject]
         public void Compose(DiContainer diContainer)
         {
@@ -48,6 +46,8 @@ namespace Infrastructure.Installers.EntryPoint
             loadingOperations.Enqueue(_assetProvider);
 
             await _loadingProvider.LoadAndDestroy(loadingOperations);
+
+            await _sceneContainer.Resolve<AssetPreloader>().LoadRemainingScenes();
         }
     }
 }

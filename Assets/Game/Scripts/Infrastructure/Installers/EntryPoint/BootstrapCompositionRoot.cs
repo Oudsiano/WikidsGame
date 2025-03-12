@@ -52,17 +52,19 @@ namespace Infrastructure.Installers.EntryPoint
         private AllQuestsInGame _allQuests;
         private SceneWithTestsID _sceneWithTestsID;
         private KeyBoardsEvents _keyBoardsEvents;
+        private SceneComponent _sceneComponent;
 
         private LoadingScreenProvider _loadingProvider;
         private AssetProvider _assetProvider;
-        private MultiScenePreloader _multiScenePreloader;
+        private AssetPreloader _assetPreloader;
         
         [Inject]
-        public void Compose(DiContainer diContainer) 
+        public async void Compose(DiContainer diContainer) 
         {
             _sceneContainer = _sceneContext.Container;
             _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
             _assetProvider = _sceneContainer.Resolve<AssetProvider>();
+            _assetPreloader = _sceneContainer.Resolve<AssetPreloader>();
             
             _keyBoardsEvents = _sceneContainer.Resolve<KeyBoardsEvents>();
             _javaScriptHook = _sceneContainer.Resolve<JavaScriptHook>();
@@ -91,6 +93,7 @@ namespace Infrastructure.Installers.EntryPoint
             
             ConstructComponents();
 
+            await _assetPreloader.LoadAllAssets();
             SceneManager.LoadScene(Constants.Scenes.OpenScene);
         }
 
@@ -100,7 +103,7 @@ namespace Infrastructure.Installers.EntryPoint
                 _levelChangeObserver, _savePointsManager, _arrowForPlayerManager,
                 _questManager, _npcManager, _fastTestsManager,
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
-                _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider, _assetProvider);
+                _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider, _assetProvider, _assetPreloader);
 
             _audioManager.Construct();
             _savePointsManager.Construct(_dataPlayer);
@@ -118,25 +121,6 @@ namespace Infrastructure.Installers.EntryPoint
             _followCamera.Construct(_player, _player.PlayerController, _sceneLoader);
             _javaScriptHook.Construct(_dataPlayer, _sceneLoader);
             _keyBoardsEvents.Construct(_sceneLoader, _uiManager);
-        }
-
-        private void LoadingOperations()
-        {
-            var loadingOperations = new Queue<ILoadingOperation>();
-            
-            var availableScenes = new List<string>
-            {
-                Constants.Scenes.OpenScene,
-                Constants.Scenes.MapScene,
-            };
-
-            _multiScenePreloader = new MultiScenePreloader(availableScenes);
-            
-            loadingOperations.Enqueue(_assetProvider);
-            loadingOperations.Enqueue(_multiScenePreloader);
-            loadingOperations.Enqueue(new OpenSceneLoadingOperation(_sceneLoader, _assetProvider));
-
-            _loadingProvider.LoadAndDestroy(loadingOperations).Forget();
         }
     }
 }

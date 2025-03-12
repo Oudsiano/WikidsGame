@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using Utils;
 
 namespace SceneManagement
 {
@@ -25,12 +26,13 @@ namespace SceneManagement
         private GameAPI _gameAPI;
         private LoadingScreenProvider _loadingScreenProvider;
         private AssetProvider _assetProvider;
+        private AssetPreloader _assetPreloader;
 
         public string IndexSceneToLoad => _indexSceneToLoad;
 
         public void Construct(SavePointsManager savePointsManager, DataPlayer dataPlayer, UIManager uiManager,
             MainPlayer player, GameAPI gameAPI, LoadingScreenProvider loadingScreenProvider,
-            AssetProvider assetProvider)
+            AssetProvider assetProvider, AssetPreloader assetPreloader)
         {
             _savePointsManager = savePointsManager;
             _dataPlayer = dataPlayer;
@@ -39,6 +41,7 @@ namespace SceneManagement
             _gameAPI = gameAPI;
             _loadingScreenProvider = loadingScreenProvider;
             _assetProvider = assetProvider;
+            _assetPreloader = assetPreloader;
             // Подписываемся на событие изменения уровня загрузки.
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -90,12 +93,25 @@ namespace SceneManagement
             Debug.Log("OnFadeComplete");
         }
 
-        private void LoadLevel(string newName)
+        private async void LoadLevel(string newName)
         {
             _indexSceneToLoad = newName;
             Debug.Log("Уровень загрузки изменен на " + newName);
             
-            _loadingScreenProvider.LoadAndDestroy(new BattleSceneOperation(_indexSceneToLoad, _assetProvider)).Forget();
+            await SceneManager.LoadSceneAsync(Constants.Scenes.GamePlayScene, LoadSceneMode.Single);
+            
+            await UniTask.Yield();
+            
+            var prefab = _assetPreloader.GetLoadedAsset(newName);
+            
+            if (prefab != null)
+            {
+                Instantiate(prefab);
+            }
+            else
+            {
+                Debug.LogError($"Префаб для сцены {newName} не найден.");
+            }
         }
 
         // Метод для обновления местоположения игрока

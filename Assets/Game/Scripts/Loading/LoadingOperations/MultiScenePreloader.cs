@@ -14,111 +14,123 @@ namespace Loading.LoadingOperations
     public class MultiScenePreloader : ILoadingOperation
     {
         private readonly List<string> _sceneKeys;
+        private readonly HashSet<string> _alreadyPreloaded = new();
+        private Dictionary<string, AsyncOperationHandle> _handles = new();
+
+        // --- Прогресс и статус ---
+        public float Progress { get; private set; }
+        public bool IsPreloading { get; private set; }
+        public bool IsDone { get; private set; }
 
         public string Description => "Preloading available scenes...";
-        
+
         public MultiScenePreloader(IEnumerable<string> sceneKeys)
         {
             _sceneKeys = new List<string>(sceneKeys);
+            foreach (var scene in _sceneKeys)
+                _alreadyPreloaded.Add(scene);
         }
 
         public async UniTask Load(Action<float> onProgress)
         {
+            Progress = 0f;
+            IsPreloading = true;
+            IsDone = false;
+
             var handles = new List<AsyncOperationHandle>();
 
             for (int i = 0; i < _sceneKeys.Count; i++)
             {
                 string key = _sceneKeys[i];
+                if (await TryDownloadScene(key))
+                    handles.Add(_handles[key]);
 
-                if (string.IsNullOrWhiteSpace(key))
-                {
-                    Debug.LogWarning($"[Preloader] ❌ Empty scene key at index {i}");
-                    continue;
-                }
+                Progress = (float)(i + 1) / _sceneKeys.Count;
+                onProgress?.Invoke(Progress);
 
-                var locations = await Addressables.LoadResourceLocationsAsync(key).ToUniTask();
-                if (locations == null || locations.Count == 0)
-                {
-                    Debug.LogWarning($"[Preloader] ❌ Scene '{key}' not found in Addressables.");
-                    continue;
-                }
-
-                var size = await Addressables.GetDownloadSizeAsync(key).ToUniTask();
-                if (size == 0)
-                {
-                    Debug.Log($"[Preloader] ✅ Scene '{key}' has no content to download (cached or in build).");
-                    continue;
-                }
-
-                var handle = Addressables.DownloadDependenciesAsync(key, true);
-                await handle.Task;
-
-                if (!handle.IsValid() || handle.Status == AsyncOperationStatus.Failed)
-                {
-                    Debug.LogError($"[Preloader] ❌ Failed to preload scene '{key}'");
-                    continue;
-                }
-
-                float sizeMB = size / (1024f * 1024f);
-                Debug.Log($"[Preloader] ✅ Scene '{key}' preloaded successfully ({sizeMB:F2} MB)");
-
-                handles.Add(handle);
+                await UniTask.Yield(); // отдаём кадр
             }
 
-            onProgress?.Invoke(1f);
-
             Debug.Log($"[Preloader] 🎉 Finished preloading {_sceneKeys.Count} scenes. Loaded: {handles.Count}");
+
+            IsPreloading = false;
+            IsDone = true;
+            Progress = 1f;
         }
 
-        public async void PreloadScenesInBackground()
-        {
-            var openedScenes = _sceneKeys;
-
-            if (openedScenes.Count == 0)
-                return;
-
-            Debug.Log($"[MapRoot] ⏳ Starting background preload of {openedScenes.Count} scenes...");
-
-            await Load(progress =>
-            {
-                Debug.Log($"[MapRoot] 📦 Background preload progress: {(progress * 100f):F0}%");
-            });
-
-            Debug.Log("[MapRoot] ✅ Background scene preloading complete!");
-        }
-
-        public async void PreloadAllScenesInBackground()
+        /// <summary>
+        /// Запускает полную фоновую предзагрузку всех сцен
+        /// </summary>
+        public async void StartBackgroundPreloadAllScenes()
         {
             var allSceneKeys = GetAllSceneKeysFromAddressables();
+            IsPreloading = true;
+            IsDone = false;
 
-            Debug.Log($"[MapRoot] 🎯 Starting background preload of {allSceneKeys.Count} scenes...");
+            int total = allSceneKeys.Count;
+            int loaded = 0;
 
             foreach (var sceneKey in allSceneKeys)
             {
-                var size = await Addressables.GetDownloadSizeAsync(sceneKey).ToUniTask();
-
-                if (size == 0)
+                if (_alreadyPreloaded.Contains(sceneKey))
                 {
-                    Debug.Log($"[Preloader] ✅ Scene '{sceneKey}' is already cached or in build.");
+                    Debug.Log($"[Preloader] 🔁 Scene '{sceneKey}' already preloaded, skipping.");
+                    loaded++;
+                    UpdateProgress(loaded, total);
                     continue;
                 }
 
-                var handle = Addressables.DownloadDependenciesAsync(sceneKey, true);
-                await handle.Task;
+                await TryDownloadScene(sceneKey);
+                loaded++;
+                UpdateProgress(loaded, total);
 
-                if (handle.Status == AsyncOperationStatus.Succeeded)
-                {
-                    Debug.Log($"[Preloader] ✅ Scene '{sceneKey}' preloaded ({size / (1024f * 1024f):F2} MB)");
-                }
-                else
-                {
-                    Debug.LogError($"[Preloader] ❌ Failed to preload scene: {sceneKey}");
-                }
-
-                await UniTask.Yield(); // освободим кадр, чтоб не фризило
+                await UniTask.Yield(); // разгрузим кадр
             }
 
-            Debug.Log($"[MapRoot] ✅ All background scene preloads complete.");
+            Debug.Log("[Preloader] ✅ All background scenes preloaded.");
+            IsPreloading = false;
+            IsDone = true;
+        }
+
+        private async UniTask<bool> TryDownloadScene(string sceneKey)
+        {
+            if (string.IsNullOrWhiteSpace(sceneKey))
+                return false;
+
+            var locations = await Addressables.LoadResourceLocationsAsync(sceneKey).ToUniTask();
+            if (locations == null || locations.Count == 0)
+            {
+                Debug.LogWarning($"[Preloader] ❌ Scene '{sceneKey}' not found in Addressables.");
+                return false;
+            }
+
+            var size = await Addressables.GetDownloadSizeAsync(sceneKey).ToUniTask();
+            if (size == 0)
+            {
+                Debug.Log($"[Preloader] ✅ Scene '{sceneKey}' already cached or in build.");
+                return true;
+            }
+
+            var handle = Addressables.DownloadDependenciesAsync(sceneKey, true);
+            await handle.Task;
+
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                _handles[sceneKey] = handle;
+                Debug.Log($"[Preloader] ✅ Scene '{sceneKey}' downloaded ({size / (1024f * 1024f):F2} MB)");
+                return true;
+            }
+            else
+            {
+                Debug.LogError($"[Preloader] ❌ Failed to download scene '{sceneKey}'");
+                return false;
+            }
+        }
+
+        private void UpdateProgress(int loaded, int total)
+        {
+            Progress = (float)loaded / total;
+            Debug.Log($"[Preloader] 📦 Progress: {(Progress * 100f):F0}%");
         }
 
         private List<string> GetAllSceneKeysFromAddressables()
@@ -132,7 +144,6 @@ namespace Loading.LoadingOperations
                 Constants.Scenes.FifthBattleSceneKingdom,
                 Constants.Scenes.SixthBattleSceneKingdom,
                 Constants.Scenes.SeventhBattleSceneViking,
-                
                 Constants.Scenes.FirstTownScene,
                 Constants.Scenes.BossFightDarkScene,
                 Constants.Scenes.BossFightKingdom1Scene,
@@ -140,7 +151,6 @@ namespace Loading.LoadingOperations
                 Constants.Scenes.BossFightViking1Scene,
                 Constants.Scenes.LibraryScene,
                 Constants.Scenes.HollScene,
-                
                 Constants.Scenes.EndScene,
             };
         }

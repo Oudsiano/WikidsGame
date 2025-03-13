@@ -12,10 +12,17 @@ namespace Loading.LoadingOperations
 {
     public class AssetProvider : ILoadingOperation
     {
+        private MultiScenePreloader _preloader;
+        
         private bool _isReady;
 
         public string Description => "Assets Initialization...";
 
+        public AssetProvider(MultiScenePreloader preloader)
+        {
+            _preloader = preloader;
+        }
+        
         public async UniTask Load(Action<float> progress)
         {
             _isReady = true;
@@ -32,7 +39,7 @@ namespace Loading.LoadingOperations
 
         public async UniTask<SceneInstance> LoadScene(string nameScene)
         {
-            await WaitUntilReady();
+            await WaitUntilScenePreloaded(nameScene);
 
             Debug.Log($"[AssetProvider] Trying to load scene: {nameScene}");
 
@@ -70,6 +77,25 @@ namespace Loading.LoadingOperations
             {
                 await UniTask.Yield();
             }
+        }
+        
+        private async UniTask WaitUntilScenePreloaded(string nameScene)
+        {
+            if (_preloader.GetPreloadedKeys().Contains(nameScene))
+            {
+                Debug.Log($"[AssetProvider] Scene '{nameScene}' already preloaded.");
+                return;
+            }
+
+            Debug.Log($"[AssetProvider] Waiting for scene '{nameScene}' to preload...");
+
+            // Ожидание, пока сцена не появится в списке предзагруженных
+            while (!_preloader.GetPreloadedKeys().Contains(nameScene))
+            {
+                await UniTask.Yield(); // Ожидаем на каждый кадр
+            }
+
+            Debug.Log($"[AssetProvider] Scene '{nameScene}' is now preloaded.");
         }
     }
 }

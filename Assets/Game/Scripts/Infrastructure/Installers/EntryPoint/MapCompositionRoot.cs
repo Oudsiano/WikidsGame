@@ -6,6 +6,8 @@ using Loading.LoadingOperations;
 using Saving;
 using SceneManagement;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Utils;
 using Zenject;
 
@@ -21,7 +23,7 @@ namespace Infrastructure.Installers.EntryPoint
 
         private DiContainer _sceneContainer;
         private AssetProvider _assetProvider;
-        private MultiScenePreloader _multiScenePreloader;
+        private MultiScenePreloader _preloader;
         private LoadingScreenProvider _loadingProvider;
         private SceneLoaderService _sceneLoader;
 
@@ -36,10 +38,11 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
+            _preloader = _sceneContainer.Resolve<MultiScenePreloader>();
             _assetProvider = _sceneContainer.Resolve<AssetProvider>();
             _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
             _sceneLoader = _sceneContainer.Resolve<SceneLoaderService>();
-            
+
             _locationChange.Construct(_sceneContainer.Resolve<DataPlayer>(),
                 _sceneContainer.Resolve<LevelChangeObserver>(),
                 _sceneContainer.Resolve<SceneLoaderService>(),
@@ -49,35 +52,11 @@ namespace Infrastructure.Installers.EntryPoint
             //     _sceneContainer.Resolve<LevelChangeObserver>(), 
             //     _sceneContainer.Resolve<SceneLoaderService>(),
             //     _sceneContainer.Resolve<GameAPI>());
-            
+
             var loadingOperations = new Queue<ILoadingOperation>();
             loadingOperations.Enqueue(_assetProvider);
-            
-            _multiScenePreloader = new MultiScenePreloader(_locationChange.GetOpenedScenesInReverseOrder());
-            _multiScenePreloader.PreloadScenesInBackground();
-            _multiScenePreloader.PreloadAllScenesInBackground();
-            
-            loadingOperations.Enqueue(_multiScenePreloader);
+
             _loadingProvider.LoadAndDestroy(loadingOperations).Forget();
         }
-
-        // private void LoadingOperations(LocationChange locationChange)
-        // {
-        //     var loadingOperations = new Queue<ILoadingOperation>();
-        //
-        //     loadingOperations.Enqueue(_assetProvider);
-        //     
-        //     var openedScenes = locationChange.GetOpenedScenesInReverseOrder();
-        //
-        //     if (openedScenes.Count > 0)
-        //     {
-        //         _multiScenePreloader = new MultiScenePreloader(openedScenes);
-        //         loadingOperations.Enqueue(_multiScenePreloader);
-        //     }
-        //
-        //     loadingOperations.Enqueue(_multiScenePreloader);
-        //
-        //     _loadingProvider.LoadAndDestroy(loadingOperations).Forget();
-        // }
     }
 }

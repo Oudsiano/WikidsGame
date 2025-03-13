@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using System.Collections.Generic;
+using Core;
 using Core.Camera;
 using Core.Player;
 using Core.Quests;
@@ -41,8 +42,14 @@ namespace Infrastructure.Installers
         public override void InstallBindings()
         {
             Container.Bind<LoadingScreenProvider>().AsSingle().NonLazy();
-            Container.Bind<AssetProvider>().AsSingle().NonLazy();
-            
+            Container.Bind<MultiScenePreloader>().AsSingle().NonLazy();
+
+            Container.Bind<AssetProvider>().FromMethod(context =>
+            {
+                var preloader = Container.Resolve<MultiScenePreloader>();
+                return new AssetProvider(preloader);
+            }).AsSingle().NonLazy();
+
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
             Container.Bind<JavaScriptHook>().FromComponentInNewPrefab(_javaScriptHook).AsSingle().NonLazy();
             Container.Bind<IGame>().FromComponentInNewPrefab(_iGamePrefab).AsSingle().NonLazy();
@@ -53,7 +60,7 @@ namespace Infrastructure.Installers
             Container.Bind<ArrowForPlayerManager>().AsSingle().NonLazy();
             Container.Bind<FastTestsManager>().AsSingle().NonLazy();
             Container.Bind<SaveGame>().AsSingle().NonLazy();
-            
+
             BindingComponents();
         }
 
@@ -72,7 +79,7 @@ namespace Infrastructure.Installers
             Container.Bind<NPCManagment>().FromComponentInNewPrefab(_npcManagerPrefab).AsSingle().NonLazy();
             Container.Bind<CursorManager>().FromComponentInNewPrefab(_cursorManagerPrefab).AsSingle().NonLazy();
             BindingUI();
-             // Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
+            // Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
             // Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerMobilePrefab).AsSingle().NonLazy();
             Container.Bind<CoinManager>().FromComponentInNewPrefab(_coinManagerPrefab).AsSingle().NonLazy();
             Container.Bind<WeaponArmorManager>().FromComponentInNewPrefab(_weaponArmorManagerPrefab).AsSingle()
@@ -81,16 +88,16 @@ namespace Infrastructure.Installers
 
         private void BindingUI()
         {
-                    if (DeviceChecker.IsMobileDevice())
-                    {
-                        Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerMobilePrefab).AsSingle().NonLazy();
-                    }
-                    else
-                    {
-                        Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
-                    }
-                    
-                    Debug.Log("IsMobile "+DeviceChecker.IsMobileDevice());
+            if (DeviceChecker.IsMobileDevice())
+            {
+                Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerMobilePrefab).AsSingle().NonLazy();
+            }
+            else
+            {
+                Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
+            }
+
+            Debug.Log("IsMobile " + DeviceChecker.IsMobileDevice());
         }
     }
 }

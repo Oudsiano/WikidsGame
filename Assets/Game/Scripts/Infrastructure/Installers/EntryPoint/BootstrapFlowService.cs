@@ -35,10 +35,11 @@ namespace Infrastructure.Installers.EntryPoint
 
             Debug.Log("[Bootstrap] 🚀 Starting bootstrap flow");
 
-            var openedScenes = _dataPlayer.PlayerData?.FinishedRegionsName ?? new List<string> { Constants.Scenes.FirstBattleScene };
+            var openedScenes = _dataPlayer.PlayerData?.FinishedRegionsName ??
+                               new List<string> { Constants.Scenes.FirstBattleScene };
             Debug.Log($"[Bootstrap] Preloading opened scenes: {string.Join(", ", openedScenes)}");
 
-            _preloader.SetSceneKeys(openedScenes);
+            _preloader.SetSceneKeys(new List<string> { Constants.Scenes.FirstBattleScene });
 
             await _preloader.Load(progress =>
             {
@@ -48,7 +49,8 @@ namespace Infrastructure.Installers.EntryPoint
             Debug.Log("[Bootstrap] ✅ Opened scenes preloading complete");
 
             await UniTask.WaitUntil(() => _preloader.IsPreloadingComplete);
-            Debug.Log($"[Bootstrap] IsPreloadingComplete: {_preloader.IsPreloadingComplete}, SuccessfullyPreloaded: {string.Join(", ", _preloader.GetPreloadedKeys().Where(k => _preloader.WasSceneSuccessfullyPreloaded(k)))}");
+            Debug.Log(
+                $"[Bootstrap] IsPreloadingComplete: {_preloader.IsPreloadingComplete}, SuccessfullyPreloaded: {string.Join(", ", _preloader.GetPreloadedKeys().Where(k => _preloader.WasSceneSuccessfullyPreloaded(k)))}");
 
             _preloader.PreloadRemainingScenesInBackground().Forget();
         }

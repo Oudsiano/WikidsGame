@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6633050ac13726345b6f02b2d761dfae, type: 3}
-  m_Name: Ancient
+  m_Name: Fire Bow 1
   m_EditorClassIdentifier: 
   PriceCoins: 0
   _sprite: {fileID: 0}
@@ -21,13 +21,20 @@ MonoBehaviour:
   _type: 2
   _canDrop: 1
   _position: {x: 0, y: 0}
-  weaponOverride: {fileID: 22100000, guid: 8344e5f812a81414ea4a3690384ed042, type: 2}
-  weaponPrefab: {fileID: 8850688159232812749, guid: db4217a2d1ab34093bc1370109892ea4,
+  _onlyOne: 0
+  _countItems: 1
+  itemDescription: 
+  _weaponOverride: {fileID: 22100000, guid: 34bff875d6fa96e41a6b49270dffa436, type: 2}
+  _weaponPrefab: {fileID: 8850688159232812749, guid: 482dea2654cb54849903afc8e3cea5e3,
     type: 3}
-  isRightHanded: 1
-  projectile: {fileID: 0}
-  IsFireballs: 0
-  weaponDamage: 30
-  weaponRange: 2.2
-  timeBetweenAttacks: 2.5
-  description: 
+  _isRightHanded: 0
+  _projectile: {fileID: 4660093068279401154, guid: c7f49c6920d49ba468b083941d79f2c0,
+    type: 3}
+  _isFireballs: 0
+  _hitVFX: {fileID: 0}
+  _weaponDamage: 15
+  _weaponRange: 10
+  _timeBetweenAttacks: 4
+  _description: 
+  maxCharges: 10
+  _currentCharges: 0

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Data;
 using Loading.LoadingOperations;
@@ -29,22 +30,13 @@ namespace Infrastructure.Installers.EntryPoint
             }
             catch (TimeoutException)
             {
-                Debug.LogWarning("[Bootstrap] ⏰ Timeout while waiting for GameAPI.GameLoad. Continuing anyway...");
+                Debug.LogWarning("[Bootstrap] ⏰ Timeout waiting for GameAPI.GameLoad. Continuing anyway...");
             }
 
             Debug.Log("[Bootstrap] 🚀 Starting bootstrap flow");
 
-            var openedScenes = _dataPlayer.PlayerData?.FinishedRegionsName;
-
-            if (openedScenes == null || openedScenes.Count == 0)
-            {
-                Debug.LogWarning("[Bootstrap] FinishedRegionsName is null or empty, defaulting to FirstBattleScene");
-                openedScenes = new List<string> { Constants.Scenes.FirstBattleScene };
-            }
-            else
-            {
-                Debug.Log($"[Bootstrap] Preloading opened scenes: {string.Join(", ", openedScenes)}");
-            }
+            var openedScenes = _dataPlayer.PlayerData?.FinishedRegionsName ?? new List<string> { Constants.Scenes.FirstBattleScene };
+            Debug.Log($"[Bootstrap] Preloading opened scenes: {string.Join(", ", openedScenes)}");
 
             _preloader.SetSceneKeys(openedScenes);
 
@@ -56,7 +48,7 @@ namespace Infrastructure.Installers.EntryPoint
             Debug.Log("[Bootstrap] ✅ Opened scenes preloading complete");
 
             await UniTask.WaitUntil(() => _preloader.IsPreloadingComplete);
-            Debug.Log(_preloader.IsPreloadingComplete + " QQQQ");
+            Debug.Log($"[Bootstrap] IsPreloadingComplete: {_preloader.IsPreloadingComplete}, SuccessfullyPreloaded: {string.Join(", ", _preloader.GetPreloadedKeys().Where(k => _preloader.WasSceneSuccessfullyPreloaded(k)))}");
 
             _preloader.PreloadRemainingScenesInBackground().Forget();
         }

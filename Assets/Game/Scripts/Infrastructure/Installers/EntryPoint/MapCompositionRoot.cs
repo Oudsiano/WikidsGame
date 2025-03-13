@@ -52,11 +52,6 @@ namespace Infrastructure.Installers.EntryPoint
             //     _sceneContainer.Resolve<LevelChangeObserver>(), 
             //     _sceneContainer.Resolve<SceneLoaderService>(),
             //     _sceneContainer.Resolve<GameAPI>());
-
-            var loadingOperations = new Queue<ILoadingOperation>();
-            loadingOperations.Enqueue(_assetProvider);
-
-            _loadingProvider.LoadAndDestroy(loadingOperations).Forget();
         }
     }
 }

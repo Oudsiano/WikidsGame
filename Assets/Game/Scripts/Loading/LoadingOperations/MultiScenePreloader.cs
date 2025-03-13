@@ -47,6 +47,7 @@ namespace Loading.LoadingOperations
             {
                 Debug.LogWarning("[Preloader] No scenes to preload.");
                 onProgress?.Invoke(1f);
+                IsPreloadingComplete = true;
                 return;
             }
 
@@ -66,13 +67,10 @@ namespace Loading.LoadingOperations
             if (totalSize == 0)
             {
                 Debug.LogWarning("[Preloader] No downloadable content found. Marking as preloaded.");
-
                 foreach (var key in _sceneKeys)
                 {
                     if (!string.IsNullOrWhiteSpace(key))
-                    {
                         _successfullyPreloaded.Add(key);
-                    }
                 }
 
                 onProgress?.Invoke(1f);
@@ -91,12 +89,20 @@ namespace Loading.LoadingOperations
                 tasks.Add(PreloadSceneAsync(key, semaphore, totalSize, onProgress, _cancellationToken.Token));
             }
 
-            await UniTask.WhenAll(tasks);
+            try
+            {
+                var results = await UniTask.WhenAll(tasks);
+                Debug.Log($"[Preloader] All preload tasks completed. Total size loaded: {results.Sum()} bytes");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[Preloader] Load failed with exception: {e.Message}");
+            }
 
             onProgress?.Invoke(1f);
-            Debug.Log($"[Preloader] 🎉 Finished preloading. Loaded scenes: {_successfullyPreloaded.Count}");
-
-            IsPreloadingComplete = true;
+            Debug.Log(
+                $"[Preloader] 🎉 Finished preloading. Loaded scenes: {_successfullyPreloaded.Count}/{_sceneKeys.Count}");
+            IsPreloadingComplete = true; // Устанавливаем флаг даже при ошибке, чтобы избежать зависания
         }
 
         private async UniTask<long> GetDownloadSizeAsync(string key, CancellationToken token)
@@ -123,6 +129,18 @@ namespace Loading.LoadingOperations
 
                 // Используем `true` чтобы точно кэшировалось в WebGL
                 var handle = Addressables.DownloadDependenciesAsync(key, true);
+                
+                if (handle.Status == AsyncOperationStatus.Failed)
+                {
+                    Debug.LogError($"Failed to preload dependencies for '{key}': {handle.OperationException}");
+                }
+                
+                if (!handle.IsValid())
+                {
+                    Debug.LogError($"[Preloader] Invalid handle for '{key}'");
+                    return size;
+                }
+
                 await handle.ToUniTask(cancellationToken: token);
 
                 if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -142,17 +160,16 @@ namespace Loading.LoadingOperations
                     else
                     {
                         Debug.LogWarning(
-                            $"⚠️ [Preloader] Scene '{key}' marked as succeeded but still has remaining data: {size} bytes");
+                            $"⚠️ [Preloader] Scene '{key}' succeeded but has remaining data: {size} bytes");
+                        _successfullyPreloaded.Add(key); // Добавляем даже с остатками, чтобы не блокировать
+                        _handles.Add(handle);
                     }
                 }
                 else
                 {
-                    Debug.LogError($"❌ [Preloader] Failed to preload '{key}' (Status: {handle.Status})");
+                    Debug.LogError(
+                        $"❌ [Preloader] Failed to preload '{key}' (Status: {handle.Status}, Error: {handle.OperationException})");
                 }
-            }
-            catch (OperationCanceledException)
-            {
-                Debug.LogWarning($"❌ [Preloader] Canceled preloading '{key}'");
             }
             catch (Exception e)
             {
@@ -188,6 +205,12 @@ namespace Loading.LoadingOperations
                     }
 
                     var handle = Addressables.DownloadDependenciesAsync(key, true);
+                    if (!handle.IsValid())
+                    {
+                        Debug.LogError($"[Preloader] Invalid handle for background preload of '{key}'");
+                        continue;
+                    }
+
                     await handle.ToUniTask();
 
                     if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -204,11 +227,14 @@ namespace Loading.LoadingOperations
                         {
                             Debug.LogWarning(
                                 $"⚠️ [Preloader] Scene '{key}' loaded but not fully cached. Remaining: {remainingSize} bytes");
+                            _successfullyPreloaded.Add(key); // Добавляем даже с остатками
+                            _handles.Add(handle);
                         }
                     }
                     else
                     {
-                        Debug.LogError($"❌ [Preloader] Failed to background preload scene: {key}");
+                        Debug.LogError(
+                            $"❌ [Preloader] Failed to background preload scene: {key} (Error: {handle.OperationException})");
                     }
                 }
                 catch (Exception e)
@@ -216,7 +242,7 @@ namespace Loading.LoadingOperations
                     Debug.LogError($"❌ [Preloader] Exception during background preload of '{key}': {e.Message}");
                 }
 
-                await UniTask.Yield(); 
+                await UniTask.Yield();
             }
 
             Debug.Log(

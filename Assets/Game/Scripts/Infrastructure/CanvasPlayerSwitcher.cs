@@ -20,10 +20,10 @@ public class CanvasPlayerSwitcher : MonoBehaviour
     {
         bool isMobile = DeviceChecker.IsMobileDevice();
 
-        _canvas = isMobile ? _canvasMobile : _canvasDesktop;
+        _canvas = isMobile ? _canvasDesktop : _canvasDesktop;
         _canvas.gameObject.SetActive(true);
         
-        _weaponPanelUI = isMobile ? _weaponPanelUIModile : _weaponPanelUIDesktop;
+        _weaponPanelUI = isMobile ? _weaponPanelUIDesktop : _weaponPanelUIDesktop;
         _weaponPanelUI.gameObject.SetActive(true); 
     }
     

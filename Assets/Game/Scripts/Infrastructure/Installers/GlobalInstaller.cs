@@ -4,6 +4,7 @@ using Core.Camera;
 using Core.Player;
 using Core.Quests;
 using Data;
+using Infrastructure.Installers.EntryPoint;
 using Loading;
 using Loading.LoadingOperations;
 using Saving;
@@ -41,6 +42,7 @@ namespace Infrastructure.Installers
 
         public override void InstallBindings()
         {
+            Container.Bind<BootstrapFlowService>().AsSingle().NonLazy();
             Container.Bind<LoadingScreenProvider>().AsSingle().NonLazy();
             Container.Bind<MultiScenePreloader>().AsSingle().NonLazy();
 
@@ -88,14 +90,16 @@ namespace Infrastructure.Installers
 
         private void BindingUI()
         {
-            if (DeviceChecker.IsMobileDevice())
-            {
-                Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerMobilePrefab).AsSingle().NonLazy();
-            }
-            else
-            {
-                Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
-            }
+            Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
+            
+            // if (DeviceChecker.IsMobileDevice())
+            // {
+            //     Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy(); // TODO mobileManager
+            // }
+            // else
+            // {
+            //     Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
+            // }
 
             Debug.Log("IsMobile " + DeviceChecker.IsMobileDevice());
         }

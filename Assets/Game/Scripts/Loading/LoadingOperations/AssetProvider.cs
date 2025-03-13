@@ -81,21 +81,19 @@ namespace Loading.LoadingOperations
         
         private async UniTask WaitUntilScenePreloaded(string nameScene)
         {
-            if (_preloader.GetPreloadedKeys().Contains(nameScene))
+            if (_preloader.WasSceneSuccessfullyPreloaded(nameScene))
             {
-                Debug.Log($"[AssetProvider] Scene '{nameScene}' already preloaded.");
+                Debug.Log($"[AssetProvider] ✅ Scene '{nameScene}' was successfully preloaded.");
                 return;
             }
 
-            Debug.Log($"[AssetProvider] Waiting for scene '{nameScene}' to preload...");
+            Debug.Log($"[AssetProvider] ⏳ Waiting for scene '{nameScene}' to be preloaded...");
 
-            // Ожидание, пока сцена не появится в списке предзагруженных
-            while (!_preloader.GetPreloadedKeys().Contains(nameScene))
-            {
-                await UniTask.Yield(); // Ожидаем на каждый кадр
-            }
+            // Ждём до завершения прелоада, чтобы избежать загрузки до конца
+            await UniTask.WaitUntil(() =>
+                _preloader.IsPreloadingComplete && _preloader.WasSceneSuccessfullyPreloaded(nameScene));
 
-            Debug.Log($"[AssetProvider] Scene '{nameScene}' is now preloaded.");
+            Debug.Log($"[AssetProvider] ✅ Scene '{nameScene}' is now preloaded.");
         }
     }
 }

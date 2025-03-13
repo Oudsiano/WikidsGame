@@ -18,13 +18,15 @@ public class ConversationOpenScene : MonoBehaviour
 
     private void SetUI()
     {
-        if (DeviceChecker.IsMobileDevice())
-        {
-            _conversationManagerMobile.gameObject.SetActive(true);
-        }
-        else
-        {
-            _conversationManager.gameObject.SetActive(true);
-        }
+        _conversationManager.gameObject.SetActive(true);
+        
+        // if (DeviceChecker.IsMobileDevice())
+        // {
+        //     _conversationManagerMobile.gameObject.SetActive(true);
+        // }
+        // else
+        // {
+        //     _conversationManager.gameObject.SetActive(true);
+        // }
     }
 }

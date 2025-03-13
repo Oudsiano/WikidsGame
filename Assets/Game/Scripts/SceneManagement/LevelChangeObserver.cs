@@ -94,8 +94,9 @@ namespace SceneManagement
         {
             _indexSceneToLoad = newName;
             Debug.Log("Уровень загрузки изменен на " + newName);
-            
-            _loadingScreenProvider.LoadAndDestroy(new BattleSceneOperation(_indexSceneToLoad, _assetProvider)).Forget();
+
+            _assetProvider.LoadScene(_indexSceneToLoad).Forget();
+            //_loadingScreenProvider.LoadAndDestroy(new BattleSceneOperation(_indexSceneToLoad, _assetProvider)).Forget();
         }
 
         // Метод для обновления местоположения игрока

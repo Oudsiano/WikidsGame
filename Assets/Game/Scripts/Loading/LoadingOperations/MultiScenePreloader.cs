@@ -254,20 +254,7 @@ namespace Loading.LoadingOperations
             return new List<string>
             {
                 Constants.Scenes.FirstBattleScene,
-                Constants.Scenes.SecondBattleScene,
-                Constants.Scenes.ThirdBattleScene,
-                Constants.Scenes.FourthBattleSceneDark,
-                Constants.Scenes.FifthBattleSceneKingdom,
-                Constants.Scenes.SixthBattleSceneKingdom,
-                Constants.Scenes.SeventhBattleSceneViking,
-                Constants.Scenes.FirstTownScene,
-                Constants.Scenes.BossFightDarkScene,
-                Constants.Scenes.BossFightKingdom1Scene,
-                Constants.Scenes.BossFightKingdom2Scene,
-                Constants.Scenes.BossFightViking1Scene,
-                Constants.Scenes.LibraryScene,
-                Constants.Scenes.HollScene,
-                Constants.Scenes.EndScene,
+
             };
         }
     }

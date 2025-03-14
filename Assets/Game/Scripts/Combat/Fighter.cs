@@ -12,6 +12,7 @@ using UnityEngine.Serialization;
 
 namespace Combat
 {
+    [RequireComponent(typeof(Mover))]
     public class Fighter : MonoBehaviour, IAction
     {
         private IGame _igame;
@@ -48,48 +49,52 @@ namespace Combat
 
         public void Construct(IGame igame, MainPlayer player)
         {
+            Debug.Log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            Debug.Log("Start fighter constructed");
             _igame = igame;
+            Debug.Log("get igame");
             _player = player;
+            Debug.Log("get player");
             
-            _mover = GetComponent<Mover>(); // TODO RequireComponents
+            _mover = GetComponent<Mover>(); 
+            Debug.Log("get mover");
             _actionScheduler = GetComponent<ActionScheduler>();
+            Debug.Log("get _actionScheduler");
             _animator = GetComponent<Animator>();
+            Debug.Log("get _animator");
+
+            
+            Debug.Log("Finish fighter constructed");
+            Debug.Log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        }
+
+        public void SetHandPositions(Transform RightHand, Transform LeftHand)
+        {
+            _rightHandPosition = RightHand;
+            _leftHandPosition = LeftHand;
+        }
+
+        public void EquipWeapon()
+        {
             _isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
+            Debug.Log("isPlayer: " + _isPlayer);
 
             if (_isPlayer)
             {
                 if (_igame.saveGame.EquipedWeapon != null)
                 {
                     EquipWeapon(_igame.saveGame.EquipedWeapon);
+                    Debug.Log("Equip _igame.saveGame.EquipedWeapon");
                 }
             }
 
             if (_equippedWeapon == false)
             {
                 EquipWeapon(_defaultWeapon);
+                Debug.Log("Equip _defaultWeapon");
             }
         }
-
-        // private void Awake() // TODO construct
-        // {
-        //     _mover = GetComponent<Mover>(); // TODO RequireComponents
-        //     _actionScheduler = GetComponent<ActionScheduler>();
-        //     _animator = GetComponent<Animator>();
-        //     _isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
-        //
-        //     if (_isPlayer)
-        //     {
-        //         if (IGame.Instance.saveGame.EquipedWeapon != null)
-        //         {
-        //             EquipWeapon(IGame.Instance.saveGame.EquipedWeapon);
-        //         }
-        //     }
-        //
-        //     if (_equippedWeapon == false)
-        //     {
-        //         EquipWeapon(_defaultWeapon);
-        //     }
-        // }
+        
 
         private void Update()
         {
@@ -308,23 +313,7 @@ namespace Combat
             }
         }
 
-        // public void SetTarget(Healths other) // TODO not used code
-        // {
-        //     Target = other;
-        // }
-        //
-        // public object CaptureState()
-        // {
-        //     return _equippedWeapon.name;
-        // }
-        //
-        // public void RestoreState(object state)
-        // {
-        //     string weaponName = (string)state;
-        //     Weapon weapon = Resources.Load<Weapon>(weaponName);
-        //     EquipWeapon(weapon);
-        // }
-
+        
         private float GetRangeCurrentWeapon()
         {
             switch (_weapon)

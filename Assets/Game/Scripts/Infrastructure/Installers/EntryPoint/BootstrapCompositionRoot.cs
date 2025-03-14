@@ -32,7 +32,6 @@ namespace Infrastructure.Installers.EntryPoint
         private AudioManager _audioManager;
         private DataPlayer _dataPlayer;
         private GameAPI _gameAPI;
-        private PlayerController _playerController;
         private BottleManager _bottleManager;
         private QuestManager _questManager;
         private NPCManagment _npcManager;
@@ -41,7 +40,6 @@ namespace Infrastructure.Installers.EntryPoint
         private UIManager _uiManager;
         private CoinManager _coinManager;
         private WeaponArmorManager _weaponArmorManager;
-        private PlayerArmorManager _playerArmorManager;
 
         private FollowCamera _followCamera;
         private SceneLoaderService _sceneLoader;
@@ -100,12 +98,14 @@ namespace Infrastructure.Installers.EntryPoint
                 _questManager, _npcManager, _fastTestsManager,
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
                 _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider, _assetProvider);
+          
 
             _audioManager.Construct();
             _savePointsManager.Construct(_dataPlayer);
             _gameAPI.Construct(_player, _sceneLoader, _dataPlayer, _saveGame, _fastTestsManager,
                 _player.PlayerController,
                 _weaponArmorManager, _questManager);
+        
 
             _saveGame.Construct(_gameAPI, _weaponArmorManager, _coinManager,
                 _dataPlayer, _uiManager);
@@ -113,7 +113,7 @@ namespace Infrastructure.Installers.EntryPoint
                 _dataPlayer, _fastTestsManager, _player.PlayerController, _weaponArmorManager, _levelChangeObserver);
             _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame, _fastTestsManager, _questManager,
                 _coinManager, _bottleManager, _weaponArmorManager);
-            _followCamera.Construct(_player, _player.PlayerController, _sceneLoader);
+            _followCamera.Construct(_player, _player.PlayerController, _sceneLoader); ;
             _javaScriptHook.Construct(_dataPlayer, _sceneLoader);
             _keyBoardsEvents.Construct(_sceneLoader, _uiManager);
         }

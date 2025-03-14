@@ -62,6 +62,7 @@ namespace Infrastructure.Installers
             Container.Bind<ArrowForPlayerManager>().AsSingle().NonLazy();
             Container.Bind<FastTestsManager>().AsSingle().NonLazy();
             Container.Bind<SaveGame>().AsSingle().NonLazy();
+            Container.Bind<LocalAssetLoader>().AsSingle();
 
             BindingComponents();
         }

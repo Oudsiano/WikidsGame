@@ -58,7 +58,7 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         BottleManager bottleManager, WeaponArmorManager weaponArmorManager, AllQuestsInGame allQuests,
         SceneWithTestsID sceneWithTestsID, LoadingScreenProvider loadingScreenProvider, AssetProvider assetProvider)
     {
-        Debug.Log("Construct iagem");
+        Debug.Log("Construct igame");
         _player = player;
         this.gameAPI = gameAPI;
         this.dataPlayer = dataPlayer;

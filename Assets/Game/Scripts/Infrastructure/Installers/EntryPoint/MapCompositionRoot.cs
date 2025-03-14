@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using AINavigation;
+using Combat;
+using Core.Player;
+using Core.Camera;
 using Cysharp.Threading.Tasks;
 using Data;
 using Loading;
@@ -34,6 +39,36 @@ namespace Infrastructure.Installers.EntryPoint
             _sceneContainer = _sceneContext.Container;
 
             ConstructComponents();
+        }
+
+        private async void Start()
+        {
+            Debug.Log("Loading modular character");
+            // var modularCharacter = await _sceneContainer.Resolve<LocalAssetLoader>().Load<GameObject>("ModularCharacter");
+            
+            var handle = Addressables.LoadAssetAsync<GameObject>("PlayerModel");
+            await handle;
+            GameObject modularCharacter = handle.Result;
+            Instantiate(modularCharacter, _sceneContainer.Resolve<MainPlayer>().transform);
+            
+            HandPositionKeeper handPositionKeeper = modularCharacter.GetComponent<HandPositionKeeper>();
+                Debug.Log("ModularCharacters loaded");
+                
+                _sceneContainer.Resolve<MainPlayer>().SetArmorManager(handPositionKeeper.PlayerArmorManager);
+                Debug.Log("SetArmorManager(armorManager)");
+                _sceneContainer.Resolve<MainPlayer>().PlayerController.Fighter.SetHandPositions(handPositionKeeper.RightHandPosition, handPositionKeeper.LeftHandPosition);
+                _sceneContainer.Resolve<MainPlayer>().PlayerController.Fighter.EquipWeapon();
+                
+                _sceneContainer.Resolve<MainPlayer>().PlayerController.SetModularCharacter(modularCharacter.gameObject);
+                
+                _sceneContainer.Resolve<MainPlayer>().PlayerController.SetPlayerArmorManager(handPositionKeeper.PlayerArmorManager);
+            
+
+            
+            
+                Debug.Log("Все отработало Start");
+                
+
         }
 
         private void ConstructComponents()

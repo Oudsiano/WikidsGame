@@ -14,7 +14,7 @@ namespace Loading
         private Dictionary<string, AsyncOperationHandle> _loadedAssets = new Dictionary<string, AsyncOperationHandle>();
         private GameObject _cachedObject;
 
-        public async UniTask<T> Load<T>(string assetId) where T : Component
+        public async UniTask<T> Load<T>(string assetId)
         {
             var handle = Addressables.LoadAssetAsync<GameObject>(assetId);
             GameObject prefab = await handle.Task;

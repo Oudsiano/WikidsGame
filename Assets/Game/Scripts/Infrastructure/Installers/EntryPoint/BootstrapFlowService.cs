@@ -21,18 +21,20 @@ namespace Infrastructure.Installers.EntryPoint
             _dataPlayer = dataPlayer;
 
             bool isGameReady = false;
-
-            try
-            {
-                await UniTask.WaitUntil(() => gameAPI.GameLoad)
-                    .Timeout(TimeSpan.FromSeconds(20));
-                isGameReady = true;
-            }
-            catch (TimeoutException)
-            {
-                Debug.LogWarning("[Bootstrap] ⏰ Timeout waiting for GameAPI.GameLoad. Continuing anyway...");
-            }
-
+            
+            //
+            // try
+            // {
+            //     await UniTask.WaitUntil(() => gameAPI.GameLoad)
+            //         .Timeout(TimeSpan.FromSeconds(20));
+            //     isGameReady = true;
+            // }
+            // catch (TimeoutException)
+            // {
+            //     Debug.LogWarning("[Bootstrap] ⏰ Timeout waiting for GameAPI.GameLoad. Continuing anyway...");
+            // }
+            isGameReady = true;
+            
             Debug.Log("[Bootstrap] 🚀 Starting bootstrap flow");
 
             var openedScenes = _dataPlayer.PlayerData?.FinishedRegionsName ?? new List<string> { Constants.Scenes.FirstBattleScene };

@@ -129,12 +129,12 @@ namespace Loading.LoadingOperations
 
                 // Используем `true` чтобы точно кэшировалось в WebGL
                 var handle = Addressables.DownloadDependenciesAsync(key, true);
-                
+
                 if (handle.Status == AsyncOperationStatus.Failed)
                 {
                     Debug.LogError($"Failed to preload dependencies for '{key}': {handle.OperationException}");
                 }
-                
+
                 if (!handle.IsValid())
                 {
                     Debug.LogError($"[Preloader] Invalid handle for '{key}'");
@@ -254,20 +254,20 @@ namespace Loading.LoadingOperations
             return new List<string>
             {
                 Constants.Scenes.FirstBattleScene,
-                Constants.Scenes.SecondBattleScene,
-                Constants.Scenes.ThirdBattleScene,
-                Constants.Scenes.FourthBattleSceneDark,
-                Constants.Scenes.FifthBattleSceneKingdom,
-                Constants.Scenes.SixthBattleSceneKingdom,
-                Constants.Scenes.SeventhBattleSceneViking,
+                // Constants.Scenes.SecondBattleScene,
+                // Constants.Scenes.ThirdBattleScene,
+                // Constants.Scenes.FourthBattleSceneDark,
+                // Constants.Scenes.FifthBattleSceneKingdom,
+                // Constants.Scenes.SixthBattleSceneKingdom,
+                // Constants.Scenes.SeventhBattleSceneViking,
                 Constants.Scenes.FirstTownScene,
-                Constants.Scenes.BossFightDarkScene,
-                Constants.Scenes.BossFightKingdom1Scene,
-                Constants.Scenes.BossFightKingdom2Scene,
-                Constants.Scenes.BossFightViking1Scene,
-                Constants.Scenes.LibraryScene,
-                Constants.Scenes.HollScene,
-                Constants.Scenes.EndScene,
+                // Constants.Scenes.BossFightDarkScene,
+                // Constants.Scenes.BossFightKingdom1Scene,
+                // Constants.Scenes.BossFightKingdom2Scene,
+                // Constants.Scenes.BossFightViking1Scene,
+                // Constants.Scenes.LibraryScene,
+                // Constants.Scenes.HollScene,
+                // Constants.Scenes.EndScene,
             };
         }
     }

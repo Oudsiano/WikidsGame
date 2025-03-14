@@ -88,17 +88,17 @@ namespace Loading.LoadingOperations
             }
 
             Debug.Log($"[AssetProvider] ⏳ Waiting for scene '{nameScene}' to be preloaded...");
-            try
-            {
-                await UniTask.WaitUntil(() => _preloader.IsPreloadingComplete && _preloader.WasSceneSuccessfullyPreloaded(nameScene))
-                    .Timeout(TimeSpan.FromSeconds(30)); // Тайм-аут 30 секунд
-                Debug.Log($"[AssetProvider] ✅ Scene '{nameScene}' is now preloaded.");
-            }
-            catch (TimeoutException)
-            {
-                Debug.LogError($"[AssetProvider] ❌ Timeout waiting for scene '{nameScene}' to preload. Forcing load anyway.");
-                // Принудительно считаем сцену готовой, если предзагрузка зависла
-            }
+            // try
+            // {
+            //     await UniTask.WaitUntil(() => _preloader.IsPreloadingComplete && _preloader.WasSceneSuccessfullyPreloaded(nameScene))
+            //         .Timeout(TimeSpan.FromSeconds(30)); // Тайм-аут 30 секунд
+            //     Debug.Log($"[AssetProvider] ✅ Scene '{nameScene}' is now preloaded.");
+            // }
+            // catch (TimeoutException)
+            // {
+            //     Debug.LogError($"[AssetProvider] ❌ Timeout waiting for scene '{nameScene}' to preload. Forcing load anyway.");
+            //     // Принудительно считаем сцену готовой, если предзагрузка зависла
+            // }
         }
     }
 }

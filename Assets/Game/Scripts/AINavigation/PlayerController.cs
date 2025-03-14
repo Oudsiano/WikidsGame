@@ -79,21 +79,6 @@ namespace AINavigation
             saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }
 
-        // public void Init() // TODO Construct
-        // {
-        //     _mover = GetComponent<Mover>(); // TODO RequieredComponents  
-        //     _fighter = GetComponent<Fighter>();
-        //     _health = GetComponent<Healths.Healths>();
-        //
-        //     PlayerArmorManager = FindObjectOfType<PlayerArmorManager>(); // TODO Delete
-        //
-        //     WeaponPanelUI = FindObjectOfType<WeaponPanelUI>(); // TODO Delete
-        //     WeaponPanelUI.Init();
-        //
-        //     SceneManager.sceneLoaded += SceneLoader_LevelChanged;
-        //     _saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
-        // }
-
         private void Update()
         {
             if (PauseClass.GetPauseState())

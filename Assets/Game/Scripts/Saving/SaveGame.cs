@@ -186,6 +186,7 @@ namespace Saving
         {
             _dataPlayer.PlayerData.armorIdToload = (int)EquipedArmor.ArmorName;
             _dataPlayer.PlayerData.weaponToLoad = EquipedWeapon.name;
+            Debug.Log("[SaveGame] EquipedWeapon = " + EquipedWeapon);
             
             Debug.Log($"[SaveGame] Сохраняем weaponToLoad: {_dataPlayer.PlayerData.weaponToLoad}");
 
@@ -242,7 +243,7 @@ namespace Saving
             //     _dataPlayer.PlayerData.weaponToLoad = "";
             // }
 
-            if (_dataPlayer.PlayerData.weaponToLoad == "")
+            if (_dataPlayer.PlayerData.weaponToLoad == "Sword")
             {
                 // _dataPlayer.PlayerData.weaponToLoad = "Sword";
                 _dataPlayer.PlayerData.weaponToLoad = "Basic Bow";

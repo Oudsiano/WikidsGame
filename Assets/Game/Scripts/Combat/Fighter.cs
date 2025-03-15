@@ -56,31 +56,9 @@ namespace Combat
             _actionScheduler = GetComponent<ActionScheduler>();
             _animator = GetComponent<Animator>();
             
-        }
-
-        public void SetHandPositions(Transform RightHand, Transform LeftHand)
-        {
-            _rightHandPosition = RightHand;
-            _leftHandPosition = LeftHand;
-            
-        }
-
-        public void EquipWeapon()
-        {
             _isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
-
-            if (_isPlayer)
-            {
-                if (_igame.saveGame.EquipedWeapon != null)
-                {
-                    EquipWeapon(_igame.saveGame.EquipedWeapon);
-                }
-            }
-
-            if (_equippedWeapon == false)
-            {
-                EquipWeapon(_defaultWeapon);
-            }
+            
+            EquipWeapon(_defaultWeapon);
         }
         
 
@@ -147,7 +125,7 @@ namespace Combat
             _fireballWeapon.SpawnToPlayer(_rightHandPosition, _leftHandPosition, _animator);
         }
 
-        public virtual void SetCommonWeapon()
+        public  void SetCommonWeapon()
         {
             // if (_animator == null)
             // {
@@ -178,17 +156,17 @@ namespace Combat
             }
         }
 
-        public void EquipItem(ItemDefinition item)
-        {
-            if (item is Armor)
-            {
-                ((Armor)item).EquipIt(); // TODO Expensive unboxing
-            }
-            else if (item is Weapon)
-            {
-                EquipWeapon((Weapon)item); // TODO Expensive unboxing
-            }
-        }
+        // public void EquipItem(ItemDefinition item)
+        // {
+        //     if (item is Armor)
+        //     {
+        //         ((Armor)item).EquipIt(); // TODO Expensive unboxing
+        //     }
+        //     else if (item is Weapon)
+        //     {
+        //         EquipWeapon((Weapon)item); // TODO Expensive unboxing
+        //     }
+        // }
 
         public void EquipWeapon(Weapon weapon)
         {

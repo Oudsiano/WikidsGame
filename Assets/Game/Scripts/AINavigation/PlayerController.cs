@@ -56,7 +56,7 @@ namespace AINavigation
         private GameObject _activeInvisibilityVFX; // Текущий активный VFX объект для невидимости
         private WeaponArmorManager _weaponArmorManager;
         
-        public Fighter Fighter=> _fighter;
+        public PlayerFighter Fighter=> _fighter;
 
         public void Construct(IGame igame, WeaponPanelUI weaponPanelUI,
             SaveGame saveGame, DataPlayer dataPlayer, MainPlayer player, FastTestsManager fastTestsManager,
@@ -89,9 +89,6 @@ namespace AINavigation
 
             // SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             // saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
-            
-            Debug.Log("Finish Construct PlayerController");
-            Debug.Log("----______------_______------_______------");
         }
 
         public void SetPlayerArmorManager(PlayerArmorManager playerArmorManager)
@@ -139,7 +136,7 @@ namespace AINavigation
 
         public Health GetHealth() => _health; // TODO move to properties
 
-        public Fighter GetFighter() => _fighter; // TODO move to properties
+        public PlayerFighter GetFighter() => _fighter; // TODO move to properties
 
         public bool GetPlayerInvisibility() => _invisibilityState; // TODO move to properties
 
@@ -218,6 +215,8 @@ namespace AINavigation
         {
             if (_dataPlayer.PlayerData.weaponToLoad.Length > 1) // TODO magic number
             {
+                Debug.Log("WeaponToLoad=" +_dataPlayer.PlayerData
+                    .weaponToLoad);
                 _fighter.EquipWeapon(
                     _weaponArmorManager.TryGetWeaponByName(_dataPlayer.PlayerData
                         .weaponToLoad));

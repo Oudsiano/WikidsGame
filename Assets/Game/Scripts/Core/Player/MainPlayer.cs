@@ -26,42 +26,16 @@ namespace Core.Player
             FastTestsManager fastTestsManager, QuestManager questManager, CoinManager coinManager,
             BottleManager bottleManager, WeaponArmorManager weaponArmorManager)
         {
-            Debug.Log("----------------------------------");
-            Debug.Log("Player.Construct start");
 
             _saveGame = saveGame;
-            Debug.Log("saveGame assigned");
             _dataPlayer = dataPlayer;
-            Debug.Log("dataPlayer assigned");
             _uiManager = uiManager;
-            Debug.Log("uiManager assigned");
             
             _playerController.Construct(igame, _weaponPanelUI, _saveGame,
                 _dataPlayer, this, fastTestsManager, questManager, coinManager, bottleManager, _uiManager, weaponArmorManager);
-            Debug.Log("PlayerController constructed");
-            if (_playerController == null)
-            {
-                Debug.Log("PlayerController is null");
-            }
-            else
-            {
-                Debug.Log("PlayerController is not null");
-            }
-
-            if (_dataPlayer == null)
-            {
-                Debug.Log("dataPlayer is null");
-            }
-            else
-            {
-                Debug.Log("dataPlayer is not null");
-            }
+            
             _weaponPanelUI.Construct(_playerController, _dataPlayer);
-            Debug.Log("_weaponPanelUI constructed");
             _icon.Construct(_uiManager);
-            Debug.Log("icon constructed");
-            Debug.Log("Player.Construct finish");
-            Debug.Log("----------------------------------");
         }
 
         public void SetArmorManager(PlayerArmorManager playerArmorManager)

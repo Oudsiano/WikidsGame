@@ -12,16 +12,9 @@ namespace Loading.LoadingOperations
 {
     public class AssetProvider : ILoadingOperation
     {
-        private MultiScenePreloader _preloader;
-        
         private bool _isReady;
 
         public string Description => "Assets Initialization...";
-
-        public AssetProvider(MultiScenePreloader preloader)
-        {
-            _preloader = preloader;
-        }
         
         public async UniTask Load(Action<float> progress)
         {
@@ -39,8 +32,6 @@ namespace Loading.LoadingOperations
 
         public async UniTask<SceneInstance> LoadScene(string nameScene)
         {
-            await WaitUntilScenePreloaded(nameScene);
-
             Debug.Log($"[AssetProvider] Trying to load scene: {nameScene}");
 
             var locations = await Addressables.LoadResourceLocationsAsync(nameScene).ToUniTask();
@@ -76,28 +67,6 @@ namespace Loading.LoadingOperations
             while (_isReady == false)
             {
                 await UniTask.Yield();
-            }
-        }
-        
-        private async UniTask WaitUntilScenePreloaded(string nameScene)
-        {
-            if (_preloader.WasSceneSuccessfullyPreloaded(nameScene))
-            {
-                Debug.Log($"[AssetProvider] ✅ Scene '{nameScene}' was successfully preloaded.");
-                return;
-            }
-
-            Debug.Log($"[AssetProvider] ⏳ Waiting for scene '{nameScene}' to be preloaded...");
-            try
-            {
-                await UniTask.WaitUntil(() => _preloader.IsPreloadingComplete && _preloader.WasSceneSuccessfullyPreloaded(nameScene))
-                    .Timeout(TimeSpan.FromSeconds(30)); // Тайм-аут 30 секунд
-                Debug.Log($"[AssetProvider] ✅ Scene '{nameScene}' is now preloaded.");
-            }
-            catch (TimeoutException)
-            {
-                Debug.LogError($"[AssetProvider] ❌ Timeout waiting for scene '{nameScene}' to preload. Forcing load anyway.");
-                // Принудительно считаем сцену готовой, если предзагрузка зависла
             }
         }
     }

@@ -2233,6 +2233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1835632764}
   - component: {fileID: 1835632765}
+  - component: {fileID: 1835632766}
   m_Layer: 0
   m_Name: CompositeRoot
   m_TagString: Untagged
@@ -2268,8 +2269,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f30079b78d4f078d565784e682f9a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _preloader: {fileID: 1835632766}
   _sceneContext: {fileID: 1683833949}
   _loaderMapScene: {fileID: 1316832555}
+--- !u!114 &1835632766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835632762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaf9f38e68814b23a048f6e67052eba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dontPreload: 0
+  _delay: 0
 --- !u!1001 &1871029442
 PrefabInstance:
   m_ObjectHideFlags: 0

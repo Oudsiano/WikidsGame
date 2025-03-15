@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AINavigation;
 using Combat;
 using Core;
@@ -9,6 +10,7 @@ using Cysharp.Threading.Tasks;
 using Data;
 using Loading;
 using Loading.LoadingOperations;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement;
 using UI;
@@ -53,7 +55,6 @@ namespace Infrastructure.Installers.EntryPoint
 
         private LoadingScreenProvider _loadingProvider;
         private AssetProvider _assetProvider;
-        private MultiScenePreloader _multiScenePreloader;
 
         [Inject]
         public void Compose(DiContainer diContainer)
@@ -90,22 +91,23 @@ namespace Infrastructure.Installers.EntryPoint
             ConstructComponents();
             SceneManager.LoadScene(Constants.Scenes.OpenScene);
         }
-        
+
         private void ConstructComponents() // TODO check order
         {
             _iGame.Construct(_player, _gameAPI, _dataPlayer, _saveGame, _player.PlayerController,
                 _levelChangeObserver, _savePointsManager, _arrowForPlayerManager,
                 _questManager, _npcManager, _fastTestsManager,
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
-                _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider, _assetProvider);
-          
+                _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider, _assetProvider,
+                _sceneContainer.Resolve<ScenePreloadController>());
+
 
             _audioManager.Construct();
             _savePointsManager.Construct(_dataPlayer);
             _gameAPI.Construct(_player, _sceneLoader, _dataPlayer, _saveGame, _fastTestsManager,
                 _player.PlayerController,
                 _weaponArmorManager, _questManager);
-        
+
 
             _saveGame.Construct(_gameAPI, _weaponArmorManager, _coinManager,
                 _dataPlayer, _uiManager);
@@ -113,9 +115,16 @@ namespace Infrastructure.Installers.EntryPoint
                 _dataPlayer, _fastTestsManager, _player.PlayerController, _weaponArmorManager, _levelChangeObserver);
             _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame, _fastTestsManager, _questManager,
                 _coinManager, _bottleManager, _weaponArmorManager);
-            _followCamera.Construct(_player, _player.PlayerController, _sceneLoader); ;
+            _followCamera.Construct(_player, _player.PlayerController, _sceneLoader);
+            ;
             _javaScriptHook.Construct(_dataPlayer, _sceneLoader);
             _keyBoardsEvents.Construct(_sceneLoader, _uiManager);
+        }
+
+        private async void Start()
+        {
+            await _sceneContainer.Resolve<ScenePreloadController>()
+                .PreloadSceneInBackground(Constants.Scenes.FirstBattleScene);
         }
     }
 }

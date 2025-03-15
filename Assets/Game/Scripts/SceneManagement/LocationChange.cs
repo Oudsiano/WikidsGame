@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Core.Quests;
 using Core.Quests.Data;
+using Cysharp.Threading.Tasks;
 using Data;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement.Enums;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -125,7 +128,7 @@ namespace SceneManagement
             return openedScenes;
         }
 
-        
+
         private void SetupMaxRegion(List<string> finishedRegionsIDs)
         {
             int foundIndex = -1;
@@ -246,9 +249,9 @@ namespace SceneManagement
             _dataPlayer.SetSceneToLoad(sceneName);
             _loading.gameObject.SetActive(true);
             _gameAPI.SaveUpdater();
-            //Invoke("LoadSceneAfterDelay", 2f); 
-            _levelChangeObserver.TryChangeLevel(sceneName, 0);
             AudioManager.Instance.PlaySound("ClickButton"); // TODO can be cached
+
+            _levelChangeObserver.TryChangeLevel(sceneName, 0);
         }
 
         private void OnPointerEnter(int index) // TODO SUPPPPPPER OVERLOAD METHOD

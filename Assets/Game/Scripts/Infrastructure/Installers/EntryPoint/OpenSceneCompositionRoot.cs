@@ -22,7 +22,6 @@ namespace Infrastructure.Installers.EntryPoint
         [SerializeField] private LoadSceneAfterComix _loaderMapScene;
 
         private DiContainer _sceneContainer;
-        private MultiScenePreloader _preloader;
 
         [Inject]
         public void Compose(DiContainer diContainer)
@@ -31,26 +30,6 @@ namespace Infrastructure.Installers.EntryPoint
 
             _loaderMapScene.Construct(_sceneContainer.Resolve<LoadingScreenProvider>(),
                 _sceneContainer.Resolve<SceneLoaderService>(), _sceneContainer.Resolve<AssetProvider>());
-
-            _preloader = _sceneContainer.Resolve<MultiScenePreloader>();
-        }
-
-        private async void Start()
-        {
-            ScenePreloader preloader = new ScenePreloader();
-            
-            await preloader.PreloadSceneAsync("FirstBattleScene", progress =>
-            {
-                Debug.Log($"Preload Progress: {progress * 100:F2}%");
-                // Здесь можно обновить UI прогресс-бара
-            });
-            
-            var sceneHandle = Addressables.LoadSceneAsync("FirstBattleScene", LoadSceneMode.Single, true);
-            await sceneHandle.ToUniTask();
-            if (sceneHandle.Status == AsyncOperationStatus.Succeeded)
-            {
-                Debug.Log("Scene loaded!");
-            }
         }
     }
 }

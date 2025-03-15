@@ -8,6 +8,7 @@ using Cysharp.Threading.Tasks;
 using Data;
 using Loading;
 using Loading.LoadingOperations;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement;
 using UnityEngine;
@@ -28,7 +29,6 @@ namespace Infrastructure.Installers.EntryPoint
 
         private DiContainer _sceneContainer;
         private AssetProvider _assetProvider;
-        private MultiScenePreloader _preloader;
         private LoadingScreenProvider _loadingProvider;
         private SceneLoaderService _sceneLoader;
 
@@ -69,7 +69,6 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
-            _preloader = _sceneContainer.Resolve<MultiScenePreloader>();
             _assetProvider = _sceneContainer.Resolve<AssetProvider>();
             _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
             _sceneLoader = _sceneContainer.Resolve<SceneLoaderService>();
@@ -78,11 +77,6 @@ namespace Infrastructure.Installers.EntryPoint
                 _sceneContainer.Resolve<LevelChangeObserver>(),
                 _sceneContainer.Resolve<SceneLoaderService>(),
                 _sceneContainer.Resolve<GameAPI>());
-
-            // _locationChangeMobie.Construct(_sceneContainer.Resolve<DataPlayer>(),
-            //     _sceneContainer.Resolve<LevelChangeObserver>(), 
-            //     _sceneContainer.Resolve<SceneLoaderService>(),
-            //     _sceneContainer.Resolve<GameAPI>());
         }
     }
 }

@@ -87,8 +87,8 @@ namespace AINavigation
             
             Debug.Log("_health constructed");
 
-            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
-            saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
+            // SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+            // saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
             
             Debug.Log("Finish Construct PlayerController");
             Debug.Log("----______------_______------_______------");
@@ -97,11 +97,14 @@ namespace AINavigation
         public void SetPlayerArmorManager(PlayerArmorManager playerArmorManager)
         {
             PlayerArmorManager = playerArmorManager;
+            
+            _saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }
 
         public void SetModularCharacter(GameObject modularCharacter)
         {
             ModularCharacter = modularCharacter;
+            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
         }
 
 

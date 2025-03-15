@@ -42,8 +42,8 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
     private SavePointsManager _savePointsManager;
     private LevelChangeObserver _levelChangeObserver;
     private QuestManager _questManager;
-    private PlayerArmorManager _playerArmorManager;
-    private WeaponPanelUI _weaponPanelUI;
+    // private PlayerArmorManager _playerArmorManager;
+    // private WeaponPanelUI _weaponPanelUI;
     private MainPlayer _player;
     private AllQuestsInGame _allQuests;
     private SceneWithTestsID _sceneWithTestID;

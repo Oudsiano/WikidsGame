@@ -66,7 +66,9 @@ namespace Combat.Data
             if (WeaponPrefab)
             {
                 Transform handPos = FindTransformOfHand(rightHandPos, lefthandPos);
-                GameObject wepInScene = Instantiate(WeaponPrefab, handPos);
+                // GameObject wepInScene = Instantiate(WeaponPrefab, handPos);
+                GameObject wepInScene = Instantiate(WeaponPrefab);
+                wepInScene.transform.SetParent(handPos, false);
                 wepInScene.transform.localScale = Vector3.one * 1 / wepInScene.transform.lossyScale.x;
                 wepInScene.name = WeaponNameForHand;
             }

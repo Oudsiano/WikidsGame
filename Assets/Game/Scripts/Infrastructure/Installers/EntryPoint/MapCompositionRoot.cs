@@ -49,9 +49,9 @@ namespace Infrastructure.Installers.EntryPoint
             var handle = Addressables.LoadAssetAsync<GameObject>("PlayerModel");
             await handle;
             GameObject modularCharacter = handle.Result;
-            Instantiate(modularCharacter, _sceneContainer.Resolve<MainPlayer>().transform);
+            var playerModel = Instantiate(modularCharacter, _sceneContainer.Resolve<MainPlayer>().transform);
             
-            HandPositionKeeper handPositionKeeper = modularCharacter.GetComponent<HandPositionKeeper>();
+            HandPositionKeeper handPositionKeeper = playerModel.GetComponent<HandPositionKeeper>();
                 Debug.Log("ModularCharacters loaded");
                 
                 _sceneContainer.Resolve<MainPlayer>().SetArmorManager(handPositionKeeper.PlayerArmorManager);

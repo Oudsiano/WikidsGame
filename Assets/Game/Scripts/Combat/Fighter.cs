@@ -72,26 +72,24 @@ namespace Combat
         {
             _rightHandPosition = RightHand;
             _leftHandPosition = LeftHand;
+            
         }
 
         public void EquipWeapon()
         {
             _isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
-            Debug.Log("isPlayer: " + _isPlayer);
 
             if (_isPlayer)
             {
                 if (_igame.saveGame.EquipedWeapon != null)
                 {
                     EquipWeapon(_igame.saveGame.EquipedWeapon);
-                    Debug.Log("Equip _igame.saveGame.EquipedWeapon");
                 }
             }
 
             if (_equippedWeapon == false)
             {
                 EquipWeapon(_defaultWeapon);
-                Debug.Log("Equip _defaultWeapon");
             }
         }
         

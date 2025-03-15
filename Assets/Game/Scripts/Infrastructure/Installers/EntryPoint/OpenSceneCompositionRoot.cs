@@ -8,6 +8,8 @@ using Loading.LoadingOperations;
 using Saving;
 using SceneManagement;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using Utils;
 using Zenject;
@@ -33,12 +35,22 @@ namespace Infrastructure.Installers.EntryPoint
             _preloader = _sceneContainer.Resolve<MultiScenePreloader>();
         }
 
-        private void Start()
+        private async void Start()
         {
-            _sceneContainer.Resolve<BootstrapFlowService>()
-                .RunBootstrapFlow(_sceneContainer.Resolve<GameAPI>(), _sceneContainer.Resolve<MultiScenePreloader>(),
-                    _sceneContainer.Resolve<DataPlayer>())
-                .Forget();
+            ScenePreloader preloader = new ScenePreloader();
+            
+            await preloader.PreloadSceneAsync("FirstBattleScene", progress =>
+            {
+                Debug.Log($"Preload Progress: {progress * 100:F2}%");
+                // Здесь можно обновить UI прогресс-бара
+            });
+            
+            var sceneHandle = Addressables.LoadSceneAsync("FirstBattleScene", LoadSceneMode.Single, true);
+            await sceneHandle.ToUniTask();
+            if (sceneHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                Debug.Log("Scene loaded!");
+            }
         }
     }
 }

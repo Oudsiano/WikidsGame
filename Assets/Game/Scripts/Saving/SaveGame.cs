@@ -186,6 +186,9 @@ namespace Saving
         {
             _dataPlayer.PlayerData.armorIdToload = (int)EquipedArmor.ArmorName;
             _dataPlayer.PlayerData.weaponToLoad = EquipedWeapon.name;
+            
+            Debug.Log($"[SaveGame] Сохраняем weaponToLoad: {_dataPlayer.PlayerData.weaponToLoad}");
+
 
             List<OneItemForSave> tempBug = new List<OneItemForSave>();
             /*for (int i = BugItems.Count-1; i >= 0; i--)
@@ -234,18 +237,22 @@ namespace Saving
             EquipedArmor =
                 _weaponArmorManager.GerArmorById((armorID)_dataPlayer.PlayerData
                     .armorIdToload);
-            if (_dataPlayer.PlayerData.weaponToLoad == "Basic Bow")
-            {
-                _dataPlayer.PlayerData.weaponToLoad = "";
-            }
+            // if (_dataPlayer.PlayerData.weaponToLoad == "Basic Bow")
+            // {
+            //     _dataPlayer.PlayerData.weaponToLoad = "";
+            // }
 
             if (_dataPlayer.PlayerData.weaponToLoad == "")
             {
-                _dataPlayer.PlayerData.weaponToLoad = "Sword";
+                // _dataPlayer.PlayerData.weaponToLoad = "Sword";
+                _dataPlayer.PlayerData.weaponToLoad = "Basic Bow";
             }
-
+            
             EquipedWeapon =
                 _weaponArmorManager.TryGetWeaponByName(_dataPlayer.PlayerData.weaponToLoad);
+            
+            Debug.Log($"[SaveGame] Loaded weapon: {_dataPlayer.PlayerData.weaponToLoad} → {EquipedWeapon}");
+            
 
             if (_dataPlayer.PlayerData.playerName != "")
             {

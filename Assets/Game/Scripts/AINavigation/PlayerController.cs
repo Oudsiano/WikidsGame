@@ -45,7 +45,7 @@ namespace AINavigation
 
         private SaveGame _saveGame;
         private DataPlayer _dataPlayer;
-        private Fighter _fighter;
+        private PlayerFighter _fighter;
         private Mover _mover;
         private Health _health;
         private int _enemyLayer = 9; // Номер слоя для врагов  // TODO change
@@ -67,7 +67,7 @@ namespace AINavigation
 
             _mover = GetComponent<Mover>();
             Debug.Log("Get mover");
-            _fighter = GetComponent<Fighter>();
+            _fighter = GetComponent<PlayerFighter>();
             Debug.Log("Get _fighter");
             _health = GetComponent<Health>();
             Debug.Log("Get _health");

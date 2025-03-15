@@ -3129,10 +3129,10 @@ GameObject:
   - component: {fileID: 1121341555039291490}
   - component: {fileID: 6335463951712556924}
   - component: {fileID: 75780036546815673}
-  - component: {fileID: 1822817757280586756}
   - component: {fileID: 8927321506417499780}
   - component: {fileID: 9040928548955586838}
   - component: {fileID: 2381720613524554390}
+  - component: {fileID: 6374980723471295031}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -3322,25 +3322,6 @@ MonoBehaviour:
   PlayerArmorManager: {fileID: 0}
   WeaponPanelUI: {fileID: 86899785422372908}
   ModularCharacter: {fileID: 0}
---- !u!114 &1822817757280586756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9133158828745458021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1cafa4ed48613d4fad57526a90efa28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rightHandPosition: {fileID: 0}
-  _leftHandPosition: {fileID: 0}
-  _defaultWeapon: {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
-  _equippedWeapon: {fileID: 0}
-  _fireballWeapon: {fileID: 11400000, guid: 10a25ce9fbd584c48b226d615507622c, type: 2}
-  _bowWeapon: {fileID: 11400000, guid: aca463bd6b6649c41b5e3398fbc45389, type: 2}
-  Target: {fileID: 0}
 --- !u!114 &8927321506417499780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3383,6 +3364,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab: {fileID: 428852817160778579, guid: 281e0a2c5c68e4ac289a1f324c62747e, type: 3}
+--- !u!114 &6374980723471295031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133158828745458021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d63f30e60029c46b79c0ec92ce724f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rightHandPosition: {fileID: 0}
+  _leftHandPosition: {fileID: 0}
+  _defaultWeapon: {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
+  _equippedWeapon: {fileID: 0}
+  _fireballWeapon: {fileID: 11400000, guid: 10a25ce9fbd584c48b226d615507622c, type: 2}
+  _bowWeapon: {fileID: 11400000, guid: aca463bd6b6649c41b5e3398fbc45389, type: 2}
+  Target: {fileID: 0}
 --- !u!1001 &240155568554615025
 PrefabInstance:
   m_ObjectHideFlags: 0

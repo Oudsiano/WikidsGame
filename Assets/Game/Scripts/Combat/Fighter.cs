@@ -18,16 +18,16 @@ namespace Combat
         private IGame _igame;
 
         [FormerlySerializedAs("rightHandPosition")] [Header("Fighter Stats")] [Header("Weapon")] [SerializeField]
-        private Transform _rightHandPosition = null;
+        protected Transform _rightHandPosition = null;
 
         [FormerlySerializedAs("leftHandPosition")] [SerializeField]
-        private Transform _leftHandPosition = null;
+        protected Transform _leftHandPosition = null;
 
         [FormerlySerializedAs("defaultWeapon")] [SerializeField]
         private Weapon _defaultWeapon = null;
 
         [FormerlySerializedAs("equippedWeapon")] [SerializeField]
-        private Weapon _equippedWeapon = null;
+        protected Weapon _equippedWeapon = null;
 
         [FormerlySerializedAs("fireballWeapon")] [SerializeField]
         private Weapon _fireballWeapon = null;
@@ -39,33 +39,23 @@ namespace Combat
 
         private float _timer = 20;
         private bool _isPlayer;
-        private WeaponNow _weapon;
+        protected WeaponNow _weapon;
         //private bool isFireballNow = false; // TODO not used code
 
         private MainPlayer _player;
         private Mover _mover;
         private ActionScheduler _actionScheduler;
-        private Animator _animator;
+        protected Animator _animator;
 
         public void Construct(IGame igame, MainPlayer player)
         {
-            Debug.Log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-            Debug.Log("Start fighter constructed");
             _igame = igame;
-            Debug.Log("get igame");
             _player = player;
-            Debug.Log("get player");
             
             _mover = GetComponent<Mover>(); 
-            Debug.Log("get mover");
             _actionScheduler = GetComponent<ActionScheduler>();
-            Debug.Log("get _actionScheduler");
             _animator = GetComponent<Animator>();
-            Debug.Log("get _animator");
-
             
-            Debug.Log("Finish fighter constructed");
-            Debug.Log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         }
 
         public void SetHandPositions(Transform RightHand, Transform LeftHand)
@@ -157,14 +147,15 @@ namespace Combat
             _fireballWeapon.SpawnToPlayer(_rightHandPosition, _leftHandPosition, _animator);
         }
 
-        public void SetCommonWeapon()
+        public virtual void SetCommonWeapon()
         {
             // if (_animator == null)
             // {
             //     Awake(); // TODO CRITICAL CALL BACK AWAKE??
             // }
 
-            _weapon = WeaponNow.common;
+             _weapon = WeaponNow.common;
+            
 
             if (_equippedWeapon != null)
             {

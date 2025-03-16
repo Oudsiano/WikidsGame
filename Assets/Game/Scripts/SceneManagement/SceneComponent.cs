@@ -23,8 +23,6 @@ namespace SceneManagement
         public void Construct(LevelChangeObserver levelChangeObserver)
         {
             _levelChangeObserver = levelChangeObserver;
-
-            SceneName = SceneManager.GetActiveScene().name;
             // // Если объект не установлен, пробуем найти его в сцене
             // if (infectGroup == null)
             // {

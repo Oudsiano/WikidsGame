@@ -5,6 +5,7 @@ using Data;
 using Healths;
 using Loading;
 using Loading.LoadingOperations;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement.Enums;
 using UI;
@@ -25,13 +26,14 @@ namespace SceneManagement
         private GameAPI _gameAPI;
         private LoadingScreenProvider _loadingScreenProvider;
         private AssetProvider _assetProvider;
-
+        private ScenePreloader _preloader;
         public string IndexSceneToLoad => _indexSceneToLoad;
 
         public void Construct(SavePointsManager savePointsManager, DataPlayer dataPlayer, UIManager uiManager,
             MainPlayer player, GameAPI gameAPI, LoadingScreenProvider loadingScreenProvider,
-            AssetProvider assetProvider)
+            AssetProvider assetProvider, ScenePreloader preloader)
         {
+            _preloader = preloader;
             _savePointsManager = savePointsManager;
             _dataPlayer = dataPlayer;
             _uiManager = uiManager;
@@ -90,12 +92,12 @@ namespace SceneManagement
             Debug.Log("OnFadeComplete");
         }
 
-        private void LoadLevel(string newName)
+        private async void LoadLevel(string newName)
         {
             _indexSceneToLoad = newName;
             Debug.Log("Уровень загрузки изменен на " + newName);
 
-            _assetProvider.LoadScene(_indexSceneToLoad).Forget();
+            await _preloader.ActivateScene(_indexSceneToLoad);
             //_loadingScreenProvider.LoadAndDestroy(new BattleSceneOperation(_indexSceneToLoad, _assetProvider)).Forget();
         }
 

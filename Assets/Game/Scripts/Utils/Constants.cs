@@ -1,4 +1,6 @@
-﻿namespace Utils
+﻿using System.Collections.Generic;
+
+namespace Utils
 {
     public sealed class Constants
     {
@@ -17,7 +19,8 @@
             public const string BootstrapScene = "BootstrapScene";
             public const string OpenScene = "OpenScene";
             public const string MapScene = "MapScene";
-            
+            public const string GamePlayScene = "GamePlayScene";
+
             public const string FirstBattleScene = "FirstBattleScene";
             public const string SecondBattleScene = "SecondBattleScene";
             public const string ThirdBattleScene = "ThirdBattleScene";
@@ -25,7 +28,7 @@
             public const string FifthBattleSceneKingdom = "FifthBattleSceneKingdom";
             public const string SixthBattleSceneKingdom = "SixthBattleSceneKingdom";
             public const string SeventhBattleSceneViking = "SeventhBattleSceneViking";
-            
+
             public const string FirstTownScene = "FirstTownScene";
             public const string BossFightDarkScene = "BossFightDarkScene";
             public const string BossFightKingdom1Scene = "BossFightKingdom1Scene";

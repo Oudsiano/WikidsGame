@@ -169,7 +169,7 @@ namespace UI
             _buttonMarket.onClick.AddListener(OnClickButtonMarket);
             _buttonBug.onClick.AddListener(OnClickButtonBug);
             _btnQuestScr.onClick.AddListener(OnClickBtnQuest);
-            _btnQuestScrGray.onClick.AddListener(OnClickBtnQuest);
+            //_btnQuestScrGray.onClick.AddListener(OnClickBtnQuest);
             _btnCloseQuestScr.onClick.AddListener(OnClickBtnCloseQuest);
 
             ButtonShowMap.onClick.AddListener(OnClickButtonMap);
@@ -229,14 +229,14 @@ namespace UI
 
         public void UpdateGreyBtnQuest(bool showGray)
         {
-            if (showGray)
-            {
-                _btnQuestScrGray.gameObject.SetActive(true);
-            }
-            else
-            {
-                _btnQuestScrGray.gameObject.SetActive(false);
-            }
+            // if (showGray)
+            // {
+            //     _btnQuestScrGray.gameObject.SetActive(true);
+            // }
+            // else
+            // {
+            //     _btnQuestScrGray.gameObject.SetActive(false);
+            // }
         }
 
         public void UpdateQuestBackImg()

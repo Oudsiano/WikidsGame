@@ -8,6 +8,8 @@ using Loading.LoadingOperations;
 using Saving;
 using SceneManagement;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using Utils;
 using Zenject;
@@ -20,7 +22,6 @@ namespace Infrastructure.Installers.EntryPoint
         [SerializeField] private LoadSceneAfterComix _loaderMapScene;
 
         private DiContainer _sceneContainer;
-        private MultiScenePreloader _preloader;
 
         [Inject]
         public void Compose(DiContainer diContainer)
@@ -29,16 +30,6 @@ namespace Infrastructure.Installers.EntryPoint
 
             _loaderMapScene.Construct(_sceneContainer.Resolve<LoadingScreenProvider>(),
                 _sceneContainer.Resolve<SceneLoaderService>(), _sceneContainer.Resolve<AssetProvider>());
-
-            _preloader = _sceneContainer.Resolve<MultiScenePreloader>();
-        }
-
-        private void Start()
-        {
-            _sceneContainer.Resolve<BootstrapFlowService>()
-                .RunBootstrapFlow(_sceneContainer.Resolve<GameAPI>(), _sceneContainer.Resolve<MultiScenePreloader>(),
-                    _sceneContainer.Resolve<DataPlayer>())
-                .Forget();
         }
     }
 }

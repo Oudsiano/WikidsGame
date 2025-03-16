@@ -7,6 +7,7 @@ using Data;
 using Infrastructure.Installers.EntryPoint;
 using Loading;
 using Loading.LoadingOperations;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement;
 using UI;
@@ -42,15 +43,9 @@ namespace Infrastructure.Installers
 
         public override void InstallBindings()
         {
-            Container.Bind<BootstrapFlowService>().AsSingle().NonLazy();
             Container.Bind<LoadingScreenProvider>().AsSingle().NonLazy();
-            Container.Bind<MultiScenePreloader>().AsSingle().NonLazy();
-
-            Container.Bind<AssetProvider>().FromMethod(context =>
-            {
-                var preloader = Container.Resolve<MultiScenePreloader>();
-                return new AssetProvider(preloader);
-            }).AsSingle().NonLazy();
+            Container.Bind<ScenePreloader>().AsSingle().NonLazy();
+            Container.Bind<AssetProvider>().AsSingle().NonLazy();
 
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
             Container.Bind<JavaScriptHook>().FromComponentInNewPrefab(_javaScriptHook).AsSingle().NonLazy();
@@ -92,7 +87,7 @@ namespace Infrastructure.Installers
         private void BindingUI()
         {
             Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
-            
+
             // if (DeviceChecker.IsMobileDevice())
             // {
             //     Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy(); // TODO mobileManager

@@ -88,7 +88,7 @@ namespace Healths
             }
         }
 
-        public virtual void TakeDamage(float value)
+        public override  void TakeDamage(float value)
         {
 
             var tempRandom = UnityEngine.Random.Range(0, 9);

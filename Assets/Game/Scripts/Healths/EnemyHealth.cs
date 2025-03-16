@@ -64,9 +64,17 @@ namespace Healths
             }
         }
 
-        public virtual void TakeDamage(float value)
+        public override  void TakeDamage(float value)
         {
-            currentHealth = Mathf.Max(currentHealth - value, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0 
+            if (currentHealth == maxHealth)
+            {
+                currentHealth /=2;
+            }
+            else
+            {
+                currentHealth = 0;
+            }
+            // currentHealth = Mathf.Max(currentHealth - value, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0 
 
             if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти
             {
@@ -74,6 +82,7 @@ namespace Healths
             }
             
             healthBar.value = currentHealth; // хил бар только у других. У пользователя свой отдельный скрипт
+            
         }
 
         public void Restore()

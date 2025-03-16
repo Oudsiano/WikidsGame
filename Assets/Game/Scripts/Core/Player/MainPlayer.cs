@@ -1,11 +1,13 @@
 ﻿using AINavigation;
 using Combat;
+using Core.Player.MovingBetweenPoints;
 using Core.Quests;
 using Data;
 using Saving;
 using SceneManagement;
 using UI;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Core.Player
 {
@@ -19,20 +21,23 @@ namespace Core.Player
         private DataPlayer _dataPlayer;
         private UIManager _uiManager;
         private SaveGame _saveGame;
-
+        private NavMeshAgent _agent;
+        
         public PlayerController PlayerController => _playerController;
-
+        public NavMeshAgent Agent => _agent;
+        
         public void Construct(IGame igame, DataPlayer dataPlayer, UIManager uiManager, SaveGame saveGame,
             FastTestsManager fastTestsManager, QuestManager questManager, CoinManager coinManager,
-            BottleManager bottleManager, WeaponArmorManager weaponArmorManager)
+            BottleManager bottleManager, WeaponArmorManager weaponArmorManager, Timer timer)
         {
-
+            _agent = GetComponent<NavMeshAgent>();
+            
             _saveGame = saveGame;
             _dataPlayer = dataPlayer;
             _uiManager = uiManager;
             
             _playerController.Construct(igame, _weaponPanelUI, _saveGame,
-                _dataPlayer, this, fastTestsManager, questManager, coinManager, bottleManager, _uiManager, weaponArmorManager);
+                _dataPlayer, this, fastTestsManager, questManager, coinManager, bottleManager, _uiManager, weaponArmorManager, timer);
             
             _weaponPanelUI.Construct(_playerController, _dataPlayer);
             _icon.Construct(_uiManager);

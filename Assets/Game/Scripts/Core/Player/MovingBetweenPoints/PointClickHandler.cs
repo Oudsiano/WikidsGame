@@ -20,7 +20,7 @@ namespace Core.Player.MovingBetweenPoints
 
         public async void HandleClick(Transform newPosition)
         {
-            _player.transform.position = newPosition.position;
+            _player.Agent.Warp(newPosition.position);
             
             await _timer.SetupCooldown();
         }

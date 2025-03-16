@@ -33,7 +33,7 @@ namespace Infrastructure.Installers.EntryPoint
         private IGame _iGame;
         private PointClickHandler _pointClickHandler;
         private Timer _timer;
-        
+
         private AudioManager _audioManager;
         private DataPlayer _dataPlayer;
         private GameAPI _gameAPI;
@@ -65,7 +65,7 @@ namespace Infrastructure.Installers.EntryPoint
             _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
             _assetProvider = _sceneContainer.Resolve<AssetProvider>();
             _pointClickHandler = _sceneContainer.Resolve<PointClickHandler>();
-            
+
             _keyBoardsEvents = _sceneContainer.Resolve<KeyBoardsEvents>();
             _javaScriptHook = _sceneContainer.Resolve<JavaScriptHook>();
             _iGame = _sceneContainer.Resolve<IGame>();
@@ -112,14 +112,16 @@ namespace Infrastructure.Installers.EntryPoint
             _saveGame.Construct(_gameAPI, _weaponArmorManager, _coinManager,
                 _dataPlayer, _uiManager);
             _uiManager.Construct(_iGame, _followCamera, _gameAPI, _coinManager, _saveGame, _questManager,
-                _dataPlayer, _fastTestsManager, _player.PlayerController, _weaponArmorManager, _levelChangeObserver);
+                _dataPlayer, _fastTestsManager, _player.PlayerController, _weaponArmorManager, _levelChangeObserver,
+                _timer);
             _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame, _fastTestsManager, _questManager,
-                _coinManager, _bottleManager, _weaponArmorManager);
-            _pointClickHandler.Construct(_player, _timer);
-            
+                _coinManager, _bottleManager, _weaponArmorManager, _timer);
+
             _followCamera.Construct(_player, _player.PlayerController);
             _javaScriptHook.Construct(_dataPlayer);
-            _keyBoardsEvents.Construct( _uiManager);
+            _keyBoardsEvents.Construct(_uiManager);
+            
+            _pointClickHandler.Construct(_player, _timer);
         }
     }
 }

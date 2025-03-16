@@ -14,9 +14,10 @@ namespace Core.Player.MovingBetweenPoints
         {
             _handler = handler;
             _transform = transform;
-            _button.onClick.AddListener(ClickPoint);
         }
 
+        public Transform TransformPoint => _transform;
+        
         private void OnDestroy()
         {
             _button.onClick.RemoveListener(ClickPoint);
@@ -24,12 +25,12 @@ namespace Core.Player.MovingBetweenPoints
         
         private void ClickPoint()
         {
+            _handler.HandleClick(_transform);
+            
             if (transform.parent != null)
             {
                 transform.parent.gameObject.SetActive(false);
             }
-            
-            _handler.HandleClick(_transform);
         }
     }
 }

@@ -20,8 +20,10 @@ namespace Infrastructure.Installers.EntryPoint
     public class GamePlayCompositionRoot : MonoBehaviour, ICompose
     {
         [SerializeField] private SceneContext _sceneContext;
+        
         [SerializeField] private SceneComponent _sceneComponent;
         [SerializeField] private Map _map;
+        
         [SerializeField] private ConversationStarter[] _conversationStarters;
         [SerializeField] private DownloadTestData[] _downloadTestData;
         [SerializeField] private SetStudyStep[] _setStudySteps;
@@ -52,7 +54,16 @@ namespace Infrastructure.Installers.EntryPoint
         {
             if (_map != null)
             {
-                _map.Construct(_sceneContainer.Resolve<PointClickHandler>());
+                var handler = _sceneContainer.Resolve<PointClickHandler>();
+                _map.Construct(handler);
+
+                var uiManager = _sceneContainer.Resolve<UIManager>();
+                var container = uiManager.PointViewContainer;
+
+                if (container != null)
+                {
+                    container.Construct(_map.GetPointsView, handler, uiManager);
+                }
             }
 
             if (_sceneComponent != null)

@@ -24,5 +24,7 @@ namespace Core.Player.MovingBetweenPoints
                 _pointsView[i].Construct(_handler, _points[i].transform);
             }
         }
+
+        public PointView[] GetPointsView => _pointsView;
     }
 }

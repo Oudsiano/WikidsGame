@@ -12,7 +12,7 @@ public class ImageSetter : MonoBehaviour
     [FormerlySerializedAs("renderTexturesArray")] [SerializeField]
     private RenderTexture _renderTexturesArray;
 
-    private void Start() // TODO construct
+    private void Start() 
     {
         if (_imageComponent == null)
         {
@@ -40,8 +40,6 @@ public class ImageSetter : MonoBehaviour
 
     private void UpdateImage(Scene scene, LoadSceneMode mode)
     {
-        int sceneIndex = scene.buildIndex;
-
         // Проверяем, существует ли изображение для текущей сцены // TODO idk
         // Устанавливаем изображение из массива, соответствующее номеру сцены
         _imageComponent.texture = _renderTexturesArray;

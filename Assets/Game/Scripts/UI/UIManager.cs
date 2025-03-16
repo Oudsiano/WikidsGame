@@ -2,6 +2,7 @@ using AINavigation;
 using Combat.Data;
 using Core;
 using Core.Camera;
+using Core.Player.MovingBetweenPoints;
 using Core.Quests;
 using Data;
 using DG.Tweening;
@@ -47,6 +48,8 @@ namespace UI
         [Header("Map")] [SerializeField] public Button ButtonShowMap;
         [SerializeField] public GameObject MapCanvas;
         [SerializeField] public Button _btnCloseMap;
+        [SerializeField] private PointViewContainer _pointViewContainer;
+        [SerializeField] private TimerView _timerView;
 
         [Header("PLayerBtns")] [SerializeField]
         private GameObject newWeaponScr;
@@ -110,6 +113,7 @@ namespace UI
         [SerializeField] public Weapon WeaponBow;
         [SerializeField] public TMP_Text arrowCharges;
 
+        private Timer _timer;
         private IGame _igame;
         private FollowCamera _followCamera;
         private GameAPI _gameAPI;
@@ -120,6 +124,8 @@ namespace UI
         private FastTestsManager _fastTestsManager;
         private LevelChangeObserver _levelChangeObserver;
 
+        public PointViewContainer PointViewContainer => _pointViewContainer;
+        
         public FollowCamera FollowCamera
         {
             get => _followCamera;
@@ -129,9 +135,10 @@ namespace UI
         public void Construct(IGame igame, FollowCamera followCamera, GameAPI gameAPI,
             CoinManager coinManager, SaveGame saveGame, QuestManager questManager, DataPlayer dataPlayer,
             FastTestsManager fastTestsManager, PlayerController playerController,
-            WeaponArmorManager weaponArmorManager, LevelChangeObserver levelChangeObserver) // TODO construct
+            WeaponArmorManager weaponArmorManager, LevelChangeObserver levelChangeObserver, Timer timer) // TODO construct
         {
             Debug.Log("Construct UIManager");
+            _timer = timer;
             _igame = igame;
             _followCamera = followCamera;
             _gameAPI = gameAPI;
@@ -141,8 +148,9 @@ namespace UI
             _dataPlayer = dataPlayer;
             _fastTestsManager = fastTestsManager;
             _levelChangeObserver = levelChangeObserver;
+            _timerView.Construct(timer);
+            
             fastTestUI.gameObject.SetActive(false);
-
             _buttonAgain.onClick.AddListener(OnClickAgainRegen);
             _buttonGoToSceneZero.onClick.AddListener(OnClickGoToSceneZero);
             _buttonCancelAgain.onClick.AddListener(OnCLickCancelAgain);
@@ -296,6 +304,7 @@ namespace UI
         private void SceneLoader_LevelChanged(Scene arg0, LoadSceneMode arg1)
         {
             GameObject MapCamera = GameObject.Find("CameraForMainMap"); // TODO Find change
+            
             if (MapCamera != null)
             {
                 MapCamera.GetComponent<Camera>().enabled = false;
@@ -489,8 +498,8 @@ namespace UI
                 MapCanvas.gameObject.SetActive(true);
             }
 
-            _igame.SavePlayerPosLikeaPause(true); // TODO change instanse IGAME
-            PauseClass.IsOpenUI = true; // TODO static
+            _igame.SavePlayerPosLikeaPause(true);
+            PauseClass.IsOpenUI = true; 
         }
 
         private void OnChangeMoney(double newValue)

@@ -4,6 +4,7 @@ using Combat;
 using Combat.EnumsCombat;
 using Core;
 using Core.Player;
+using Core.Player.MovingBetweenPoints;
 using Core.Quests;
 using Data;
 using DialogueEditor;
@@ -43,6 +44,7 @@ namespace AINavigation
         [FormerlySerializedAs("modularCharacter")]
         public GameObject ModularCharacter; // TODO O/C breach
 
+        private Timer _timer;
         private SaveGame _saveGame;
         private DataPlayer _dataPlayer;
         private PlayerFighter _fighter;
@@ -60,52 +62,27 @@ namespace AINavigation
 
         public void Construct(IGame igame, WeaponPanelUI weaponPanelUI,
             SaveGame saveGame, DataPlayer dataPlayer, MainPlayer player, FastTestsManager fastTestsManager,
-            QuestManager questManager, CoinManager coinManager, BottleManager bottleManager, UIManager uiManager, WeaponArmorManager weaponArmorManager)
+            QuestManager questManager, CoinManager coinManager, BottleManager bottleManager, UIManager uiManager, WeaponArmorManager weaponArmorManager, Timer timer)
         {
-            Debug.Log("----______------_______------_______------");
-            Debug.Log("Start Construct PlayerController");
-
+            _timer = timer;
             _mover = GetComponent<Mover>();
-            Debug.Log("Get mover");
             _fighter = GetComponent<PlayerFighter>();
-            Debug.Log("Get _fighter");
             _health = GetComponent<PlayerHealth>();
-            Debug.Log("Get _health");
 
             _weaponArmorManager = weaponArmorManager;
-            Debug.Log("Get _weaponArmorManager");
             WeaponPanelUI = weaponPanelUI;
-            Debug.Log("Get weaponPanelUI");
             _dataPlayer = dataPlayer;
-            Debug.Log("Get _dataPlayer");
             _saveGame = saveGame;
-            Debug.Log("Get saveGame");
-            
             _fighter.Construct(igame, player);
-            Debug.Log("fighter constructed");
             _health.Construct(this, fastTestsManager, questManager, uiManager);
-            
-            Debug.Log("_health constructed");
 
+            _timer.Started += ActivateInvisibility;
+            _timer.Ended += DeactivateInvisibility;
+            
             // SceneManager.sceneLoaded += SceneLoader_LevelChanged;
             // saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
         }
-
-        public void SetPlayerArmorManager(PlayerArmorManager playerArmorManager)
-        {
-            PlayerArmorManager = playerArmorManager;
-            
-            _saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
-        }
-
-        public void SetModularCharacter(GameObject modularCharacter)
-        {
-            ModularCharacter = modularCharacter;
-            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
-        }
-
-
-
+        
         private void Update()
         {
             if (PauseClass.GetPauseState())
@@ -133,13 +110,84 @@ namespace AINavigation
                 return; // TODO not used
             }
         }
+        
+        public void SetPlayerArmorManager(PlayerArmorManager playerArmorManager)
+        {
+            PlayerArmorManager = playerArmorManager;
+            
+            _saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
+        }
+
+        public void SetModularCharacter(GameObject modularCharacter)
+        {
+            ModularCharacter = modularCharacter;
+            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+        }
 
         public Health GetHealth() => _health; // TODO move to properties
 
         public PlayerFighter GetFighter() => _fighter; // TODO move to properties
 
         public bool GetPlayerInvisibility() => _invisibilityState; // TODO move to properties
+        
+        public void ActivateInvisibility()
+        {
+            _invisibilityState = true;
 
+            if (_invisibilityState)
+            {
+                _activeInvisibilityVFX = PlayVFX(_invisibilityVFXPrefab);
+
+                if (_invisibilityAudioSource != null)
+                {
+                    _invisibilityAudioSource.Play();
+                }
+            }
+            else
+            {
+                if (_activeInvisibilityVFX != null)
+                {
+                    Destroy(_activeInvisibilityVFX);
+                }
+
+                PlayVFX(_exitInvisibilityVFXPrefab);
+
+                if (_exitInvisibilityAudioSource != null)
+                {
+                    _exitInvisibilityAudioSource.Play();
+                }
+            }
+        }
+        
+        public void DeactivateInvisibility()
+        {
+            _invisibilityState = false;
+
+            if (_invisibilityState)
+            {
+                _activeInvisibilityVFX = PlayVFX(_invisibilityVFXPrefab);
+
+                if (_invisibilityAudioSource != null)
+                {
+                    _invisibilityAudioSource.Play();
+                }
+            }
+            else
+            {
+                if (_activeInvisibilityVFX != null)
+                {
+                    Destroy(_activeInvisibilityVFX);
+                }
+
+                PlayVFX(_exitInvisibilityVFXPrefab);
+
+                if (_exitInvisibilityAudioSource != null)
+                {
+                    _exitInvisibilityAudioSource.Play();
+                }
+            }
+        }
+        
         public void SetInvisByBtn(bool isInvisibility)
         {
             if (_invisibilityState == isInvisibility)

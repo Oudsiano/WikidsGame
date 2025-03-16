@@ -10,18 +10,27 @@ namespace Core.Player.MovingBetweenPoints
     {
         private float _duration = 5f;
         private CancellationTokenSource _cancellationTokenSource;
-
+        private bool _isRunning = false;
+        
         public event Action Started;
         public event Action Ended;
 
+        public float Duration => _duration;
+        
         public void Construct(float duration)
         {
             _duration = duration;
         }
-
+        
         public async UniTask SetupCooldown()
         {
-            // Если таймер уже запущен — отменяем его
+            if (_isRunning)
+            {
+                Debug.LogWarning("Таймер уже запущен! Повторный запуск невозможен.");
+                return;
+            }
+
+            _isRunning = true;
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -30,7 +39,6 @@ namespace Core.Player.MovingBetweenPoints
 
             try
             {
-                // Ждем в течение _duration секунд
                 await UniTask.Delay(TimeSpan.FromSeconds(_duration), cancellationToken: _cancellationTokenSource.Token);
                 Debug.Log("Таймер завершён!");
                 Ended?.Invoke();
@@ -41,7 +49,8 @@ namespace Core.Player.MovingBetweenPoints
             }
             finally
             {
-                _cancellationTokenSource.Dispose();
+                _isRunning = false;
+                _cancellationTokenSource?.Dispose();
                 _cancellationTokenSource = null;
             }
         }

@@ -1185,7 +1185,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4939805754032154}
-  - component: {fileID: -7478607897355871332}
   - component: {fileID: -3301756770576590277}
   - component: {fileID: -5295137437733593995}
   - component: {fileID: 56556336233610316}
@@ -1196,6 +1195,7 @@ GameObject:
   - component: {fileID: 4528791804667412289}
   - component: {fileID: -2036263526699054230}
   - component: {fileID: -6567513972116839297}
+  - component: {fileID: 6553814101171622888}
   m_Layer: 9
   m_Name: Character_BR_ElementalGolem_01
   m_TagString: Enemy
@@ -1231,21 +1231,6 @@ Transform:
   - {fileID: 7627328460810719494}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-7478607897355871332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1334977650429898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f578d81a8ed94821ae9508b8203aabbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 500
-  currentHealth: 0
-  healthBar: {fileID: 5048864874473600318}
 --- !u!114 &-3301756770576590277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1270,8 +1255,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349eccfb59a03b84aaa950abf8ae93c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickEffect: {fileID: -2036263526699054230}
-  strafeDistance: 3
+  ClickEffect: {fileID: -2036263526699054230}
+  StrafeDistance: 3
+  Target: {fileID: 0}
 --- !u!195 &56556336233610316
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1329,15 +1315,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d5da44f87c9b5439d34d30a3de4d02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseDistance: 5
-  suspicionTimer: 10
+  _suspicionTimer: 10
   patrolPath: {fileID: 0}
-  tolerance: 1
-  minDwellTime: 0
-  maxDwellTime: 0
-  currentDwellTime: 0
-  timeSinceLastSawPlayer: Infinity
-  timeSinceLastHit: Infinity
+  _chaseDistance: 5
+  _tolerance: 1
+  _minDwellTime: 0
+  _maxDwellTime: 0
+  _currentDwellTime: 0
+  _timeSinceLastSawPlayer: Infinity
+  _timeSinceLastHit: Infinity
 --- !u!114 &6774671834213026324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1350,13 +1336,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1cafa4ed48613d4fad57526a90efa28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightHandPosition: {fileID: 4007886097213850}
-  leftHandPosition: {fileID: 4471076326041288}
-  defaultWeapon: {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
-  equippedWeapon: {fileID: 0}
-  FireballWeapon: {fileID: 0}
-  timer: 0
-  target: {fileID: 0}
+  _rightHandPosition: {fileID: 4007886097213850}
+  _leftHandPosition: {fileID: 4471076326041288}
+  _defaultWeapon: {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
+  _equippedWeapon: {fileID: 0}
+  _fireballWeapon: {fileID: 0}
+  _bowWeapon: {fileID: 0}
+  Target: {fileID: 0}
 --- !u!114 &-6856158504436635181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1402,8 +1388,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 519af89390db447aeba4c2ee889b1817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPrefab: {fileID: 428852817160778579, guid: 281e0a2c5c68e4ac289a1f324c62747e,
-    type: 3}
+  _prefab: {fileID: 428852817160778579, guid: 281e0a2c5c68e4ac289a1f324c62747e, type: 3}
 --- !u!114 &-6567513972116839297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1416,6 +1401,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a7fc87193d6441a0a63f2cdec38ef78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6553814101171622888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334977650429898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c98239d1a6159b40beca6b7d428a0f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RedHalfCircle: {fileID: 0}
+  healthBar: {fileID: 5048864874473600318}
+  maxHealth: 500
+  currentHealth: 0
 --- !u!1 &1363942222743436
 GameObject:
   m_ObjectHideFlags: 0

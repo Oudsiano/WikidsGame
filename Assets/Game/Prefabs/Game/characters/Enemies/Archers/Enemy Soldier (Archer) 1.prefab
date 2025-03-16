@@ -25,6 +25,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2524491255418903938, guid: ed711a317c351354982d7d16ccc18b17,
         type: 3}
+      propertyPath: ClickEffect
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2524491255418903938, guid: ed711a317c351354982d7d16ccc18b17,
+        type: 3}
       propertyPath: clickEffect
       value: 
       objectReference: {fileID: 0}
@@ -51,6 +56,12 @@ PrefabInstance:
     - target: {fileID: 5398448963245149938, guid: ed711a317c351354982d7d16ccc18b17,
         type: 3}
       propertyPath: defaultWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: aca463bd6b6649c41b5e3398fbc45389,
+        type: 2}
+    - target: {fileID: 5398448963245149938, guid: ed711a317c351354982d7d16ccc18b17,
+        type: 3}
+      propertyPath: _defaultWeapon
       value: 
       objectReference: {fileID: 11400000, guid: aca463bd6b6649c41b5e3398fbc45389,
         type: 2}
@@ -131,6 +142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8373973890479701953, guid: ed711a317c351354982d7d16ccc18b17, type: 3}
+    - {fileID: 519289522073095561, guid: ed711a317c351354982d7d16ccc18b17, type: 3}
     m_RemovedGameObjects:
     - {fileID: 352134505719196741, guid: ed711a317c351354982d7d16ccc18b17, type: 3}
     m_AddedGameObjects: []
@@ -139,6 +151,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3234580944393170977}
+    - targetCorrespondingSourceObject: {fileID: 6435558949000753468, guid: ed711a317c351354982d7d16ccc18b17,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2701435800981131262}
   m_SourcePrefab: {fileID: 100100000, guid: ed711a317c351354982d7d16ccc18b17, type: 3}
 --- !u!114 &6821286552366683521 stripped
 MonoBehaviour:
@@ -170,4 +186,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc42fd3bddb037944b2c5576500b24f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  specialEnemyName: ArcherFirst
+  _specialEnemyName: ArcherFirst
+--- !u!114 &2701435800981131262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6916854950030640452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c98239d1a6159b40beca6b7d428a0f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RedHalfCircle: {fileID: 0}
+  healthBar: {fileID: 6821286552366683521}
+  maxHealth: 10
+  currentHealth: 0

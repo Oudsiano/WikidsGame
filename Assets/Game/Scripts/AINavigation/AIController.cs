@@ -43,7 +43,7 @@ namespace AINavigation
 
         private Fighter _fighter;
         private Mover _mover;
-        private Health _health;
+        private EnemyHealth _health;
         private MainPlayer _player;
 
         private GameObject _halfCircle; // TODO remove GO
@@ -60,11 +60,11 @@ namespace AINavigation
         {
             _fighter = GetComponent<Fighter>();
             _mover = GetComponent<Mover>();
-            _health = GetComponent<Health>();
+            _health = GetComponent<EnemyHealth>();
             
             _player = player;
             _fighter.Construct(igame, _player);
-            _health.Construct(playerController, fastTestsManager, questManager, coinManager, bottleManager, uiManager);
+            _health.Construct(playerController, fastTestsManager,questManager, coinManager, bottleManager,uiManager);
             
             _guardLocation = transform.position;
             _guardRotation = transform.rotation;

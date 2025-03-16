@@ -47,7 +47,7 @@ namespace UI
         public void ResetWeaponToDefault()
         {
             _playerController.GetFighter().SetCommonWeapon();
-            FireballPanell.SetActive(false);
+            // FireballPanell.SetActive(false);
             CommonWeaponPanell.SetActive(true);
             // BowPanell.SetActive(false);
         }
@@ -62,7 +62,7 @@ namespace UI
             else
             {
                 ResetWeaponToDefault();
-                FireballBTN.gameObject.SetActive(false);
+                // FireballBTN.gameObject.SetActive(false);
             }
         }
         
@@ -81,7 +81,7 @@ namespace UI
             _playerController.GetFighter().SetBow(); 
             BowPanell.SetActive(true);
             // CommonWeaponPanell.SetActive(false);
-            FireballPanell.SetActive(false);  
+            // FireballPanell.SetActive(false);  
         }
     }
 }

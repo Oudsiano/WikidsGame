@@ -26,14 +26,22 @@ namespace UI
         
         public void Construct(PlayerController playerController, DataPlayer dataPlayer) // TODO construct
         {
+            Debug.Log("***********************************");
+            Debug.Log("Start Construct WeaponPanel");
             _playerController = playerController;
+            Debug.Log("PlayerController assigned");
             _dataPlayer = dataPlayer;
+            Debug.Log("dataPlayer assigned");
             CommonWeaponBTN.onClick.AddListener(OnCLickCommonWeaponBTN);
             FireballBTN.onClick.AddListener(OnCLickFireballBTN);
             BowBTN.onClick.AddListener(OnClickBowBTN); 
 
             ResetWeaponToDefault();
+            Debug.Log("ResetWeaponToDefault");
             ResetFireballCount();
+            Debug.Log("ResetFireballCount");
+            Debug.Log("Finish Construct WeaponPanel");
+            Debug.Log("***********************************");
         }
         
         public void ResetWeaponToDefault()

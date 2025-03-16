@@ -6,6 +6,7 @@ using Core.Quests;
 using Data;
 using Loading;
 using Loading.LoadingOperations;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement;
 using UI;
@@ -42,8 +43,8 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
     private SavePointsManager _savePointsManager;
     private LevelChangeObserver _levelChangeObserver;
     private QuestManager _questManager;
-    private PlayerArmorManager _playerArmorManager;
-    private WeaponPanelUI _weaponPanelUI;
+    // private PlayerArmorManager _playerArmorManager;
+    // private WeaponPanelUI _weaponPanelUI;
     private MainPlayer _player;
     private AllQuestsInGame _allQuests;
     private SceneWithTestsID _sceneWithTestID;
@@ -56,9 +57,9 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         QuestManager questManager, NPCManagment npcManagment, FastTestsManager fastTestsManager,
         CursorManager cursorManager, UIManager uiManager, CoinManager coinManager,
         BottleManager bottleManager, WeaponArmorManager weaponArmorManager, AllQuestsInGame allQuests,
-        SceneWithTestsID sceneWithTestsID, LoadingScreenProvider loadingScreenProvider, AssetProvider assetProvider, AssetPreloader assetPreloader)
+        SceneWithTestsID sceneWithTestsID, LoadingScreenProvider loadingScreenProvider, AssetProvider assetProvider, ScenePreloader preloader)
     {
-        Debug.Log("Construct iagem");
+        Debug.Log("Construct igame");
         _player = player;
         this.gameAPI = gameAPI;
         this.dataPlayer = dataPlayer;
@@ -78,7 +79,7 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         _allQuests = allQuests;
         _sceneWithTestID = sceneWithTestsID;
 
-        levelChangeObserver.Construct(_savePointsManager, this.dataPlayer, _uiManager, _player, this.gameAPI, loadingScreenProvider, assetProvider, assetPreloader);
+        levelChangeObserver.Construct(_savePointsManager, this.dataPlayer, _uiManager, _player, this.gameAPI, loadingScreenProvider, assetProvider, preloader);
         ArrowForPlayerManager.Construct();
         questManager.Construct(this.dataPlayer, _uiManager, _levelChangeObserver,
             _allQuests, _sceneWithTestID, this.saveGame, this.gameAPI);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AINavigation;
 using Combat;
 using Core;
@@ -9,6 +10,7 @@ using Cysharp.Threading.Tasks;
 using Data;
 using Loading;
 using Loading.LoadingOperations;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement;
 using UI;
@@ -32,7 +34,6 @@ namespace Infrastructure.Installers.EntryPoint
         private AudioManager _audioManager;
         private DataPlayer _dataPlayer;
         private GameAPI _gameAPI;
-        private PlayerController _playerController;
         private BottleManager _bottleManager;
         private QuestManager _questManager;
         private NPCManagment _npcManager;
@@ -41,7 +42,6 @@ namespace Infrastructure.Installers.EntryPoint
         private UIManager _uiManager;
         private CoinManager _coinManager;
         private WeaponArmorManager _weaponArmorManager;
-        private PlayerArmorManager _playerArmorManager;
 
         private FollowCamera _followCamera;
         private SceneLoaderService _sceneLoader;
@@ -52,20 +52,17 @@ namespace Infrastructure.Installers.EntryPoint
         private AllQuestsInGame _allQuests;
         private SceneWithTestsID _sceneWithTestsID;
         private KeyBoardsEvents _keyBoardsEvents;
-        private SceneComponent _sceneComponent;
 
         private LoadingScreenProvider _loadingProvider;
         private AssetProvider _assetProvider;
-        private AssetPreloader _assetPreloader;
-        
+
         [Inject]
-        public async void Compose(DiContainer diContainer) 
+        public void Compose(DiContainer diContainer)
         {
             _sceneContainer = _sceneContext.Container;
             _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
             _assetProvider = _sceneContainer.Resolve<AssetProvider>();
-            _assetPreloader = _sceneContainer.Resolve<AssetPreloader>();
-            
+
             _keyBoardsEvents = _sceneContainer.Resolve<KeyBoardsEvents>();
             _javaScriptHook = _sceneContainer.Resolve<JavaScriptHook>();
             _iGame = _sceneContainer.Resolve<IGame>();
@@ -90,10 +87,8 @@ namespace Infrastructure.Installers.EntryPoint
             _weaponArmorManager = _sceneContainer.Resolve<WeaponArmorManager>(); //
             _allQuests = _sceneContainer.Resolve<AllQuestsInGame>();
             _sceneWithTestsID = _sceneContainer.Resolve<SceneWithTestsID>();
-            
-            ConstructComponents();
 
-            await _assetPreloader.LoadOpenedScenes(_dataPlayer.PlayerData.FinishedRegionsName);
+            ConstructComponents();
             SceneManager.LoadScene(Constants.Scenes.OpenScene);
         }
 
@@ -103,14 +98,16 @@ namespace Infrastructure.Installers.EntryPoint
                 _levelChangeObserver, _savePointsManager, _arrowForPlayerManager,
                 _questManager, _npcManager, _fastTestsManager,
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
-                _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider, _assetProvider, _assetPreloader);
+                _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider, _assetProvider,
+                _sceneContainer.Resolve<ScenePreloader>());
+
 
             _audioManager.Construct();
             _savePointsManager.Construct(_dataPlayer);
-            //_sceneLoader.Construct(_dataPlayer, _levelChangeObserver, _savePointsManager);
             _gameAPI.Construct(_player, _sceneLoader, _dataPlayer, _saveGame, _fastTestsManager,
                 _player.PlayerController,
                 _weaponArmorManager, _questManager);
+
 
             _saveGame.Construct(_gameAPI, _weaponArmorManager, _coinManager,
                 _dataPlayer, _uiManager);
@@ -119,8 +116,15 @@ namespace Infrastructure.Installers.EntryPoint
             _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame, _fastTestsManager, _questManager,
                 _coinManager, _bottleManager, _weaponArmorManager);
             _followCamera.Construct(_player, _player.PlayerController, _sceneLoader);
+            ;
             _javaScriptHook.Construct(_dataPlayer, _sceneLoader);
             _keyBoardsEvents.Construct(_sceneLoader, _uiManager);
+        }
+
+        private async void Start()
+        {
+            await _sceneContainer.Resolve<ScenePreloader>()
+                .PreloadSceneInBackground(Constants.Scenes.FirstBattleScene);
         }
     }
 }

@@ -19,6 +19,13 @@ namespace Loading.LoadingOperations
 
         public string Description => "Next Scene Loading...";
 
+        public async UniTask Load()
+        {
+            var handle = await _assetProvider.LoadScene(_nameScene);
+            
+            await UniTask.Yield();
+        }
+        
         public async UniTask Load(Action<float> onProgress)
         {
             onProgress?.Invoke(0f);

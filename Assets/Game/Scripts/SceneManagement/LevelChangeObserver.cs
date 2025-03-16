@@ -3,25 +3,21 @@ using Core.Player;
 using Cysharp.Threading.Tasks;
 using Data;
 using Healths;
-using Infrastructure;
 using Loading;
 using Loading.LoadingOperations;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement.Enums;
 using UI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AI;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
-using Utils;
 
 namespace SceneManagement
 {
     public class LevelChangeObserver : MonoBehaviour // TODO check
     {
-        private NavMeshDataInstance _navMeshInstance;
-        
         private string _indexSceneToLoad;
         private SavePointsManager _savePointsManager;
         private DataPlayer _dataPlayer;
@@ -30,14 +26,14 @@ namespace SceneManagement
         private GameAPI _gameAPI;
         private LoadingScreenProvider _loadingScreenProvider;
         private AssetProvider _assetProvider;
-        private AssetPreloader _assetPreloader;
-
+        private ScenePreloader _preloader;
         public string IndexSceneToLoad => _indexSceneToLoad;
 
         public void Construct(SavePointsManager savePointsManager, DataPlayer dataPlayer, UIManager uiManager,
             MainPlayer player, GameAPI gameAPI, LoadingScreenProvider loadingScreenProvider,
-            AssetProvider assetProvider, AssetPreloader assetPreloader)
+            AssetProvider assetProvider, ScenePreloader preloader)
         {
+            _preloader = preloader;
             _savePointsManager = savePointsManager;
             _dataPlayer = dataPlayer;
             _uiManager = uiManager;
@@ -45,38 +41,16 @@ namespace SceneManagement
             _gameAPI = gameAPI;
             _loadingScreenProvider = loadingScreenProvider;
             _assetProvider = assetProvider;
-            _assetPreloader = assetPreloader;
-
-            //SceneManager.sceneLoaded += OnSceneLoaded;
+            // Подписываемся на событие изменения уровня загрузки.
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
-        
-        private async UniTask LoadNavMesh(AssetReferenceT<NavMeshData> navMeshData)
-        {
-            if (_navMeshInstance.valid)
-            {
-                NavMesh.RemoveNavMeshData(_navMeshInstance);
-            }
 
-            var handle = navMeshData.LoadAssetAsync();
-            await handle.ToUniTask();
-
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                NavMeshData data = handle.Result;
-                _navMeshInstance = NavMesh.AddNavMeshData(data);
-            }
-            else
-            {
-                Debug.LogError("Не удалось загрузить NavMeshData");
-            }
-        }
-        
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (_dataPlayer.PlayerData.spawnPoint == 0)
             {
                 GameObject startPos = GameObject.Find("StartPoint");
-                Debug.Log(startPos);
+
                 if (startPos != null)
                 {
                     UpdatePlayerLocation(startPos.transform.position, startPos.transform.rotation);
@@ -123,42 +97,8 @@ namespace SceneManagement
             _indexSceneToLoad = newName;
             Debug.Log("Уровень загрузки изменен на " + newName);
 
-            await SceneManager.LoadSceneAsync(Constants.Scenes.GamePlayScene, LoadSceneMode.Single);
-
-            await UniTask.Yield();
-
-            var prefab = _assetPreloader.GetLoadedAsset(newName);
-
-            if (prefab != null)
-            {
-                Instantiate(prefab);
-                await LoadNavMesh(prefab.GetComponent<NavMeshDataHolder>().NavMeshData);
-                
-                if (_dataPlayer.PlayerData.spawnPoint == 0)
-                {
-                    GameObject startPos = GameObject.Find("StartPoint");
-                    Debug.Log(startPos);
-                    if (startPos != null)
-                    {
-                        UpdatePlayerLocation(startPos.transform.position, startPos.transform.rotation);
-                        _uiManager.FollowCamera.ActivateCommonZoomUpdate();
-                    }
-                }
-                else if (SavePointsManager.AllSavePoints.Count > 0)
-                {
-                    Vector3 pos = SavePointsManager.AllSavePoints[_dataPlayer.PlayerData.spawnPoint].transform.position;
-                    UpdatePlayerLocation(pos, Quaternion.identity);
-                    _uiManager.FollowCamera.ActivateCommonZoomUpdate();
-                }
-
-                _savePointsManager.UpdateStateSpawnPointsAfterLoad(true);
-                _player.ResetCountEnergy();
-                _gameAPI.SaveUpdater();
-            }
-            else
-            {
-                Debug.LogError($"Префаб для сцены {newName} не найден.");
-            }
+            await _preloader.ActivateScene(_indexSceneToLoad);
+            //_loadingScreenProvider.LoadAndDestroy(new BattleSceneOperation(_indexSceneToLoad, _assetProvider)).Forget();
         }
 
         // Метод для обновления местоположения игрока

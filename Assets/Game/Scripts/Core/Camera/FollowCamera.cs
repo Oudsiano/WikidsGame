@@ -220,6 +220,11 @@ namespace Core.Camera
                 // Если FollowCamera имеет родителя, переводим мировую позицию цели в локальные координаты родителя
                 if (transform.parent != null)
                 {
+                    if (_target == null)
+                    {
+                        Debug.LogError("FollowCamera target is null");
+                    }
+                    
                     transform.localPosition = transform.parent.InverseTransformPoint(_target.position);
                 }
                 else

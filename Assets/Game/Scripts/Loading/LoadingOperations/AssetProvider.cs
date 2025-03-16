@@ -15,7 +15,7 @@ namespace Loading.LoadingOperations
         private bool _isReady;
 
         public string Description => "Assets Initialization...";
-
+        
         public async UniTask Load(Action<float> progress)
         {
             _isReady = true;
@@ -32,8 +32,6 @@ namespace Loading.LoadingOperations
 
         public async UniTask<SceneInstance> LoadScene(string nameScene)
         {
-            await WaitUntilReady();
-
             Debug.Log($"[AssetProvider] Trying to load scene: {nameScene}");
 
             var locations = await Addressables.LoadResourceLocationsAsync(nameScene).ToUniTask();

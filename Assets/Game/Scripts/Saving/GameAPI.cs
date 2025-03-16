@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using AINavigation;
 using Core;
@@ -36,12 +37,15 @@ namespace Saving
         public bool gameSave = false;
         public bool gameGet = false;
         private bool GameLoaded = false;
+        private bool _gameLoad = false;
 
         public bool TestSuccessKey = false; //Ключ нужен отдельно, потому,
         //что диалог его сбрасывает. И нам надо хранить его запределами диалогов.
 
         private bool needMakeSaveInNextUpdate = false;
 
+        public bool GameLoad => _gameLoad;
+        
         public void Construct(MainPlayer player, SceneLoaderService sceneLoader, DataPlayer dataPlayer, SaveGame saveGame,
             FastTestsManager fastTestsManager, PlayerController playerController,
             WeaponArmorManager weaponArmorManager, QuestManager questManager)
@@ -124,7 +128,7 @@ namespace Saving
                 PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
                 SL_objs sl_obj = new SL_objs(json);
                 sl_obj.Load(ref playerData.startedQuests, "startedQuests"); // TODO can be cached
-
+                
                 _dataPlayer.PlayerData = playerData;
 
                 // Инициализация списка пройденных квестов
@@ -276,10 +280,9 @@ namespace Saving
             //string json = JsonUtility.ToJson(_dataPlayer.playerData);
             string json = JsonConvert.SerializeObject(_dataPlayer.PlayerData);
             Debug.Log("JSON to send: " + json);
-
             byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
             UnityWebRequest
-                request = new UnityWebRequest("https://wikids.ru/api/v1/game", "POST"); // TODO can be cached
+                request = new UnityWebRequest("https://wikids.ru/api/v1/game", "POST");
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
@@ -288,6 +291,8 @@ namespace Saving
 
             if (request.result == UnityWebRequest.Result.Success)
             {
+                Debug.Log(json );
+                _gameLoad = true;
                 Debug.Log("Data saved successfully");
             }
             else

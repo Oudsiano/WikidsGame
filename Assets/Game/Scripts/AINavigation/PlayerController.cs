@@ -55,30 +55,60 @@ namespace AINavigation
 
         private GameObject _activeInvisibilityVFX; // Текущий активный VFX объект для невидимости
         private WeaponArmorManager _weaponArmorManager;
+        
+        public Fighter Fighter=> _fighter;
 
-        public void Construct(IGame igame, PlayerArmorManager playerArmorManager, WeaponPanelUI weaponPanelUI,
+        public void Construct(IGame igame, WeaponPanelUI weaponPanelUI,
             SaveGame saveGame, DataPlayer dataPlayer, MainPlayer player, FastTestsManager fastTestsManager,
             QuestManager questManager, CoinManager coinManager, BottleManager bottleManager, UIManager uiManager, WeaponArmorManager weaponArmorManager)
         {
-            Debug.Log("Construct PlayerController");
+            Debug.Log("----______------_______------_______------");
+            Debug.Log("Start Construct PlayerController");
 
             _mover = GetComponent<Mover>();
+            Debug.Log("Get mover");
             _fighter = GetComponent<Fighter>();
+            Debug.Log("Get _fighter");
             _health = GetComponent<Health>();
+            Debug.Log("Get _health");
 
             _weaponArmorManager = weaponArmorManager;
-            PlayerArmorManager = playerArmorManager;
+            Debug.Log("Get _weaponArmorManager");
             WeaponPanelUI = weaponPanelUI;
+            Debug.Log("Get weaponPanelUI");
             _dataPlayer = dataPlayer;
+            Debug.Log("Get _dataPlayer");
             _saveGame = saveGame;
+            Debug.Log("Get saveGame");
             
             _fighter.Construct(igame, player);
+            Debug.Log("fighter constructed");
             _health.Construct(this, fastTestsManager, questManager, coinManager, bottleManager, uiManager);
+            
+            Debug.Log("_health constructed");
 
-            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
-            saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
+            // SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+            // saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
+            
+            Debug.Log("Finish Construct PlayerController");
+            Debug.Log("----______------_______------_______------");
         }
-        
+
+        public void SetPlayerArmorManager(PlayerArmorManager playerArmorManager)
+        {
+            PlayerArmorManager = playerArmorManager;
+            
+            _saveGame.OnLoadItems += SaveGame_OnOnLoadItems;
+        }
+
+        public void SetModularCharacter(GameObject modularCharacter)
+        {
+            ModularCharacter = modularCharacter;
+            SceneManager.sceneLoaded += SceneLoader_LevelChanged;
+        }
+
+
+
         private void Update()
         {
             if (PauseClass.GetPauseState())
@@ -157,7 +187,6 @@ namespace AINavigation
 
         private void SceneLoader_LevelChanged(Scene scene, LoadSceneMode mode) // TODO move to one SceneLoaderService
         {
-            Debug.Log("Player SceneLoader_LevelChanged");
             _saveGame.MakeLoad();
             _saveGame.SetBonusWeaponAndArmorIfNeed();
             EquipWeaponAndArmorAfterLoad();

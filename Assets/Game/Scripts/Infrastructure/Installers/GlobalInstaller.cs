@@ -1,15 +1,17 @@
-﻿using Core;
+﻿using System.Collections.Generic;
+using Core;
 using Core.Camera;
 using Core.Player;
 using Core.Quests;
 using Data;
+using Infrastructure.Installers.EntryPoint;
 using Loading;
 using Loading.LoadingOperations;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement;
 using UI;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using Web;
 using Zenject;
 
@@ -42,8 +44,8 @@ namespace Infrastructure.Installers
         public override void InstallBindings()
         {
             Container.Bind<LoadingScreenProvider>().AsSingle().NonLazy();
+            Container.Bind<ScenePreloader>().AsSingle().NonLazy();
             Container.Bind<AssetProvider>().AsSingle().NonLazy();
-            Container.Bind<AssetPreloader>().AsSingle().NonLazy();
 
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
             Container.Bind<JavaScriptHook>().FromComponentInNewPrefab(_javaScriptHook).AsSingle().NonLazy();
@@ -55,6 +57,7 @@ namespace Infrastructure.Installers
             Container.Bind<ArrowForPlayerManager>().AsSingle().NonLazy();
             Container.Bind<FastTestsManager>().AsSingle().NonLazy();
             Container.Bind<SaveGame>().AsSingle().NonLazy();
+            Container.Bind<LocalAssetLoader>().AsSingle();
 
             BindingComponents();
         }
@@ -83,14 +86,16 @@ namespace Infrastructure.Installers
 
         private void BindingUI()
         {
-            if (DeviceChecker.IsMobileDevice())
-            {
-                Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerMobilePrefab).AsSingle().NonLazy();
-            }
-            else
-            {
-                Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
-            }
+            Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
+
+            // if (DeviceChecker.IsMobileDevice())
+            // {
+            //     Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy(); // TODO mobileManager
+            // }
+            // else
+            // {
+            //     Container.Bind<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle().NonLazy();
+            // }
 
             Debug.Log("IsMobile " + DeviceChecker.IsMobileDevice());
         }

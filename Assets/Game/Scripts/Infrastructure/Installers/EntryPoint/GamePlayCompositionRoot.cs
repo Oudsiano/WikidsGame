@@ -6,10 +6,12 @@ using Core.Player;
 using Core.Quests;
 using Data;
 using DialogueEditor;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Infrastructure.Installers.EntryPoint
@@ -41,10 +43,10 @@ namespace Infrastructure.Installers.EntryPoint
         public void Compose(DiContainer diContainer)
         {
             _sceneContainer = _sceneContext.Container;
-
+            
             ConstructComponents();
         }
-
+        
         private void ConstructComponents()
         {
             if (_sceneComponent != null)

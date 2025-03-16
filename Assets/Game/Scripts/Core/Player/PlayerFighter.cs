@@ -1,4 +1,4 @@
-﻿using Combat.Data;
+using Combat.Data;
 using Combat.EnumsCombat;
 using Core;
 using Core.Interfaces;
@@ -12,22 +12,22 @@ using UnityEngine.Serialization;
 
 namespace Combat
 {
-    [RequireComponent(typeof(Mover))]
-    public class Fighter : MonoBehaviour, IAction
-    {
-        private IGame _igame;
+[RequireComponent(typeof(Mover))]
+public class PlayerFighter : MonoBehaviour, IAction
+{
+  private IGame _igame;
 
         [FormerlySerializedAs("rightHandPosition")] [Header("Fighter Stats")] [Header("Weapon")] [SerializeField]
-        protected Transform _rightHandPosition = null;
+        private Transform _rightHandPosition = null;
 
         [FormerlySerializedAs("leftHandPosition")] [SerializeField]
-        protected Transform _leftHandPosition = null;
+        private Transform _leftHandPosition = null;
 
         [FormerlySerializedAs("defaultWeapon")] [SerializeField]
         private Weapon _defaultWeapon = null;
 
         [FormerlySerializedAs("equippedWeapon")] [SerializeField]
-        protected Weapon _equippedWeapon = null;
+        private Weapon _equippedWeapon = null;
 
         [FormerlySerializedAs("fireballWeapon")] [SerializeField]
         private Weapon _fireballWeapon = null;
@@ -39,13 +39,13 @@ namespace Combat
 
         private float _timer = 20;
         private bool _isPlayer;
-        protected WeaponNow _weapon;
+        private WeaponNow _weapon;
         //private bool isFireballNow = false; // TODO not used code
 
         private MainPlayer _player;
         private Mover _mover;
         private ActionScheduler _actionScheduler;
-        protected Animator _animator;
+        private Animator _animator;
 
         public void Construct(IGame igame, MainPlayer player)
         {
@@ -56,9 +56,31 @@ namespace Combat
             _actionScheduler = GetComponent<ActionScheduler>();
             _animator = GetComponent<Animator>();
             
-            _isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
+        }
+
+        public void SetHandPositions(Transform RightHand, Transform LeftHand)
+        {
+            _rightHandPosition = RightHand;
+            _leftHandPosition = LeftHand;
             
-            EquipWeapon(_defaultWeapon);
+        }
+
+        public void EquipWeapon()
+        {
+            _isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
+
+            if (_isPlayer)
+            {
+                if (_igame.saveGame.EquipedWeapon != null)
+                {
+                    EquipWeapon(_igame.saveGame.EquipedWeapon);
+                }
+            }
+
+            if (_equippedWeapon == false)
+            {
+                EquipWeapon(_defaultWeapon);
+            }
         }
         
 
@@ -132,7 +154,7 @@ namespace Combat
             //     Awake(); // TODO CRITICAL CALL BACK AWAKE??
             // }
 
-             _weapon = WeaponNow.common;
+             _weapon = WeaponNow.bow;
             
 
             if (_equippedWeapon != null)
@@ -156,17 +178,17 @@ namespace Combat
             }
         }
 
-        // public void EquipItem(ItemDefinition item)
-        // {
-        //     if (item is Armor)
-        //     {
-        //         ((Armor)item).EquipIt(); // TODO Expensive unboxing
-        //     }
-        //     else if (item is Weapon)
-        //     {
-        //         EquipWeapon((Weapon)item); // TODO Expensive unboxing
-        //     }
-        // }
+        public void EquipItem(ItemDefinition item)
+        {
+            if (item is Armor)
+            {
+                ((Armor)item).EquipIt(); // TODO Expensive unboxing
+            }
+            else if (item is Weapon)
+            {
+                EquipWeapon((Weapon)item); // TODO Expensive unboxing
+            }
+        }
 
         public void EquipWeapon(Weapon weapon)
         {
@@ -416,3 +438,4 @@ namespace Combat
         }
     }
 }
+

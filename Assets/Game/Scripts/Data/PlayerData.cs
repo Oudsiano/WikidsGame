@@ -18,7 +18,8 @@ namespace Data
         public int spawnPoint; // Новое поле для хранения позиции объекта
         public List<bool> stateSpawnPoints;
         public List<string> alreadyExistWeapons;
-        public string weaponToLoad = "Sword";
+        // public string weaponToLoad = "Sword";
+        public string weaponToLoad = "Basic Bow";
         public int armorIdToload;
         public OneLeson[] progress;
         public int chargeEnergy;

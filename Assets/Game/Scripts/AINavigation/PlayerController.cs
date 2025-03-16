@@ -47,7 +47,7 @@ namespace AINavigation
         private DataPlayer _dataPlayer;
         private PlayerFighter _fighter;
         private Mover _mover;
-        private Health _health;
+        private PlayerHealth _health;
         private int _enemyLayer = 9; // Номер слоя для врагов  // TODO change
 
         private List<Fighter> _allEnemies;
@@ -69,7 +69,7 @@ namespace AINavigation
             Debug.Log("Get mover");
             _fighter = GetComponent<PlayerFighter>();
             Debug.Log("Get _fighter");
-            _health = GetComponent<Health>();
+            _health = GetComponent<PlayerHealth>();
             Debug.Log("Get _health");
 
             _weaponArmorManager = weaponArmorManager;
@@ -83,7 +83,7 @@ namespace AINavigation
             
             _fighter.Construct(igame, player);
             Debug.Log("fighter constructed");
-            _health.Construct(this, fastTestsManager, questManager, coinManager, bottleManager, uiManager);
+            _health.Construct(this, fastTestsManager, questManager, uiManager);
             
             Debug.Log("_health constructed");
 

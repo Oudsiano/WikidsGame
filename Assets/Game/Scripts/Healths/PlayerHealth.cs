@@ -15,46 +15,20 @@ using UnityEngine.UI;
 
 namespace Healths
 {
-    public abstract class Health : MonoBehaviour
+    public class PlayerHealth : Health
     {
-        [FormerlySerializedAs("redHalfCircle")]
-        public GameObject RedHalfCircle;
+        private UIManager _uiManager;
+   
 
-        public Slider healthBar; // Ссылка на полосу здоровья в пользовательском интерфейсе // TODO rename
-        public float maxHealth; // Максимальное здоровье существа // TODO rename
-        public float currentHealth; // Текущее здоровье существа // TODO rename
-
-        protected bool _isDead = false; // Флаг, указывающий, что существо мертво
-        protected bool _isRemoved = false; // Флаг, указывающий, что существо было удалено
-        protected int isAtackedInlast5sec = 0; // TODO why int
-
-        protected bool _isPlayer = false; // TODO rename
-        protected BossNPC _bossNPC; // TODO no need here
-        protected QuestManager _questManager;
-        protected FastTestsManager _fastTestsManager;
-        protected PlayerController _playerController;
-        
-        public event Action OnDeath; // TODO rename
-
-        public BossNPC BossNPC
-        {
-            get => _bossNPC;
-            set => _bossNPC = value;
-        } // TODO no need here
-
-        public virtual void Construct(PlayerController playerController,
+        public void Construct(PlayerController playerController,
             FastTestsManager fastTestsManager,
-            QuestManager questManager)
+            QuestManager questManager,
+            UIManager uiManager)
         {
-            _playerController = playerController;
-            _fastTestsManager = fastTestsManager;
-            _questManager = questManager;
+            base.Construct(playerController, fastTestsManager, questManager);
 
-            currentHealth = maxHealth;
-            if (healthBar != null)
-                healthBar.value = currentHealth;
-
-            _isPlayer = gameObject.GetComponent<MainPlayer>() != null;
+            _uiManager = uiManager;
+            StartCoroutine(HeallUpPLayer());
         }
 
         private IEnumerator HeallUpPLayer()
@@ -116,16 +90,14 @@ namespace Healths
 
         public virtual void TakeDamage(float value)
         {
-            if (_isPlayer)
+
+            var tempRandom = UnityEngine.Random.Range(0, 9);
+
+            if (tempRandom > 6) //30% // TODO magic numbers
             {
-                var tempRandom = UnityEngine.Random.Range(0, 9);
+                Dodge();
 
-                if (tempRandom > 6) //30% // TODO magic numbers
-                {
-                    Dodge();
-
-                    return;
-                }
+                return;
             }
 
             currentHealth = Mathf.Max(currentHealth - value, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0 
@@ -135,14 +107,7 @@ namespace Healths
                 Die();
             }
 
-            if (_isPlayer)
-            {
-                isAtackedInlast5sec = 5; // TODO magic numbers
-            }
-            else
-            {
-                healthBar.value = currentHealth; // хил бар только у других. У пользователя свой отдельный скрипт
-            }
+            isAtackedInlast5sec = 5;
         }
 
         public void Restore()
@@ -178,22 +143,17 @@ namespace Healths
             GetComponent<Animator>().SetTrigger("dodge"); // TODO can be cached
         }
 
-        protected virtual void Die() // TODO overload method
-        {
-            if (RedHalfCircle != null)
-                RedHalfCircle.SetActive(false);
 
-            GetComponent<Animator>().SetTrigger("dead");
-            _isDead = true;
-            GetComponent<ActionScheduler>().Cancel();
-            RemoveProjectiles();
-
-            OnDeath?.Invoke();
-
-            HandlePostDeath();
-        }
         
-        protected abstract void HandlePostDeath();
+        protected override void HandlePostDeath()
+        {
+            _uiManager.DeathUI.ShowDeathScreen();
+
+            // можно здесь отключать управление, если надо:
+            // GetComponent<NavMeshAgent>().enabled = false;
+            // GetComponent<Collider>().enabled = false;
+            // this.enabled = false;
+        }
 
         private void RemoveProjectiles()
         {

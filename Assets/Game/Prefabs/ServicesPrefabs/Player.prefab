@@ -35,9 +35,9 @@ RectTransform:
   - {fileID: 71686422110819834}
   m_Father: {fileID: 1201606309931720027}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.24000001, y: 0}
-  m_AnchorMax: {x: 0.24000001, y: 0}
-  m_AnchoredPosition: {x: -4, y: 248.80505}
+  m_AnchorMin: {x: 0.45400003, y: 0}
+  m_AnchorMax: {x: 0.45400003, y: 0}
+  m_AnchoredPosition: {x: -7, y: 248.80505}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8094281531207905897
@@ -635,7 +635,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8125129303058600997
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3121,7 +3121,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7778397225930648714}
-  - component: {fileID: 2361062979683876304}
   - component: {fileID: 2176815966868264419}
   - component: {fileID: 358043038214057435}
   - component: {fileID: 2088702985161752185}
@@ -3133,6 +3132,7 @@ GameObject:
   - component: {fileID: 9040928548955586838}
   - component: {fileID: 2381720613524554390}
   - component: {fileID: 6374980723471295031}
+  - component: {fileID: 2120670290615741127}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -3165,22 +3165,6 @@ Transform:
   - {fileID: 1687459386122827906}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2361062979683876304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9133158828745458021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f578d81a8ed94821ae9508b8203aabbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RedHalfCircle: {fileID: 0}
-  healthBar: {fileID: 1977176692237885867}
-  maxHealth: 100
-  currentHealth: 50
 --- !u!114 &2176815966868264419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3383,6 +3367,22 @@ MonoBehaviour:
   _fireballWeapon: {fileID: 11400000, guid: 10a25ce9fbd584c48b226d615507622c, type: 2}
   _bowWeapon: {fileID: 11400000, guid: aca463bd6b6649c41b5e3398fbc45389, type: 2}
   Target: {fileID: 0}
+--- !u!114 &2120670290615741127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133158828745458021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b90427e728ca8244bb8f5722c611cfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RedHalfCircle: {fileID: 0}
+  healthBar: {fileID: 2173968048664155806}
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1001 &240155568554615025
 PrefabInstance:
   m_ObjectHideFlags: 0

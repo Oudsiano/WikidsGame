@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Data;
 using Loading;
 using Loading.LoadingOperations;
+using Loading.LoadingOperations.Preloading;
 using Saving;
 using SceneManagement;
 using UnityEngine;
@@ -31,5 +32,11 @@ namespace Infrastructure.Installers.EntryPoint
             _loaderMapScene.Construct(_sceneContainer.Resolve<LoadingScreenProvider>(),
                 _sceneContainer.Resolve<SceneLoaderService>(), _sceneContainer.Resolve<AssetProvider>());
         }
+        
+        // private async void Start()
+        // {
+        //     await _sceneContainer.Resolve<ScenePreloader>()
+        //         .PreloadSceneInBackground(Constants.Scenes.FirstBattleScene);
+        // }
     }
 }

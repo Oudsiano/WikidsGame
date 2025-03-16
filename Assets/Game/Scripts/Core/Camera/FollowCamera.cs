@@ -57,16 +57,13 @@ namespace Core.Camera
         private bool _commonZoomUpdate = false;
         private float _autoZoomForReturn;
         
-        private SceneLoaderService _sceneLoader;
 
-        public void Construct(MainPlayer player, PlayerController playerController,
-            SceneLoaderService sceneLoaderService)
+        public void Construct(MainPlayer player, PlayerController playerController)
         {
             Debug.Log("FollowCamera constructed");
 
             _player = player;
             _playerController = playerController;
-            _sceneLoader = sceneLoaderService;
             _maxZoom = _maxZoomDefault;
             _minZoom = _minZoomDefault;
 

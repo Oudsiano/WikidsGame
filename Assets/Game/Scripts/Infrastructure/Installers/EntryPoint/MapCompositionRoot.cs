@@ -28,9 +28,6 @@ namespace Infrastructure.Installers.EntryPoint
         [SerializeField] private LocationChange _locationChangeMobie;
 
         private DiContainer _sceneContainer;
-        private AssetProvider _assetProvider;
-        private LoadingScreenProvider _loadingProvider;
-        private SceneLoaderService _sceneLoader;
 
 
         [Inject]
@@ -69,13 +66,8 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
-            _assetProvider = _sceneContainer.Resolve<AssetProvider>();
-            _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
-            _sceneLoader = _sceneContainer.Resolve<SceneLoaderService>();
-
             _locationChange.Construct(_sceneContainer.Resolve<DataPlayer>(),
                 _sceneContainer.Resolve<LevelChangeObserver>(),
-                _sceneContainer.Resolve<SceneLoaderService>(),
                 _sceneContainer.Resolve<GameAPI>());
         }
     }

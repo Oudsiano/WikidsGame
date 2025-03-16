@@ -3,6 +3,7 @@ using SceneManagement.Enums;
 using UI.Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utils;
 
 namespace UI
 {
@@ -10,13 +11,11 @@ namespace UI
     {
         public static EscState escState; // TODO static
         public static SceneState sceneState; // TODO static
-
-        private SceneLoaderService _sceneLoader;
+        
         private UIManager _uiManager;
 
-        public void Construct(SceneLoaderService sceneLoader, UIManager uiManager)
+        public void Construct(UIManager uiManager)
         {
-            _sceneLoader = sceneLoader;
             _uiManager = uiManager;
 
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -32,7 +31,7 @@ namespace UI
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode _)
         {
-            sceneState = scene.buildIndex == _sceneLoader.OpenScene ? SceneState.Menu : SceneState.Battle;
+            sceneState = scene.name == Constants.Scenes.OpenScene ? SceneState.Menu : SceneState.Battle;
         }
 
         private void ChangeEscState()

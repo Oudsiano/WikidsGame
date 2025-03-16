@@ -44,7 +44,6 @@ namespace Infrastructure.Installers.EntryPoint
         private WeaponArmorManager _weaponArmorManager;
 
         private FollowCamera _followCamera;
-        private SceneLoaderService _sceneLoader;
         private SavePointsManager _savePointsManager;
         private ArrowForPlayerManager _arrowForPlayerManager;
         private FastTestsManager _fastTestsManager;
@@ -67,7 +66,6 @@ namespace Infrastructure.Installers.EntryPoint
             _javaScriptHook = _sceneContainer.Resolve<JavaScriptHook>();
             _iGame = _sceneContainer.Resolve<IGame>();
             _followCamera = _sceneContainer.Resolve<FollowCamera>(); //
-            _sceneLoader = _sceneContainer.Resolve<SceneLoaderService>();
             _gameAPI = _sceneContainer.Resolve<GameAPI>();
 
             _audioManager = _sceneContainer.Resolve<AudioManager>();
@@ -100,22 +98,22 @@ namespace Infrastructure.Installers.EntryPoint
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
                 _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider, _assetProvider,
                 _sceneContainer.Resolve<ScenePreloader>());
-            
+
             _audioManager.Construct();
             _savePointsManager.Construct(_dataPlayer);
-            _gameAPI.Construct(_player, _sceneLoader, _dataPlayer, _saveGame, _fastTestsManager,
+            _gameAPI.Construct(_player, _dataPlayer, _saveGame, _fastTestsManager,
                 _player.PlayerController,
                 _weaponArmorManager, _questManager);
 
             _saveGame.Construct(_gameAPI, _weaponArmorManager, _coinManager,
                 _dataPlayer, _uiManager);
-            _uiManager.Construct(_iGame, _sceneLoader, _followCamera, _gameAPI, _coinManager, _saveGame, _questManager,
+            _uiManager.Construct(_iGame, _followCamera, _gameAPI, _coinManager, _saveGame, _questManager,
                 _dataPlayer, _fastTestsManager, _player.PlayerController, _weaponArmorManager, _levelChangeObserver);
             _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame, _fastTestsManager, _questManager,
                 _coinManager, _bottleManager, _weaponArmorManager);
-            _followCamera.Construct(_player, _player.PlayerController, _sceneLoader);
-            _javaScriptHook.Construct(_dataPlayer, _sceneLoader);
-            _keyBoardsEvents.Construct(_sceneLoader, _uiManager);
+            _followCamera.Construct(_player, _player.PlayerController);
+            _javaScriptHook.Construct(_dataPlayer);
+            _keyBoardsEvents.Construct( _uiManager);
         }
     }
 }

@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Loading;
 using Loading.LoadingOperations;
+using Loading.LoadingOperations.Preloading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -8,16 +9,17 @@ using Utils;
 namespace SceneManagement
 {
     public class LoadSceneAfterComix : MonoBehaviour
-    {   
-        private SceneLoaderService _sceneLoaderService;
+    {
         private LoadingScreenProvider _loadingScreenProvider;
         private AssetProvider _assetProvider;
-
-        public void Construct(LoadingScreenProvider loadingScreenProvider, SceneLoaderService sceneLoaderService, AssetProvider assetProvider)
+    private ScenePreloader _scenePreloader;
+    
+        public void Construct(LoadingScreenProvider loadingScreenProvider, AssetProvider assetProvider, ScenePreloader scenePreloader)
         {
             _loadingScreenProvider = loadingScreenProvider;
-            _sceneLoaderService = sceneLoaderService;
             _assetProvider = assetProvider;
+            _scenePreloader = scenePreloader;
+            
         }
 
         public void LoadSceneNext()

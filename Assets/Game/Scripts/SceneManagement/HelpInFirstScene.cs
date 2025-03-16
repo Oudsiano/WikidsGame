@@ -30,11 +30,8 @@ namespace SceneManagement
 
         private DataPlayer _dataPlayer;
 
-        private SceneLoaderService _sceneLoader;
-
-        public void Construct(DataPlayer dataPlayer, SceneLoaderService sceneLoader)
+        public void Construct(DataPlayer dataPlayer)
         {
-            _sceneLoader = sceneLoader;
             _dataPlayer = dataPlayer;
 
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -47,7 +44,7 @@ namespace SceneManagement
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode _)
         {
-            Study1Show(scene.buildIndex);
+            Study1Show(scene.name);
         }
 
         private void OnDestroy()
@@ -127,9 +124,9 @@ namespace SceneManagement
             _panel.SetActive(false);
         }
 
-        private void Study1Show(int scene) // TODO duplicate
+        private void Study1Show(string scene) // TODO duplicate
         {
-            if (scene != _sceneLoader.OpenScene)
+            if (scene != Constants.Scenes.OpenScene)
             {
                 return;
             }

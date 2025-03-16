@@ -28,9 +28,6 @@ namespace Saving
         private QuestManager _questManager;
         private DataPlayer _dataPlayer;
 
-        [FormerlySerializedAs("sceneLoader")] [SerializeField]
-        private SceneLoaderService _sceneLoader;
-
         public string playerID;
         public TMP_Text textForOtl;
         public bool idUpdate = false;
@@ -46,13 +43,12 @@ namespace Saving
 
         public bool GameLoad => _gameLoad;
         
-        public void Construct(MainPlayer player, SceneLoaderService sceneLoader, DataPlayer dataPlayer, SaveGame saveGame,
+        public void Construct(MainPlayer player, DataPlayer dataPlayer, SaveGame saveGame,
             FastTestsManager fastTestsManager, PlayerController playerController,
             WeaponArmorManager weaponArmorManager, QuestManager questManager)
         {
             Debug.Log("GameAPI constructed");
             _player = player;
-            _sceneLoader = sceneLoader;
             _dataPlayer = dataPlayer;
             _saveGame = saveGame;
             _fastTestsManager = fastTestsManager;

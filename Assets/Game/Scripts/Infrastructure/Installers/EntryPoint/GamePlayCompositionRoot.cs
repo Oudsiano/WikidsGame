@@ -43,10 +43,10 @@ namespace Infrastructure.Installers.EntryPoint
         public void Compose(DiContainer diContainer)
         {
             _sceneContainer = _sceneContext.Container;
-            
+
             ConstructComponents();
         }
-        
+
         private void ConstructComponents()
         {
             if (_sceneComponent != null)
@@ -187,7 +187,7 @@ namespace Infrastructure.Installers.EntryPoint
                         _sceneComponent, _sceneContainer.Resolve<CursorManager>(),
                         _sceneContainer.Resolve<UIManager>(),
                         _sceneContainer.Resolve<NPCManagment>(), _sceneContainer.Resolve<SaveGame>(),
-                        _sceneContainer.Resolve<SceneLoaderService>(), _sceneContainer.Resolve<CoinManager>(),
+                        _sceneContainer.Resolve<CoinManager>(),
                         _sceneContainer.Resolve<LevelChangeObserver>());
                 }
             }

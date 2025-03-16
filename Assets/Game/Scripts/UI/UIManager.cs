@@ -112,7 +112,6 @@ namespace UI
 
         private IGame _igame;
         private FollowCamera _followCamera;
-        private SceneLoaderService _sceneLoader;
         private GameAPI _gameAPI;
         private CoinManager _coinManager;
         private SaveGame _saveGame;
@@ -121,26 +120,19 @@ namespace UI
         private FastTestsManager _fastTestsManager;
         private LevelChangeObserver _levelChangeObserver;
 
-        public SceneLoaderService SceneLoader
-        {
-            get => _sceneLoader;
-            set => _sceneLoader = value;
-        }
-
         public FollowCamera FollowCamera
         {
             get => _followCamera;
             set => _followCamera = value;
         }
 
-        public void Construct(IGame igame, SceneLoaderService sceneLoader, FollowCamera followCamera, GameAPI gameAPI,
+        public void Construct(IGame igame, FollowCamera followCamera, GameAPI gameAPI,
             CoinManager coinManager, SaveGame saveGame, QuestManager questManager, DataPlayer dataPlayer,
             FastTestsManager fastTestsManager, PlayerController playerController,
             WeaponArmorManager weaponArmorManager, LevelChangeObserver levelChangeObserver) // TODO construct
         {
             Debug.Log("Construct UIManager");
             _igame = igame;
-            _sceneLoader = sceneLoader;
             _followCamera = followCamera;
             _gameAPI = gameAPI;
             _coinManager = coinManager;
@@ -159,7 +151,7 @@ namespace UI
             _againUI.SetActive(false);
             fastTestUI.Construct(_igame, _fastTestsManager, this);
             DeathUI.Construct(this);
-            HelpInFirstScene.Construct(_dataPlayer, _sceneLoader);
+            HelpInFirstScene.Construct(_dataPlayer);
             _testTableGenerator.Construct(_fastTestsManager);
             UiMarketPanel.Construct(playerController, coinManager, _saveGame, weaponArmorManager, _igame);
 

@@ -29,14 +29,9 @@ namespace Infrastructure.Installers.EntryPoint
         {
             _sceneContainer = _sceneContext.Container;
 
-            _loaderMapScene.Construct(_sceneContainer.Resolve<LoadingScreenProvider>(),
-                _sceneContainer.Resolve<SceneLoaderService>(), _sceneContainer.Resolve<AssetProvider>());
+            _loaderMapScene.Construct(
+                _sceneContainer.Resolve<LoadingScreenProvider>(), _sceneContainer.Resolve<AssetProvider>(),
+                _sceneContainer.Resolve<ScenePreloader>());
         }
-        
-        // private async void Start()
-        // {
-        //     await _sceneContainer.Resolve<ScenePreloader>()
-        //         .PreloadSceneInBackground(Constants.Scenes.FirstBattleScene);
-        // }
     }
 }

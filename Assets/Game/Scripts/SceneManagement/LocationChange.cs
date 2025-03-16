@@ -47,16 +47,13 @@ namespace SceneManagement
 
         private DataPlayer _dataPlayer;
         private LevelChangeObserver _levelChangeObserver;
-        private SceneLoaderService _sceneLoader;
         private GameAPI _gameAPI;
 
         public void Construct(DataPlayer dataPlayer, LevelChangeObserver levelChangeObserver,
-            SceneLoaderService sceneLoader,
             GameAPI gameAPI)
         {
             _dataPlayer = dataPlayer;
             _levelChangeObserver = levelChangeObserver;
-            _sceneLoader = sceneLoader;
             _gameAPI = gameAPI;
 
             if (_multiLineText.hoverTexts.Length != _regions.Count)

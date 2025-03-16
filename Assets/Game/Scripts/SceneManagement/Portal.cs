@@ -45,20 +45,17 @@ namespace SceneManagement
         private UIManager _uiManager;
         private NPCManagment _npcManagment;
         private SaveGame _saveGame;
-        private SceneLoaderService _sceneLoader;
         private CoinManager _coinManager;
         private LevelChangeObserver _levelChangeObserver;
 
         public void Construct(MainPlayer player, DataPlayer dataPlayer, SceneComponent sceneComponent,
-            CursorManager cursorManager, UIManager uiManager, NPCManagment npcManagment, SaveGame saveGame,
-            SceneLoaderService sceneLoader, CoinManager coinManager, LevelChangeObserver levelChangeObserver)
+            CursorManager cursorManager, UIManager uiManager, NPCManagment npcManagment, SaveGame saveGame, CoinManager coinManager, LevelChangeObserver levelChangeObserver)
         {
             _player = player;
             _cursorManager = cursorManager;
             _uiManager = uiManager;
             _npcManagment = npcManagment;
             _saveGame = saveGame;
-            _sceneLoader = sceneLoader;
             _coinManager = coinManager;
 
             this.dataPlayer = dataPlayer;

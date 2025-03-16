@@ -3,6 +3,7 @@ using Combat;
 using Core;
 using Core.NPC;
 using Core.Player;
+using Core.Player.MovingBetweenPoints;
 using Core.Quests;
 using Data;
 using DialogueEditor;
@@ -20,7 +21,7 @@ namespace Infrastructure.Installers.EntryPoint
     {
         [SerializeField] private SceneContext _sceneContext;
         [SerializeField] private SceneComponent _sceneComponent;
-
+        [SerializeField] private Map _map;
         [SerializeField] private ConversationStarter[] _conversationStarters;
         [SerializeField] private DownloadTestData[] _downloadTestData;
         [SerializeField] private SetStudyStep[] _setStudySteps;
@@ -49,6 +50,11 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
+            if (_map != null)
+            {
+                _map.Construct(_sceneContainer.Resolve<PointClickHandler>());
+            }
+
             if (_sceneComponent != null)
             {
                 _sceneComponent.Construct(_sceneContainer.Resolve<LevelChangeObserver>());

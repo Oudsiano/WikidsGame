@@ -2,6 +2,7 @@
 using Core;
 using Core.Camera;
 using Core.Player;
+using Core.Player.MovingBetweenPoints;
 using Core.Quests;
 using Data;
 using Infrastructure.Installers.EntryPoint;
@@ -45,7 +46,9 @@ namespace Infrastructure.Installers
             Container.Bind<LoadingScreenProvider>().AsSingle().NonLazy();
             Container.Bind<ScenePreloader>().AsSingle().NonLazy();
             Container.Bind<AssetProvider>().AsSingle().NonLazy();
-
+            Container.Bind<PointClickHandler>().AsSingle().NonLazy();
+            Container.Bind<Timer>().AsSingle().NonLazy();
+            
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
             Container.Bind<JavaScriptHook>().FromComponentInNewPrefab(_javaScriptHook).AsSingle().NonLazy();
             Container.Bind<IGame>().FromComponentInNewPrefab(_iGamePrefab).AsSingle().NonLazy();

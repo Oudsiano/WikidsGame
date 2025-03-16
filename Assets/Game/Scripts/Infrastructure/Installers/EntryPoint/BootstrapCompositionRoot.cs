@@ -5,6 +5,7 @@ using Combat;
 using Core;
 using Core.Camera;
 using Core.Player;
+using Core.Player.MovingBetweenPoints;
 using Core.Quests;
 using Cysharp.Threading.Tasks;
 using Data;
@@ -30,7 +31,9 @@ namespace Infrastructure.Installers.EntryPoint
         private JavaScriptHook _javaScriptHook;
         private MainPlayer _player;
         private IGame _iGame;
-
+        private PointClickHandler _pointClickHandler;
+        private Timer _timer;
+        
         private AudioManager _audioManager;
         private DataPlayer _dataPlayer;
         private GameAPI _gameAPI;
@@ -61,15 +64,16 @@ namespace Infrastructure.Installers.EntryPoint
             _sceneContainer = _sceneContext.Container;
             _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
             _assetProvider = _sceneContainer.Resolve<AssetProvider>();
-
+            _pointClickHandler = _sceneContainer.Resolve<PointClickHandler>();
+            
             _keyBoardsEvents = _sceneContainer.Resolve<KeyBoardsEvents>();
             _javaScriptHook = _sceneContainer.Resolve<JavaScriptHook>();
             _iGame = _sceneContainer.Resolve<IGame>();
             _followCamera = _sceneContainer.Resolve<FollowCamera>(); //
             _gameAPI = _sceneContainer.Resolve<GameAPI>();
-
+            _timer = _sceneContainer.Resolve<Timer>();
             _audioManager = _sceneContainer.Resolve<AudioManager>();
-            _savePointsManager = _sceneContainer.Resolve<SavePointsManager>(); // TODO move
+            _savePointsManager = _sceneContainer.Resolve<SavePointsManager>();
             _arrowForPlayerManager = _sceneContainer.Resolve<ArrowForPlayerManager>();
             _fastTestsManager = _sceneContainer.Resolve<FastTestsManager>();
             _saveGame = _sceneContainer.Resolve<SaveGame>();
@@ -111,6 +115,8 @@ namespace Infrastructure.Installers.EntryPoint
                 _dataPlayer, _fastTestsManager, _player.PlayerController, _weaponArmorManager, _levelChangeObserver);
             _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame, _fastTestsManager, _questManager,
                 _coinManager, _bottleManager, _weaponArmorManager);
+            _pointClickHandler.Construct(_player, _timer);
+            
             _followCamera.Construct(_player, _player.PlayerController);
             _javaScriptHook.Construct(_dataPlayer);
             _keyBoardsEvents.Construct( _uiManager);

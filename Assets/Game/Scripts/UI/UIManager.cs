@@ -22,7 +22,7 @@ namespace UI
     public class UIManager : MonoBehaviour
     {
         public DeathUI DeathUI;
-
+        
         [Header("AgainUI")] [SerializeField] private GameObject _againUI;
         [SerializeField] private Button _buttonAgain;
         [SerializeField] private Button _buttonGoToSceneZero;

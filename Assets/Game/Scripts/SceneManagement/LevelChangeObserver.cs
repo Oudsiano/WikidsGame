@@ -26,12 +26,12 @@ namespace SceneManagement
         private GameAPI _gameAPI;
         private LoadingScreenProvider _loadingScreenProvider;
         private AssetProvider _assetProvider;
-        private ScenePreloadController _preloader;
+        private ScenePreloader _preloader;
         public string IndexSceneToLoad => _indexSceneToLoad;
 
         public void Construct(SavePointsManager savePointsManager, DataPlayer dataPlayer, UIManager uiManager,
             MainPlayer player, GameAPI gameAPI, LoadingScreenProvider loadingScreenProvider,
-            AssetProvider assetProvider, ScenePreloadController preloader)
+            AssetProvider assetProvider, ScenePreloader preloader)
         {
             _preloader = preloader;
             _savePointsManager = savePointsManager;

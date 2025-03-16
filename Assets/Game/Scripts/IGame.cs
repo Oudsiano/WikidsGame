@@ -57,7 +57,7 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         QuestManager questManager, NPCManagment npcManagment, FastTestsManager fastTestsManager,
         CursorManager cursorManager, UIManager uiManager, CoinManager coinManager,
         BottleManager bottleManager, WeaponArmorManager weaponArmorManager, AllQuestsInGame allQuests,
-        SceneWithTestsID sceneWithTestsID, LoadingScreenProvider loadingScreenProvider, AssetProvider assetProvider, ScenePreloadController preloader)
+        SceneWithTestsID sceneWithTestsID, LoadingScreenProvider loadingScreenProvider, AssetProvider assetProvider, ScenePreloader preloader)
     {
         Debug.Log("Construct igame");
         _player = player;

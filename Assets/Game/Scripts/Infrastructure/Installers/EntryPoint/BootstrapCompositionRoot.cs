@@ -99,7 +99,7 @@ namespace Infrastructure.Installers.EntryPoint
                 _questManager, _npcManager, _fastTestsManager,
                 _cursorManager, _uiManager, _coinManager, _bottleManager,
                 _weaponArmorManager, _allQuests, _sceneWithTestsID, _loadingProvider, _assetProvider,
-                _sceneContainer.Resolve<ScenePreloadController>());
+                _sceneContainer.Resolve<ScenePreloader>());
 
 
             _audioManager.Construct();
@@ -123,7 +123,7 @@ namespace Infrastructure.Installers.EntryPoint
 
         private async void Start()
         {
-            await _sceneContainer.Resolve<ScenePreloadController>()
+            await _sceneContainer.Resolve<ScenePreloader>()
                 .PreloadSceneInBackground(Constants.Scenes.FirstBattleScene);
         }
     }

@@ -44,7 +44,7 @@ namespace Infrastructure.Installers
         public override void InstallBindings()
         {
             Container.Bind<LoadingScreenProvider>().AsSingle().NonLazy();
-            Container.Bind<ScenePreloadController>().AsSingle().NonLazy();
+            Container.Bind<ScenePreloader>().AsSingle().NonLazy();
             Container.Bind<AssetProvider>().AsSingle().NonLazy();
 
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();

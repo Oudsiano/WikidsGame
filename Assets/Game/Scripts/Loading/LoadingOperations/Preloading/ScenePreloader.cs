@@ -4,11 +4,10 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
-using UnityEngine.SceneManagement;
 
 namespace Loading.LoadingOperations.Preloading
 {
-    public class ScenePreloadController
+    public class ScenePreloader
     {
         private readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _loadedScenes = new();
 
@@ -30,15 +29,15 @@ namespace Loading.LoadingOperations.Preloading
 
         public async UniTask ActivateScene(string sceneKey)
         {
-            if (!_loadedScenes.TryGetValue(sceneKey, out var handle))
+            if (_loadedScenes.TryGetValue(sceneKey, out var handle) == false)
             {
-                Debug.LogWarning($"[ScenePreloadController] Scene {sceneKey} not preloaded. Loading directly...");
+                Debug.LogWarning($"[ScenePreloader] Scene {sceneKey} not preloaded. Loading directly...");
                 handle = Addressables.LoadSceneAsync(sceneKey);
                 await handle.ToUniTask();
             }
             else
             {
-                Debug.Log($"[ScenePreloadController] Activating scene: {sceneKey}");
+                Debug.Log($"[ScenePreloader] Activating scene: {sceneKey}");
                 await handle.Result.ActivateAsync();
             }
         }

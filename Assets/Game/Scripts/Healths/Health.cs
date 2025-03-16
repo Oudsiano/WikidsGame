@@ -146,6 +146,11 @@ namespace Healths
         // }
         
         public abstract void TakeDamage(float value);
+        
+        public virtual void TakeProjectileHit(float damage, Vector3 hitDirection)
+        {
+            TakeDamage(damage); // по умолчанию — обычный урон
+        }
 
         public void Restore()
         {

@@ -84,7 +84,17 @@ namespace Combat
         {
             if (other.gameObject == _target.gameObject && _target.GetComponent<Health>().IsDead() == false)
             {
-                other.GetComponent<Health>().TakeDamage(_damage); // TODO can be changed with Actions
+                // other.GetComponent<Health>().TakeDamage(_damage); // TODO can be changed with Actions
+                
+                Debug.Log("Health type = " + other.GetComponent<Health>().GetType().Name);
+                
+                var health = other.GetComponent<Health>();
+                
+                if (health != null)
+                {
+                    Vector3 hitDirection = (transform.position - other.transform.position).normalized;
+                    health.TakeProjectileHit(_damage, hitDirection); 
+                }
 
                 // Рассчитываем позицию снаряда после попадания
                 Vector3 targetPos = GetTargetPosition();
@@ -114,6 +124,13 @@ namespace Combat
                 _reachedCollider = true; // Устанавливаем флаг, указывающий, что снаряд достиг коллайдера
             }
             
+        }
+        
+        private bool IsBackstab(Transform target)
+        {
+            Vector3 directionToShooter = (transform.position - target.position).normalized;
+            float angle = Vector3.Angle(target.forward, directionToShooter);
+            return angle > 120f; // Можно настроить
         }
 
         // Устанавливаем цель и урон для снаряда

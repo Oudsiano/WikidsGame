@@ -63,18 +63,30 @@ namespace Healths
                 _fastTestsManager.WasAttaked(this); // TODO rename
             }
         }
-
-        public override  void TakeDamage(float value)
+        
+        public override void TakeProjectileHit(float damage, Vector3 hitDirection)
         {
-            if (currentHealth == maxHealth)
+            Vector3 forward = transform.forward;
+            float angle = Vector3.Angle(forward, -hitDirection);
+
+            Debug.Log("angle =" + angle);
+            
+            if (angle < 100f) // Спина
             {
-                currentHealth /=2;
+                TakeDamage(currentHealth); // ваншот
+                Debug.Log("OneShoot");
+                
             }
             else
             {
-                currentHealth = 0;
+                TakeDamage(maxHealth/2); // обычный урон
             }
-            // currentHealth = Mathf.Max(currentHealth - value, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0 
+        }
+
+        public override  void TakeDamage(float value)
+        {
+
+            currentHealth = Mathf.Max(currentHealth - value, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0 
 
             if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти
             {
@@ -84,36 +96,12 @@ namespace Healths
             healthBar.value = currentHealth; // хил бар только у других. У пользователя свой отдельный скрипт
             
         }
-
-        public void Restore()
-        {
-            currentHealth = maxHealth;
-            _isDead = false;
-        }
-
+        
         public bool IsDead() => _isDead;
-
-        // // Метод для захвата состояния существа для сохранения
-        // public object CaptureState() // TODO not used code
-        // {
-        //     return currentHealth;
-        // }
-        //
-        // // Примечание: в настоящее время значение здоровья при загрузке новой сцены перезаписывается этим методом
-        // // из-за порядка выполнения сценариев. Измените start на awake, чтобы исправить проблему
-        // public void RestoreState(object state) // TODO not used code
-        // {
-        //     currentHealth =
-        //         (float)state; // Восстанавливаем текущее здоровье из сохраненного состояния // TODO expensive unboxing
-        //     if (currentHealth <= 0) // Если здоровье меньше или равно нулю, вызываем метод смерти
-        //     {
-        //         Die();
-        //     }
-        // }
+        
 
         public float GetCurrentHealth() => currentHealth;
         
-
         
         protected override void HandlePostDeath()
         {
@@ -145,18 +133,6 @@ namespace Healths
                 _bottleManager.MakeBottleOnSceneWithCount(25, transform.position);
             }
         }
-
-        private void RemoveProjectiles()
-        {
-            Projectile[]
-                projectiles =
-                    GetComponentsInChildren<Projectile>(); // Получаем все снаряды, находящиеся в дочерних объектах // TODO can be cached
-
-            foreach (Projectile projectile in projectiles) // Перебираем все снаряды
-            {
-                Destroy(projectile.gameObject); // Уничтожаем снаряд
-                Debug.Log("hello"); // Выводим сообщение в консоль
-            }
-        }
+        
     }
 }

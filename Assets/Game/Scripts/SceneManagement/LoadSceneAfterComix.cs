@@ -19,7 +19,6 @@ namespace SceneManagement
             _loadingScreenProvider = loadingScreenProvider;
             _assetProvider = assetProvider;
             _scenePreloader = scenePreloader;
-            
         }
 
         public void LoadSceneNext()

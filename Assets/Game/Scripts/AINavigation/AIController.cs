@@ -75,21 +75,6 @@ namespace AINavigation
             FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
         }
 
-        // private void Awake() // TODO Construct
-        // {
-        //     _fighter = GetComponent<Fighter>();
-        //     _mover = GetComponent<Mover>();
-        //     _health = GetComponent<Health>();
-        //
-        //     _guardLocation = transform.position;
-        //     _guardRotation = transform.rotation;
-        //
-        //     CreateHalfCircle();
-        //     _health.RedHalfCircle = _halfCircle;
-        //
-        //     FollowCamera.OnCameraDistance += FollowCamera_OnCameraDistance;
-        // }
-
         private void OnDestroy()
         {
             FollowCamera.OnCameraDistance -= FollowCamera_OnCameraDistance;

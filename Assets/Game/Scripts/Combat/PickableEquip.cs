@@ -4,6 +4,7 @@ using UI;
 using UI.Inventory;
 using UI.Inventory.Data;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 namespace Combat
@@ -41,6 +42,11 @@ namespace Combat
         
         private void Update()
         {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            
             var ray = GetMouseRay(); // TODO Duplicate code
 
             RaycastHit[] hits;

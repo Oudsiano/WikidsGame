@@ -13,6 +13,7 @@ using SceneManagement.Enums;
 using TMPro;
 using UI.Enums;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -23,7 +24,7 @@ namespace UI
     public class UIManager : MonoBehaviour
     {
         public DeathUI DeathUI;
-        
+
         [Header("AgainUI")] [SerializeField] private GameObject _againUI;
         [SerializeField] private Button _buttonAgain;
         [SerializeField] private Button _buttonGoToSceneZero;
@@ -125,7 +126,7 @@ namespace UI
         private LevelChangeObserver _levelChangeObserver;
 
         public PointViewContainer PointViewContainer => _pointViewContainer;
-        
+
         public FollowCamera FollowCamera
         {
             get => _followCamera;
@@ -135,7 +136,8 @@ namespace UI
         public void Construct(IGame igame, FollowCamera followCamera, GameAPI gameAPI,
             CoinManager coinManager, SaveGame saveGame, QuestManager questManager, DataPlayer dataPlayer,
             FastTestsManager fastTestsManager, PlayerController playerController,
-            WeaponArmorManager weaponArmorManager, LevelChangeObserver levelChangeObserver, Timer timer) // TODO construct
+            WeaponArmorManager weaponArmorManager, LevelChangeObserver levelChangeObserver,
+            Timer timer) // TODO construct
         {
             Debug.Log("Construct UIManager");
             _timer = timer;
@@ -149,7 +151,7 @@ namespace UI
             _fastTestsManager = fastTestsManager;
             _levelChangeObserver = levelChangeObserver;
             _timerView.Construct(timer);
-            
+
             fastTestUI.gameObject.SetActive(false);
             _buttonAgain.onClick.AddListener(OnClickAgainRegen);
             _buttonGoToSceneZero.onClick.AddListener(OnClickGoToSceneZero);
@@ -304,7 +306,7 @@ namespace UI
         private void SceneLoader_LevelChanged(Scene arg0, LoadSceneMode arg1)
         {
             GameObject MapCamera = GameObject.Find("CameraForMainMap"); // TODO Find change
-            
+
             if (MapCamera != null)
             {
                 MapCamera.GetComponent<Camera>().enabled = false;
@@ -363,8 +365,7 @@ namespace UI
 
         public void OnClickBtnCloseMap()
         {
-            _igame.SavePlayerPosLikeaPause(false); // TODO change instanse IGAME
-            PauseClass.IsOpenUI = false;
+            _igame.SavePlayerPosLikeaPause(false);
             MapCanvas.SetActive(false);
 
             GameObject MapCamera = GameObject.Find("CameraForMainMap"); // TODO Find change
@@ -373,6 +374,9 @@ namespace UI
             {
                 MapCamera.GetComponent<Camera>().enabled = false;
             }
+
+            PauseClass.IsOpenUI = false;
+                        _igame.Mover.ActivateInput();
         }
 
         public void ShowAgainUi()
@@ -488,6 +492,10 @@ namespace UI
         {
             if (MapCanvas.gameObject.activeSelf == false)
             {
+                _igame.Mover.DeactivateInput();
+                
+                _igame.SavePlayerPosLikeaPause(true);
+                PauseClass.IsOpenUI = true;
                 GameObject MapCamera = GameObject.Find("CameraForMainMap"); // TODO Find change
 
                 if (MapCamera != null)
@@ -497,9 +505,6 @@ namespace UI
 
                 MapCanvas.gameObject.SetActive(true);
             }
-
-            _igame.SavePlayerPosLikeaPause(true);
-            PauseClass.IsOpenUI = true; 
         }
 
         private void OnChangeMoney(double newValue)

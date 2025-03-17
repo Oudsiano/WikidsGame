@@ -23,7 +23,10 @@ namespace Movement
 
         public float StrafeDistance = 3f;
         public NPCInteractable Target;
-
+        private bool _disableInput = false;
+        
+        public bool DisableInput =>_disableInput;
+        
         private void Start() // TODO Construct
         {
             _camera = UnityEngine.Camera.main;
@@ -45,6 +48,16 @@ namespace Movement
 
         private void Update()
         {
+            if (_disableInput)
+            {
+                return;
+            }
+            
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            
             if (_isPlayer == false && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
             {
                 if (PauseClass.GetPauseState())
@@ -72,6 +85,9 @@ namespace Movement
                 }
             }
         }
+
+        public void DeactivateInput() => _disableInput = true;
+        public void ActivateInput() => _disableInput = false;
 
         private void Strafe(Vector3 direction)
         {
@@ -112,6 +128,7 @@ namespace Movement
             }
 
             _agent.isStopped = false;
+            Debug.Log($"[Mover] MoveTo вызван на позицию: {position}");
         }
 
         private void UpdateAnimator()

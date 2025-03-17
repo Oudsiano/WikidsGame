@@ -7,6 +7,8 @@ namespace Core
     {
         private IAction _action;
 
+        public IAction Action => _action;
+        
         // Метод для начала выполнения нового действия
         public void Setup(IAction action)
         {

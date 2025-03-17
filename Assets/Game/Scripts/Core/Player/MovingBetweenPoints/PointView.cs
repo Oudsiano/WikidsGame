@@ -26,11 +26,6 @@ namespace Core.Player.MovingBetweenPoints
         private void ClickPoint()
         {
             _handler.HandleClick(_transform);
-            
-            if (transform.parent != null)
-            {
-                transform.parent.gameObject.SetActive(false);
-            }
         }
     }
 }

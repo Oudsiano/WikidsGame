@@ -61,36 +61,6 @@ namespace SceneManagement
             this.dataPlayer = dataPlayer;
             this.sceneComponent = sceneComponent;
             _levelChangeObserver = levelChangeObserver;
-
-            if (sceneComponent == null)
-            {
-                Debug.LogError("Errrorr! na scene net SceneComponent.");
-            }
-        }
-        
-        private List<string> GetSceneNames()
-        {
-            return new List<string>
-            {
-                Constants.Scenes.BootstrapScene,
-                Constants.Scenes.OpenScene,
-                Constants.Scenes.MapScene,
-                Constants.Scenes.FirstTownScene,
-                Constants.Scenes.FirstBattleScene,
-                Constants.Scenes.SecondBattleScene,
-                Constants.Scenes.ThirdBattleScene,
-                Constants.Scenes.FourthBattleSceneDark,
-                Constants.Scenes.FifthBattleSceneKingdom,
-                Constants.Scenes.SixthBattleSceneKingdom,
-                Constants.Scenes.SeventhBattleSceneViking,
-                Constants.Scenes.BossFightDarkScene,
-                Constants.Scenes.BossFightKingdom1Scene,
-                Constants.Scenes.BossFightKingdom2Scene,
-                Constants.Scenes.BossFightViking1Scene,
-                Constants.Scenes.LibraryScene,
-                Constants.Scenes.HollScene,
-                Constants.Scenes.EndScene
-            };
         }
         
         private void OnMouseEnter()
@@ -106,18 +76,18 @@ namespace SceneManagement
         private void OnTriggerEnter(Collider other)
         {
             // Проверяем, что в область портала входит игрок и что переход между сценами не происходит в данный момент
-            if (other.gameObject == _player.gameObject) // TODO change
+            if (other.gameObject == _player.gameObject)
             {
                 _uiManager.HelpInFirstScene.EndStudy5();
 
-                if (_npcManagment.checkAllTestsComplite() == false)
-                {
-                    Debug.Log("Рано портироваться, ты еще не сделал все тесты" + // TODO can be cached
-                              string.Join(", ", _npcManagment.NotComplete));
-                    TextDisplay(0, "Рано портироваться, ты еще не сделал все тесты"); // TODO can be cached
-
-                    return;
-                }
+                // if (_npcManagment.checkAllTestsComplite() == false)
+                // {
+                //     Debug.Log("Рано портироваться, ты еще не сделал все тесты" + // TODO can be cached
+                //               string.Join(", ", _npcManagment.NotComplete));
+                //     TextDisplay(0, "Рано портироваться, ты еще не сделал все тесты"); // TODO can be cached
+                //
+                //     return;
+                // }
 
                 if (sceneToLoad != Constants.Scenes.OpenScene)
                 {

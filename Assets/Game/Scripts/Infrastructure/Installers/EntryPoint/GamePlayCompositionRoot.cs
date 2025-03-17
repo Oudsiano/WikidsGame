@@ -52,14 +52,15 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
+            var uiManager = _sceneContainer.Resolve<UIManager>();
+            var container = uiManager.PointViewContainer;
+            container.ClearButtons();
+            
             if (_map != null)
             {
                 var handler = _sceneContainer.Resolve<PointClickHandler>();
                 _map.Construct(handler);
-
-                var uiManager = _sceneContainer.Resolve<UIManager>();
-                var container = uiManager.PointViewContainer;
-
+                
                 if (container != null)
                 {
                     container.Construct(_map.GetPointsView, handler, uiManager);

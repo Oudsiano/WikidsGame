@@ -85,6 +85,11 @@ namespace AINavigation
         
         private void Update()
         {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            
             if (PauseClass.GetPauseState())
             {
                 return;

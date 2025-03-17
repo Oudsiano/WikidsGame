@@ -7,6 +7,7 @@ using Data;
 using Loading;
 using Loading.LoadingOperations;
 using Loading.LoadingOperations.Preloading;
+using Movement;
 using Saving;
 using SceneManagement;
 using UI;
@@ -140,18 +141,22 @@ public class IGame : MonoBehaviour // TODO OVERLOAD CLASS NEED TO FULL REFACTOR 
         set => _questManager = value;
     }
 
+    public Mover Mover => _player.GetComponent<Mover>();
+
     public void SavePlayerPosLikeaPause(bool p)
     {
-        if (p)
-        {
-            playerController.ModularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
-            playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        }
-        else
-        {
-            playerController.ModularCharacter.transform.localPosition = new Vector3(0, 0, 0);
-            playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        }
+        // if (p)
+        // {
+        //     _player.Agent.isStopped = true;
+        //     playerController.ModularCharacter.transform.localPosition = new Vector3(1000, 1000, 1000);
+        //     playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        // }
+        // else
+        // {
+        //     _player.Agent.isStopped = false;
+        //     playerController.ModularCharacter.transform.localPosition = new Vector3(0, 0, 0);
+        //     playerController.ModularCharacter.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        // }
         //Time.timeScale = p ? 0.01f : 1;
     }
 }

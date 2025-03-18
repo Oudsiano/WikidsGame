@@ -113,37 +113,7 @@ namespace Healths
                 _fastTestsManager.WasAttaked(this); // TODO rename
             }
         }
-
-        // public virtual void TakeDamage(float value)
-        // {
-        //     if (_isPlayer)
-        //     {
-        //         var tempRandom = UnityEngine.Random.Range(0, 9);
-        //
-        //         if (tempRandom > 6) //30% // TODO magic numbers
-        //         {
-        //             Dodge();
-        //
-        //             return;
-        //         }
-        //     }
-        //
-        //     currentHealth = Mathf.Max(currentHealth - value, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0 
-        //
-        //     if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти
-        //     {
-        //         Die();
-        //     }
-        //
-        //     if (_isPlayer)
-        //     {
-        //         isAtackedInlast5sec = 5; // TODO magic numbers
-        //     }
-        //     else
-        //     {
-        //         healthBar.value = currentHealth; // хил бар только у других. У пользователя свой отдельный скрипт
-        //     }
-        // }
+        
         
         public abstract void TakeDamage(float value);
         

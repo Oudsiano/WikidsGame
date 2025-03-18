@@ -149,7 +149,7 @@ namespace AINavigation
             }
 
             if (_player.PlayerController.GetPlayerInvisibility() == false &&
-                DistanceToPlayer() < 40) // TODO magic number
+                DistanceToPlayer() < 40 && _player.PlayerController.GetHealth().currentHealth != 0 ) // TODO magic number
             {
                 InteractWithCombat();
             }

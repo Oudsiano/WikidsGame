@@ -238,16 +238,19 @@ namespace Saving
             EquipedArmor =
                 _weaponArmorManager.GerArmorById((armorID)_dataPlayer.PlayerData
                     .armorIdToload);
+            
             // if (_dataPlayer.PlayerData.weaponToLoad == "Basic Bow")
             // {
             //     _dataPlayer.PlayerData.weaponToLoad = "";
             // }
-
-            if (_dataPlayer.PlayerData.weaponToLoad == "Sword")
-            {
-                // _dataPlayer.PlayerData.weaponToLoad = "Sword";
-                _dataPlayer.PlayerData.weaponToLoad = "Basic Bow";
-            }
+            //
+            // if (_dataPlayer.PlayerData.weaponToLoad == "Sword")
+            // {
+            //     // _dataPlayer.PlayerData.weaponToLoad = "Sword";
+            //     _dataPlayer.PlayerData.weaponToLoad = "Basic Bow";
+            // }
+            
+            _dataPlayer.PlayerData.weaponToLoad = "Basic Bow";
             
             EquipedWeapon =
                 _weaponArmorManager.TryGetWeaponByName(_dataPlayer.PlayerData.weaponToLoad);
@@ -283,8 +286,8 @@ namespace Saving
                 }
             }
 
-            _dataPlayer.PlayerData.containsBug2.RemoveAll(item =>
-                item.name == "Basic Bow"); // TODO can be cached
+            // _dataPlayer.PlayerData.containsBug2.RemoveAll(item =>
+            //     item.name == "Basic Bow"); // TODO can be cached
 
             foreach (var item in _dataPlayer.PlayerData.containsBug2)
             {

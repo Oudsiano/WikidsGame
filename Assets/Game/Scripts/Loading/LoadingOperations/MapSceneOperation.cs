@@ -7,12 +7,10 @@ namespace Loading.LoadingOperations
 {
     public sealed class MapSceneOperation : ILoadingOperation
     {
-        private SceneLoaderService _sceneLoader;
         private readonly AssetProvider _assetProvider;
 
-        public MapSceneOperation(SceneLoaderService sceneLoader, AssetProvider assetProvider)
+        public MapSceneOperation(AssetProvider assetProvider)
         {
-            _sceneLoader = sceneLoader;
             _assetProvider = assetProvider;
         }
 

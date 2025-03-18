@@ -91,7 +91,7 @@ namespace Infrastructure.Installers.EntryPoint
             _sceneWithTestsID = _sceneContainer.Resolve<SceneWithTestsID>();
 
             ConstructComponents();
-            SceneManager.LoadScene(Constants.Scenes.OpenScene);
+            LoadScene();
         }
 
         private void ConstructComponents()
@@ -122,6 +122,11 @@ namespace Infrastructure.Installers.EntryPoint
             _keyBoardsEvents.Construct(_uiManager);
             
             _pointClickHandler.Construct(_player, _timer);
+        }
+        
+        private void LoadScene()
+        {
+            _loadingProvider.LoadAndDestroy(new OpenSceneLoadingOperation(_assetProvider)).Forget();
         }
     }
 }

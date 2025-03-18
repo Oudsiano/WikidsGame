@@ -12,9 +12,10 @@ namespace SceneManagement
     {
         private LoadingScreenProvider _loadingScreenProvider;
         private AssetProvider _assetProvider;
-    private ScenePreloader _scenePreloader;
-    
-        public void Construct(LoadingScreenProvider loadingScreenProvider, AssetProvider assetProvider, ScenePreloader scenePreloader)
+        private ScenePreloader _scenePreloader;
+
+        public void Construct(LoadingScreenProvider loadingScreenProvider, AssetProvider assetProvider,
+            ScenePreloader scenePreloader)
         {
             _loadingScreenProvider = loadingScreenProvider;
             _assetProvider = assetProvider;
@@ -23,7 +24,8 @@ namespace SceneManagement
 
         public void LoadSceneNext()
         {
-            SceneManager.LoadScene(Constants.Scenes.MapScene);
+            _loadingScreenProvider
+                .LoadAndDestroy(new MapSceneOperation(_assetProvider)).Forget();
         }
     }
 }

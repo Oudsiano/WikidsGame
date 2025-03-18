@@ -10,12 +10,10 @@ namespace Loading.LoadingOperations
 {
     public sealed class OpenSceneLoadingOperation : ILoadingOperation
     {
-        private readonly SceneLoaderService _sceneLoader;
         private readonly AssetProvider _assetProvider;
 
-        public OpenSceneLoadingOperation(SceneLoaderService sceneLoader, AssetProvider assetProvider)
+        public OpenSceneLoadingOperation(AssetProvider assetProvider)
         {
-            _sceneLoader = sceneLoader;
             _assetProvider = assetProvider;
         }
 

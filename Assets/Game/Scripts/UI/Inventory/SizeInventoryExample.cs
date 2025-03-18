@@ -19,7 +19,7 @@ namespace UI.Inventory
         [SerializeField] private bool _isMarket = false;
         [SerializeField] private bool _dropedFromThere = false;
         [SerializeField] private float _priceMultiple = 1;
-        [SerializeField] private bool _showPricesThere = false;
+        [SerializeField] private bool _showPricesThere;
 
         public InventoryManager inventory;
 

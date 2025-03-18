@@ -85,7 +85,6 @@ namespace Healths
 
         public override  void TakeDamage(float value)
         {
-
             currentHealth = Mathf.Max(currentHealth - value, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0 
 
             if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace Core.Player.MovingBetweenPoints
 {
@@ -6,6 +7,7 @@ namespace Core.Player.MovingBetweenPoints
     {
         [SerializeField] private Point[] _points;
         [SerializeField] private PointView[] _pointsView;
+        [SerializeField] private Image _image;
         
         private PointClickHandler _handler;
         
@@ -26,5 +28,6 @@ namespace Core.Player.MovingBetweenPoints
         }
 
         public PointView[] GetPointsView => _pointsView;
+        public Image Image => _image;
     }
 }

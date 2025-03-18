@@ -65,6 +65,8 @@ namespace Infrastructure.Installers.EntryPoint
                 {
                     container.Construct(_map.GetPointsView, handler, uiManager);
                 }
+
+                uiManager.SetMapImage(_map.Image);
             }
 
             if (_sceneComponent != null)

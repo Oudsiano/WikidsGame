@@ -47,7 +47,7 @@ namespace UI
         [SerializeField] public UIBug uIBug;
 
         [Header("Map")] [SerializeField] public Button ButtonShowMap;
-        [SerializeField] public GameObject MapCanvas;
+        [SerializeField] public MapCanvas MapCanvas;
         [SerializeField] public Button _btnCloseMap;
         [SerializeField] private PointViewContainer _pointViewContainer;
         [SerializeField] private TimerView _timerView;
@@ -133,6 +133,8 @@ namespace UI
             set => _followCamera = value;
         }
 
+        public void SetMapImage(Image image) => MapCanvas.Construct(image);
+        
         public void Construct(IGame igame, FollowCamera followCamera, GameAPI gameAPI,
             CoinManager coinManager, SaveGame saveGame, QuestManager questManager, DataPlayer dataPlayer,
             FastTestsManager fastTestsManager, PlayerController playerController,
@@ -366,14 +368,14 @@ namespace UI
         public void OnClickBtnCloseMap()
         {
             _igame.SavePlayerPosLikeaPause(false);
-            MapCanvas.SetActive(false);
+            MapCanvas.gameObject.SetActive(false);
 
-            GameObject MapCamera = GameObject.Find("CameraForMainMap"); // TODO Find change
-
-            if (MapCamera != null)
-            {
-                MapCamera.GetComponent<Camera>().enabled = false;
-            }
+            // GameObject MapCamera = GameObject.Find("CameraForMainMap"); // TODO Find change
+            //
+            // if (MapCamera != null)
+            // {
+            //     MapCamera.GetComponent<Camera>().enabled = false;
+            // }
 
             PauseClass.IsOpenUI = false;
                         _igame.Mover.ActivateInput();
@@ -496,12 +498,12 @@ namespace UI
                 
                 _igame.SavePlayerPosLikeaPause(true);
                 PauseClass.IsOpenUI = true;
-                GameObject MapCamera = GameObject.Find("CameraForMainMap"); // TODO Find change
-
-                if (MapCamera != null)
-                {
-                    MapCamera.GetComponent<Camera>().enabled = true;
-                }
+                
+                // GameObject MapCamera = GameObject.Find("CameraForMainMap"); // TODO Find change
+                // if (MapCamera != null)
+                // {
+                //     MapCamera.GetComponent<Camera>().enabled = true;
+                // }
 
                 MapCanvas.gameObject.SetActive(true);
             }

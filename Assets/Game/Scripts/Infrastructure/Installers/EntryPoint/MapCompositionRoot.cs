@@ -27,6 +27,7 @@ namespace Infrastructure.Installers.EntryPoint
 
         private DiContainer _sceneContainer;
         private MainPlayer _player;
+        
 
         [Inject]
         public void Compose(DiContainer diContainer)
@@ -62,18 +63,27 @@ namespace Infrastructure.Installers.EntryPoint
 
         private async UniTask LoadModularCharacter()
         {
-            var handle = Addressables.LoadAssetAsync<GameObject>("PlayerModel");
+            Debug.Log("ifModChar=" + _player.IfModularCharacterCreated);
+            if (_player.IfModularCharacterCreated)
+            {
+                Debug.Log("Modular Character created. Returning...");
+                return;
+            }
+            else
+            {
+                var handle = Addressables.LoadAssetAsync<GameObject>("PlayerModel");
 
-            var modularCharacter = await handle;
+                var modularCharacter = await handle;
 
-            if (modularCharacter == null)
-                throw new Exception("Не удалось загрузить PlayerModel через Addressables");
+                if (modularCharacter == null)
+                    throw new Exception("Не удалось загрузить PlayerModel через Addressables");
 
-            var playerModel = Instantiate(modularCharacter, _player.transform);
+                var playerModel = Instantiate(modularCharacter, _player.transform);
 
-            HandPositionKeeper handPositionKeeper = playerModel.GetComponent<HandPositionKeeper>();
+                HandPositionKeeper handPositionKeeper = playerModel.GetComponent<HandPositionKeeper>();
 
-            _player.SetArmorManager(handPositionKeeper.PlayerArmorManager);
+                _player.SetArmorManager(handPositionKeeper.PlayerArmorManager);
+            }
         }
 
         private async UniTask InitializeCharacter()

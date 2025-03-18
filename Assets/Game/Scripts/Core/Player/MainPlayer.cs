@@ -22,9 +22,12 @@ namespace Core.Player
         private UIManager _uiManager;
         private SaveGame _saveGame;
         private NavMeshAgent _agent;
+        private bool _ifModularCharacterCreated;
         
         public PlayerController PlayerController => _playerController;
         public NavMeshAgent Agent => _agent;
+        
+        public bool IfModularCharacterCreated => _ifModularCharacterCreated;
         
         public void Construct(IGame igame, DataPlayer dataPlayer, UIManager uiManager, SaveGame saveGame,
             FastTestsManager fastTestsManager, QuestManager questManager, CoinManager coinManager,
@@ -46,6 +49,7 @@ namespace Core.Player
         public void SetArmorManager(PlayerArmorManager playerArmorManager)
         {
             _playerArmorManager = playerArmorManager;
+            _ifModularCharacterCreated = true;
         }
 
         public void ChangeCountEnergy(int value)

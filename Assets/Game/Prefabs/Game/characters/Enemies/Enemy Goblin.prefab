@@ -98,6 +98,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1325209382106325704, guid: 37bc44cce0831404eb1918df3847c8d7,
         type: 3}
+      propertyPath: ClickEffect
+      value: 
+      objectReference: {fileID: 5544748446509846794}
+    - target: {fileID: 1325209382106325704, guid: 37bc44cce0831404eb1918df3847c8d7,
+        type: 3}
       propertyPath: clickEffect
       value: 
       objectReference: {fileID: 5544748446509846794}
@@ -223,6 +228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4997457783286956171, guid: 37bc44cce0831404eb1918df3847c8d7, type: 3}
+    - {fileID: 3915948677719093955, guid: 37bc44cce0831404eb1918df3847c8d7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9038297596120032153, guid: 37bc44cce0831404eb1918df3847c8d7,
@@ -250,6 +256,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 5544748446509846794}
+    - targetCorrespondingSourceObject: {fileID: 7503963754105802358, guid: 37bc44cce0831404eb1918df3847c8d7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3787387548228161269}
   m_SourcePrefab: {fileID: 100100000, guid: 37bc44cce0831404eb1918df3847c8d7, type: 3}
 --- !u!4 &5477122909361462483 stripped
 Transform:
@@ -275,17 +285,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d5da44f87c9b5439d34d30a3de4d02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseDistance: 5
-  suspicionTimer: 10
+  _suspicionTimer: 10
   patrolPath: {fileID: 0}
-  tolerance: 1
-  minDwellTime: 2
-  maxDwellTime: 5
-  currentDwellTime: 0
-  timeSinceLastSawPlayer: Infinity
-  timeSinceLastHit: Infinity
-  startDistanceForShowIcon: 125
-  maxOpacity: 0.3
+  _chaseDistance: 5
+  _tolerance: 1
+  _minDwellTime: 2
+  _maxDwellTime: 5
+  _currentDwellTime: 0
+  _timeSinceLastSawPlayer: Infinity
+  _timeSinceLastHit: Infinity
 --- !u!114 &5398448963245149938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,13 +306,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1cafa4ed48613d4fad57526a90efa28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightHandPosition: {fileID: 2973571062712225512}
-  leftHandPosition: {fileID: 2973571062712168064}
-  defaultWeapon: {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
-  equippedWeapon: {fileID: 0}
-  fireballWeapon: {fileID: 0}
-  timer: 0
-  target: {fileID: 0}
+  _rightHandPosition: {fileID: 2973571062712225512}
+  _leftHandPosition: {fileID: 2973571062712168064}
+  _defaultWeapon: {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
+  _equippedWeapon: {fileID: 0}
+  _fireballWeapon: {fileID: 0}
+  _bowWeapon: {fileID: 0}
+  Target: {fileID: 0}
 --- !u!114 &6932246844250427147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,8 +337,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 519af89390db447aeba4c2ee889b1817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPrefab: {fileID: 428852817160778579, guid: 281e0a2c5c68e4ac289a1f324c62747e,
-    type: 3}
+  _prefab: {fileID: 428852817160778579, guid: 281e0a2c5c68e4ac289a1f324c62747e, type: 3}
+--- !u!114 &3787387548228161269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435558949000753468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c98239d1a6159b40beca6b7d428a0f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RedHalfCircle: {fileID: 0}
+  healthBar: {fileID: 6347889442636374521}
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1001 &8411846185302984663
 PrefabInstance:
   m_ObjectHideFlags: 0

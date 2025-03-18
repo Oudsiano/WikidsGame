@@ -128,7 +128,6 @@ namespace Movement
             }
 
             _agent.isStopped = false;
-            Debug.Log($"[Mover] MoveTo вызван на позицию: {position}");
         }
 
         private void UpdateAnimator()

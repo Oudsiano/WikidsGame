@@ -106,6 +106,8 @@ namespace Core.Quests
             {
                 if (item.QuestType == QuestType.completeSpecialTest)
                 {
+                    Debug.Log("CompleteQuest " + item.QuestType);
+                    
                     item.CheckTestCount();
                 }
             }

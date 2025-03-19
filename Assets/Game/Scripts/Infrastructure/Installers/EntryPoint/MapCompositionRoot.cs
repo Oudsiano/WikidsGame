@@ -6,6 +6,7 @@ using Core.Player;
 using Core.Camera;
 using Cysharp.Threading.Tasks;
 using Data;
+using DialogueEditor;
 using Loading;
 using Loading.LoadingOperations;
 using Loading.LoadingOperations.Preloading;

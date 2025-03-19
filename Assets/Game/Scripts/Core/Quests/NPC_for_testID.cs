@@ -85,6 +85,7 @@ namespace Core.Quests
 
             _gameAPI.IsTestCompleted(_testID, (isCompleted) =>
             {
+                Debug.Log( _testID +"IsTestCompleted" + isCompleted);
                 ConversationManager.Instance.SetBool(TEST_COMPLETED, isCompleted);
 
                 if (isCompleted)

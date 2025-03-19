@@ -245,7 +245,7 @@ namespace Saving
 
                             if (test.id == testId)
                             {
-                                Debug.Log("game api work");
+                                Debug.Log("game api work" + test.completed + test.id);
                                 _calback = test.completed;
 
                                 //yield break; Убрал, чтобы не прерывать обсчет всего массива // TODO not used code

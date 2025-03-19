@@ -51,8 +51,14 @@ public class NPCInteractable : MonoBehaviour
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
                 if (hit.transform.gameObject == gameObject)
+                {
+                    Debug.Log(hit.transform.gameObject.name);
+                    
                     if (!ConversationManager.Instance.IsConversationActive)
+                    {
                         InteractWithNPC();
+                    }
+                }
             }
         }
     }
@@ -71,9 +77,7 @@ public class NPCInteractable : MonoBehaviour
             Debug.LogWarning("error. expected some elements in list");
         }
     }
-
-
-
+    
     public void InteractWithNPC()
     {
         if (!posibleInteract) return;
@@ -109,7 +113,6 @@ public class NPCInteractable : MonoBehaviour
 
     private void ShowNeedKillEnemies(string text)
     {
-
         TextMeshProUGUI messageText;
         Canvas canvas;
         GameObject panel;

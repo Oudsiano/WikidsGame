@@ -154,6 +154,7 @@ namespace Core.Quests
         
         internal void CheckTestCount()
         {
+            Debug.Log("CheckTestCount");
             CheckUpdateAndComplete(false);
         }
         
@@ -264,7 +265,7 @@ namespace Core.Quests
             }
         }
 
-        private void CheckUpdateAndComplete(bool withSave = true) // TODO overload method
+        private void CheckUpdateAndComplete(bool withSave = true)
         {
             if (withSave)
             {
@@ -292,8 +293,10 @@ namespace Core.Quests
                     {
                         if (int.TryParse(itemId, out int testId))
                         {
+                            Debug.Log($"int.TryParse({itemId}, out int {testId})");
                             if (_dataPlayer.IsTestComplete(testId))
                             {
+                                Debug.Log($"{_dataPlayer.IsTestComplete(testId)}");
                                 _questData.CurrentProcess++;
                             }
                         }

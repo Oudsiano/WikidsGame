@@ -108,7 +108,7 @@ namespace SceneManagement
             _cursorManager.SetCursorDefault();
             _saveGame.MakePortalSave(bonusWeapon, bonusArmor, sceneComponent);
 
-            yield return new WaitForSeconds(betweenFadeTime); // Ждем некоторое время после загрузки сцены
+            yield return new WaitForSeconds(betweenFadeTime);
         }
 
         private void TransitionInScene()
@@ -200,6 +200,31 @@ namespace SceneManagement
                     Destroy(panel);
                 });
             });
+        }
+        
+        private List<string> GetSceneNames()
+        {
+            return new List<string>
+            {
+                Constants.Scenes.BootstrapScene,
+                Constants.Scenes.OpenScene,
+                Constants.Scenes.MapScene,
+                Constants.Scenes.FirstTownScene,
+                Constants.Scenes.FirstBattleScene,
+                Constants.Scenes.SecondBattleScene,
+                Constants.Scenes.ThirdBattleScene,
+                Constants.Scenes.FourthBattleSceneDark,
+                Constants.Scenes.FifthBattleSceneKingdom,
+                Constants.Scenes.SixthBattleSceneKingdom,
+                Constants.Scenes.SeventhBattleSceneViking,
+                Constants.Scenes.BossFightDarkScene,
+                Constants.Scenes.BossFightKingdom1Scene,
+                Constants.Scenes.BossFightKingdom2Scene,
+                Constants.Scenes.BossFightViking1Scene,
+                Constants.Scenes.LibraryScene,
+                Constants.Scenes.HollScene,
+                Constants.Scenes.EndScene
+            };
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Data;
+using DialogueEditor;
 using Loading;
 using Loading.LoadingOperations;
 using Loading.LoadingOperations.Preloading;
@@ -28,7 +29,7 @@ namespace Infrastructure.Installers.EntryPoint
         public void Compose(DiContainer diContainer)
         {
             _sceneContainer = _sceneContext.Container;
-
+            
             _loaderMapScene.Construct(
                 _sceneContainer.Resolve<LoadingScreenProvider>(), _sceneContainer.Resolve<AssetProvider>(),
                 _sceneContainer.Resolve<ScenePreloader>());

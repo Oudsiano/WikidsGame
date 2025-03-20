@@ -62,10 +62,11 @@ namespace Infrastructure.Installers.EntryPoint
         public void Compose(DiContainer diContainer)
         {
             _sceneContainer = _sceneContext.Container;
+            
             _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
             _assetProvider = _sceneContainer.Resolve<AssetProvider>();
             _pointClickHandler = _sceneContainer.Resolve<PointClickHandler>();
-
+        
             _keyBoardsEvents = _sceneContainer.Resolve<KeyBoardsEvents>();
             _javaScriptHook = _sceneContainer.Resolve<JavaScriptHook>();
             _iGame = _sceneContainer.Resolve<IGame>();
@@ -96,6 +97,11 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
+            _gameAPI.Construct(_player, _dataPlayer, _saveGame, _fastTestsManager,
+                _player.PlayerController,
+                _weaponArmorManager, _questManager, _javaScriptHook);
+            _javaScriptHook.Construct(_dataPlayer);
+            
             _iGame.Construct(_player, _gameAPI, _dataPlayer, _saveGame, _player.PlayerController,
                 _levelChangeObserver, _savePointsManager, _arrowForPlayerManager,
                 _questManager, _npcManager, _fastTestsManager,
@@ -105,9 +111,6 @@ namespace Infrastructure.Installers.EntryPoint
 
             _audioManager.Construct();
             _savePointsManager.Construct(_dataPlayer);
-            _gameAPI.Construct(_player, _dataPlayer, _saveGame, _fastTestsManager,
-                _player.PlayerController,
-                _weaponArmorManager, _questManager);
 
             _saveGame.Construct(_gameAPI, _weaponArmorManager, _coinManager,
                 _dataPlayer, _uiManager);
@@ -118,7 +121,6 @@ namespace Infrastructure.Installers.EntryPoint
                 _coinManager, _bottleManager, _weaponArmorManager, _timer);
 
             _followCamera.Construct(_player, _player.PlayerController);
-            _javaScriptHook.Construct(_dataPlayer);
             _keyBoardsEvents.Construct(_uiManager);
             
             _pointClickHandler.Construct(_player, _timer);

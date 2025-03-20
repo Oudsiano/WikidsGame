@@ -29,7 +29,6 @@ namespace Infrastructure.Installers.EntryPoint
         private DiContainer _sceneContainer;
         private MainPlayer _player;
         
-
         [Inject]
         public void Compose(DiContainer diContainer)
         {

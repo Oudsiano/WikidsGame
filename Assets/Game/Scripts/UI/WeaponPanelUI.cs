@@ -71,7 +71,7 @@ namespace UI
             _playerController.GetFighter().SetFireball();
             FireballPanell.SetActive(true);
             // CommonWeaponPanell.SetActive(false);
-            BowPanell.SetActive(false); 
+            // BowPanell.SetActive(false); 
         }
 
         private void OnCLickCommonWeaponBTN() => ResetWeaponToDefault();

@@ -80,14 +80,14 @@ namespace SceneManagement
             {
                 _uiManager.HelpInFirstScene.EndStudy5();
 
-                if (_npcManagment.checkAllTestsComplite() == false)
-                {
-                    Debug.Log("Рано портироваться, ты еще не сделал все тесты" + // TODO can be cached
-                              string.Join(", ", _npcManagment.NotComplete));
-                    TextDisplay(0, "Рано портироваться, ты еще не сделал все тесты"); // TODO can be cached
-                
-                    return;
-                }
+                // if (_npcManagment.checkAllTestsComplite() == false)
+                // {
+                //     Debug.Log("Рано портироваться, ты еще не сделал все тесты" + // TODO can be cached
+                //               string.Join(", ", _npcManagment.NotComplete));
+                //     TextDisplay(0, "Рано портироваться, ты еще не сделал все тесты"); // TODO can be cached
+                //
+                //     return;
+                // }
 
                 if (sceneToLoad != Constants.Scenes.OpenScene)
                 {

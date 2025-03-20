@@ -293,10 +293,8 @@ namespace Core.Quests
                     {
                         if (int.TryParse(itemId, out int testId))
                         {
-                            Debug.Log($"int.TryParse({itemId}, out int {testId})");
                             if (_dataPlayer.IsTestComplete(testId))
                             {
-                                Debug.Log($"{_dataPlayer.IsTestComplete(testId)}");
                                 _questData.CurrentProcess++;
                             }
                         }

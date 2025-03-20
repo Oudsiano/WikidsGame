@@ -55,11 +55,12 @@ namespace Saving
             _playerController = playerController;
             _weaponArmorManager = weaponArmorManager;
             _questManager = questManager;
-
+            
             UpdateID();
-
+            
             TryInitDataServer();
             SetupLoad();
+            
             textForOtl.text =
                 $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
         }
@@ -93,6 +94,7 @@ namespace Saving
 
         public void SaveUpdater()
         {
+            Debug.Log("SaveUpdater called");
             needMakeSaveInNextUpdate = true;
         }
 
@@ -101,7 +103,7 @@ namespace Saving
             StartCoroutine(GetGameDataTest(IDLesson, _currentConversation));
         }
 
-        public void IsTestCompleted(int testId, Action<bool> callback) // TODO need to return bool
+        public void IsTestCompleted(int testId, Action<bool> callback)
         {
             StartCoroutine(CheckTestCompletionOnServer(testId, callback));
         }
@@ -231,31 +233,40 @@ namespace Saving
             {
                 bool _calback = false;
                 string json = request.downloadHandler.text;
-                PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
+                PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(json);
                 _dataPlayer.PlayerData = playerData;
-
+                
+                if (_dataPlayer.PlayerData.progress == null)
+                {
+                    Debug.LogWarning("Progress is null!");
+                }
+                else
+                {
+                    Debug.Log($"Progress count: {_dataPlayer.PlayerData.progress.Length}");
+                }
+                
                 if (_dataPlayer.PlayerData.progress != null)
                 {
                     foreach (var lesson in _dataPlayer.PlayerData.progress)
                     {
                         foreach (var test in lesson.tests)
                         {
+                            Debug.Log($"Test ID: {test.id}, completed: {test.completed}");
+                            
                             if (test.completed)
                                 _questManager.CompleteQuest(test.id.ToString());
 
                             if (test.id == testId)
                             {
-                                Debug.Log("game api work" + test.completed + test.id);
+                                Debug.Log("game api work " + test.completed + " " + test.id);
                                 _calback = test.completed;
-
-                                //yield break; Убрал, чтобы не прерывать обсчет всего массива // TODO not used code
                             }
                         }
                     }
                 }
-
+            
+                Debug.Log("Server response JSON:\n" + json);
                 _fastTestsManager.GenAvaliableTests(); // TODO rename
-                // Если тест не найден, вызываем колбэк с false
                 callback(_calback);
             }
             else
@@ -265,7 +276,7 @@ namespace Saving
             }
         }
 
-        private void UpdateID() // TODO Duplicate
+        private void UpdateID()
         {
             playerID = _dataPlayer.PlayerData.id.ToString();
             idUpdate = true;
@@ -273,8 +284,8 @@ namespace Saving
 
         private IEnumerator SaveGameData()
         {
-            //string json = JsonUtility.ToJson(_dataPlayer.playerData);
             string json = JsonConvert.SerializeObject(_dataPlayer.PlayerData);
+            Debug.Log("Saving data to server: " + json);
             Debug.Log("JSON to send: " + json);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
             UnityWebRequest

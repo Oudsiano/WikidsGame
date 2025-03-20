@@ -83,7 +83,7 @@ namespace Core.Quests
                 Debug.LogError("Not have TestID in inspector");
             }
 
-            _gameAPI.IsTestCompleted(_testID, (isCompleted) =>
+            _gameAPI.IsTestCompleted(_testID, (isCompleted) => // отдает false в любом случае
             {
                 Debug.Log( _testID +"IsTestCompleted" + isCompleted);
                 ConversationManager.Instance.SetBool(TEST_COMPLETED, isCompleted);

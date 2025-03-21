@@ -22,6 +22,9 @@ namespace Infrastructure.Installers
     {
         [SerializeField] private IGame _iGamePrefab;
 
+        [SerializeField] private JavaScriptHook _javaScriptHook;
+        [SerializeField] private DataPlayer _dataPlayerPrefab;
+        [SerializeField] private GameAPI _gameAPIPrefab;
         [SerializeField] private FollowCamera _followCameraPrefab;
         [SerializeField] private AudioManager _audioManagerPrefab;
         [SerializeField] private MainPlayer _playerPrefab;
@@ -45,9 +48,12 @@ namespace Infrastructure.Installers
             Container.Bind<PointClickHandler>().AsSingle().NonLazy();
             Container.Bind<Timer>().AsSingle().NonLazy();
 
+            Container.Bind<GameAPI>().FromComponentInNewPrefab(_gameAPIPrefab).AsSingle().NonLazy();
+            Container.Bind<DataPlayer>().FromComponentInNewPrefab(_dataPlayerPrefab).AsSingle().NonLazy();
             Container.Bind<MainPlayer>().FromComponentInNewPrefab(_playerPrefab).AsSingle().NonLazy();
             Container.Bind<IGame>().FromComponentInNewPrefab(_iGamePrefab).AsSingle().NonLazy();
-
+            Container.Bind<JavaScriptHook>().FromComponentInNewPrefab(_javaScriptHook).AsSingle().NonLazy();
+            
             Container.Bind<SavePointsManager>().AsSingle().NonLazy();
             Container.Bind<ArrowForPlayerManager>().AsSingle().NonLazy();
             Container.Bind<FastTestsManager>().AsSingle().NonLazy();

@@ -7,6 +7,7 @@ using AINavigation;
 using Core;
 using Core.Player;
 using Core.Quests;
+using Cysharp.Threading.Tasks;
 using Data;
 using DialogueEditor;
 using Newtonsoft.Json;
@@ -42,9 +43,8 @@ namespace Saving
 
         private bool needMakeSaveInNextUpdate = false;
         private JavaScriptHook _javaScriptHook;
-
         public bool GameLoad => _gameLoad;
-        
+
         public void Construct(MainPlayer player, DataPlayer dataPlayer, SaveGame saveGame,
             FastTestsManager fastTestsManager, PlayerController playerController,
             WeaponArmorManager weaponArmorManager, QuestManager questManager, JavaScriptHook javaScriptHook)
@@ -65,7 +65,7 @@ namespace Saving
         {
             DontDestroyOnLoad(this);
         }
-        
+
         public void FixedUpdate()
         {
             textForOtl.text =
@@ -74,12 +74,13 @@ namespace Saving
 
         private void Update()
         {
-            if (idUpdate == false && _javaScriptHook != null && _javaScriptHook.IsHooked == true)
+            if (_javaScriptHook.IsConfigReceived && idUpdate == false)
             {
-                Debug.Log("✅ ConfigReceived == true. Вызываем UpdateID.");
+                Debug.Log($"📩 (GameAPI) _isConfigReceived == {_javaScriptHook.IsConfigReceived}");
+
                 UpdateID();
             }
-            
+
             if (GameLoaded == false)
             {
                 return;
@@ -133,16 +134,14 @@ namespace Saving
                 PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
                 SL_objs sl_obj = new SL_objs(json);
                 sl_obj.Load(ref playerData.startedQuests, "startedQuests"); // TODO can be cached
-                
-                _dataPlayer.PlayerData = playerData;
 
-                // Инициализация списка пройденных квестов
+                _dataPlayer.PlayerData = playerData;
+                
                 if (_dataPlayer.PlayerData.completedQuests == null)
                 {
                     _dataPlayer.PlayerData.completedQuests = new List<string>();
                 }
 
-                Debug.Log("Data downloaded successfully");
                 _saveGame.MakeLoad();
 
                 _fastTestsManager.GenAvaliableTests();
@@ -212,7 +211,6 @@ namespace Saving
                 _player.ChangeCountEnergy(countSuccessAnswers);
                 TestSuccessKey = countSuccessAnswers > 0;
                 ConversationManager.Instance.SetBool("TestSuccess", TestSuccessKey);
-                //ConversationManager.Instance.SetBool("LoadedData", true);
 
                 if (_currentConversation != null)
                 {
@@ -242,7 +240,7 @@ namespace Saving
                 string json = request.downloadHandler.text;
                 PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(json);
                 _dataPlayer.PlayerData = playerData;
-                
+
                 if (_dataPlayer.PlayerData.progress == null)
                 {
                     Debug.LogWarning("Progress is null!");
@@ -251,7 +249,7 @@ namespace Saving
                 {
                     Debug.Log($"Progress count: {_dataPlayer.PlayerData.progress.Length}");
                 }
-                
+
                 if (_dataPlayer.PlayerData.progress != null)
                 {
                     foreach (var lesson in _dataPlayer.PlayerData.progress)
@@ -259,7 +257,7 @@ namespace Saving
                         foreach (var test in lesson.tests)
                         {
                             Debug.Log($"Test ID: {test.id}, completed: {test.completed}");
-                            
+
                             if (test.completed)
                                 _questManager.CompleteQuest(test.id.ToString());
 
@@ -271,7 +269,7 @@ namespace Saving
                         }
                     }
                 }
-            
+
                 Debug.Log("Server response JSON:\n" + json);
                 _fastTestsManager.GenAvaliableTests(); // TODO rename
                 callback(_calback);
@@ -283,19 +281,18 @@ namespace Saving
             }
         }
 
-        public void UpdateID()
+        private void UpdateID()
         {
             playerID = _dataPlayer.PlayerData.id.ToString();
-            Debug.Log(_dataPlayer.PlayerData.id.ToString() +"GameAPI ID UPDATE");
-            
+            Debug.Log(_dataPlayer.PlayerData.id + "GameAPI ID UPDATE");
+
             idUpdate = true;
-                        
+
             TryInitDataServer();
             SetupLoad();
-            
+
             textForOtl.text =
                 $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
-            
         }
 
         private IEnumerator SaveGameData()
@@ -314,7 +311,7 @@ namespace Saving
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log(json );
+                Debug.Log(json);
                 _gameLoad = true;
                 Debug.Log("Data saved successfully");
             }

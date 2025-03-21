@@ -57,12 +57,15 @@ namespace Infrastructure.Installers.EntryPoint
 
         private LoadingScreenProvider _loadingProvider;
         private AssetProvider _assetProvider;
+        
+        private ScreenOrientationChecker _screenOrientationChecker;
 
         [Inject]
         public void Compose(DiContainer diContainer)
         {
             _sceneContainer = _sceneContext.Container;
             
+            _screenOrientationChecker = _sceneContainer.Resolve<ScreenOrientationChecker>();
             _loadingProvider = _sceneContainer.Resolve<LoadingScreenProvider>();
             _assetProvider = _sceneContainer.Resolve<AssetProvider>();
             _pointClickHandler = _sceneContainer.Resolve<PointClickHandler>();

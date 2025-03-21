@@ -53,6 +53,7 @@ namespace Core
 
         public Weapon TryGetWeaponByName(string _name) // TODO need return bool
         {
+            
             if (string.IsNullOrEmpty(_name))
             {
                 _name = "Unarmed"; // TODO can be cached
@@ -87,8 +88,10 @@ namespace Core
 
         public ItemDefinition TryGetItemByName(string name) // TODO need return bool
         {
+            Debug.Log($"[WeaponArmorManager] Searching for: '{name}'");   
             foreach (var item in _allWeaponsInGame)
             {
+                Debug.Log($"Checking against: '{item.name}'");
                 if (item.name == name)
                 {
                     return item;

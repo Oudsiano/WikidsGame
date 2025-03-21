@@ -188,7 +188,7 @@ namespace UI
 
             foreach (var item in _weaponArmorManager.AllWeaponsInGame)
             {
-                if (item.sprite != null)
+                if (item.sprite != null && item.name != "Sword" && item.name != "Axe" && item.name != "Mace Small" && item.name != "Lance" && item.name != "Spear")
                 {
                     _marketItems.Add(item);
                 }

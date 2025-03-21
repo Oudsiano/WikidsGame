@@ -15,6 +15,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Serialization;
+using Web;
 
 namespace Saving
 {
@@ -28,7 +29,7 @@ namespace Saving
         private QuestManager _questManager;
         private DataPlayer _dataPlayer;
 
-        public string playerID;
+        private string playerID;
         public TMP_Text textForOtl;
         public bool idUpdate = false;
         public bool gameSave = false;
@@ -40,13 +41,15 @@ namespace Saving
         //что диалог его сбрасывает. И нам надо хранить его запределами диалогов.
 
         private bool needMakeSaveInNextUpdate = false;
+        private JavaScriptHook _javaScriptHook;
 
         public bool GameLoad => _gameLoad;
         
         public void Construct(MainPlayer player, DataPlayer dataPlayer, SaveGame saveGame,
             FastTestsManager fastTestsManager, PlayerController playerController,
-            WeaponArmorManager weaponArmorManager, QuestManager questManager)
+            WeaponArmorManager weaponArmorManager, QuestManager questManager, JavaScriptHook javaScriptHook)
         {
+            gameObject.name = "GameAPI";
             Debug.Log("GameAPI constructed");
             _player = player;
             _dataPlayer = dataPlayer;
@@ -55,16 +58,14 @@ namespace Saving
             _playerController = playerController;
             _weaponArmorManager = weaponArmorManager;
             _questManager = questManager;
-            
-            UpdateID();
-            
-            TryInitDataServer();
-            SetupLoad();
-            
-            textForOtl.text =
-                $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
+            _javaScriptHook = javaScriptHook;
         }
 
+        private void Start()
+        {
+            DontDestroyOnLoad(this);
+        }
+        
         public void FixedUpdate()
         {
             textForOtl.text =
@@ -73,6 +74,12 @@ namespace Saving
 
         private void Update()
         {
+            if (idUpdate == false && _javaScriptHook != null && _javaScriptHook.IsHooked == true)
+            {
+                Debug.Log("✅ ConfigReceived == true. Вызываем UpdateID.");
+                UpdateID();
+            }
+            
             if (GameLoaded == false)
             {
                 return;
@@ -276,10 +283,19 @@ namespace Saving
             }
         }
 
-        private void UpdateID()
+        public void UpdateID()
         {
             playerID = _dataPlayer.PlayerData.id.ToString();
+            Debug.Log(_dataPlayer.PlayerData.id.ToString() +"GameAPI ID UPDATE");
+            
             idUpdate = true;
+                        
+            TryInitDataServer();
+            SetupLoad();
+            
+            textForOtl.text =
+                $"ID установлен: {idUpdate}\nИгра сохранена: {gameSave}\nИгра загружена на сервер: {gameGet}";
+            
         }
 
         private IEnumerator SaveGameData()

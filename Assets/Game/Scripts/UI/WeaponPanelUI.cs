@@ -9,14 +9,10 @@ namespace UI
 {
     public class WeaponPanelUI : MonoBehaviour // TODO UI
     {
-        [SerializeField] public Button CommonWeaponBTN; // TODO rename
+        // [SerializeField] public Button CommonWeaponBTN; // TODO rename
         [SerializeField] public Button FireballBTN;
         [SerializeField] public Button BowBTN;  
-
-        [SerializeField] public GameObject CommonWeaponPanell;
-        [SerializeField] public GameObject FireballPanell;
-        [SerializeField] public GameObject BowPanell;  
-
+        
         [FormerlySerializedAs("FireballText")] [SerializeField] private TMPro.TextMeshProUGUI _fireballText;
 
         [FormerlySerializedAs("bowWeapon")] [SerializeField] private Weapon _bowWeapon;
@@ -32,13 +28,13 @@ namespace UI
             Debug.Log("PlayerController assigned");
             _dataPlayer = dataPlayer;
             Debug.Log("dataPlayer assigned");
-            CommonWeaponBTN.onClick.AddListener(OnCLickCommonWeaponBTN);
+            // CommonWeaponBTN.onClick.AddListener(OnCLickCommonWeaponBTN);
             FireballBTN.onClick.AddListener(OnCLickFireballBTN);
             BowBTN.onClick.AddListener(OnClickBowBTN); 
 
-            ResetWeaponToDefault();
+            // ResetWeaponToDefault();
             Debug.Log("ResetWeaponToDefault");
-            ResetFireballCount();
+            // ResetFireballCount();
             Debug.Log("ResetFireballCount");
             Debug.Log("Finish Construct WeaponPanel");
             Debug.Log("***********************************");
@@ -46,10 +42,18 @@ namespace UI
         
         public void ResetWeaponToDefault()
         {
-            _playerController.GetFighter().SetCommonWeapon();
-            // FireballPanell.SetActive(false);
-            CommonWeaponPanell.SetActive(true);
-            // BowPanell.SetActive(false);
+            if (_playerController == null)
+            {
+                Debug.LogError("Player controller is null");
+            }
+            var fighter = _playerController.Fighter;
+            
+            if (fighter == null)
+            {
+                Debug.LogError("Fighter is NULL in ResetWeaponToDefault()");
+                return;
+            }
+            _playerController.Fighter.SetCommonWeapon();
         }
 
         public void ResetFireballCount()
@@ -62,26 +66,19 @@ namespace UI
             else
             {
                 ResetWeaponToDefault();
-                // FireballBTN.gameObject.SetActive(false);
             }
         }
         
         private void OnCLickFireballBTN()
         {
-            _playerController.GetFighter().SetFireball();
-            FireballPanell.SetActive(true);
-            // CommonWeaponPanell.SetActive(false);
-            // BowPanell.SetActive(false); 
+            _playerController.Fighter.SetFireball();
         }
 
-        private void OnCLickCommonWeaponBTN() => ResetWeaponToDefault();
+        // private void OnCLickCommonWeaponBTN() => ResetWeaponToDefault();
 
         private void OnClickBowBTN()
         {
-            _playerController.GetFighter().SetBow(); 
-            BowPanell.SetActive(true);
-            // CommonWeaponPanell.SetActive(false);
-            // FireballPanell.SetActive(false);  
+            _playerController.Fighter.SetBow(); 
         }
     }
 }

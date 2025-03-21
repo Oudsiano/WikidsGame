@@ -60,9 +60,9 @@ namespace AINavigation
         
         public PlayerFighter Fighter=> _fighter;
 
-        public void Construct(IGame igame, WeaponPanelUI weaponPanelUI,
+        public void Construct(IGame igame,
             SaveGame saveGame, DataPlayer dataPlayer, MainPlayer player, FastTestsManager fastTestsManager,
-            QuestManager questManager, CoinManager coinManager, BottleManager bottleManager, UIManager uiManager, WeaponArmorManager weaponArmorManager, Timer timer)
+            QuestManager questManager, UIManager uiManager, WeaponArmorManager weaponArmorManager, Timer timer)
         {
             _timer = timer;
             _mover = GetComponent<Mover>();
@@ -70,7 +70,9 @@ namespace AINavigation
             _health = GetComponent<PlayerHealth>();
 
             _weaponArmorManager = weaponArmorManager;
-            WeaponPanelUI = weaponPanelUI;
+            WeaponPanelUI = uiManager.WeaponPanelUI;
+            WeaponPanelUI.ResetWeaponToDefault();
+            WeaponPanelUI.ResetFireballCount();
             _dataPlayer = dataPlayer;
             _saveGame = saveGame;
             _fighter.Construct(igame, player);
@@ -131,7 +133,7 @@ namespace AINavigation
 
         public Health GetHealth() => _health; // TODO move to properties
 
-        public PlayerFighter GetFighter() => _fighter; // TODO move to properties
+        // public PlayerFighter GetFighter() => _fighter; // TODO move to properties
 
         public bool GetPlayerInvisibility() => _invisibilityState; // TODO move to properties
         

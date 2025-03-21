@@ -114,6 +114,9 @@ namespace UI
         [SerializeField] public Weapon WeaponBow;
         [SerializeField] public TMP_Text arrowCharges;
 
+        [Header("WeaponPanel")] [SerializeField]
+        private WeaponPanelUI _weaponPanelUI;
+
         private Timer _timer;
         private IGame _igame;
         private FollowCamera _followCamera;
@@ -126,6 +129,8 @@ namespace UI
         private LevelChangeObserver _levelChangeObserver;
 
         public PointViewContainer PointViewContainer => _pointViewContainer;
+
+        public WeaponPanelUI WeaponPanelUI => _weaponPanelUI;
 
         public FollowCamera FollowCamera
         {
@@ -153,6 +158,8 @@ namespace UI
             _fastTestsManager = fastTestsManager;
             _levelChangeObserver = levelChangeObserver;
             _timerView.Construct(timer);
+            
+            _weaponPanelUI.Construct(playerController, dataPlayer);
 
             fastTestUI.gameObject.SetActive(false);
             _buttonAgain.onClick.AddListener(OnClickAgainRegen);

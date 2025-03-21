@@ -156,7 +156,7 @@ namespace Saving
                 if ((errorResponse.message == "Game data not found") ||
                     (errorResponse.message == "User not found")) // TODO can be cached
                 {
-                    _playerController.GetFighter()
+                    _playerController.Fighter
                         .EquipWeapon(
                             _weaponArmorManager.TryGetWeaponByName("Sword")); // TODO can be cached
                     StartCoroutine(SaveGameData());

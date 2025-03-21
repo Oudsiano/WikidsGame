@@ -162,7 +162,7 @@ namespace UI
 
             if (newItem.Type == ItemType.Weapons)
             {
-                _playerController.GetFighter()
+                _playerController.Fighter
                     .EquipWeapon(_weaponArmorManager.TryGetWeaponByName(item.name));
             }
 
@@ -380,7 +380,7 @@ namespace UI
             _confirmPanel.SetActive(false);
 
             _oldArmorWhenTryOn.EquipIt();
-            _playerController.GetFighter()
+            _playerController.Fighter
                 .EquipWeapon(_weaponArmorManager.TryGetWeaponByName(_oldWeaponWhenTryOn.name));
         }
 
@@ -392,7 +392,7 @@ namespace UI
             _saveGame.Coins -= _item.price;
 
             _oldArmorWhenTryOn.EquipIt();
-            _playerController.GetFighter()
+            _playerController.Fighter
                 .EquipWeapon(_weaponArmorManager.TryGetWeaponByName(_oldWeaponWhenTryOn.name));
         }
 

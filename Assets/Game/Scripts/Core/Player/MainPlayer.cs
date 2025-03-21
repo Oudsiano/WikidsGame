@@ -15,7 +15,6 @@ namespace Core.Player
     {
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private IconForFarCamera _icon;
-        [SerializeField] private WeaponPanelUI _weaponPanelUI;
         
         private PlayerArmorManager _playerArmorManager;
         private DataPlayer _dataPlayer;
@@ -39,10 +38,9 @@ namespace Core.Player
             _dataPlayer = dataPlayer;
             _uiManager = uiManager;
             
-            _playerController.Construct(igame, _weaponPanelUI, _saveGame,
-                _dataPlayer, this, fastTestsManager, questManager, coinManager, bottleManager, _uiManager, weaponArmorManager, timer);
+            _playerController.Construct(igame, _saveGame,
+                _dataPlayer, this, fastTestsManager, questManager, _uiManager, weaponArmorManager, timer);
             
-            _weaponPanelUI.Construct(_playerController, _dataPlayer);
             _icon.Construct(_uiManager);
         }
 

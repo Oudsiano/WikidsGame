@@ -281,7 +281,7 @@ namespace UI
         private void OnRemovedWeapon(IInventoryItem obj)
         {
             if (_notAvaliableEvents) return;
-            _playerController.GetFighter().UnequipWeapon();
+            _playerController.Fighter.UnequipWeapon();
             _saveGame.MakeSave();
         }
 
@@ -292,7 +292,7 @@ namespace UI
                 return;
             }
 
-            _playerController.GetFighter()
+            _playerController.Fighter
                 .EquipWeapon(_weaponArmorManager.TryGetWeaponByName(obj.name));
             _saveGame.MakeSave();
         }

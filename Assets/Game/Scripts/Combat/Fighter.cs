@@ -333,6 +333,7 @@ namespace Combat
                     }
                     else
                     {
+                        
                         _igame.playerController.WeaponPanelUI.ResetWeaponToDefault();
                     }
                 }

@@ -20,7 +20,6 @@ namespace Healths
         private BottleManager _bottleManager;
         private CoinManager _coinManager;
         
-        public event Action OnDeath;
         
         public void Construct(PlayerController playerController,
             FastTestsManager fastTestsManager,
@@ -35,33 +34,6 @@ namespace Healths
             Debug.Log("Coin Manager= "+ coinManager);
             _bottleManager = bottleManager;
             Debug.Log("Bottle Manager= " + _bottleManager);
-        }
-        
-
-        public void MissFastTest() // TODO rename
-        {
-            Fighter fighter = GetComponent<Fighter>(); // TODO tryGetComp
-
-            if (fighter != null)
-            {
-                fighter.Target = _playerController.GetHealth();
-            }
-        }
-
-
-        public void AttackFromBehind(bool alreadyNeedKill)
-        {
-            if (alreadyNeedKill)
-            {
-                TakeDamage(GetCurrentHealth());
-
-                return;
-            }
-
-            if (_isPlayer == false)
-            {
-                _fastTestsManager.WasAttaked(this); // TODO rename
-            }
         }
         
         public override void TakeProjectileHit(float damage, Vector3 hitDirection)
@@ -95,12 +67,6 @@ namespace Healths
             healthBar.value = currentHealth; // хил бар только у других. У пользователя свой отдельный скрипт
             
         }
-        
-        public bool IsDead() => _isDead;
-        
-
-        public float GetCurrentHealth() => currentHealth;
-        
         
         protected override void HandlePostDeath()
         {

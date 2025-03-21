@@ -8,10 +8,26 @@ public class CanvasSwitcher : MonoBehaviour
     [SerializeField] private Canvas _canvasMobile;
 
     private Canvas _mapSceneCanvas;
-    
-    public void SetCanvasChange(bool isMobile)
+
+    private void OnEnable()
     {
-        _mapSceneCanvas = isMobile ? _canvasMobile : _canvasDesktop;
-        _mapSceneCanvas.gameObject.SetActive(true);
+        ScreenOrientationChecker.OnPortrait += HideUI;
+        ScreenOrientationChecker.OnLandscape +=ShowUI;
+    }
+
+    private void OnDisable()
+    {
+        ScreenOrientationChecker.OnPortrait -= HideUI;
+        ScreenOrientationChecker.OnLandscape -=ShowUI;
+    }
+    
+    private void ShowUI()
+    {
+        _canvasDesktop.gameObject.SetActive(true);
+    }
+
+    private void HideUI()
+    {
+        _canvasDesktop.gameObject.SetActive(false);
     }
 }

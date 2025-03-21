@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine;
 public class ScreenOrientationChecker : MonoBehaviour
 {
     [SerializeField] private Canvas _canvas;
+    public static event Action OnPortrait;
+    public static event Action OnLandscape;
+    
     private int _lastHeight;
     private int _lastWidth;
     
@@ -32,11 +36,13 @@ public class ScreenOrientationChecker : MonoBehaviour
         {
             Debug.Log("Экран в вертикальной ориентации (по размеру)");
             _canvas.gameObject.SetActive(true);
+            OnPortrait?.Invoke();
         }
         else
         {
             Debug.Log("Экран в горизонтальной ориентации (по размеру)");
             _canvas.gameObject.SetActive(false);
+            OnLandscape?.Invoke();
         }
     }
 }

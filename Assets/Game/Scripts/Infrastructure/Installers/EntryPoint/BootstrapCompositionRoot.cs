@@ -97,13 +97,13 @@ namespace Infrastructure.Installers.EntryPoint
             ConstructComponents();
             LoadScene();
         }
-
+        
         private void ConstructComponents()
         {
+            _javaScriptHook.Construct(_dataPlayer);
             _gameAPI.Construct(_player, _dataPlayer, _saveGame, _fastTestsManager,
                 _player.PlayerController,
                 _weaponArmorManager, _questManager, _javaScriptHook);
-            _javaScriptHook.Construct(_dataPlayer);
             
             _iGame.Construct(_player, _gameAPI, _dataPlayer, _saveGame, _player.PlayerController,
                 _levelChangeObserver, _savePointsManager, _arrowForPlayerManager,

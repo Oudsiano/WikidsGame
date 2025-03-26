@@ -896,7 +896,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7778397225930648714}
   - component: {fileID: 2176815966868264419}
-  - component: {fileID: 358043038214057435}
   - component: {fileID: 2088702985161752185}
   - component: {fileID: 1629195677298809045}
   - component: {fileID: 1121341555039291490}
@@ -907,6 +906,7 @@ GameObject:
   - component: {fileID: 2381720613524554390}
   - component: {fileID: 6374980723471295031}
   - component: {fileID: 2120670290615741127}
+  - component: {fileID: 2775020807091384664}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -947,21 +947,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fe9df1e2ec84f1e836e733659d9b204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &358043038214057435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9133158828745458021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 349eccfb59a03b84aaa950abf8ae93c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ClickEffect: {fileID: 2381720613524554390}
-  StrafeDistance: 3
-  Target: {fileID: 0}
 --- !u!195 &2088702985161752185
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1090,7 +1075,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerController: {fileID: 75780036546815673}
   _icon: {fileID: 3066496538987114723}
-  _weaponPanelUI: {fileID: 0}
 --- !u!114 &9040928548955586838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1153,6 +1137,21 @@ MonoBehaviour:
   healthBar: {fileID: 2173968048664155806}
   maxHealth: 100
   currentHealth: 0
+--- !u!114 &2775020807091384664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133158828745458021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9b601ac01fddb4e9b33835fe84aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+  ClickEffect: {fileID: 2381720613524554390}
+  StrafeDistance: 3
 --- !u!1001 &5956290306366032181
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1186,7 +1186,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4939805754032154}
   - component: {fileID: -3301756770576590277}
-  - component: {fileID: -5295137437733593995}
   - component: {fileID: 56556336233610316}
   - component: {fileID: 5823274952348266558}
   - component: {fileID: -6696102245415070072}
@@ -1196,6 +1195,7 @@ GameObject:
   - component: {fileID: -2036263526699054230}
   - component: {fileID: -6567513972116839297}
   - component: {fileID: 6553814101171622888}
+  - component: {fileID: 5961355300917543689}
   m_Layer: 9
   m_Name: Character_BR_ElementalGolem_01
   m_TagString: Enemy
@@ -1243,21 +1243,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fe9df1e2ec84f1e836e733659d9b204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-5295137437733593995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1334977650429898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 349eccfb59a03b84aaa950abf8ae93c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ClickEffect: {fileID: -2036263526699054230}
-  StrafeDistance: 3
-  Target: {fileID: 0}
 --- !u!195 &56556336233610316
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1417,6 +1402,19 @@ MonoBehaviour:
   healthBar: {fileID: 5048864874473600318}
   maxHealth: 500
   currentHealth: 0
+--- !u!114 &5961355300917543689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334977650429898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f2dc71be30200c44ab72e4764b3fa8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
 --- !u!1 &1363942222743436
 GameObject:
   m_ObjectHideFlags: 0

@@ -60,6 +60,7 @@ namespace AINavigation
         {
             _fighter = GetComponent<Fighter>();
             _mover = GetComponent<Mover>();
+            _mover.Construct();
             _health = GetComponent<EnemyHealth>();
             
             _player = player;

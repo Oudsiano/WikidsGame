@@ -22,6 +22,7 @@ namespace Saving
 {
     public class GameAPI : MonoBehaviour
     {
+        [SerializeField] private SocketManager _socketManager;
         private MainPlayer _player;
         private SaveGame _saveGame;
         private FastTestsManager _fastTestsManager;
@@ -44,6 +45,8 @@ namespace Saving
         private bool needMakeSaveInNextUpdate = false;
         private JavaScriptHook _javaScriptHook;
         public bool GameLoad => _gameLoad;
+
+        public SocketManager SocketManager => _socketManager;
 
         public void Construct(MainPlayer player, DataPlayer dataPlayer, SaveGame saveGame,
             FastTestsManager fastTestsManager, PlayerController playerController,

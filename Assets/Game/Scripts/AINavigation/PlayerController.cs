@@ -62,11 +62,11 @@ namespace AINavigation
 
         public void Construct(IGame igame,
             SaveGame saveGame, DataPlayer dataPlayer, MainPlayer player, FastTestsManager fastTestsManager,
-            QuestManager questManager, UIManager uiManager, WeaponArmorManager weaponArmorManager, Timer timer)
+            QuestManager questManager, UIManager uiManager, WeaponArmorManager weaponArmorManager, Timer timer, SocketManager socketManager)
         {
             _timer = timer;
             _mover = GetComponent<PlayerMover>();
-            _mover.Construct();
+            _mover.Construct(socketManager);
             _fighter = GetComponent<PlayerFighter>();
             _health = GetComponent<PlayerHealth>();
 

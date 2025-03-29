@@ -59,6 +59,7 @@ namespace Infrastructure.Installers.EntryPoint
         private AssetProvider _assetProvider;
         
         private ScreenOrientationChecker _screenOrientationChecker;
+        private SocketManager _socketManager;
 
         [Inject]
         public void Compose(DiContainer diContainer)
@@ -75,6 +76,7 @@ namespace Infrastructure.Installers.EntryPoint
             _iGame = _sceneContainer.Resolve<IGame>();
             _followCamera = _sceneContainer.Resolve<FollowCamera>(); //
             _gameAPI = _sceneContainer.Resolve<GameAPI>();
+            _socketManager =_gameAPI.SocketManager;
             _timer = _sceneContainer.Resolve<Timer>();
             _audioManager = _sceneContainer.Resolve<AudioManager>();
             _savePointsManager = _sceneContainer.Resolve<SavePointsManager>();
@@ -121,7 +123,7 @@ namespace Infrastructure.Installers.EntryPoint
                 _dataPlayer, _fastTestsManager, _player.PlayerController, _weaponArmorManager, _levelChangeObserver,
                 _timer);
             _player.Construct(_iGame, _dataPlayer, _uiManager, _saveGame, _fastTestsManager, _questManager,
-                _coinManager, _bottleManager, _weaponArmorManager, _timer);
+                 _weaponArmorManager, _timer, _socketManager);
 
             _followCamera.Construct(_player, _player.PlayerController);
             _keyBoardsEvents.Construct(_uiManager);

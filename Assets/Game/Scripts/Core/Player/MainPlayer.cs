@@ -29,8 +29,8 @@ namespace Core.Player
         public bool IfModularCharacterCreated => _ifModularCharacterCreated;
         
         public void Construct(IGame igame, DataPlayer dataPlayer, UIManager uiManager, SaveGame saveGame,
-            FastTestsManager fastTestsManager, QuestManager questManager, CoinManager coinManager,
-            BottleManager bottleManager, WeaponArmorManager weaponArmorManager, Timer timer)
+            FastTestsManager fastTestsManager, QuestManager questManager, 
+             WeaponArmorManager weaponArmorManager, Timer timer, SocketManager socketManager)
         {
             _agent = GetComponent<NavMeshAgent>();
             
@@ -39,7 +39,7 @@ namespace Core.Player
             _uiManager = uiManager;
             
             _playerController.Construct(igame, _saveGame,
-                _dataPlayer, this, fastTestsManager, questManager, _uiManager, weaponArmorManager, timer);
+                _dataPlayer, this, fastTestsManager, questManager, _uiManager, weaponArmorManager, timer, socketManager);
             
             _icon.Construct(_uiManager);
         }

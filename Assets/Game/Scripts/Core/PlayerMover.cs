@@ -19,11 +19,13 @@ public class PlayerMover : Mover
 
         public float StrafeDistance = 3f;
         
-        public void Construct()
+        private string _playerId;
+        
+        public void Construct(SocketManager socketManager)
         {
             base.Construct();
             _camera = Camera.main;
-             // _socketManager =  socketManager;
+            _socketManager =  socketManager;
         }
         
         private void Update()
@@ -75,7 +77,7 @@ public class PlayerMover : Mover
                 if (path.status == NavMeshPathStatus.PathComplete)
                 {
                     _agent.SetPath(path);
-                    // SendPlayerPosition();
+                    SendPlayerPosition();
                 }
                 
             _agent.isStopped = false;
@@ -109,11 +111,25 @@ public class PlayerMover : Mover
         
         private void SendPlayerPosition()
         {
-            if (_socketManager != null)
+            if (_socketManager != null && !string.IsNullOrEmpty(_playerId))
             {
-                string playerData = JsonUtility.ToJson(transform.position);
-                _socketManager.SendData(playerData);
+                var data = new PlayerNetworkPositionData
+                {
+                    id = _playerId,
+                    x = transform.position.x,
+                    y = transform.position.y,
+                    z = transform.position.z
+                };
+
+                string json = JsonUtility.ToJson(data);
+                Debug.Log($"📤 Отправка позиции: {json}");
+                _socketManager.SendData(json);
             }
+        }
+        
+        public void SetPlayerId(string id)
+        {
+            _playerId = id;
         }
     }
 }

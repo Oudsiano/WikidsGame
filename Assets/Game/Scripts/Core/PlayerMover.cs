@@ -111,6 +111,7 @@ public class PlayerMover : Mover
         
         private void SendPlayerPosition()
         {
+            Debug.Log("SendPlayerPosition works");
             if (_socketManager != null && !string.IsNullOrEmpty(_playerId))
             {
                 var data = new PlayerNetworkPositionData
@@ -129,7 +130,9 @@ public class PlayerMover : Mover
         
         public void SetPlayerId(string id)
         {
+            Debug.Log("_playerId="+ _playerId);
             _playerId = id;
+            SendPlayerPosition();
         }
     }
 }

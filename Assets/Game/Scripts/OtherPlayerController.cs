@@ -42,4 +42,10 @@ public class OtherPlayerController : MonoBehaviour
             _animator.SetFloat(Constants.Animator.ForwardSpeed, localVelocity.z);// 👈 Имя параметра должно совпадать с аниматором
         }
     }
+    
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 2f);
+    }
 }

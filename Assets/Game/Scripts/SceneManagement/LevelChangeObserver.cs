@@ -27,6 +27,7 @@ namespace SceneManagement
         private LoadingScreenProvider _loadingScreenProvider;
         private AssetProvider _assetProvider;
         private ScenePreloader _preloader;
+        
         public string IndexSceneToLoad => _indexSceneToLoad;
 
         public void Construct(SavePointsManager savePointsManager, DataPlayer dataPlayer, UIManager uiManager,
@@ -54,6 +55,7 @@ namespace SceneManagement
                 if (startPos != null)
                 {
                     UpdatePlayerLocation(startPos.transform.position, startPos.transform.rotation);
+                    _gameAPI.SocketManager.SpawnOtherPlayers(startPos.transform.position, startPos.transform.rotation);
                     _uiManager.FollowCamera.ActivateCommonZoomUpdate();
                 }
             }
@@ -61,6 +63,7 @@ namespace SceneManagement
             {
                 Vector3 pos = SavePointsManager.AllSavePoints[_dataPlayer.PlayerData.spawnPoint].transform.position;
                 UpdatePlayerLocation(pos, Quaternion.identity);
+                // _gameAPI.SocketManager.SpawnOtherPlayers(startPos.transform.position);
                 _uiManager.FollowCamera.ActivateCommonZoomUpdate();
             }
 

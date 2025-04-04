@@ -25,9 +25,10 @@ mergeInto(LibraryManager.library, {
         safeSendMessage("SocketManager", "OnConnected");
       });
 
-      window.socket.on("playerConnected", function (data) {
-        safeSendMessage("SocketManager", "OnPlayerConnected", data.id);
-      });
+        window.socket.on("playerConnected", function (data) {
+            const json = JSON.stringify(data);
+            safeSendMessage("SocketManager", "OnPlayerConnected", json);
+        });
 
       window.socket.on("playerData", function (data) {
         const json = JSON.stringify(data);
@@ -38,8 +39,8 @@ mergeInto(LibraryManager.library, {
         safeSendMessage("SocketManager", "OnYouAre", data.id);
       });
 
-      window.socket.on("existingPlayers", function (playerIds) {
-        const json = JSON.stringify({ playerIds: playerIds });
+      window.socket.on("existingPlayers", function (playerData) {
+        const json = JSON.stringify(playerData);
         console.log("👉 existingPlayers json:", json);
         safeSendMessage("SocketManager", "OnExistingPlayers", json);
       });

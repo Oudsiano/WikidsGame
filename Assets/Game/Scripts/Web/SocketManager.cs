@@ -29,6 +29,9 @@ public class SocketManager : MonoBehaviour
     private string _pendingPlayerId;
     private bool _waitingForPlayerMover = true;
     private Animator _animator;
+    private bool _isSceneLoaded = false;
+    private Vector3 _pendingSpawnPosition;
+    private Quaternion _pendingSpawnRotation;
 
     [System.Serializable]
     private class PlayerListWrapper
@@ -151,6 +154,13 @@ public class SocketManager : MonoBehaviour
             }
 
             var data = jObject.ToObject<PlayerNetworkPositionData>();
+            
+            if (string.IsNullOrEmpty(data.id))
+            {
+                Debug.LogWarning("⚠️ Получены данные с пустым id, игнорируем");
+                return;
+            }
+            
             if (data.id == _myPlayerId)
             {
                 Debug.Log("⏭️ Пропускаем собственную позицию");
@@ -190,18 +200,23 @@ public class SocketManager : MonoBehaviour
             Debug.Log("Других игроков нет");
             return;
         }
+        
         foreach (var kvp in playerDataById)
         {
             string id = kvp.Key;
             var data = kvp.Value;
 
             if (id == _myPlayerId) continue; // не спавним сами себя
+            
+            if (otherPlayers.ContainsKey(id))
+            {
+                Debug.Log($"Игрок {id} уже существует, пропускаем");
+                continue;
+            }
+            
             Debug.Log($"🆕 Инстанциируем игрока {id} на позиции {data.x}, {data.y}, {data.z}");
             var other = Instantiate(otherPlayerPrefab, position, rotation);
             LoadModularCharacter(other).Forget();
-            Animator otherAnimator = other.GetComponent<Animator>();
-            otherAnimator.enabled = false;
-            otherAnimator.enabled = true;
             otherPlayers[id] = other;
             Debug.Log("Игрок создан!");
         }
@@ -209,34 +224,81 @@ public class SocketManager : MonoBehaviour
 
 
 
-    public void OnPlayerConnected(string playerId)
+    public void OnPlayerConnected(string json)
     {
-        if (!connectedPlayers.Contains(playerId))
-        {
-            connectedPlayers.Add(playerId);
-            Debug.Log($"🔗 Игрок {playerId} подключился!");
+        Debug.Log($"[OnPlayerConnected] Получено событие playerConnected: {json}");
+        var playerData = JsonUtility.FromJson<PlayerNetworkPositionData>(json);
 
-            // Попросим его отправить свою позицию
-            var request = new PlayerRequest { id = _myPlayerId, requestPosition = playerId };
-            SendData(JsonUtility.ToJson(request));
+        if (string.IsNullOrEmpty(playerData.id))
+        {
+            Debug.LogWarning("[OnPlayerConnected] Получены данные с пустым id, игнорируем");
+            return;
+        }
+
+        if (playerData.id == _myPlayerId)
+        {
+            Debug.Log("[OnPlayerConnected] Это наш id, пропускаем");
+            return;
+        }
+
+        if (!connectedPlayers.Contains(playerData.id))
+        {
+            connectedPlayers.Add(playerData.id);
+            Debug.Log($"[OnPlayerConnected] 🔗 Игрок {playerData.id} подключился!");
+        }
+
+        // Добавляем игрока в playerDataById
+        if (!playerDataById.ContainsKey(playerData.id))
+        {
+            playerDataById[playerData.id] = playerData;
+            Debug.Log($"[OnPlayerConnected] Добавляем игрока {playerData.id} в playerDataById: x={playerData.x}, y={playerData.y}, z={playerData.z}");
+        }
+
+        // Если сцена уже загружена, вызываем SpawnOtherPlayers
+        if (_isSceneLoaded)
+        {
+            Debug.Log("[OnPlayerConnected] Сцена уже загружена, вызываем SpawnOtherPlayers");
+            SpawnOtherPlayers(_pendingSpawnPosition, _pendingSpawnRotation);
         }
     }
 
-    public void OnExistingPlayers(string playerIdsJson)
+    public void OnExistingPlayers(string json)
     {
         Debug.Log("📥 OnExistingPlayers вызван!");
 
-        var wrapper = JsonUtility.FromJson<PlayerListWrapper>(playerIdsJson);
-        Debug.Log($"👥 Всего игроков получено: {wrapper.playerIds.Length}");
+        var existingPlayersData = JsonUtility.FromJson<Dictionary<string, PlayerNetworkPositionData>>(json);
+        // var wrapper = JsonUtility.FromJson<PlayerListWrapper>(playerIdsJson);
+        Debug.Log($"[OnExistingPlayers] 👥 Всего игроков получено: {existingPlayersData.Count}");
 
-        foreach (var id in wrapper.playerIds)
+        foreach (var kvp in existingPlayersData)
         {
-            if (!otherPlayers.ContainsKey(id))
+            string id = kvp.Key;
+            var data = kvp.Value;
+
+            if (string.IsNullOrEmpty(id))
+            {
+                Debug.LogWarning($"[OnExistingPlayers] Обнаружен игрок с пустым id, пропускаем");
+                continue;
+            }
+
+            if (!connectedPlayers.Contains(id))
             {
                 connectedPlayers.Add(id);
-                Debug.Log($"📡 Запрашиваем позицию у игрока: {id}");
-                var request = new PlayerRequest { id = _myPlayerId, requestPosition = id };
-                SendData(JsonUtility.ToJson(request));
+                Debug.Log($"[OnExistingPlayers] Добавляем игрока {id} в connectedPlayers");
+            }
+
+            // Добавляем игрока в playerDataById
+            if (!playerDataById.ContainsKey(id))
+            {
+                playerDataById[id] = data;
+                Debug.Log($"[OnExistingPlayers] Добавляем игрока {id} в playerDataById: x={data.x}, y={data.y}, z={data.z}");
+            }
+
+            // Если сцена уже загружена, вызываем SpawnOtherPlayers
+            if (_isSceneLoaded)
+            {
+                Debug.Log("[OnExistingPlayers] Сцена уже загружена, вызываем SpawnOtherPlayers");
+                SpawnOtherPlayers(_pendingSpawnPosition, _pendingSpawnRotation);
             }
         }
     }
@@ -324,6 +386,44 @@ public class SocketManager : MonoBehaviour
     public void OnServerFull(string message)
     {
         Debug.LogWarning(message);
+    }
+    
+    public void NotifySceneLoaded(Vector3 position, Quaternion rotation)
+    {
+        Debug.Log("[SocketManager] NotifySceneLoaded вызван");
+        _isSceneLoaded = true;
+        
+        _pendingSpawnPosition = position;
+        _pendingSpawnRotation = rotation;
+
+        // Проверяем содержимое playerDataById
+        Debug.Log($"[SocketManager] playerDataById: {playerDataById.Count} записей");
+        foreach (var kvp in playerDataById)
+        {
+            Debug.Log($"[SocketManager] id={kvp.Key}, x={kvp.Value.x}, y={kvp.Value.y}, z={kvp.Value.z}");
+        }
+
+        // Если данные уже есть, вызываем SpawnOtherPlayers
+        if (playerDataById.Count > 0)
+        {
+            Debug.Log("[SocketManager] Данные о других игроках уже получены, вызываем SpawnOtherPlayers");
+            SpawnOtherPlayers(position, rotation);
+        }
+        else
+        {
+            Debug.Log("[SocketManager] Данные о других игроках ещё не получены, ждем событий existingPlayers или playerConnected");
+            // Запрашиваем данные у сервера
+            if (!string.IsNullOrEmpty(_myPlayerId))
+            {
+                var request = new PlayerRequest
+                {
+                    id = _myPlayerId,
+                    requestPosition = "all"
+                };
+                string json = JsonUtility.ToJson(request);
+                SendData(json);
+            }
+        }
     }
 
     void OnDestroy()

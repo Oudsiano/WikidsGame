@@ -77,7 +77,7 @@ public class PlayerMover : Mover
                 if (path.status == NavMeshPathStatus.PathComplete)
                 {
                     _agent.SetPath(path);
-                    SendPlayerPosition();
+                    SendPlayerPosition(position);
                 }
                 
             _agent.isStopped = false;
@@ -109,7 +109,7 @@ public class PlayerMover : Mover
             }
         }
         
-        private void SendPlayerPosition()
+        private void SendPlayerPosition(Vector3 targetPosition)
         {
             Debug.Log("SendPlayerPosition works");
             if (_socketManager != null && !string.IsNullOrEmpty(_playerId))
@@ -117,9 +117,9 @@ public class PlayerMover : Mover
                 var data = new PlayerNetworkPositionData
                 {
                     id = _playerId,
-                    x = transform.position.x,
-                    y = transform.position.y,
-                    z = transform.position.z
+                    x = targetPosition.x,
+                    y = targetPosition.y,
+                    z = targetPosition.z
                 };
 
                 string json = JsonUtility.ToJson(data);
@@ -132,7 +132,7 @@ public class PlayerMover : Mover
         {
             Debug.Log("_playerId="+ _playerId);
             _playerId = id;
-            SendPlayerPosition();
+            // SendPlayerPosition();
         }
     }
 }

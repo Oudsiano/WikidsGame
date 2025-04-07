@@ -42,6 +42,7 @@ mergeInto(LibraryManager.library, {
       window.socket.on("existingPlayers", function (playerData) {
         const json = JSON.stringify(playerData);
         console.log("👉 existingPlayers json:", json);
+        console.log(`[JSLIB] Получено событие existingPlayers: ${json}, время: ${Date.now()}`);
         safeSendMessage("SocketManager", "OnExistingPlayers", json);
       });
 

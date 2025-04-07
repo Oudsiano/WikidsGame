@@ -264,42 +264,63 @@ public class SocketManager : MonoBehaviour
 
     public void OnExistingPlayers(string json)
     {
-        Debug.Log("📥 OnExistingPlayers вызван!");
+        Debug.Log($"[OnExistingPlayers] Получено событие existingPlayers: {json}, текущее время: {Time.time}");
 
-        var existingPlayersData = JsonUtility.FromJson<Dictionary<string, PlayerNetworkPositionData>>(json);
-        // var wrapper = JsonUtility.FromJson<PlayerListWrapper>(playerIdsJson);
-        Debug.Log($"[OnExistingPlayers] 👥 Всего игроков получено: {existingPlayersData.Count}");
-
-        foreach (var kvp in existingPlayersData)
+        try
         {
-            string id = kvp.Key;
-            var data = kvp.Value;
+            var existingPlayersData = JsonConvert.DeserializeObject<Dictionary<string, PlayerNetworkPositionData>>(json);
+            // var existingPlayersData = JsonUtility.FromJson<Dictionary<string, PlayerNetworkPositionData>>(json);
+            Debug.Log($"[OnExistingPlayers] 👥 Всего игроков получено: {existingPlayersData.Count}");
 
-            if (string.IsNullOrEmpty(id))
+            if (existingPlayersData == null || existingPlayersData.Count == 0)
             {
-                Debug.LogWarning($"[OnExistingPlayers] Обнаружен игрок с пустым id, пропускаем");
-                continue;
+                Debug.LogWarning("[OnExistingPlayers] Список игроков пуст или не удалось десериализовать данные");
+                return;
             }
 
-            if (!connectedPlayers.Contains(id))
+            foreach (var kvp in existingPlayersData)
             {
-                connectedPlayers.Add(id);
-                Debug.Log($"[OnExistingPlayers] Добавляем игрока {id} в connectedPlayers");
-            }
+                string id = kvp.Key;
+                var data = kvp.Value;
 
-            // Добавляем игрока в playerDataById
-            if (!playerDataById.ContainsKey(id))
-            {
-                playerDataById[id] = data;
-                Debug.Log($"[OnExistingPlayers] Добавляем игрока {id} в playerDataById: x={data.x}, y={data.y}, z={data.z}");
-            }
+                if (string.IsNullOrEmpty(id))
+                {
+                    Debug.LogWarning($"[OnExistingPlayers] Обнаружен игрок с пустым id, пропускаем");
+                    continue;
+                }
 
-            // Если сцена уже загружена, вызываем SpawnOtherPlayers
-            if (_isSceneLoaded)
-            {
-                Debug.Log("[OnExistingPlayers] Сцена уже загружена, вызываем SpawnOtherPlayers");
-                SpawnOtherPlayers(_pendingSpawnPosition, _pendingSpawnRotation);
+                if (data == null)
+                {
+                    Debug.LogWarning($"[OnExistingPlayers] Данные игрока {id} равны null, пропускаем");
+                    continue;
+                }
+
+                if (!connectedPlayers.Contains(id))
+                {
+                    connectedPlayers.Add(id);
+                    Debug.Log($"[OnExistingPlayers] Добавляем игрока {id} в connectedPlayers");
+                }
+
+                if (!playerDataById.ContainsKey(id))
+                {
+                    playerDataById[id] = data;
+                    Debug.Log($"[OnExistingPlayers] Добавляем игрока {id} в playerDataById: x={data.x}, y={data.y}, z={data.z}");
+                }
+
+                if (_isSceneLoaded)
+                {
+                    Debug.Log("[OnExistingPlayers] Сцена уже загружена, вызываем SpawnOtherPlayers");
+                    SpawnOtherPlayers(_pendingSpawnPosition, _pendingSpawnRotation);
+                }
+                else
+                {
+                    Debug.Log("[OnExistingPlayers] Сцена еще не загружена, SpawnOtherPlayers будет вызван позже");
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[OnExistingPlayers] Ошибка при десериализации JSON: {ex.Message}\nJSON: {json}");
         }
     }
 
@@ -421,7 +442,12 @@ public class SocketManager : MonoBehaviour
                     requestPosition = "all"
                 };
                 string json = JsonUtility.ToJson(request);
+                Debug.Log($"[SocketManager] Отправляем запрос на сервер: {json}");
                 SendData(json);
+            }
+            else
+            {
+                Debug.LogWarning("[SocketManager] _myPlayerId пуст, запрос не отправлен");
             }
         }
     }

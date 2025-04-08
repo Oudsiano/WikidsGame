@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using GameEngine;
 
 namespace Healths
 {
@@ -25,15 +26,17 @@ namespace Healths
             FastTestsManager fastTestsManager,
             QuestManager questManager,
             CoinManager coinManager,
-            BottleManager bottleManager,
-            UIManager uiManager)
+            BottleManager bottleManager)
         {
             base.Construct(playerController, fastTestsManager, questManager);
 
             _coinManager = coinManager;
-            Debug.Log("Coin Manager= "+ coinManager);
             _bottleManager = bottleManager;
-            Debug.Log("Bottle Manager= " + _bottleManager);
+        }
+        
+        protected override HealthBase CreateHealthBase(float maxHealth)
+        {
+            return new EnemyHealthBase(maxHealth);
         }
         
         public override void TakeProjectileHit(float damage, Vector3 hitDirection)
@@ -45,7 +48,7 @@ namespace Healths
             
             if (angle < 100f) // Спина
             {
-                TakeDamage(currentHealth); // ваншот
+                TakeDamage(healthBase.GetCurrentHealth()); // ваншот
                 Debug.Log("OneShoot");
                 
             }
@@ -57,23 +60,23 @@ namespace Healths
 
         public override  void TakeDamage(float value)
         {
-            currentHealth = Mathf.Max(currentHealth - value, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0 
+            healthBase.TakeDamage(value);
+            Debug.Log("[EnemyHealth] CurrentHealth= " + healthBase.GetCurrentHealth());
+            healthBar.value = healthBase.GetCurrentHealth(); // хил бар только у других. У пользователя свой отдельный скрипт
 
-            if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти
+            if (healthBase.GetCurrentHealth() <= 0)
             {
                 Die();
             }
-            
-            healthBar.value = currentHealth; // хил бар только у других. У пользователя свой отдельный скрипт
             
         }
         
         protected override void HandlePostDeath()
         {
-            if (_isRemoved == false)
+            if (healthBase.IsRemoved == false)
             {
                 GetComponent<NavMeshAgent>().enabled = false;
-                _isRemoved = true;
+                healthBase.SetRemoved();
             }
 
             QuestSpecialEnemyName specialEnemy = GetComponent<QuestSpecialEnemyName>();

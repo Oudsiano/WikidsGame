@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using GameEngine;
 
 namespace Healths
 {
@@ -21,20 +22,21 @@ namespace Healths
         public GameObject RedHalfCircle;
 
         public Slider healthBar; // Ссылка на полосу здоровья в пользовательском интерфейсе // TODO rename
-        public float maxHealth; // Максимальное здоровье существа // TODO rename
-        public float currentHealth; // Текущее здоровье существа // TODO rename
-
-        protected bool _isDead = false; // Флаг, указывающий, что существо мертво
-        protected bool _isRemoved = false; // Флаг, указывающий, что существо было удалено
-        protected int isAtackedInlast5sec = 0; // TODO why int
-
+        [SerializeField] protected float maxHealth; // Максимальное здоровье существа // TODO rename
+        protected HealthBase healthBase;
         protected bool _isPlayer = false; // TODO rename
         protected BossNPC _bossNPC; // TODO no need here
         protected QuestManager _questManager;
         protected FastTestsManager _fastTestsManager;
         protected PlayerController _playerController;
         
-        public event Action OnDeath; // TODO rename
+        public float MaxHealth => maxHealth;
+        
+        public event Action OnDeath // TODO rename
+        {
+            add => healthBase.OnDeath += value;
+            remove => healthBase.OnDeath -= value;
+        }
 
         public BossNPC BossNPC
         {
@@ -49,42 +51,21 @@ namespace Healths
             _playerController = playerController;
             _fastTestsManager = fastTestsManager;
             _questManager = questManager;
-
-            currentHealth = maxHealth;
+            
+            healthBase = CreateHealthBase(maxHealth);
             if (healthBar != null)
-                healthBar.value = currentHealth;
+                healthBar.value = healthBase.GetCurrentHealth();
 
             _isPlayer = gameObject.GetComponent<MainPlayer>() != null;
         }
-
-        private IEnumerator HeallUpPLayer()
-        {
-            while (true) // TODO can be allocated memory
-            {
-                if (_isDead == false)
-                {
-                    if (isAtackedInlast5sec > 0)
-                    {
-                        isAtackedInlast5sec--;
-                    }
-
-                    if (isAtackedInlast5sec == 0)
-                    {
-                        Heal(3);
-                    }
-                    else
-                    {
-                        Heal(1);
-                    }
-                }
-
-                yield return new WaitForSeconds(1); // TODO magic numbers
-            }
-        }
+        
+        protected abstract HealthBase CreateHealthBase(float maxHealth);
+        
 
         public void Heal(float value)
         {
-            currentHealth = Mathf.Min(currentHealth + value, maxHealth);
+            healthBase.Heal(value);
+            UpdateHealthBar();
         }
 
 
@@ -103,7 +84,7 @@ namespace Healths
         {
             if (alreadyNeedKill)
             {
-                TakeDamage(GetCurrentHealth());
+                TakeDamage(healthBase.GetCurrentHealth());
 
                 return;
             }
@@ -124,31 +105,38 @@ namespace Healths
 
         public void Restore()
         {
-            currentHealth = maxHealth;
-            _isDead = false;
+            healthBase.Restore();
+            UpdateHealthBar();
         }
 
-        public bool IsDead() => _isDead;
+        public bool IsDead() => healthBase.IsDead();
 
         // Метод для захвата состояния существа для сохранения
         public object CaptureState() // TODO not used code
         {
-            return currentHealth;
+            return healthBase.CaptureState();
         }
 
         // Примечание: в настоящее время значение здоровья при загрузке новой сцены перезаписывается этим методом
         // из-за порядка выполнения сценариев. Измените start на awake, чтобы исправить проблему
         public void RestoreState(object state) // TODO not used code
         {
-            currentHealth =
-                (float)state; // Восстанавливаем текущее здоровье из сохраненного состояния // TODO expensive unboxing
-            if (currentHealth <= 0) // Если здоровье меньше или равно нулю, вызываем метод смерти
+            healthBase.RestoreState(state);
+            UpdateHealthBar();
+            
+            if (healthBase.IsDead())
             {
                 Die();
             }
         }
 
-        public float GetCurrentHealth() => currentHealth;
+        public float GetCurrentHealth() => healthBase.GetCurrentHealth();
+        
+        private void UpdateHealthBar()
+        {
+            if (healthBar != null)
+                healthBar.value = healthBase.GetCurrentHealth();
+        }
 
         private void Dodge()
         {
@@ -157,18 +145,17 @@ namespace Healths
 
         protected virtual void Die() // TODO overload method
         {
+            Debug.Log("[Health] Dead");
             if (RedHalfCircle != null)
                 RedHalfCircle.SetActive(false);
 
             GetComponent<Animator>().SetTrigger("dead");
-            _isDead = true;
             GetComponent<ActionScheduler>().Cancel();
             RemoveProjectiles();
-
-            OnDeath?.Invoke();
-
+            
             HandlePostDeath();
         }
+        
         
         protected abstract void HandlePostDeath();
 

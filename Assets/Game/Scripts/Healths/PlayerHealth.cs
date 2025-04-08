@@ -12,12 +12,14 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using GameEngine;
 
 namespace Healths
 {
     public class PlayerHealth : Health
     {
         private UIManager _uiManager;
+        private float healTimer = 0f;
    
 
         public void Construct(PlayerController playerController,
@@ -28,37 +30,41 @@ namespace Healths
             base.Construct(playerController, fastTestsManager, questManager);
 
             _uiManager = uiManager;
+            
+            if (healthBase is PlayerHealthBase playerHealthBase)
+            {
+                playerHealthBase.OnDodge += Dodge;
+            }
+            else
+            {
+                Debug.LogError("healthBase is not a PlayerHealthBase in PlayerHealth!");
+            }
+            
             StartCoroutine(HeallUpPLayer());
+            
+        }
+        
+        protected override HealthBase CreateHealthBase(float maxHealth)
+        {
+            return new PlayerHealthBase(maxHealth);
         }
 
         private IEnumerator HeallUpPLayer()
         {
             while (true) // TODO can be allocated memory
             {
-                if (_isDead == false)
+                if (healthBase is PlayerHealthBase playerHealthBase)
                 {
-                    if (isAtackedInlast5sec > 0)
-                    {
-                        isAtackedInlast5sec--;
-                    }
-
-                    if (isAtackedInlast5sec == 0)
-                    {
-                        Heal(3);
-                    }
-                    else
-                    {
-                        Heal(1);
-                    }
+                    playerHealthBase.UpdateHealth();
                 }
-
+                
                 yield return new WaitForSeconds(1); // TODO magic numbers
             }
         }
 
         public void Heal(float value)
         {
-            currentHealth = Mathf.Min(currentHealth + value, maxHealth);
+            healthBase.Heal(value);
         }
 
 
@@ -90,53 +96,20 @@ namespace Healths
 
         public override  void TakeDamage(float value)
         {
-
-            var tempRandom = UnityEngine.Random.Range(0, 9);
-
-            if (tempRandom > 6) //30% // TODO magic numbers
-            {
-                Dodge();
-
-                return;
-            }
-
-            currentHealth = Mathf.Max(currentHealth - value, 0); // Уменьшаем текущее здоровье на урон, но не меньше 0 
-
-            if (currentHealth == 0) // Если здоровье достигло нуля, вызываем метод смерти
+            healthBase.TakeDamage(value);
+            
+            if (healthBase.GetCurrentHealth() <= 0)
             {
                 Die();
             }
-
-            isAtackedInlast5sec = 5;
         }
-
-        public void Restore()
-        {
-            currentHealth = maxHealth;
-            _isDead = false;
-        }
-
-        public bool IsDead() => _isDead;
-
+        
+        
         // Метод для захвата состояния существа для сохранения
-        public object CaptureState() // TODO not used code
-        {
-            return currentHealth;
-        }
 
-        // Примечание: в настоящее время значение здоровья при загрузке новой сцены перезаписывается этим методом
-        // из-за порядка выполнения сценариев. Измените start на awake, чтобы исправить проблему
-        public void RestoreState(object state) // TODO not used code
-        {
-            currentHealth =
-                (float)state; // Восстанавливаем текущее здоровье из сохраненного состояния // TODO expensive unboxing
-            if (currentHealth <= 0) // Если здоровье меньше или равно нулю, вызываем метод смерти
-            {
-                Die();
-            }
-        }
+        
 
-        public float GetCurrentHealth() => currentHealth;
+        // public float GetCurrentHealth() => currentHealth;
 
         private void Dodge()
         {
@@ -147,25 +120,15 @@ namespace Healths
         
         protected override void HandlePostDeath()
         {
+            Debug.Log("Player Death");
             _uiManager.DeathUI.ShowDeathScreen();
+            Debug.Log("Показан экран смерти");
 
             // можно здесь отключать управление, если надо:
             // GetComponent<NavMeshAgent>().enabled = false;
             // GetComponent<Collider>().enabled = false;
             // this.enabled = false;
         }
-
-        private void RemoveProjectiles()
-        {
-            Projectile[]
-                projectiles =
-                    GetComponentsInChildren<Projectile>(); // Получаем все снаряды, находящиеся в дочерних объектах // TODO can be cached
-
-            foreach (Projectile projectile in projectiles) // Перебираем все снаряды
-            {
-                Destroy(projectile.gameObject); // Уничтожаем снаряд
-                Debug.Log("hello"); // Выводим сообщение в консоль
-            }
-        }
+        
     }
 }

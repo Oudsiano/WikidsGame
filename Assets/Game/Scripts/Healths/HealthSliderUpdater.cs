@@ -36,8 +36,8 @@ namespace Healths
         {
             if (_health != null && healthSlider != null)
             {
-                healthSlider.value = _health.currentHealth / _health.maxHealth;
-                data.PlayerData.health = (int)_health.currentHealth;
+                healthSlider.value = _health.GetCurrentHealth() / _health.MaxHealth;
+                data.PlayerData.health = (int)_health.GetCurrentHealth();
             }
         }
     }

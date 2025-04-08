@@ -65,7 +65,7 @@ namespace AINavigation
             
             _player = player;
             _fighter.Construct(igame, _player);
-            _health.Construct(playerController, fastTestsManager,questManager, coinManager, bottleManager,uiManager);
+            _health.Construct(playerController, fastTestsManager,questManager, coinManager, bottleManager);
             
             _guardLocation = transform.position;
             _guardRotation = transform.rotation;
@@ -150,7 +150,7 @@ namespace AINavigation
             }
 
             if (_player.PlayerController.GetPlayerInvisibility() == false &&
-                DistanceToPlayer() < 40 && _player.PlayerController.GetHealth().currentHealth != 0 ) // TODO magic number
+                DistanceToPlayer() < 40 && _player.PlayerController.GetHealth().GetCurrentHealth() != 0 ) // TODO magic number
             {
                 InteractWithCombat();
             }

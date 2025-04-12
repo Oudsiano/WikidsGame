@@ -41,7 +41,7 @@ namespace AINavigation
         private Vector3 _guardLocation;
         private Quaternion _guardRotation;
 
-        private Fighter _fighter;
+        private EnemyFighter _fighter;
         private Mover _mover;
         private EnemyHealth _health;
         private MainPlayer _player;
@@ -58,13 +58,13 @@ namespace AINavigation
         public void Construct(PlayerController playerController, MainPlayer player, IGame igame, FastTestsManager fastTestsManager,
         QuestManager questManager, CoinManager coinManager, BottleManager bottleManager, UIManager uiManager)
         {
-            _fighter = GetComponent<Fighter>();
+            _fighter = GetComponent<EnemyFighter>();
             _mover = GetComponent<Mover>();
             _mover.Construct();
             _health = GetComponent<EnemyHealth>();
             
             _player = player;
-            _fighter.Construct(igame, _player);
+            _fighter.Construct(igame);
             _health.Construct(playerController, fastTestsManager,questManager, coinManager, bottleManager);
             
             _guardLocation = transform.position;

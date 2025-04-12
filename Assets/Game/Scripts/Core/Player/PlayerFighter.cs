@@ -13,49 +13,24 @@ using UnityEngine.Serialization;
 namespace Combat
 {
 [RequireComponent(typeof(Mover))]
-public class PlayerFighter : MonoBehaviour, IAction
+public class PlayerFighter : Fighter
 {
-  private IGame _igame;
+    [FormerlySerializedAs("fireballWeapon")] [SerializeField]
+    private Weapon _fireballWeapon = null;
 
-        [FormerlySerializedAs("rightHandPosition")] [Header("Fighter Stats")] [Header("Weapon")] [SerializeField]
-        private Transform _rightHandPosition = null;
-
-        [FormerlySerializedAs("leftHandPosition")] [SerializeField]
-        private Transform _leftHandPosition = null;
-
-        [FormerlySerializedAs("defaultWeapon")] [SerializeField]
-        private Weapon _defaultWeapon = null;
-
-        [FormerlySerializedAs("equippedWeapon")] [SerializeField]
-        private Weapon _equippedWeapon = null;
-
-        [FormerlySerializedAs("fireballWeapon")] [SerializeField]
-        private Weapon _fireballWeapon = null;
-
-        [FormerlySerializedAs("bowWeapon")] [SerializeField]
-        private Weapon _bowWeapon = null;
-
-        [FormerlySerializedAs("target")] public Health Target;
-
-        private float _timer = 20;
-        private bool _isPlayer;
+        private IGame _igame;
+        private MainPlayer _player;
+        
         private WeaponNow _weapon;
         //private bool isFireballNow = false; // TODO not used code
-
-        private MainPlayer _player;
-        private Mover _mover;
-        private ActionScheduler _actionScheduler;
-        private Animator _animator;
+        
 
         public void Construct(IGame igame, MainPlayer player)
         {
             _igame = igame;
             _player = player;
             
-            _mover = GetComponent<Mover>(); 
-            _actionScheduler = GetComponent<ActionScheduler>();
-            _animator = GetComponent<Animator>();
-            
+            base.Construct();
         }
 
         public void SetHandPositions(Transform RightHand, Transform LeftHand)
@@ -63,20 +38,16 @@ public class PlayerFighter : MonoBehaviour, IAction
             _rightHandPosition = RightHand;
             _leftHandPosition = LeftHand;
             
+            EquipWeapon(_defaultWeapon);
         }
 
         public void EquipWeapon()
         {
-            _isPlayer = gameObject.GetComponent<MainPlayer>() ? true : false;
-
-            if (_isPlayer)
+            if (_igame.saveGame.EquipedWeapon != null)
             {
-                if (_igame.saveGame.EquipedWeapon != null)
-                {
-                    EquipWeapon(_igame.saveGame.EquipedWeapon);
-                }
+                EquipWeapon(_igame.saveGame.EquipedWeapon);
             }
-
+            
             if (_equippedWeapon == false)
             {
                 EquipWeapon(_defaultWeapon);
@@ -103,10 +74,6 @@ public class PlayerFighter : MonoBehaviour, IAction
                 return;
             }
 
-            //Archer // TODO not used code
-            //if (targetF?.defaultWeapon == bowWeapon && (bowWeapon.currentCharges == 0 || weaponNow != WeaponNow.bow))
-            //    return;
-
             if (InRange() == false)
             {
                 _mover.MoveTo(Target.transform.position);
@@ -120,20 +87,8 @@ public class PlayerFighter : MonoBehaviour, IAction
                 AttackBehavior();
             }
         }
-
-        private void OnMouseEnter()
-        {
-            if (_isPlayer == false && GetComponent<Health>().IsDead() == false)
-            {
-                _igame.CursorManager.SetCursorSword(); // TODO replace
-            }
-        }
-
-        private void OnMouseExit()
-        {
-            _igame.CursorManager.SetCursorDefault();
-        }
-
+        
+        
         public void SetFireball()
         {
             _weapon = WeaponNow.fire;
@@ -149,10 +104,6 @@ public class PlayerFighter : MonoBehaviour, IAction
 
         public  void SetCommonWeapon()
         {
-            // if (_animator == null)
-            // {
-            //     Awake(); // TODO CRITICAL CALL BACK AWAKE??
-            // }
 
              _weapon = WeaponNow.bow;
             
@@ -165,10 +116,6 @@ public class PlayerFighter : MonoBehaviour, IAction
 
         public void SetBow()
         {
-            // if (_animator == null)
-            // {
-            //     Awake(); // TODO CRITICAL CALL BACK AWAKE??
-            // }
 
             _weapon = WeaponNow.bow;
 
@@ -203,13 +150,10 @@ public class PlayerFighter : MonoBehaviour, IAction
                 _equippedWeapon = weapon;
                 SetCommonWeapon();
             }
-
-            if (_isPlayer)
+            
+            if (_igame != null)
             {
-                if (_igame != null)
-                {
-                    _igame.saveGame.EquipedWeapon = weapon;
-                }
+                _igame.saveGame.EquipedWeapon = weapon;
             }
         }
 
@@ -248,15 +192,41 @@ public class PlayerFighter : MonoBehaviour, IAction
             _equippedWeapon.DestroyWeaponOnPlayer(_rightHandPosition, _leftHandPosition, _animator);
             EquipWeapon(_defaultWeapon);
         }
+        
+        private float GetRangeCurrentWeapon()
+        {
+            switch (_weapon)
+            {
+                case WeaponNow.common:
+                    return _equippedWeapon.GetWeaponRange();
 
-        public void Hit()
+                case WeaponNow.fire:
+                    return _fireballWeapon.GetWeaponRange();
+
+                case WeaponNow.bow:
+                    return _bowWeapon.GetWeaponRange();
+
+                default:
+                    return _equippedWeapon.GetWeaponRange();
+            }
+        }
+
+        private bool InRange()
+        {
+            var distance =
+                Mathf.Abs(Vector3.Distance(transform.position, Target.transform.position)); // TODO Vector3 Extensions
+
+            return distance < GetRangeCurrentWeapon();
+        }
+        
+        public override void Hit()
         {
             if (Target == false)
             {
                 return; // Если цели нет, выйти
             }
 
-            if (_isPlayer && _weapon != WeaponNow.bow)
+            if (_weapon != WeaponNow.bow)
             {
                 if (_defaultWeapon == _bowWeapon)
                 {
@@ -266,8 +236,7 @@ public class PlayerFighter : MonoBehaviour, IAction
 
             AudioManager.Instance.PlaySound("Attack"); // TODO can be cached
 
-            if (IsBehindTarget() && Target.GetComponent<MainPlayer>() == false &&
-                Target.GetComponent<Boss>() == false) // Проверка, если атака сзади и цель не игрок и не босс
+            if (IsBehindTarget() && Target.GetComponent<Boss>() == false) // Проверка, если атака сзади и цель  не босс
             {
                 Target.AttackFromBehind(false);
             }
@@ -302,40 +271,8 @@ public class PlayerFighter : MonoBehaviour, IAction
             }
         }
 
-        
-        private float GetRangeCurrentWeapon()
+        protected override void AttackBehavior()
         {
-            switch (_weapon)
-            {
-                case WeaponNow.common:
-                    return _equippedWeapon.GetWeaponRange();
-
-                case WeaponNow.fire:
-                    return _fireballWeapon.GetWeaponRange();
-
-                case WeaponNow.bow:
-                    return _bowWeapon.GetWeaponRange();
-
-                default:
-                    return _equippedWeapon.GetWeaponRange();
-            }
-        }
-
-        private bool InRange()
-        {
-            var distance =
-                Mathf.Abs(Vector3.Distance(transform.position, Target.transform.position)); // TODO Vector3 Extensions
-
-            return distance < GetRangeCurrentWeapon();
-        }
-
-        private void AttackBehavior()
-        {
-            if (_isPlayer)
-            {
-                _isPlayer = true;
-            }
-
             if (Target.IsDead())
             {
                 Cancel();
@@ -343,7 +280,7 @@ public class PlayerFighter : MonoBehaviour, IAction
             }
             else if (_timer > _equippedWeapon.GetTimeBetweenAttacks())
             {
-                if (_isPlayer && _weapon == WeaponNow.fire)
+                if (_weapon == WeaponNow.fire)
                 {
                     if (_igame.dataPlayer.PlayerData.chargeEnergy > 0)
                     {
@@ -359,7 +296,7 @@ public class PlayerFighter : MonoBehaviour, IAction
                     }
                 }
 
-                if (_isPlayer && _weapon == WeaponNow.bow)
+                if (_weapon == WeaponNow.bow)
                 {
                     if (_bowWeapon._currentCharges > 0)
                     {
@@ -374,25 +311,20 @@ public class PlayerFighter : MonoBehaviour, IAction
                     }
                 }
 
-                if (_isPlayer && _weapon != WeaponNow.bow)
+                if ( _weapon != WeaponNow.bow)
                 {
                     if (_defaultWeapon == _bowWeapon)
                     {
                         return;
                     }
                 }
-
-                if (_isPlayer)
-                {
-                    _isPlayer = true;
-                }
-
+                
                 _animator.ResetTrigger("stopAttack"); // TODO can be cached
                 _animator.SetTrigger("attack"); // TODO can be cached
 
                 if (_equippedWeapon.IsRanged())
                 {
-                    _equippedWeapon.SpawnProjectile(Target.transform, _rightHandPosition, _leftHandPosition, _isPlayer);
+                    _equippedWeapon.SpawnProjectile(Target.transform, _rightHandPosition, _leftHandPosition, true);
                 }
 
                 _timer = 0;
@@ -403,14 +335,14 @@ public class PlayerFighter : MonoBehaviour, IAction
         {
             _animator.ResetTrigger("stopAttack"); // TODO can be cached
             _animator.SetTrigger("attack"); // TODO can be cached 
-            _fireballWeapon.SpawnProjectile(Target.transform, _rightHandPosition, _leftHandPosition, _isPlayer);
+            _fireballWeapon.SpawnProjectile(Target.transform, _rightHandPosition, _leftHandPosition, true);
         }
 
         private void ShootBow()
         {
             _animator.ResetTrigger("stopAttack"); // TODO can be cached
             _animator.SetTrigger("attack"); // TODO can be cached
-            _bowWeapon.SpawnProjectile(Target.transform, _rightHandPosition, _leftHandPosition, _isPlayer);
+            _bowWeapon.SpawnProjectile(Target.transform, _rightHandPosition, _leftHandPosition, true);
         }
 
         private bool IsBehindTarget()
@@ -425,16 +357,6 @@ public class PlayerFighter : MonoBehaviour, IAction
 
             return angleBetween > 120f; // Угол, определяющий, что атака со спины (например, > 135 градусов)
             // TODO magic number
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-
-            if (_equippedWeapon)
-            {
-                Gizmos.DrawWireSphere(transform.position, _equippedWeapon.GetWeaponRange());
-            }
         }
     }
 }

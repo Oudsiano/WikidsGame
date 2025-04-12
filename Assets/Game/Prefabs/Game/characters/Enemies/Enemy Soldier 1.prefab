@@ -248,10 +248,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7503963754105802358, guid: 37bc44cce0831404eb1918df3847c8d7,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5398448963245149938}
-    - targetCorrespondingSourceObject: {fileID: 7503963754105802358, guid: 37bc44cce0831404eb1918df3847c8d7,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 6932246844250427147}
     - targetCorrespondingSourceObject: {fileID: 7503963754105802358, guid: 37bc44cce0831404eb1918df3847c8d7,
         type: 3}
@@ -265,6 +261,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 557725879589349697}
+    - targetCorrespondingSourceObject: {fileID: 7503963754105802358, guid: 37bc44cce0831404eb1918df3847c8d7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5432250780776865211}
   m_SourcePrefab: {fileID: 100100000, guid: 37bc44cce0831404eb1918df3847c8d7, type: 3}
 --- !u!4 &5477122909361462483 stripped
 Transform:
@@ -299,25 +299,6 @@ MonoBehaviour:
   _currentDwellTime: 0
   _timeSinceLastSawPlayer: Infinity
   _timeSinceLastHit: Infinity
---- !u!114 &5398448963245149938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6435558949000753468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1cafa4ed48613d4fad57526a90efa28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rightHandPosition: {fileID: 2973571062712225512}
-  _leftHandPosition: {fileID: 2973571062712168064}
-  _defaultWeapon: {fileID: 11400000, guid: bf30e9c81cb2d2049a83355b9df0c4ab, type: 2}
-  _equippedWeapon: {fileID: 0}
-  _fireballWeapon: {fileID: 0}
-  _bowWeapon: {fileID: 0}
-  Target: {fileID: 0}
 --- !u!114 &6932246844250427147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +339,6 @@ MonoBehaviour:
   RedHalfCircle: {fileID: 0}
   healthBar: {fileID: 6347889442636374521}
   maxHealth: 100
-  currentHealth: 0
 --- !u!114 &557725879589349697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,6 +351,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2dc71be30200c44ab72e4764b3fa8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+--- !u!114 &5432250780776865211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435558949000753468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d03ea08d53daf9945ab026abc9dc083b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rightHandPosition: {fileID: 2973571062712225512}
+  _leftHandPosition: {fileID: 2973571062712168064}
+  _defaultWeapon: {fileID: 11400000, guid: 7d1acee3f4a9442ae85a137747b506f9, type: 2}
+  _equippedWeapon: {fileID: 11400000, guid: 7d1acee3f4a9442ae85a137747b506f9, type: 2}
+  _bowWeapon: {fileID: 0}
   Target: {fileID: 0}
 --- !u!1001 &8411846185302984663
 PrefabInstance:

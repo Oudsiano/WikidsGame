@@ -213,7 +213,7 @@ namespace Infrastructure.Installers.EntryPoint
                 }
             }
             
-            _enemySpawner.Construct(_sceneContainer.Resolve<PlayerController>(), 
+            _enemySpawner.Construct(_sceneContainer.Resolve<MainPlayer>().PlayerController, 
                 _sceneContainer.Resolve<MainPlayer>(), 
                 _sceneContainer.Resolve<IGame>(), 
                 _sceneContainer.Resolve<FastTestsManager>(), 

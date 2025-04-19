@@ -43,19 +43,19 @@ public class EnemySpawner : MonoBehaviour
         _swordFabric.Init(playerController, player, igame, fastTestsManager, questManager, coinManager, bottleManager);
         _maceFabric.Init(playerController, player, igame, fastTestsManager, questManager, coinManager, bottleManager);
         
-        SpawnEnemies(_archerSpawnPoints, _archerFabric);
+        SpawnEnemies(1,_archerSpawnPoints, _archerFabric);
         
-        SpawnEnemies(_enemySoldierMace1SpawnPoints, _maceFabric);
-        SpawnEnemies(_enemySoldierMace2SpawnPoints, _maceFabric);
-        SpawnEnemies(_enemySoldierMace3SpawnPoints, _maceFabric);
+        SpawnEnemies(0,_enemySoldierMace1SpawnPoints, _maceFabric);
+        SpawnEnemies(1,_enemySoldierMace2SpawnPoints, _maceFabric);
+        SpawnEnemies(2,_enemySoldierMace3SpawnPoints, _maceFabric);
         
-        SpawnEnemies(_enemySoldierSword1SpawnPoints, _swordFabric);
-        SpawnEnemies(_enemySoldierSword2SpawnPoints, _swordFabric);
-        SpawnEnemies(_enemySoldierSword3SpawnPoints, _swordFabric);
+        SpawnEnemies(0,_enemySoldierSword1SpawnPoints, _swordFabric);
+        SpawnEnemies(1,_enemySoldierSword2SpawnPoints, _swordFabric);
+        SpawnEnemies(2,_enemySoldierSword3SpawnPoints, _swordFabric);
     }
 
 
-    public void SpawnEnemies<T, TSpawnPoint>(List<TSpawnPoint> enemies, EnemyFabric<T> _enemyFabric) where T : MonoBehaviour where TSpawnPoint :SpawnPoint
+    public void SpawnEnemies<T, TSpawnPoint>(int index,List<TSpawnPoint> enemies, EnemyFabric<T> _enemyFabric) where T : MonoBehaviour where TSpawnPoint :SpawnPoint
     {
         if (enemies.Count == 0)
         {
@@ -64,7 +64,7 @@ public class EnemySpawner : MonoBehaviour
 
         for (int i = 0; i < enemies.Count; i++)
         {
-            _enemyFabric.SpawnEnemy(i, enemies[i].transform);
+            _enemyFabric.SpawnEnemy(index, enemies[i].transform);
         }
     }
 }

@@ -48,6 +48,7 @@ public class EnemyFabric<T> : MonoBehaviour where T:MonoBehaviour
     private void CreateEnemy(MonoBehaviour enemy, Transform transform)
     {
         var createdEnemy = Instantiate(enemy, transform.position, transform.rotation);
+        createdEnemy.transform.SetParent(transform);
         AIController archerController = createdEnemy.GetComponent<AIController>();
         archerController.Construct(_playerController, _mainPlayer, _igame, _fastTestsManager, _questManager, _coinManager, _bottleManager);
     }

@@ -56,7 +56,7 @@ namespace AINavigation
         private float _maxOpacity = 0.2f;
 
         public void Construct(PlayerController playerController, MainPlayer player, IGame igame, FastTestsManager fastTestsManager,
-        QuestManager questManager, CoinManager coinManager, BottleManager bottleManager, UIManager uiManager)
+        QuestManager questManager, CoinManager coinManager, BottleManager bottleManager)
         {
             _fighter = GetComponent<EnemyFighter>();
             _mover = GetComponent<Mover>();

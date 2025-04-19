@@ -39,6 +39,7 @@ namespace Infrastructure.Installers.EntryPoint
         [SerializeField] private BossNPC[] _bosses;
         [SerializeField] private SavePoint[] _savePoints;
         [SerializeField] private Portal[] _portals;
+        [SerializeField] private EnemySpawner _enemySpawner;
 
         private DiContainer _sceneContainer;
 
@@ -174,7 +175,7 @@ namespace Infrastructure.Installers.EntryPoint
                         _sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<IGame>(),
                         _sceneContainer.Resolve<FastTestsManager>(),
                         _sceneContainer.Resolve<QuestManager>(), _sceneContainer.Resolve<CoinManager>(),
-                        _sceneContainer.Resolve<BottleManager>(), _sceneContainer.Resolve<UIManager>());
+                        _sceneContainer.Resolve<BottleManager>());
                 }
             }
 
@@ -211,6 +212,12 @@ namespace Infrastructure.Installers.EntryPoint
                         _sceneContainer.Resolve<LevelChangeObserver>());
                 }
             }
+            
+            _enemySpawner.Construct(_sceneContainer.Resolve<PlayerController>(), 
+                _sceneContainer.Resolve<MainPlayer>(), 
+                _sceneContainer.Resolve<IGame>(), 
+                _sceneContainer.Resolve<FastTestsManager>(), 
+                _sceneContainer.Resolve<QuestManager>(), _sceneContainer.Resolve<CoinManager>(), _sceneContainer.Resolve<BottleManager>());
         }
     }
 }

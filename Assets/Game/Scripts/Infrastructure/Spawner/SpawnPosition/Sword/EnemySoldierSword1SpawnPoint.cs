@@ -2,6 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySoldierMace3Spawner : MonoBehaviour
+public class EnemySoldierSword1SpawnPoint : SpawnPoint
 {
 }

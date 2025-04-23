@@ -14,9 +14,14 @@ namespace Core.NPC
         private readonly Color _lineColor = Color.red;
         
         [FormerlySerializedAs("Enemies")][SerializeField] private List<GameObject> _enemies;
+        [SerializeField] private int _maxEnemies;
+        [SerializeField] private List<SpawnPoint> associatedSpawnPoints;
+        
         
         private Vector3 _startPosition;
         private NPCInteractable _interactable;
+        
+        public List<SpawnPoint> AssociatedSpawnPoints => associatedSpawnPoints;
 
         public void Construct()
         {
@@ -62,6 +67,11 @@ namespace Core.NPC
                     _lines.Add(line);
                 }
             }
+        }
+        
+        public void SetEnemies(List<GameObject> enemies)
+        {
+            _enemies = enemies;
         }
 
         private void Update()

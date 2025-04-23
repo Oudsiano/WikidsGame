@@ -17,6 +17,7 @@ using SceneManagement;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Core.NPC;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -33,6 +34,10 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private List<EnemySoldierSword1SpawnPoint> _enemySoldierSword1SpawnPoints;
     [SerializeField] private List<EnemySoldierSword2SpawnPoint> _enemySoldierSword2SpawnPoints;
     [SerializeField] private List<EnemySoldierSword3SpawnPoint> _enemySoldierSword3SpawnPoints;
+    
+    [SerializeField] private List<BossNPC> _bossNPCs;
+    
+    private readonly Dictionary<SpawnPoint, GameObject> _spawnedEnemies = new Dictionary<SpawnPoint, GameObject>();
 
 
     public void Construct(PlayerController playerController, MainPlayer player, IGame igame,
@@ -52,6 +57,28 @@ public class EnemySpawner : MonoBehaviour
         SpawnEnemies(0,_enemySoldierSword1SpawnPoints, _swordFabric);
         SpawnEnemies(1,_enemySoldierSword2SpawnPoints, _swordFabric);
         SpawnEnemies(2,_enemySoldierSword3SpawnPoints, _swordFabric);
+
+        foreach (var bossNPC in _bossNPCs)
+        {
+            List<GameObject> enemies = new List<GameObject>();
+            
+            foreach (var spawnPoint in bossNPC.AssociatedSpawnPoints)
+            {
+                if (spawnPoint == null)
+                {
+                    Debug.LogWarning("Точка спавна равна null для BossNPC!");
+                    continue;
+                }
+
+                if (_spawnedEnemies.TryGetValue(spawnPoint, out GameObject enemy) && enemy != null)
+                {
+                    enemies.Add(enemy);
+                }
+            }
+            
+            bossNPC.SetEnemies(enemies);
+            bossNPC.Construct();
+        }
     }
 
 

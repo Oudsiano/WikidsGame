@@ -13,11 +13,12 @@ namespace Core.NPC
         private readonly List<LineRenderer> _lines = new();
         private readonly Color _lineColor = Color.red;
         
-        [FormerlySerializedAs("Enemies")][SerializeField] private List<GameObject> _enemies;
+        // [FormerlySerializedAs("Enemies")][SerializeField] private List<GameObject> _enemies;
         [SerializeField] private int _maxEnemies;
         [SerializeField] private List<SpawnPoint> associatedSpawnPoints;
         
         
+         private List<GameObject> _enemies;
         private Vector3 _startPosition;
         private NPCInteractable _interactable;
         

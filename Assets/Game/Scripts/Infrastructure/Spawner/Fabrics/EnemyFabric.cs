@@ -40,16 +40,18 @@ public class EnemyFabric<T> : MonoBehaviour where T:MonoBehaviour
     }
     
     
-    public void SpawnEnemy(int index,Transform transform)
+    public MonoBehaviour SpawnEnemy(int index,Transform transform)
     {
-        CreateEnemy(_enemies[index], transform);
+        return CreateEnemy(_enemies[index], transform);
     }
 
-    private void CreateEnemy(MonoBehaviour enemy, Transform transform)
+    private MonoBehaviour CreateEnemy(MonoBehaviour enemy, Transform transform)
     {
         var createdEnemy = Instantiate(enemy, transform.position, transform.rotation);
         createdEnemy.transform.SetParent(transform);
         AIController archerController = createdEnemy.GetComponent<AIController>();
         archerController.Construct(_playerController, _mainPlayer, _igame, _fastTestsManager, _questManager, _coinManager, _bottleManager);
+
+        return createdEnemy;
     }
 }

@@ -53,6 +53,8 @@ namespace Infrastructure.Installers.EntryPoint
 
         private void ConstructComponents()
         {
+            Debug.Log("Начало ConstructComponents");
+            
             var uiManager = _sceneContainer.Resolve<UIManager>();
             var container = uiManager.PointViewContainer;
             container.ClearButtons();
@@ -70,11 +72,15 @@ namespace Infrastructure.Installers.EntryPoint
                 uiManager.SetMapImage(_map.Image);
             }
 
+            Debug.Log("Map constructed");
+            
             if (_sceneComponent != null)
             {
                 _sceneComponent.Construct(_sceneContainer.Resolve<LevelChangeObserver>());
             }
 
+            Debug.Log("_sceneComponent constructed");
+            
             if (_conversationStarters.Length > 0)
             {
                 foreach (ConversationStarter starter in _conversationStarters)
@@ -83,6 +89,8 @@ namespace Infrastructure.Installers.EntryPoint
                         _sceneContainer.Resolve<GameAPI>());
                 }
             }
+            
+            Debug.Log("_conversationStarters constructed");
 
             if (_downloadTestData.Length > 0)
             {
@@ -91,6 +99,8 @@ namespace Infrastructure.Installers.EntryPoint
                     data.Construct(_sceneContainer.Resolve<GameAPI>());
                 }
             }
+            
+            Debug.Log("_downloadTestData constructed");
 
             if (_setStudySteps.Length > 0)
             {
@@ -99,6 +109,8 @@ namespace Infrastructure.Installers.EntryPoint
                     step.Construct(_sceneContainer.Resolve<UIManager>());
                 }
             }
+            
+            Debug.Log("_setStudySteps constructed");
 
             if (_npcInteractable.Length > 0)
             {
@@ -108,6 +120,8 @@ namespace Infrastructure.Installers.EntryPoint
                         _sceneContainer.Resolve<DataPlayer>(), _sceneContainer.Resolve<GameAPI>());
                 }
             }
+            
+            Debug.Log("_npcInteractable constructed");
 
             if (_answerHandlers.Length > 0)
             {
@@ -116,6 +130,8 @@ namespace Infrastructure.Installers.EntryPoint
                     answerHandler.Construct(_sceneContainer.Resolve<SaveGame>());
                 }
             }
+            
+            Debug.Log("_answerHandlers constructed");
 
             if (_arrowsForPlayer.Length > 0)
             {
@@ -125,6 +141,8 @@ namespace Infrastructure.Installers.EntryPoint
                         _sceneContainer.Resolve<MainPlayer>().PlayerController);
                 }
             }
+            
+            Debug.Log("_arrowsForPlayer constructed");
 
             if (_pickableEquip.Length > 0)
             {
@@ -134,6 +152,8 @@ namespace Infrastructure.Installers.EntryPoint
                         _sceneContainer.Resolve<WeaponArmorManager>());
                 }
             }
+            
+            Debug.Log("_pickableEquip constructed");
 
             if (_giveItems.Length > 0)
             {
@@ -142,6 +162,8 @@ namespace Infrastructure.Installers.EntryPoint
                     item.Construct(_sceneContainer.Resolve<UIManager>());
                 }
             }
+            
+            Debug.Log("_giveItems constructed");
 
             if (_checkItems.Length > 0)
             {
@@ -150,14 +172,16 @@ namespace Infrastructure.Installers.EntryPoint
                     item.Construct(_sceneContainer.Resolve<UIManager>());
                 }
             }
+            
+            Debug.Log("_checkItems constructed");
 
-            if (_bosses.Length > 0)
-            {
-                foreach (BossNPC boss in _bosses)
-                {
-                    boss.Construct();
-                }
-            }
+            // if (_bosses.Length > 0)
+            // {
+            //     foreach (BossNPC boss in _bosses)
+            //     {
+            //         boss.Construct();
+            //     }
+            // }
 
             if (_iconsForCamera.Length > 0)
             {
@@ -166,18 +190,23 @@ namespace Infrastructure.Installers.EntryPoint
                     icon.Construct(_sceneContainer.Resolve<UIManager>());
                 }
             }
+            
+            
+            Debug.Log("_iconsForCamera constructed");
 
-            if (_aiControllers.Length > 0)
-            {
-                foreach (AIController aiController in _aiControllers)
-                {
-                    aiController.Construct(_sceneContainer.Resolve<MainPlayer>().PlayerController,
-                        _sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<IGame>(),
-                        _sceneContainer.Resolve<FastTestsManager>(),
-                        _sceneContainer.Resolve<QuestManager>(), _sceneContainer.Resolve<CoinManager>(),
-                        _sceneContainer.Resolve<BottleManager>());
-                }
-            }
+            // if (_aiControllers.Length > 0)
+            // {
+            //     foreach (AIController aiController in _aiControllers)
+            //     {
+            //         aiController.Construct(_sceneContainer.Resolve<MainPlayer>().PlayerController,
+            //             _sceneContainer.Resolve<MainPlayer>(), _sceneContainer.Resolve<IGame>(),
+            //             _sceneContainer.Resolve<FastTestsManager>(),
+            //             _sceneContainer.Resolve<QuestManager>(), _sceneContainer.Resolve<CoinManager>(),
+            //             _sceneContainer.Resolve<BottleManager>());
+            //     }
+            // }
+            
+            Debug.Log("_aiControllers constructed");
 
             if (_npcForTestID.Length > 0)
             {
@@ -187,6 +216,8 @@ namespace Infrastructure.Installers.EntryPoint
                         _sceneContainer.Resolve<FastTestsManager>(), _sceneContainer.Resolve<SaveGame>());
                 }
             }
+            
+            Debug.Log("_npcForTestID constructed");
 
             if (_savePoints.Length > 0)
             {
@@ -199,6 +230,8 @@ namespace Infrastructure.Installers.EntryPoint
                         _sceneContainer.Resolve<GameAPI>());
                 }
             }
+            
+            Debug.Log("_savePoints constructed");
 
             if (_portals.Length > 0)
             {
@@ -213,11 +246,15 @@ namespace Infrastructure.Installers.EntryPoint
                 }
             }
             
+            Debug.Log("_portals constructed");
+            
             _enemySpawner.Construct(_sceneContainer.Resolve<MainPlayer>().PlayerController, 
                 _sceneContainer.Resolve<MainPlayer>(), 
                 _sceneContainer.Resolve<IGame>(), 
                 _sceneContainer.Resolve<FastTestsManager>(), 
                 _sceneContainer.Resolve<QuestManager>(), _sceneContainer.Resolve<CoinManager>(), _sceneContainer.Resolve<BottleManager>());
+            
+            Debug.Log("_enemySpawner constructed");
         }
     }
 }

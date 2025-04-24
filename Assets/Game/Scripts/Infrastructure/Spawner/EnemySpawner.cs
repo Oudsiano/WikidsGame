@@ -44,6 +44,7 @@ public class EnemySpawner : MonoBehaviour
         FastTestsManager fastTestsManager,
         QuestManager questManager, CoinManager coinManager, BottleManager bottleManager)
     {
+        Debug.Log("Enemy Spawner begin to construct!");
         _archerFabric.Init(playerController, player, igame, fastTestsManager, questManager, coinManager, bottleManager);
         _swordFabric.Init(playerController, player, igame, fastTestsManager, questManager, coinManager, bottleManager);
         _maceFabric.Init(playerController, player, igame, fastTestsManager, questManager, coinManager, bottleManager);
@@ -79,6 +80,8 @@ public class EnemySpawner : MonoBehaviour
             bossNPC.SetEnemies(enemies);
             bossNPC.Construct();
         }
+        
+        Debug.Log("EnemySpawner: Construct");;
     }
 
 
@@ -91,7 +94,9 @@ public class EnemySpawner : MonoBehaviour
 
         for (int i = 0; i < enemies.Count; i++)
         {
-            _enemyFabric.SpawnEnemy(index, enemies[i].transform);
+            MonoBehaviour createdEnemy =_enemyFabric.SpawnEnemy(index, enemies[i].transform);
+            _spawnedEnemies[(SpawnPoint)(object)enemies[i]] = createdEnemy.gameObject;
+            
         }
     }
 }

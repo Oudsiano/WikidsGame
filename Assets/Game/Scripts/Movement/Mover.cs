@@ -51,7 +51,7 @@ namespace Movement
         public abstract void MoveTo(Vector3 position);
 
 
-        protected void UpdateAnimator()
+        protected  virtual void UpdateAnimator()
         {
             if (_agent == false)
             {

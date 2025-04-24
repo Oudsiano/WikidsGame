@@ -20,15 +20,20 @@ public class PlayerMover : Mover
         
 
         public float StrafeDistance = 3f;
+        [SerializeField] private float moveSpeed = 20f;
         [SerializeField] private LineRenderer lineRenderer; // Для отображения траектории
-        [SerializeField] private float trajectoryPointDistance = 1.0f; // Минимальное расстояние между точками траектории
+        [SerializeField] private float trajectoryPointDistance = 0.5f; // Минимальное расстояние между точками траектории
         [SerializeField] private float heightOffset = 0.2f; // Смещение траектории по высоте
+        [SerializeField] private float maxStepHeight = 0.5f;
+        [SerializeField] private LayerMask obstacleLayer; // Слой для препятствий
         
         private string _playerId;
         private List<Vector3> trajectoryPoints = new List<Vector3>();
         private bool isDrawingTrajectory = false; // Флаг рисования траектории
         private Vector3 lastPoint; // Последняя добавленная точка
         private int currentWaypointIndex; // Индекс текущей точки пути
+        private bool isMoving = false;
+        private Vector3 lastPosition;
         
         public bool IsDrawingTrajectory => isDrawingTrajectory;
         
@@ -37,7 +42,8 @@ public class PlayerMover : Mover
             base.Construct();
             _camera = Camera.main;
             _socketManager =  socketManager;
-            
+             _agent.enabled = false;
+             
             if (lineRenderer == null)
             {
                 GameObject lineObject = new GameObject("TrajectoryLine");
@@ -114,6 +120,10 @@ public class PlayerMover : Mover
                 trajectoryPoints.Clear();
                 currentWaypointIndex = 0;
                 lineRenderer.positionCount = 0;
+                isMoving = false;
+                // _agent.isStopped = true;
+                // _agent.ResetPath();
+                
 
                 // Начинаем рисовать траекторию
                 isDrawingTrajectory = true;
@@ -160,34 +170,79 @@ public class PlayerMover : Mover
             Debug.Log("StopDrawingTrajectory");
         }
         
-        private void MoveAlongTrajectory()
+        
+        public void MoveAlongTrajectory()
         {
-            if (_agent == null || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
+            if (trajectoryPoints.Count == 0 || currentWaypointIndex >= trajectoryPoints.Count)
             {
+                Debug.Log("No trajectory points or reached end");
+                trajectoryPoints.Clear();
+                lineRenderer.positionCount = 0;
+                isMoving = false;
+                Target = null;
                 return;
             }
 
-            // Проверяем, достиг ли герой текущей точки пути
-            if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
+            Vector3 targetPosition = trajectoryPoints[currentWaypointIndex];
+
+            // Проверяем, есть ли препятствие между текущей позицией и целевой точкой
+            Vector3 direction = (targetPosition - transform.position).normalized;
+            float distance = Vector3.Distance(transform.position, targetPosition);
+            
+            if (Physics.Raycast(transform.position, direction, distance, obstacleLayer))
+            {
+                Debug.Log("Obstacle detected, stopping movement");
+                trajectoryPoints.Clear();
+                lineRenderer.positionCount = 0;
+                isMoving = false;
+                Target = null;
+                return;
+            }
+
+            // Корректируем высоту, чтобы персонаж мог подниматься по неровностям
+            Vector3 adjustedTargetPosition = targetPosition;
+            RaycastHit heightHit;
+            if (Physics.Raycast(targetPosition + Vector3.up * 1f, Vector3.down, out heightHit, maxStepHeight + 1f))
+            {
+                adjustedTargetPosition.y = heightHit.point.y;
+            }
+
+            float step = moveSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, adjustedTargetPosition, step);
+
+            // Поворачиваем персонажа в сторону движения
+            direction = (adjustedTargetPosition - transform.position).normalized;
+            if (direction != Vector3.zero)
+            {
+                Quaternion lookRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+            }
+            
+            if (Vector3.Distance(transform.position, adjustedTargetPosition) < 0.1f)
             {
                 currentWaypointIndex++;
-                if (currentWaypointIndex < trajectoryPoints.Count)
+                if (currentWaypointIndex >= trajectoryPoints.Count)
                 {
-                    // Переходим к следующей точке
-                    MoveTo(trajectoryPoints[currentWaypointIndex]);
+                    Debug.Log("Reached end of trajectory");
+                    trajectoryPoints.Clear();
+                    lineRenderer.positionCount = 0;
+                    isMoving = false;
+                    Target = null;
                 }
                 else
                 {
-                    // Достигли конца траектории
-                    _agent.isStopped = true;
-                    _agent.ResetPath();
-                    trajectoryPoints.Clear();
-                    lineRenderer.positionCount = 0;
-                    Target = null; // Очищаем цель
+                    Debug.Log($"Moving to waypoint {currentWaypointIndex}/{trajectoryPoints.Count}: {trajectoryPoints[currentWaypointIndex]}");
                 }
             }
         }
         
+        private void UpdateAnimator()
+        {
+            Vector3 velocity = (transform.position - lastPosition) / Time.deltaTime;
+            lastPosition = transform.position;
+            Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+            _animator.SetFloat(Constants.Animator.ForwardSpeed, localVelocity.z);
+        }
         private void Strafe(Vector3 direction)
         {
             Vector3 strafeDirection = Vector3.Cross(Vector3.up, direction).normalized;

@@ -360,7 +360,8 @@ namespace AINavigation
 
                             if (readyToGo)
                             {
-                                 _mover.SetupMove(hit.point);
+                                 // _mover.SetupMove(hit.point);
+                                 _mover.MoveAlongTrajectory();
                             }
 
                             break; // Выходим, найдя первый подходящий объект

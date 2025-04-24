@@ -327,7 +327,13 @@ namespace AINavigation
             int layerMask = ~LayerMask.GetMask("PLayer");
             bool hasHit = Physics.Raycast(ray, out RaycastHit hit, layerMask);*/
 
-            if (Input.GetMouseButton(0))
+            if (_mover.IsDrawingTrajectory)
+            {
+                Debug.Log("IsDrawingTrajectory");
+                return false; // Не перемещаем героя, пока рисуется траектория
+            }
+            
+            if (Input.GetMouseButtonDown(0))
                 if (EventSystem.current.IsPointerOverGameObject() == false)
                 {
                     Ray ray = GetMouseRay();
@@ -354,7 +360,7 @@ namespace AINavigation
 
                             if (readyToGo)
                             {
-                                _mover.SetupMove(hit.point);
+                                 _mover.SetupMove(hit.point);
                             }
 
                             break; // Выходим, найдя первый подходящий объект

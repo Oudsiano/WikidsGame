@@ -59,6 +59,9 @@ namespace Core.PickableItems
 
                 if (Physics.Raycast(ray, out hit))
                 {
+                    Debug.Log($"Raycast столкнулся с объектом: {hit.collider.gameObject.name} " +
+                              $"(Tag: {hit.collider.gameObject.tag})");
+                    
                     if (hit.collider.gameObject.TryGetComponent(out PickableCoin _)) // TODO can be cached 
                     {
                         _saveGame.Coins += _value;

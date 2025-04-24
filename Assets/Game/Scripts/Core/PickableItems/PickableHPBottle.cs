@@ -33,6 +33,9 @@ namespace Core.PickableItems
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
+                    Debug.Log($"Raycast столкнулся с объектом: {hit.collider.gameObject.name} " +
+                              $"(Tag: {hit.collider.gameObject.tag})");
+                    
                     if (hit.collider.gameObject.TryGetComponent(out PickableHPBottle _))
                     {
                         HandleClick();

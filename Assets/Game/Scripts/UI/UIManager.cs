@@ -32,9 +32,12 @@ namespace UI
 
         [FormerlySerializedAs("textCoin")] [Header("CoinUI")] [SerializeField]
         private TextMeshProUGUI _textCoin;
+        [SerializeField] private GameObject _statusCoin;
 
         [FormerlySerializedAs("energyCharger")] [SerializeField]
         private TextMeshProUGUI _energyCharger;
+
+        [SerializeField] private GameObject _statusEnergy;
 
         [Header("HelpUI")] [SerializeField] public HelpInFirstScene HelpInFirstScene; // TODO OC error
 
@@ -119,7 +122,9 @@ namespace UI
         
         [Header("Button Hide UI")]
         [SerializeField] private Button _buttonHideUI;
-        [SerializeField] private GameObject _UI;
+
+        [SerializeField] private GameObject _minimapBorder;
+
 
         private bool _isUIVisible = true;
         private Timer _timer;
@@ -351,14 +356,32 @@ namespace UI
         {
             if (_isUIVisible)
             {
-               _UI.SetActive(false);
                 _isUIVisible = false;
+                ChangeVisibility(_isUIVisible);
             }
             else
             {
-                _UI.SetActive(true);
                 _isUIVisible = true;
+                ChangeVisibility(_isUIVisible);
             }
+        }
+
+        private void ChangeVisibility(bool isVisible)
+        {
+            _weaponPanelUI.gameObject.SetActive(isVisible);
+            _buttonIncreaseCharges.gameObject.SetActive(isVisible);
+            // _testTableGenerator.gameObject.SetActive(isVisible);
+            _buttonMaxZoom.gameObject.SetActive(isVisible);
+            _buttonMinZoom.gameObject.SetActive(isVisible);
+            _btnOptions.gameObject.SetActive(isVisible);
+            ButtonShowMap.gameObject.SetActive(isVisible);
+            _btnQuestScr.gameObject.SetActive(isVisible);
+            _buttonBug.gameObject.SetActive(isVisible);
+            _btnQuestScr.gameObject.SetActive(isVisible);
+            _statusCoin.SetActive(isVisible);
+            _statusEnergy.SetActive(isVisible);
+            _buttonActivatePanel.gameObject.SetActive(isVisible);
+            _minimapBorder.SetActive(isVisible);
         }
 
         private void OnButtonIncreaseChargesClick()

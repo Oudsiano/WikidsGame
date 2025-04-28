@@ -22,9 +22,9 @@ public class PlayerMover : Mover
         public float StrafeDistance = 3f;
         [SerializeField] private float moveSpeed = 20f;
         [SerializeField] private LineRenderer lineRenderer; // Для отображения траектории
-        [SerializeField] private float trajectoryPointDistance = 0.5f; // Минимальное расстояние между точками траектории
-        [SerializeField] private float heightOffset = 0.2f; // Смещение траектории по высоте
-        [SerializeField] private float maxStepHeight = 0.5f;
+        [SerializeField] private float trajectoryPointDistance = 1.0f; // Минимальное расстояние между точками траектории
+        [SerializeField] private float heightOffset = 0.5f; // Смещение траектории по высоте
+        [SerializeField] private float maxStepHeight = 3.5f;
         [SerializeField] private LayerMask obstacleLayer; // Слой для препятствий
         
         private string _playerId;
@@ -42,7 +42,6 @@ public class PlayerMover : Mover
             base.Construct();
             _camera = Camera.main;
             _socketManager =  socketManager;
-             _agent.enabled = false;
              
             if (lineRenderer == null)
             {
@@ -103,6 +102,7 @@ public class PlayerMover : Mover
             // Движение по траектории
             if (trajectoryPoints.Count > 0 && currentWaypointIndex < trajectoryPoints.Count)
             {
+                Debug.Log("Я двигаюсь по траектории");
                 MoveAlongTrajectory();
             }
 
@@ -150,6 +150,18 @@ public class PlayerMover : Mover
             if (Physics.Raycast(ray, out hit))
             {
                 Vector3 currentPoint = hit.point + new Vector3(0, heightOffset, 0);
+                
+                NavMeshHit navMeshHit;
+                
+                if (NavMesh.SamplePosition(currentPoint, out navMeshHit, 1.0f, NavMesh.AllAreas))
+                {
+                    currentPoint = navMeshHit.position; // Корректируем точку на ближайшую позицию на NavMesh
+                }
+                else
+                {
+                    Debug.LogWarning($"Point {currentPoint} is not on NavMesh, skipping");
+                    return;
+                }
 
                 // Добавляем новую точку только если расстояние достаточно большое
                 if (Vector3.Distance(lastPoint, currentPoint) >= trajectoryPointDistance)
@@ -168,11 +180,20 @@ public class PlayerMover : Mover
         {
             isDrawingTrajectory = false;
             Debug.Log("StopDrawingTrajectory");
+
+            OnDrawGizmos();
         }
         
         
         public void MoveAlongTrajectory()
         {
+            Debug.Log("MoveAlongTrajectory");
+            
+            if (isDrawingTrajectory)
+            {
+                return;
+            }
+            
             if (trajectoryPoints.Count == 0 || currentWaypointIndex >= trajectoryPoints.Count)
             {
                 Debug.Log("No trajectory points or reached end");
@@ -182,9 +203,9 @@ public class PlayerMover : Mover
                 Target = null;
                 return;
             }
-
+            
             Vector3 targetPosition = trajectoryPoints[currentWaypointIndex];
-
+            
             // Проверяем, есть ли препятствие между текущей позицией и целевой точкой
             Vector3 direction = (targetPosition - transform.position).normalized;
             float distance = Vector3.Distance(transform.position, targetPosition);
@@ -198,7 +219,7 @@ public class PlayerMover : Mover
                 Target = null;
                 return;
             }
-
+            
             // Корректируем высоту, чтобы персонаж мог подниматься по неровностям
             Vector3 adjustedTargetPosition = targetPosition;
             RaycastHit heightHit;
@@ -206,10 +227,10 @@ public class PlayerMover : Mover
             {
                 adjustedTargetPosition.y = heightHit.point.y;
             }
-
+            
             float step = moveSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, adjustedTargetPosition, step);
-
+            
             // Поворачиваем персонажа в сторону движения
             direction = (adjustedTargetPosition - transform.position).normalized;
             if (direction != Vector3.zero)
@@ -234,6 +255,49 @@ public class PlayerMover : Mover
                     Debug.Log($"Moving to waypoint {currentWaypointIndex}/{trajectoryPoints.Count}: {trajectoryPoints[currentWaypointIndex]}");
                 }
             }
+            
+            AudioManager.Instance.PlaySound("Walk");
+            
+            // if (isDrawingTrajectory)
+            // {
+            //     return;
+            // }
+            //
+            // Debug.Log("MoveAlongTrajectory");
+            //
+            //
+            // if(!_agent.pathPending && _agent.remainingDistance < 0.4f)
+            // {
+            //     currentWaypointIndex++;
+            //
+            //     Debug.Log("currentWaypointIndex=" + currentWaypointIndex);
+            //
+            //     if (currentWaypointIndex < trajectoryPoints.Count)
+            //     {
+            //         _agent.SetDestination(trajectoryPoints[currentWaypointIndex]);
+            //         Debug.Log("Player Moves to: " + trajectoryPoints[currentWaypointIndex]);
+            //     }
+            //     else
+            //     {
+            //         Debug.Log("Reached end of trajectory, clearing LineRenderer");
+            //         trajectoryPoints.Clear();
+            //         lineRenderer.positionCount = 0; // Очищаем LineRenderer, чтобы линия исчезла
+            //         isMoving = false;
+            //         _agent.isStopped = true;
+            //         _agent.ResetPath();
+            //     }
+            // }
+            // else
+            // {
+            //     Debug.Log($"Agent position: {transform.position}, Destination: {_agent.destination}, Velocity: {_agent.velocity}");
+            //
+            //     // Если агент остановился, пытаемся перезапустить движение
+            //     if (_agent.isStopped && currentWaypointIndex < trajectoryPoints.Count)
+            //     {
+            //         Debug.LogWarning("Agent is stopped, restarting movement");
+            //         MoveTo(trajectoryPoints[currentWaypointIndex]);
+            //     }
+            // }
         }
         
         private void UpdateAnimator()
@@ -243,38 +307,39 @@ public class PlayerMover : Mover
             Vector3 localVelocity = transform.InverseTransformDirection(velocity);
             _animator.SetFloat(Constants.Animator.ForwardSpeed, localVelocity.z);
         }
+        
         private void Strafe(Vector3 direction)
         {
             Vector3 strafeDirection = Vector3.Cross(Vector3.up, direction).normalized;
             Vector3 targetPosition =
                 transform.position +
                 strafeDirection * StrafeDistance;
-
+        
             MoveTo(targetPosition);
         }
         
         public override void MoveTo(Vector3 position)
         {
-            if (isDrawingTrajectory)
-            {
-                Debug.Log("Trajectory is drawing, can't move");
-                return;
-            }
-            
-            if (_agent == null || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
-            {
-                return;
-            }
-                NavMeshPath path = new NavMeshPath();
-                _agent.CalculatePath(position, path);
-            
-                if (path.status == NavMeshPathStatus.PathComplete)
-                {
-                    _agent.SetPath(path);
-                     SendPlayerPosition(position);
-                }
-                
-            _agent.isStopped = false;
+            // if (isDrawingTrajectory)
+            // {
+            //     Debug.Log("Trajectory is drawing, can't move");
+            //     return;
+            // }
+            //
+            // if (_agent == null || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
+            // {
+            //     return;
+            // }
+            //     NavMeshPath path = new NavMeshPath();
+            //     _agent.CalculatePath(position, path);
+            //
+            //     if (path.status == NavMeshPathStatus.PathComplete)
+            //     {
+            //         _agent.SetPath(path);
+            //          SendPlayerPosition(position);
+            //     }
+            //     
+            // // _agent.isStopped = false;
         }
         
         private void CreateEffectAtMousePosition() // TODO Rename
@@ -327,6 +392,22 @@ public class PlayerMover : Mover
             Debug.Log("_playerId="+ _playerId);
             _playerId = id;
             // SendPlayerPosition();
+        }
+        
+        private void OnDrawGizmos()
+        {
+            foreach (Vector3 point in trajectoryPoints)
+            {
+                if (trajectoryPoints.Count > 0 && currentWaypointIndex < trajectoryPoints.Count)
+                {
+                    // Рисуем красную сферу в текущей точке
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawWireSphere(point, 0.3f); // Радиус сферы 0.3
+                }
+            }
+            
+            // Gizmos.color = Color.black;
+            // Gizmos.DrawWireSphere(trajectoryPoints[currentWaypointIndex], 0.3f); // Радиус сферы 0.3
         }
     }
 }

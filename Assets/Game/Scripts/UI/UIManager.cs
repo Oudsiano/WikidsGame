@@ -116,7 +116,12 @@ namespace UI
 
         [Header("WeaponPanel")] [SerializeField]
         private WeaponPanelUI _weaponPanelUI;
+        
+        [Header("Button Hide UI")]
+        [SerializeField] private Button _buttonHideUI;
+        [SerializeField] private GameObject _UI;
 
+        private bool _isUIVisible = true;
         private Timer _timer;
         private IGame _igame;
         private FollowCamera _followCamera;
@@ -208,6 +213,8 @@ namespace UI
 
             _buttonActivatePanel.onClick.AddListener(OnClickActivatePanel);
             _buttonClosePanel.onClick.AddListener(OnClickClosePanel);
+            
+            _buttonHideUI.onClick.AddListener(ChangeUIVisibility);
 
             _buttonIncreaseCharges.onClick.AddListener(OnButtonIncreaseChargesClick);
             SceneManager.sceneLoaded += SceneLoader_LevelChanged;
@@ -337,6 +344,20 @@ namespace UI
                     _buttonMaxZoom.gameObject.SetActive(true);
                     _buttonMinZoom.gameObject.SetActive(true);
                 }
+            }
+        }
+
+        private void ChangeUIVisibility()
+        {
+            if (_isUIVisible)
+            {
+               _UI.SetActive(false);
+                _isUIVisible = false;
+            }
+            else
+            {
+                _UI.SetActive(true);
+                _isUIVisible = true;
             }
         }
 

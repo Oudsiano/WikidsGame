@@ -14,6 +14,7 @@ public class PlayerMover : Mover
 {
         private Camera _camera;
         private SocketManager _socketManager;
+        private bool _isSoundPlaying;
 
         [FormerlySerializedAs("clickEffect")] [SerializeField]
         public ClickEffect ClickEffect; // Ссылка на скрипт для создания эффекта при нажатии на точку
@@ -25,7 +26,7 @@ public class PlayerMover : Mover
         [SerializeField] private float trajectoryPointDistance = 1.0f; // Минимальное расстояние между точками траектории
         [SerializeField] private float heightOffset = 0.5f; // Смещение траектории по высоте
         [SerializeField] private float maxStepHeight = 3.5f;
-        [SerializeField] private LayerMask obstacleLayer; // Слой для препятствий
+        [SerializeField] private LayerMask groundLayer; // Слой для препятствий
         
         private string _playerId;
         private List<Vector3> trajectoryPoints = new List<Vector3>();
@@ -114,7 +115,7 @@ public class PlayerMover : Mover
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit,Mathf.Infinity, groundLayer))
             {
                 // Очищаем предыдущую траекторию
                 trajectoryPoints.Clear();
@@ -135,6 +136,21 @@ public class PlayerMover : Mover
                 lineRenderer.positionCount = 1;
                 lineRenderer.SetPosition(0, startPoint);
             }
+            else
+            {
+                // Если не попал в слой Ground, делаем Raycast без фильтра, чтобы узнать, во что попал
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    int hitLayer = hit.collider.gameObject.layer;
+                    string layerName = LayerMask.LayerToName(hitLayer);
+                    string objectName = hit.collider.gameObject.name;
+                    Debug.LogWarning($"Raycast did not hit the ground layer! Instead hit: Object '{objectName}' on layer '{layerName}' (Layer Index: {hitLayer}) at position {hit.point}");
+                }
+                else
+                {
+                    Debug.LogWarning("Raycast did not hit any object!");
+                }
+            }
         }
 
         private void ContinueDrawingTrajectory()
@@ -147,21 +163,22 @@ public class PlayerMover : Mover
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit,Mathf.Infinity, groundLayer))
             {
                 Vector3 currentPoint = hit.point + new Vector3(0, heightOffset, 0);
                 
-                NavMeshHit navMeshHit;
                 
-                if (NavMesh.SamplePosition(currentPoint, out navMeshHit, 1.0f, NavMesh.AllAreas))
-                {
-                    currentPoint = navMeshHit.position; // Корректируем точку на ближайшую позицию на NavMesh
-                }
-                else
-                {
-                    Debug.LogWarning($"Point {currentPoint} is not on NavMesh, skipping");
-                    return;
-                }
+                // NavMeshHit navMeshHit;
+                //
+                // if (NavMesh.SamplePosition(currentPoint, out navMeshHit, 1.0f, NavMesh.AllAreas))
+                // {
+                //     currentPoint = navMeshHit.position; // Корректируем точку на ближайшую позицию на NavMesh
+                // }
+                // else
+                // {
+                //     Debug.LogWarning($"Point {currentPoint} is not on NavMesh, skipping");
+                //     return;
+                // }
 
                 // Добавляем новую точку только если расстояние достаточно большое
                 if (Vector3.Distance(lastPoint, currentPoint) >= trajectoryPointDistance)
@@ -172,6 +189,21 @@ public class PlayerMover : Mover
                     // Обновляем LineRenderer
                     lineRenderer.positionCount = trajectoryPoints.Count;
                     lineRenderer.SetPosition(trajectoryPoints.Count - 1, currentPoint);
+                }
+            }
+            else
+            {
+                // Если не попал в слой Ground, делаем Raycast без фильтра, чтобы узнать, во что попал
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    int hitLayer = hit.collider.gameObject.layer;
+                    string layerName = LayerMask.LayerToName(hitLayer);
+                    string objectName = hit.collider.gameObject.name;
+                    Debug.LogWarning($"Raycast did not hit the ground layer! Instead hit: Object '{objectName}' on layer '{layerName}' (Layer Index: {hitLayer}) at position {hit.point}");
+                }
+                else
+                {
+                    Debug.LogWarning("Raycast did not hit any object!");
                 }
             }
         }
@@ -201,6 +233,7 @@ public class PlayerMover : Mover
                 lineRenderer.positionCount = 0;
                 isMoving = false;
                 Target = null;
+                _isSoundPlaying = false;
                 return;
             }
             
@@ -210,15 +243,16 @@ public class PlayerMover : Mover
             Vector3 direction = (targetPosition - transform.position).normalized;
             float distance = Vector3.Distance(transform.position, targetPosition);
             
-            if (Physics.Raycast(transform.position, direction, distance, obstacleLayer))
-            {
-                Debug.Log("Obstacle detected, stopping movement");
-                trajectoryPoints.Clear();
-                lineRenderer.positionCount = 0;
-                isMoving = false;
-                Target = null;
-                return;
-            }
+            // if (Physics.Raycast(transform.position, direction, distance, obstacleLayer))
+            // {
+            //     Debug.Log("Obstacle detected, stopping movement");
+            //     trajectoryPoints.Clear();
+            //     lineRenderer.positionCount = 0;
+            //     isMoving = false;
+            //     Target = null;
+            //     _isSoundPlaying = false;
+            //     return;
+            // }
             
             // Корректируем высоту, чтобы персонаж мог подниматься по неровностям
             Vector3 adjustedTargetPosition = targetPosition;
@@ -255,50 +289,12 @@ public class PlayerMover : Mover
                     Debug.Log($"Moving to waypoint {currentWaypointIndex}/{trajectoryPoints.Count}: {trajectoryPoints[currentWaypointIndex]}");
                 }
             }
-            
-            AudioManager.Instance.PlaySound("Walk");
-            // SoundManager.PlaySound("Walk");
-            
-            // if (isDrawingTrajectory)
-            // {
-            //     return;
-            // }
-            //
-            // Debug.Log("MoveAlongTrajectory");
-            //
-            //
-            // if(!_agent.pathPending && _agent.remainingDistance < 0.4f)
-            // {
-            //     currentWaypointIndex++;
-            //
-            //     Debug.Log("currentWaypointIndex=" + currentWaypointIndex);
-            //
-            //     if (currentWaypointIndex < trajectoryPoints.Count)
-            //     {
-            //         _agent.SetDestination(trajectoryPoints[currentWaypointIndex]);
-            //         Debug.Log("Player Moves to: " + trajectoryPoints[currentWaypointIndex]);
-            //     }
-            //     else
-            //     {
-            //         Debug.Log("Reached end of trajectory, clearing LineRenderer");
-            //         trajectoryPoints.Clear();
-            //         lineRenderer.positionCount = 0; // Очищаем LineRenderer, чтобы линия исчезла
-            //         isMoving = false;
-            //         _agent.isStopped = true;
-            //         _agent.ResetPath();
-            //     }
-            // }
-            // else
-            // {
-            //     Debug.Log($"Agent position: {transform.position}, Destination: {_agent.destination}, Velocity: {_agent.velocity}");
-            //
-            //     // Если агент остановился, пытаемся перезапустить движение
-            //     if (_agent.isStopped && currentWaypointIndex < trajectoryPoints.Count)
-            //     {
-            //         Debug.LogWarning("Agent is stopped, restarting movement");
-            //         MoveTo(trajectoryPoints[currentWaypointIndex]);
-            //     }
-            // }
+
+            if (!_isSoundPlaying)
+            {
+                AudioManager.Instance.PlaySound("Walk");
+                _isSoundPlaying = true;
+            }
         }
         
         private void UpdateAnimator()

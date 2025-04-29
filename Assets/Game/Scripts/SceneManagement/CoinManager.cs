@@ -33,6 +33,7 @@ namespace SceneManagement
                 .GetComponent<PickableCoin>()
                 .Construct(count, _cursorManager, _saveGame);
             AudioManager.Instance.PlaySound("CoinPickup"); // TODO Instance AudioManager
+            // SoundManager.PlaySound("CoinPickup");
         }
     }
 }

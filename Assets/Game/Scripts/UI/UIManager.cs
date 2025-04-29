@@ -370,7 +370,6 @@ namespace UI
         {
             _weaponPanelUI.gameObject.SetActive(isVisible);
             _buttonIncreaseCharges.gameObject.SetActive(isVisible);
-            // _testTableGenerator.gameObject.SetActive(isVisible);
             _buttonMaxZoom.gameObject.SetActive(isVisible);
             _buttonMinZoom.gameObject.SetActive(isVisible);
             _btnOptions.gameObject.SetActive(isVisible);
@@ -481,24 +480,24 @@ namespace UI
 
         private void OnChangeMusicVolume(float arg0)
         {
-            SoundManager.SetMusicVolume(arg0);
+            // SoundManager.SetMusicVolume(arg0);
             AudioManager.Instance.MusicVol = arg0; // TODO change instance AudioManager
         }
 
         private void OnChangeSoundVolume(float arg0)
         {
-            AudioManager.Instance.SoundVol = arg0; // TODO change instance AudioManager
+             AudioManager.Instance.SoundVol = arg0; // TODO change instance AudioManager
         }
 
         private void OnChangeMusicState(bool arg0)
         {
-            SoundManager.SetMusicMuted(arg0 == false); // TODO change instance AudioManager
             AudioManager.Instance.MusicON = arg0; // TODO change instance AudioManager
         }
 
         private void OnChangeSoundState(bool arg0)
         {
-            AudioManager.Instance.SoundON = arg0; // TODO change instance AudioManager
+             AudioManager.Instance.SoundON = arg0; // TODO change instance AudioManager
+            Debug.Log("[UIManager](AudioManager) change sound state " + AudioManager.Instance.SoundON);
         }
 
         private void SaveGame_OnChangePlayerName(string obj)

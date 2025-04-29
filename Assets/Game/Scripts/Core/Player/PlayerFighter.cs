@@ -235,6 +235,7 @@ public class PlayerFighter : Fighter
             }
 
             AudioManager.Instance.PlaySound("Attack"); // TODO can be cached
+            // SoundManager.PlaySound("Attack"); // TODO can be cached
 
             if (IsBehindTarget() && Target.GetComponent<Boss>() == false) // Проверка, если атака сзади и цель  не босс
             {

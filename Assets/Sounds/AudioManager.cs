@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour
     {
         get => soundON;
         set { soundON = value; }
+        
     }
 
     public bool MusicON
@@ -59,6 +60,17 @@ public class AudioManager : MonoBehaviour
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
         }
+        
+        soundON = true;
+        Debug.Log("soundON " + soundON);
+        soundVol = 1f;
+        Debug.Log("soundVol " + soundVol);
+        musicON = true;
+        Debug.Log("musicON " + musicON);
+        musicVol = 1f;
+        Debug.Log("musicVol " + musicVol);
+        
+        Debug.Log("AudioManager constructed");
     }
 
     public void PlayMusic(string music)
@@ -75,6 +87,8 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(string sound)
     {
+        Debug.Log("soundON " + soundON);
+        
         if (!soundON)
         {
             return;
@@ -83,6 +97,7 @@ public class AudioManager : MonoBehaviour
         Sound s = Array.Find(sounds, item => item.name == sound);
         s.source.volume = soundVol;
         s.source.Play();
+        Debug.Log("Sound " + sound + " played");
     }
 
     public void StopSound(string sound)

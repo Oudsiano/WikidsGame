@@ -239,6 +239,7 @@ namespace SceneManagement
             _levelChangeObserver.TryChangeLevel(_dataPlayer.PlayerData.sceneNameToLoad,
                 _dataPlayer.PlayerData.spawnPoint);
             AudioManager.Instance.PlaySound("ClickButton");
+            // SoundManager.PlaySound("ClickButton");
         }
 
         private void OnClick(string sceneName)
@@ -247,6 +248,7 @@ namespace SceneManagement
             _loading.gameObject.SetActive(true);
             _gameAPI.SaveUpdater();
             AudioManager.Instance.PlaySound("ClickButton"); // TODO can be cached
+            // SoundManager.PlaySound("ClickButton");
 
             _levelChangeObserver.TryChangeLevel(sceneName, 0);
         }

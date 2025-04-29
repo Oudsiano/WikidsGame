@@ -144,6 +144,7 @@ namespace Combat.Data
             proj.SetTarget(target, _weaponDamage);
 
             AudioManager.Instance.PlaySound("Shot");
+            // SoundManager.PlaySound("Shot");
             Fired?.Invoke(); // Вызов события
         }
 

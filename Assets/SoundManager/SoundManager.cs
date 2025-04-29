@@ -30,6 +30,7 @@ public class SoundManager : MonoBehaviour
     public static void PlayMusic(string name)
     {
         Instance.PlayMusicInternal(name);
+        Debug.Log($"[SOUNDMANAGER] Playing music {name}");
     }
 
     public static void StopMusic()
@@ -271,13 +272,13 @@ public class SoundManager : MonoBehaviour
         
         musicSource.loop = true;
         musicSource.priority = 0;
-        musicSource.playOnAwake = false;
+        musicSource.playOnAwake = true;
         musicSource.mute = _settings.GetMusicMuted();
         musicSource.ignoreListenerPause = true;
         musicSource.clip = musicClip;
         musicSource.Play();
 
-        musicSource.volume = 0;
+        musicSource.volume = 1;
 
         _music = new SMMusic();
         _music.Source = musicSource;

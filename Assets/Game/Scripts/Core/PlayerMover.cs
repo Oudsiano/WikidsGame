@@ -257,6 +257,7 @@ public class PlayerMover : Mover
             }
             
             AudioManager.Instance.PlaySound("Walk");
+            // SoundManager.PlaySound("Walk");
             
             // if (isDrawingTrajectory)
             // {
@@ -364,6 +365,7 @@ public class PlayerMover : Mover
                 else
                 {
                     AudioManager.Instance.PlaySound("Walk");
+                    // SoundManager.PlaySound("Walk");
                 }
             }
         }

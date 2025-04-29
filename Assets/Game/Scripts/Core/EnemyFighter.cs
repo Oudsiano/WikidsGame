@@ -43,6 +43,7 @@ namespace Combat
             // }
 
             AudioManager.Instance.PlaySound("Attack"); // TODO can be cached
+            // SoundManager.PlaySound("Attack"); // TODO can be cached
             
             Target.TakeDamage(_equippedWeapon.GetWeaponDamage()); // Нанести нормальный урон цели
             

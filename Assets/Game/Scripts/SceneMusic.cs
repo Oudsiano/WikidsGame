@@ -4,6 +4,7 @@ public class SceneMusic : MonoBehaviour
 {
     private void Start() // TODO construct
     {
-        AudioManager.Instance.PlaySound("SceneFirstMusic");
+         AudioManager.Instance.PlayMusic("SceneFirstMusic");
+        // SoundManager.PlayMusic("SceneFirstMusic");
     }
 }

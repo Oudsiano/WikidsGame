@@ -1,80 +1,72 @@
 mergeInto(LibraryManager.library, {
-  ConnectToSocket: function () {
-    if (!window.socket) {
-      window.socket = io("http://localhost:3000");
-
-      function safeSendMessage(obj, method, param) {
-        try {
-          if (typeof SendMessage === "function") {
-            if (param !== undefined) {
-              SendMessage(obj, method, param);
-            } else {
-              SendMessage(obj, method);
+    /
+     * Инициализирует соединение с Unity-колбэками
+     */
+    InitializeSocket: function (getProfileCallback, profileReceivedCallback) {
+        function safeUnityCallback(callback, jsonData) {
+            try {
+                const bufferSize = lengthBytesUTF8(jsonData) + 1;
+                const buffer = _malloc(bufferSize);
+                stringToUTF8(jsonData, buffer, bufferSize);
+                dynCall_vi(callback, buffer);
+                _free(buffer);
+            } catch (e) {
+                console.error("Unity callback error:", e);
             }
-          } else {
-            setTimeout(() => safeSendMessage(obj, method, param), 100);
-          }
-        } catch (e) {
-          console.error(`SendMessage ${method} failed:`, e);
-          setTimeout(() => safeSendMessage(obj, method, param), 100);
         }
-      }
 
-      window.socket.on("connect", function () {
-        console.log("Connected to server!");
-        safeSendMessage("SocketManager", "OnConnected");
-      });
+        // Регистрируем Unity-колбэки
+        const unityCallbacks = {
+            ProfileModule: {
+                getProfile: function(jsonData) {
+                    safeUnityCallback(getProfileCallback, jsonData);
+                },
+                onProfileReceived: function(jsonData) {
+                    safeUnityCallback(profileReceivedCallback, jsonData);
+                }
+            }
+        };
 
-        window.socket.on("playerConnected", function (data) {
-            const json = JSON.stringify(data);
-            safeSendMessage("SocketManager", "OnPlayerConnected", json);
-        });
+        // Проверяем доступность clientConnector
+        if (!window.clientConnector) {
+            console.error("clientConnector not found");
+            return;
+        }
 
-      window.socket.on("playerData", function (data) {
-        const json = JSON.stringify(data);
-        safeSendMessage("SocketManager", "OnPlayerData", json);
-      });
+        // Инициализируем clientConnector с нашими колбэками
+        window.clientConnector.initialize({ modules: unityCallbacks });
+    },
 
-      window.socket.on("youAre", function (data) {
-        safeSendMessage("SocketManager", "OnYouAre", data.id);
-      });
+    /
+     * Запрашивает профиль пользователя
+     */
+    RequestProfile: function (userIdPtr) {
+        if (!window.clientConnector || !window.clientConnector.getProfile) {
+            console.error("clientConnector.getProfile not available");
+            return;
+        }
+        
+        const userId = UTF8ToString(userIdPtr);
+        window.clientConnector.getProfile({ userId: userId });
+    },
 
-      window.socket.on("existingPlayers", function (playerData) {
-        const json = JSON.stringify(playerData);
-        console.log("👉 existingPlayers json:", json);
-        console.log(`[JSLIB] Получено событие existingPlayers: ${json}, время: ${Date.now()}`);
-        safeSendMessage("SocketManager", "OnExistingPlayers", json);
-      });
+    /
+     * Закрывает соединение и освобождает ресурсы
+     */
+    DestroySocket: function () {
+        if (window.clientConnector && window.clientConnector.destroy) {
+            window.clientConnector.destroy();
+        }
+    },
 
-      window.socket.on("playerDisconnected", function (data) {
-        safeSendMessage("SocketManager", "OnPlayerDisconnected", data.id);
-      });
-
-      window.socket.on("serverFull", function (data) {
-        console.warn(data.message);
-        safeSendMessage("SocketManager", "OnServerFull", data.message);
-      });
+    /
+     * Проверяет инициализирован ли clientConnector
+     * @returns {number} 1 если инициализирован, иначе 0
+     */
+    IsSocketInitialized: function () {
+        if (!window.clientConnector) {
+            return 0;
+        }
+        return window.clientConnector.isInitialized() ? 1 : 0;
     }
-  },
-
-  SendPlayerData: function (data) {
-    if (window.socket && data) {
-      try {
-        var str = UTF8ToString(data);
-        window.socket.emit("playerData", str);
-      } catch (e) {
-        console.error("SendPlayerData failed:", e);
-      }
-    }
-  },
-
-  DisconnectSocket: function () {
-    if (window.socket) {
-      try {
-        window.socket.disconnect();
-      } catch (e) {
-        console.error("DisconnectSocket failed:", e);
-      }
-    }
-  }
 });

@@ -273,7 +273,7 @@ public class PlayerMover : Mover
             isDrawingTrajectory = false;
             Debug.Log("StopDrawingTrajectory");
 
-            OnDrawGizmos();
+            // OnDrawGizmos();
         }
         
         
@@ -426,24 +426,24 @@ public class PlayerMover : Mover
             }
         }
         
-        private void SendPlayerPosition(Vector3 targetPosition)
-        {
-            Debug.Log("SendPlayerPosition works");
-            if (_socketManager != null && !string.IsNullOrEmpty(_playerId))
-            {
-                var data = new PlayerNetworkPositionData
-                {
-                    id = _playerId,
-                    x = targetPosition.x,
-                    y = targetPosition.y,
-                    z = targetPosition.z
-                };
-
-                string json = JsonUtility.ToJson(data);
-                Debug.Log($"📤 Отправка позиции: {json}");
-                _socketManager.SendData(json);
-            }
-        }
+        // private void SendPlayerPosition(Vector3 targetPosition)
+        // {
+        //     Debug.Log("SendPlayerPosition works");
+        //     if (_socketManager != null && !string.IsNullOrEmpty(_playerId))
+        //     {
+        //         var data = new PlayerNetworkPositionData
+        //         {
+        //             id = _playerId,
+        //             x = targetPosition.x,
+        //             y = targetPosition.y,
+        //             z = targetPosition.z
+        //         };
+        //
+        //         string json = JsonUtility.ToJson(data);
+        //         Debug.Log($"📤 Отправка позиции: {json}");
+        //         _socketManager.SendData(json);
+        //     }
+        // }
         
         public void SetPlayerId(string id)
         {

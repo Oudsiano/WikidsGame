@@ -56,7 +56,7 @@ namespace SceneManagement
                 {
                     UpdatePlayerLocation(startPos.transform.position, startPos.transform.rotation);
                     // _gameAPI.SocketManager.SpawnOtherPlayers(startPos.transform.position, startPos.transform.rotation);
-                    _gameAPI.SocketManager.NotifySceneLoaded(startPos.transform.position, startPos.transform.rotation);
+                    // _gameAPI.SocketManager.NotifySceneLoaded(startPos.transform.position, startPos.transform.rotation);
                     _uiManager.FollowCamera.ActivateCommonZoomUpdate();
                 }
             }

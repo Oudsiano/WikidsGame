@@ -1,3 +1,4 @@
+using System;
 using Core;
 using Core.Interfaces;
 using Core.Player;
@@ -111,46 +112,78 @@ public class PlayerMover : Mover
         
         private void StartDrawingTrajectory()
         {
-            Debug.Log("StartDrawingTrajectory");
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+             Debug.Log("StartDrawingTrajectory");
+             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+             RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity); // Получаем все попадания
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
+             // Сортируем попадания по расстоянию
+             Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+             bool hitWater = false;
+             RaycastHit? groundHit = null;
+
+             // Проверяем все попадания по лучу
+            foreach (var hit in hits)
             {
-                // Очищаем предыдущую траекторию
-                trajectoryPoints.Clear();
-                currentWaypointIndex = 0;
-                lineRenderer.positionCount = 0;
-                isMoving = false;
-                // _agent.isStopped = true;
-                // _agent.ResetPath();
-                
+                int hitLayer = hit.collider.gameObject.layer;
+                string layerName = LayerMask.LayerToName(hitLayer);
+                Debug.Log($"Попадание: объект '{hit.collider.gameObject.name}' на слое '{layerName}' (Индекс слоя: {hitLayer}) в позиции {hit.point}, расстояние: {hit.distance}");
 
-                // Начинаем рисовать траекторию
-                isDrawingTrajectory = true;
-                Vector3 startPoint = hit.point + new Vector3(0, heightOffset, 0);
-                trajectoryPoints.Add(startPoint);
-                lastPoint = startPoint;
-
-                // Отображаем начальную точку
-                lineRenderer.positionCount = 1;
-                lineRenderer.SetPosition(0, startPoint);
-            }
-            else
-            {
-                // Если не попал в слой Ground, делаем Raycast без фильтра, чтобы узнать, во что попал
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                // Если первое попадание — слой Water, прекращаем
+                if (layerName == "Water")
                 {
-                    int hitLayer = hit.collider.gameObject.layer;
-                    string layerName = LayerMask.LayerToName(hitLayer);
-                    string objectName = hit.collider.gameObject.name;
-                    Debug.LogWarning($"Raycast did not hit the ground layer! Instead hit: Object '{objectName}' on layer '{layerName}' (Layer Index: {hitLayer}) at position {hit.point}");
+                    hitWater = true;
+                    Debug.LogWarning($"Луч сначала попал в слой Water! Рисование траектории отменено. Попадание: объект '{hit.collider.gameObject.name}' на слое '{layerName}' в позиции {hit.point}");
+                    break;
+                }
+
+                // Ищем попадание в слой Ground
+                if (((1 << hitLayer) & groundLayer) != 0)
+                {
+                    groundHit = hit;
+                    break;
+                }
+            }
+
+            if (hitWater || !groundHit.HasValue)
+            {
+                if (hitWater)
+                {
+                    Debug.LogWarning("Рисование траектории отменено, так как луч сначала попал в слой Water.");
                 }
                 else
                 {
-                    Debug.LogWarning("Raycast did not hit any object!");
+                    Debug.LogWarning("Луч не попал в слой Ground!");
+                    if (hits.Length > 0)
+                    {
+                        int hitLayer = hits[0].collider.gameObject.layer;
+                        string layerName = LayerMask.LayerToName(hitLayer);
+                        string objectName = hits[0].collider.gameObject.name;
+                        Debug.LogWarning($"Первое попадание: объект '{objectName}' на слое '{layerName}' (Индекс слоя: {hitLayer}) в позиции {hits[0].point}, расстояние: {hits[0].distance}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Луч не попал ни в один объект!");
+                    }
                 }
+                return; // Прекращаем выполнение
             }
+
+            // Очищаем предыдущую траекторию
+            trajectoryPoints.Clear();
+            currentWaypointIndex = 0;
+            lineRenderer.positionCount = 0;
+            isMoving = false;
+
+            // Начинаем рисовать траекторию
+            isDrawingTrajectory = true;
+            Vector3 startPoint = groundHit.Value.point + new Vector3(0, heightOffset, 0);
+            trajectoryPoints.Add(startPoint);
+            lastPoint = startPoint;
+
+            // Отображаем начальную точку
+            lineRenderer.positionCount = 1;
+            lineRenderer.SetPosition(0, startPoint);
         }
 
         private void ContinueDrawingTrajectory()
@@ -161,54 +194,77 @@ public class PlayerMover : Mover
             }
 
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity); // Получаем все попадания
 
-            if (Physics.Raycast(ray, out hit,Mathf.Infinity, groundLayer))
+            // Сортируем попадания по расстоянию
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            bool hitWater = false;
+            RaycastHit? groundHit = null;
+
+            // Проверяем все попадания по лучу
+            foreach (var hit in hits)
             {
-                
-                Vector3 currentPoint = hit.point + new Vector3(0, heightOffset, 0);
-                
                 int hitLayer = hit.collider.gameObject.layer;
                 string layerName = LayerMask.LayerToName(hitLayer);
-                string objectName = hit.collider.gameObject.name;
-                Debug.LogWarning($"Raycast  hit the ground layer! hit: Object '{objectName}' on layer '{layerName}' (Layer Index: {hitLayer}) at position {hit.point}");
-                // NavMeshHit navMeshHit;
-                //
-                // if (NavMesh.SamplePosition(currentPoint, out navMeshHit, 1.0f, NavMesh.AllAreas))
-                // {
-                //     currentPoint = navMeshHit.position; // Корректируем точку на ближайшую позицию на NavMesh
-                // }
-                // else
-                // {
-                //     Debug.LogWarning($"Point {currentPoint} is not on NavMesh, skipping");
-                //     return;
-                // }
+                Debug.Log($"Попадание: объект '{hit.collider.gameObject.name}' на слое '{layerName}' (Индекс слоя: {hitLayer}) в позиции {hit.point}, расстояние: {hit.distance}");
 
-                // Добавляем новую точку только если расстояние достаточно большое
-                if (Vector3.Distance(lastPoint, currentPoint) >= trajectoryPointDistance)
+                // Если первое попадание — слой Water, прекращаем
+                if (layerName == "Water")
                 {
-                    trajectoryPoints.Add(currentPoint);
-                    lastPoint = currentPoint;
+                    hitWater = true;
+                    Debug.LogWarning($"Луч сначала попал в слой Water! Рисование траектории отменено. Попадание: объект '{hit.collider.gameObject.name}' на слое '{layerName}' в позиции {hit.point}");
+                    break;
+                }
 
-                    // Обновляем LineRenderer
-                    lineRenderer.positionCount = trajectoryPoints.Count;
-                    lineRenderer.SetPosition(trajectoryPoints.Count - 1, currentPoint);
+                // Ищем попадание в слой Ground
+                if (((1 << hitLayer) & groundLayer) != 0)
+                {
+                    groundHit = hit;
+                    break;
                 }
             }
-            else
+
+            if (hitWater || !groundHit.HasValue)
             {
-                // Если не попал в слой Ground, делаем Raycast без фильтра, чтобы узнать, во что попал
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                if (hitWater)
                 {
-                    int hitLayer = hit.collider.gameObject.layer;
-                    string layerName = LayerMask.LayerToName(hitLayer);
-                    string objectName = hit.collider.gameObject.name;
-                    Debug.LogWarning($"Raycast did not hit the ground layer! Instead hit: Object '{objectName}' on layer '{layerName}' (Layer Index: {hitLayer}) at position {hit.point}");
+                    Debug.LogWarning("Рисование траектории отменено, так как луч сначала попал в слой Water.");
                 }
                 else
                 {
-                    Debug.LogWarning("Raycast did not hit any object!");
+                    Debug.LogWarning("Луч не попал в слой Ground!");
+                    if (hits.Length > 0)
+                    {
+                        int hitLayer = hits[0].collider.gameObject.layer;
+                        string layerName = LayerMask.LayerToName(hitLayer);
+                        string objectName = hits[0].collider.gameObject.name;
+                        Debug.LogWarning($"Первое попадание: объект '{objectName}' на слое '{layerName}' (Индекс слоя: {hitLayer}) в позиции {hits[0].point}, расстояние: {hits[0].distance}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Луч не попал ни в один объект!");
+                    }
                 }
+                return; // Прекращаем выполнение
+            }
+
+            Vector3 currentPoint = groundHit.Value.point + new Vector3(0, heightOffset, 0);
+            
+            int hitLayerFinal = groundHit.Value.collider.gameObject.layer;
+            string layerNameFinal = LayerMask.LayerToName(hitLayerFinal);
+            string objectNameFinal = groundHit.Value.collider.gameObject.name;
+            Debug.Log($"Луч попал в слой Ground! Попадание: объект '{objectNameFinal}' на слое '{layerNameFinal}' (Индекс слоя: {hitLayerFinal}) в позиции {groundHit.Value.point}");
+
+            // Добавляем новую точку только если расстояние достаточно большое
+            if (Vector3.Distance(lastPoint, currentPoint) >= trajectoryPointDistance)
+            {
+                trajectoryPoints.Add(currentPoint);
+                lastPoint = currentPoint;
+
+                // Обновляем LineRenderer
+                lineRenderer.positionCount = trajectoryPoints.Count;
+                lineRenderer.SetPosition(trajectoryPoints.Count - 1, currentPoint);
             }
         }
 

@@ -115,7 +115,7 @@ public class PlayerMover : Mover
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit,Mathf.Infinity, groundLayer))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
             {
                 // Очищаем предыдущую траекторию
                 trajectoryPoints.Clear();
@@ -165,9 +165,13 @@ public class PlayerMover : Mover
 
             if (Physics.Raycast(ray, out hit,Mathf.Infinity, groundLayer))
             {
+                
                 Vector3 currentPoint = hit.point + new Vector3(0, heightOffset, 0);
                 
-                
+                int hitLayer = hit.collider.gameObject.layer;
+                string layerName = LayerMask.LayerToName(hitLayer);
+                string objectName = hit.collider.gameObject.name;
+                Debug.LogWarning($"Raycast  hit the ground layer! hit: Object '{objectName}' on layer '{layerName}' (Layer Index: {hitLayer}) at position {hit.point}");
                 // NavMeshHit navMeshHit;
                 //
                 // if (NavMesh.SamplePosition(currentPoint, out navMeshHit, 1.0f, NavMesh.AllAreas))

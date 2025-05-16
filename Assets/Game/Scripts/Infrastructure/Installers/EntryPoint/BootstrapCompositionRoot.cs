@@ -60,6 +60,7 @@ namespace Infrastructure.Installers.EntryPoint
         
         private ScreenOrientationChecker _screenOrientationChecker;
         private SocketManager _socketManager;
+        private MultiplayerController _multiplayerController;
 
         [Inject]
         public void Compose(DiContainer diContainer)
@@ -76,7 +77,8 @@ namespace Infrastructure.Installers.EntryPoint
             _iGame = _sceneContainer.Resolve<IGame>();
             _followCamera = _sceneContainer.Resolve<FollowCamera>(); //
             _gameAPI = _sceneContainer.Resolve<GameAPI>();
-            _socketManager =_gameAPI.SocketManager;
+            _socketManager =_sceneContainer.Resolve<SocketManager>();
+            _multiplayerController = _sceneContainer.Resolve<MultiplayerController>();
             _timer = _sceneContainer.Resolve<Timer>();
             _audioManager = _sceneContainer.Resolve<AudioManager>();
             _savePointsManager = _sceneContainer.Resolve<SavePointsManager>();
@@ -129,6 +131,9 @@ namespace Infrastructure.Installers.EntryPoint
             _keyBoardsEvents.Construct(_uiManager);
             
             _pointClickHandler.Construct(_player, _timer);
+            
+            _socketManager.Construct();
+            _multiplayerController.Construct();
         }
         
         private void LoadScene()

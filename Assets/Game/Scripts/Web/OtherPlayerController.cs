@@ -1,12 +1,18 @@
 using UnityEngine;
 using UnityEngine.AI;
 using Utils;
+using System.Collections.Generic;
 
 public class OtherPlayerController : MonoBehaviour
 {
     private NavMeshAgent _agent;
     private Animator _animator;
     private bool _ifModularCharacterCreated;
+    
+    private Queue<Vector3> pathPoints = new Queue<Vector3>();
+    private Vector3? currentTarget;
+
+    [SerializeField] private float tolerance = 0.1f;
     
     public bool IfModularCharacterCreated=>_ifModularCharacterCreated;
 
@@ -17,20 +23,34 @@ public class OtherPlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Обновление позиции, полученной с сервера
+    /// Получает траекторию от сервера и начинает двигаться
     /// </summary>
-    public void SetPosition(Vector3 newPosition)
+    public void SetTrajectory(List<Vector3> trajectory)
     {
-        if (_agent == null || !_agent.isOnNavMesh) return;
+        pathPoints.Clear();
+        foreach (var point in trajectory)
+            pathPoints.Enqueue(point);
 
-        // Двигаем к позиции (можно заменить на Lerp или интерполяцию)
-        _agent.SetDestination(newPosition);
-        Debug.Log("Новая позиция: " + transform.position);
+        SetNextPoint();
     }
-
+    
     public void IsCreatedModularCharacter()
     {
         _ifModularCharacterCreated = true;
+    }
+
+    private void SetNextPoint()
+    {
+        if (pathPoints.Count > 0)
+        {
+            currentTarget = pathPoints.Dequeue();
+            if (_agent != null && _agent.isOnNavMesh)
+                _agent.SetDestination(currentTarget.Value);
+        }
+        else
+        {
+            currentTarget = null;
+        }
     }
 
     private void Update()

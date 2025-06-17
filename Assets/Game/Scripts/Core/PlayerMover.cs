@@ -271,6 +271,7 @@ public class PlayerMover : Mover
         private void StopDrawingTrajectoryAndMove()
         {
             isDrawingTrajectory = false;
+            // SocketManager.SendPlayerTrajectory(trajectoryPoints);
             Debug.Log("StopDrawingTrajectory");
 
             // OnDrawGizmos();
@@ -324,6 +325,8 @@ public class PlayerMover : Mover
             
             float step = moveSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, adjustedTargetPosition, step);
+            
+            SocketManager.SendPlayerPosition(transform.position);
             
             // Поворачиваем персонажа в сторону движения
             direction = (adjustedTargetPosition - transform.position).normalized;

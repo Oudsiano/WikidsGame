@@ -133,6 +133,18 @@ namespace Saving
             {
                 string json = request.downloadHandler.text;
                 PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
+                
+                Debug.Log("Raw JSON: " + json);
+
+                if (playerData.progress == null)
+                {
+                    Debug.LogWarning("playerData.progress == null");
+                }
+                else
+                {
+                    Debug.Log("playerData.progress.Length = " + playerData.progress.Length);
+                }
+                
                 SL_objs sl_obj = new SL_objs(json);
                 sl_obj.Load(ref playerData.startedQuests, "startedQuests"); // TODO can be cached
 

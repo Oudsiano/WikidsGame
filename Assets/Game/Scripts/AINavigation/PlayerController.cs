@@ -59,6 +59,8 @@ namespace AINavigation
         private WeaponArmorManager _weaponArmorManager;
         
         public PlayerFighter Fighter=> _fighter;
+        
+        public PlayerHealth Health => _health;
 
         public void Construct(IGame igame,
             SaveGame saveGame, DataPlayer dataPlayer, MainPlayer player, FastTestsManager fastTestsManager,

@@ -7,21 +7,21 @@ public class OtherPlayerController : MonoBehaviour
 {
     private NavMeshAgent _agent;
     private Animator _animator;
-    private bool _ifModularCharacterCreated;
+
     
     private Queue<Vector3> pathPoints = new Queue<Vector3>();
     private Vector3? currentTarget;
 
     [SerializeField] private float tolerance = 0.1f;
     
-    public bool IfModularCharacterCreated=>_ifModularCharacterCreated;
 
-    private void Awake()
+
+    public void Construct()
     {
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
     }
-
+    
     /// <summary>
     /// Получает траекторию от сервера и начинает двигаться
     /// </summary>
@@ -34,27 +34,46 @@ public class OtherPlayerController : MonoBehaviour
         SetNextPoint();
     }
     
-    public void IsCreatedModularCharacter()
+    public void Move(Vector3 position)
     {
-        _ifModularCharacterCreated = true;
+        if (_agent != null && _agent.isOnNavMesh)
+        {
+            _agent.SetDestination(position);
+        }
     }
-
+    
+    
     private void SetNextPoint()
     {
         if (pathPoints.Count > 0)
         {
             currentTarget = pathPoints.Dequeue();
+            Debug.Log($"[OtherPlayerController] SetNextPoint: Moving to {currentTarget.Value}, remaining points = {pathPoints.Count}");
+            
             if (_agent != null && _agent.isOnNavMesh)
                 _agent.SetDestination(currentTarget.Value);
         }
         else
         {
+            Debug.Log("[OtherPlayerController] Trajectory finished.");
             currentTarget = null;
         }
     }
 
     private void Update()
     {
+        // if (currentTarget.HasValue && _agent != null && _agent.isOnNavMesh)
+        // {
+        //     float distance = Vector3.Distance(transform.position, currentTarget.Value);
+        //     Debug.Log($"[OtherPlayerController] Moving to target {currentTarget.Value}, distance = {distance}, remainingDistance = {_agent.remainingDistance}, pathPending = {_agent.pathPending}");
+        //     
+        //     if (distance <= tolerance)
+        //     {
+        //         Debug.Log("[OtherPlayerController] Target reached, moving to next point.");
+        //         SetNextPoint();
+        //     }
+        // }
+        
         // Обновление анимации ходьбы
         if (_agent != null && _animator != null)
         {

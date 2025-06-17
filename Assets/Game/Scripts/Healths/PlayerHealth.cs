@@ -20,6 +20,8 @@ namespace Healths
     {
         private UIManager _uiManager;
         private float healTimer = 0f;
+        
+        public int Health => (int)healthBase.GetCurrentHealth();
    
 
         public void Construct(PlayerController playerController,
@@ -53,9 +55,11 @@ namespace Healths
         {
             while (true) // TODO can be allocated memory
             {
-                if (healthBase is PlayerHealthBase playerHealthBase)
+                if (healthBase is PlayerHealthBase playerHealthBase && healthBase.GetCurrentHealth() < maxHealth)
                 {
                     playerHealthBase.UpdateHealth();
+                    
+                    SocketManager.SendUserHealthInGame(SocketManager.MyLocalPlayerId, healthBase.GetCurrentHealth());
                 }
                 
                 yield return new WaitForSeconds(1); // TODO magic numbers
@@ -102,6 +106,9 @@ namespace Healths
             {
                 Die();
             }
+            
+            SocketManager.SendUserHealthInGame(SocketManager.MyLocalPlayerId, healthBase.GetCurrentHealth());
+            // SocketManager.SendPlayerHealth(healthBase.GetCurrentHealth());
         }
         
         

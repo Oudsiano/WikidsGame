@@ -17,14 +17,42 @@ namespace SceneManagement
 
         public void Construct(DataPlayer dataPlayer, UIManager uiManager)
         {
+            if (uiManager == null)
+            {
+                Debug.LogError("[FastTestsManager] uiManager is NULL!");
+            }
+            else
+            {
+                Debug.Log("[FastTestsManager] uiManager is OK.");
+            }
+            
+            if (dataPlayer == null)
+            {
+                Debug.LogError("[FastTestsManager] dataPlayer is NULL!");
+            }
+            else
+            {
+                Debug.Log("[FastTestsManager] dataPlayer is OK.");
+            }
+            
             _dataPlayer = dataPlayer;
             _uiManager = uiManager;
 
+            if (_dataPlayer == null)
+            {
+                Debug.LogError("[FastTestsManager] _dataPlayer is NULL!");
+            }
+            else
+            {
+                Debug.Log("[FastTestsManager] _dataPlayer is OK.");
+            }
+            
             FillTests();
         }
 
         private void FillTests()
         {
+            Debug.Log("[FastTestsManager] FillTests called");
             AllFastTests = new List<OneFastTest>();
             OneFastTest currentTest;
             //сцена 1 1 и 2 NPC
@@ -1262,6 +1290,8 @@ namespace SceneManagement
                 8514
             );
             AllFastTests.Add(currentTest);
+            
+            Debug.Log("Total fast tests created: " + AllFastTests.Count);
         }
 
         public void GenAvaliableTests()
@@ -1272,6 +1302,9 @@ namespace SceneManagement
             }
 
             AvaliableTestsNow.Clear();
+            
+            Debug.Log("progress.Count = " + _dataPlayer.PlayerData.progress.Length);
+            Debug.Log("wasSuccessTests.Count = " + _dataPlayer.PlayerData.wasSuccessTests.Count);
 
             foreach (var lesson in _dataPlayer.PlayerData.progress)
             {
@@ -1317,6 +1350,12 @@ namespace SceneManagement
 
         private void ShowTest(int count_arrow, Health target)
         {
+            if (_uiManager == null)
+            {
+                Debug.LogWarning("[FastTestsManager] _uiManager is null! Skipping ShowTest.");
+                return;
+            }
+            
             if (AvaliableTestsNow.Count > 0)
             {
                 _uiManager.RegenFastTestUI(0, AvaliableTestsNow.Count, count_arrow, target);

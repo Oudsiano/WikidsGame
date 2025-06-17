@@ -51,12 +51,39 @@ namespace SceneManagement
             if (_dataPlayer.PlayerData.spawnPoint == 0)
             {
                 GameObject startPos = GameObject.Find("StartPoint");
+                
+                SocketManager.LocalPlayerObject = _player.gameObject;
 
                 if (startPos != null)
                 {
                     UpdatePlayerLocation(startPos.transform.position, startPos.transform.rotation);
-                    // _gameAPI.SocketManager.SpawnOtherPlayers(startPos.transform.position, startPos.transform.rotation);
-                    // _gameAPI.SocketManager.NotifySceneLoaded(startPos.transform.position, startPos.transform.rotation);
+     
+                    
+                    string jsonArg = $@"
+                    {{
+                        ""method"": ""spawn"",
+                        ""playerId"": ""{SocketManager.MyLocalPlayerId}"",
+                        ""params"": {{
+                            ""position"": {{
+                                ""x"": 195,
+                                ""y"": -24.00106,
+                                ""z"": 38.42
+                            }}
+                        }}
+                    }}";
+                    
+                    SocketManager.CallNamespacedMethodWithArg("game", "mirrorAction", jsonArg);
+
+                    SocketManager.GetUserProfileInGame();
+                    
+                    SocketManager.OnProfileReceived += (json) =>
+                    {
+                        SocketManager.SendUserHealthInGame(SocketManager.MyLocalPlayerId, _player.PlayerController.Health.Health);
+                        SocketManager.RequestAllPlayersInScene();
+                    };
+                    
+                    Debug.Log("LevelChangeObserver: Player spawned at start position.");
+                        SocketManager.TrySetPlayerIdManually();
                     _uiManager.FollowCamera.ActivateCommonZoomUpdate();
                 }
             }
@@ -64,13 +91,40 @@ namespace SceneManagement
             {
                 Vector3 pos = SavePointsManager.AllSavePoints[_dataPlayer.PlayerData.spawnPoint].transform.position;
                 UpdatePlayerLocation(pos, Quaternion.identity);
-                // _gameAPI.SocketManager.SpawnOtherPlayers(startPos.transform.position);
+                Debug.Log("LevelChangeObserver: Player spawned at start position.");
+                
+                
+                string jsonArg = $@"
+                    {{
+                        ""method"": ""spawn"",
+                        ""playerId"": ""{SocketManager.MyLocalPlayerId}"",
+                        ""params"": {{
+                            ""position"": {{
+                                ""x"": pos.x,
+                                ""y"": pos.y,
+                                ""z"": pos.z
+                            }}
+                        }}
+                    }}";
+                    
+                SocketManager.CallNamespacedMethodWithArg("game", "mirrorAction", jsonArg);
+                
+                SocketManager.OnProfileReceived += (json) =>
+                {
+                    SocketManager.SendUserHealthInGame(SocketManager.MyLocalPlayerId, _player.PlayerController.Health.Health);
+                    SocketManager.RequestAllPlayersInScene();
+                };
+                
+                SocketManager.TrySetPlayerIdManually();
+                SocketManager.SendPlayerPosition(pos);
                 _uiManager.FollowCamera.ActivateCommonZoomUpdate();
             }
 
             _savePointsManager.UpdateStateSpawnPointsAfterLoad(true);
             _player.ResetCountEnergy();
             _gameAPI.SaveUpdater();
+            
+           
         }
 
         private void OnDestroy()

@@ -81,6 +81,8 @@ public class SocketManager : MonoBehaviour
     
     [Serializable] public class SpawnActionWrapper { public string method; public string playerId;  public SpawnParams @params; }
     
+    public static Dictionary<string, Vector3> OtherPlayersPositions = new();
+    
     public static string MyLocalPlayerId;
     public static GameObject LocalPlayerObject;
     
@@ -405,6 +407,9 @@ public class SocketManager : MonoBehaviour
                 
                 var pos = posAction.@params.position;
                 var position = new Vector3(pos.x, pos.y, pos.z);
+                
+                OtherPlayersPositions[posAction.playerId] = position;
+                
                 MultiplayerController.Instance?.MoveOtherPlayerAlongPath(position);
                 Debug.Log($"[SOCKETMANAGER] Got player position: {position}");
                 break;
@@ -501,9 +506,13 @@ public class SocketManager : MonoBehaviour
                     if (playerInfo._id != MyLocalPlayerId)
                     {
                         Debug.Log($"[SOCKETMANAGER] Found other player in room: {playerInfo._id}");
+                        
+                        Vector3 spawnPos = OtherPlayersPositions.TryGetValue(playerInfo._id, out var savedPos)
+                            ? savedPos
+                            : new Vector3(195, -24.00106f, 38.42f);
                 
                         // Заспавним другого игрока (можешь потом сделать позицию умной — сейчас для теста фиксированную):
-                        MultiplayerController.Instance?.SpawnOtherPlayer(playerInfo._id, new Vector3(195, -24.00106f, 38.42f));
+                        MultiplayerController.Instance?.SpawnOtherPlayer(playerInfo._id, spawnPos);
                     }
                 }
             }

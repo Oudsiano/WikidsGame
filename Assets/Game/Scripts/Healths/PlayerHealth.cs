@@ -105,6 +105,7 @@ namespace Healths
             if (healthBase.GetCurrentHealth() <= 0)
             {
                 Die();
+                MultiplayerController.Instance.DestroyOtherPlayer();
             }
             
             SocketManager.SendUserHealthInGame(SocketManager.MyLocalPlayerId, healthBase.GetCurrentHealth());

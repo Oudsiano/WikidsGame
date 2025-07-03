@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Healths;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,10 +9,14 @@ public class OtherPlayer : MonoBehaviour
 {
     [SerializeField] private OtherPlayerController _otherPlayerController;
     [SerializeField] private IconForFarCamera _iconForFarCamera;
-    [SerializeField] private Slider _healthSlider;
+    [SerializeField] private OtherPlayerHealth _otherPlayerHealth;
+    
+    public OtherPlayerHealth OtherPlayerHealth => _otherPlayerHealth;
     
     private bool _ifModularCharacterCreated;
-    private float _currentHealth;
+    
+    
+
     
     public bool IfModularCharacterCreated=>_ifModularCharacterCreated;
     public OtherPlayerController OtherPlayerController => _otherPlayerController;
@@ -24,24 +29,7 @@ public class OtherPlayer : MonoBehaviour
     
    
 
-    public void UpdateHealth(float health)
-    {
-        _currentHealth = health;
 
-        if (_healthSlider != null)
-        {
-            _healthSlider.value = _currentHealth;
-        }
-        else
-        {
-            Debug.LogWarning("[OtherPlayer] Health slider is not assigned!");
-        }
-        
-        // Например, можно сделать визуальный фидбек
-        Debug.Log($"[OtherPlayerController] Current health updated: {_currentHealth}");
-
-        // Здесь можно обновить UI, полоску HP и т.п.
-    }
     
     public void IsCreatedModularCharacter()
     {

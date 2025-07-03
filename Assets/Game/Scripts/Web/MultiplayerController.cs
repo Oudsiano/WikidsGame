@@ -82,7 +82,7 @@ public class MultiplayerController : MonoBehaviour
             
                 Debug.Log("Start spawning other player...");
                 Debug.Log($"[MultiplayerController] Spawning OtherPlayer for playerId: {playerId} at {position}");
-                _otherPlayer = Instantiate(_otherPlayerPrefab, new Vector3(195, -24.00106f, 38.42f), Quaternion.identity);
+                _otherPlayer = Instantiate(_otherPlayerPrefab, position, Quaternion.identity);
                 LoadModularCharacter(_otherPlayer).Forget();
                 _otherPlayerId= playerId;
                 _otherPlayer.Construct(_uiManager);
@@ -104,11 +104,12 @@ public class MultiplayerController : MonoBehaviour
         if (_otherPlayer != null)
         {
             Debug.Log($"[MultiplayerController] Updating other player health to {health}");
-            _otherPlayer.UpdateHealth(health);
+            _otherPlayer.OtherPlayerHealth.UpdateHealth(health);
         }
 
         if (health<=0)
         {
+            _isSpawned = false;   
             Destroy(_otherPlayer.gameObject);
         }
     }

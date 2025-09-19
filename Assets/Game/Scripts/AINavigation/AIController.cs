@@ -54,6 +54,7 @@ namespace AINavigation
 
         private float _startDistanceForShowIcon = 300f;
         private float _maxOpacity = 0.2f;
+        private OtherPlayer _otherPlayer;
 
         public void Construct(PlayerController playerController, MainPlayer player, IGame igame, FastTestsManager fastTestsManager,
         QuestManager questManager, CoinManager coinManager, BottleManager bottleManager)
@@ -139,6 +140,7 @@ namespace AINavigation
 
         private void Update()
         {
+            
             if (PauseClass.GetPauseState())
             {
                 return;
@@ -149,11 +151,16 @@ namespace AINavigation
                 return;
             }
 
-            if (_player.PlayerController.GetPlayerInvisibility() == false &&
-                DistanceToPlayer() < 40 && _player.PlayerController.GetHealth().GetCurrentHealth() != 0 ) // TODO magic number
+            GameObject target = ChooseTarget();
+            if (target != null)
             {
-                InteractWithCombat();
+                InteractWithCombat(target);
             }
+            // if (_player.PlayerController.GetPlayerInvisibility() == false &&
+            //     DistanceToTarget(_player.gameObject) < 40 && _player.PlayerController.GetHealth().GetCurrentHealth() != 0 ) // TODO magic number
+            // {
+            //     InteractWithCombat();
+            // }
 
             _timeSinceLastSawPlayer += Time.deltaTime;
             _timeSinceLastHit += Time.deltaTime;
@@ -168,26 +175,55 @@ namespace AINavigation
 
             // Update last health
             _lastHealth = _health.GetCurrentHealth();
-        }
 
-        private float DistanceToPlayer() // TODO Vector3 Extensions
-        {
-            return Vector3.Distance(_player.transform.position, transform.position);
-        }
-
-        private void InteractWithCombat()
-        {
-            if (IsPlayerInSight() && DistanceToPlayer() <= _chaseDistance &&
-                (_fighter.CanAttack(_player.gameObject) || IsAttacked()))
+            if (_otherPlayer == null)
             {
-                if (IsPlayerBehind())
+                _otherPlayer = FindObjectOfType<OtherPlayer>();
+            }
+        }
+        
+        private GameObject ChooseTarget()
+        {
+            GameObject main = _player?.gameObject;
+            GameObject other = _otherPlayer?.gameObject;
+
+            bool mainAlive = main != null &&
+                             !_player.PlayerController.GetPlayerInvisibility() &&
+                             _player.PlayerController.GetHealth().GetCurrentHealth() > 0;
+
+            bool otherAlive = other != null &&
+                              _otherPlayer.OtherPlayerHealth != null &&
+                              !_otherPlayer.OtherPlayerHealth.IsDead();
+
+            float distMain = mainAlive ? DistanceToTarget(main) : Mathf.Infinity;
+            float distOther = otherAlive ? DistanceToTarget(other) : Mathf.Infinity;
+
+            if (distMain < 40f || distOther < 40f) // TODO magic number
+            {
+                return distMain <= distOther ? main : other;
+            }
+
+            return null;
+        }
+
+        private float DistanceToTarget(GameObject target) // TODO Vector3 Extensions
+        {
+            return Vector3.Distance(target.transform.position, transform.position);
+        }
+
+        private void InteractWithCombat(GameObject target)
+        {
+            if (IsTargetInSight(target) && DistanceToTarget(target) <= _chaseDistance &&
+                (_fighter.CanAttack(target) || IsAttackedBy(target)))
+            {
+                if (IsTargetBehind(target))
                 {
-                    // Игрок атакует со спины
                     _fighter.Hit();
                 }
                 else
                 {
-                    AttackBehavior();
+                    _fighter.Attack(target);
+                    _lastKnownLocation = target.transform.position;
                 }
             }
             else if (_suspicionTimer > _timeSinceLastSawPlayer || _timeSinceLastHit < 5f)
@@ -198,6 +234,14 @@ namespace AINavigation
             {
                 PatrolBehavior();
             }
+        }
+        
+        private bool IsAttackedBy(GameObject target)
+        {
+            var fighter = target.GetComponent<Fighter>();
+            var myHealth = GetComponent<Health>();
+
+            return fighter != null && fighter.Target == myHealth;
         }
 
         private bool IsAttacked()
@@ -210,9 +254,9 @@ namespace AINavigation
             return isAttacked;
         }
 
-        private bool IsPlayerInSight()
+        private bool IsTargetInSight(GameObject target)
         {
-            Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;
+            Vector3 directionToPlayer = (target.transform.position - transform.position).normalized;
             float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
 
             if (angleBetween <= 120f) // TODO magic number 
@@ -223,9 +267,9 @@ namespace AINavigation
             return false;
         }
 
-        private bool IsPlayerBehind()
+        private bool IsTargetBehind(GameObject target)
         {
-            Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;
+            Vector3 directionToPlayer = (target.transform.position - transform.position).normalized;
             float angleBetween = Vector3.Angle(transform.forward, directionToPlayer);
 
             return

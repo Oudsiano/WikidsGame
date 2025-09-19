@@ -590,7 +590,7 @@ public class SocketManager : MonoBehaviour
             Debug.Log("[SOCKETMANAGER] Ignoring own health update.");
             return;
         }
-
+        
         MultiplayerController.Instance?.UpdateOtherPlayerHealth(action.@params.health);
     }
     

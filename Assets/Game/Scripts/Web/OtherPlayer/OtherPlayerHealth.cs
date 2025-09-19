@@ -16,6 +16,7 @@ namespace Healths
         
         public void Construct(float health)
         {
+            healthBase = CreateHealthBase(health);
             _currentHealth = health;
             UpdateHealth(health);
         }
@@ -42,7 +43,7 @@ namespace Healths
         
         protected override HealthBase CreateHealthBase(float maxHealth)
         {
-            return new PlayerHealthBase(maxHealth);
+            return new OtherPlayerHealthBase(maxHealth);
         }
         
         

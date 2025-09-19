@@ -15,9 +15,6 @@ public class OtherPlayer : MonoBehaviour
     
     private bool _ifModularCharacterCreated;
     
-    
-
-    
     public bool IfModularCharacterCreated=>_ifModularCharacterCreated;
     public OtherPlayerController OtherPlayerController => _otherPlayerController;
 
@@ -25,6 +22,7 @@ public class OtherPlayer : MonoBehaviour
     {
         _otherPlayerController.Construct();
         _iconForFarCamera.Construct(uiManager);
+        _otherPlayerHealth.Construct(100f);
     }
     
    

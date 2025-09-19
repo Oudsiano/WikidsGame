@@ -12,7 +12,7 @@ using UnityEngine.Serialization;
 
 namespace Combat
 {
-    [RequireComponent(typeof(Mover))]
+
     public abstract class Fighter : MonoBehaviour, IAction
     {
         [FormerlySerializedAs("rightHandPosition")] [Header("Fighter Stats")] [Header("Weapon")] [SerializeField]
@@ -110,9 +110,17 @@ namespace Combat
 
             _actionScheduler.Setup(this);
             Target = combatTarget.GetComponent<Health>(); // TODO replace getComp
+            Debug.Log("[Fighter] Target resolved: " + (Target != null ? Target.name : "NULL"));
             Target.GetComponent<Fighter>(); // TODO replace getComp
             
-            Debug.Log("Attack" + combatTarget.name);
+            if (Target == null)
+            {
+                Debug.LogError("[Fighter] Attack failed: No Health component on target: " + combatTarget.name);
+                return;
+            }
+
+            Debug.Log("[Fighter] Attacking: " + combatTarget.name);
+            
         }
 
         public bool CanAttack(GameObject target)
